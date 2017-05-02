@@ -34,7 +34,7 @@ TODO'S
 - upload images (currently only able to upload JPG files)
 
 
-EROOR handling
+ERROR handling
 - no networks and failures (login, registration, post thread)
 - registration with same username
 - mismatch password for registration - CHECK
