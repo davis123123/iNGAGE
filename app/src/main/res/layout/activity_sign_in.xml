@@ -44,7 +44,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/action_sign_in_short"
-            android:textStyle="bold" />
+            android:textStyle="bold|italic"
+            android:textColor="#ffffff"
+            android:background="@layout/button"/>
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
