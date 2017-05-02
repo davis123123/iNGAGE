@@ -40,9 +40,11 @@
         <Button
             android:id="@+id/sign_in_button"
             style="?android:textAppearanceSmall"
-            android:layout_width="198dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:text="@string/action_sign_in_short"
             android:textStyle="bold|italic"
             android:textColor="#ffffff"
@@ -61,8 +63,10 @@
                 android:layout_weight="1"
                 android:text="@string/sign_up_new_account"
                 android:textAppearance="?android:textAppearanceSmall"
-                android:gravity="left"
+                android:textStyle="italic"
+                android:gravity="center"
                 android:layout_marginLeft="20dp"
+                android:layout_marginTop="40dp"
                 />
             </LinearLayout>
     </LinearLayout>

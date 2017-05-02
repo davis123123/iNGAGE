@@ -15,7 +15,7 @@
     <string name="prompt_email">Email (Optional)</string>
     <string name="action_sign_in_short">Sign In</string>
     <string name="action_sign_up">Sign Up</string>
-    <string name="sign_up_new_account">Create New Account</string>
+    <string name="sign_up_new_account">New member? Click here to create an account!</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
