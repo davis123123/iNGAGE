@@ -13,6 +13,31 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Welcome!"
+            android:id="@+id/title"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/splash_text"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"
+            android:textSize="40dp"
+            android:textStyle="italic"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Sign up below"
+            android:id="@+id/subheader"
+            android:layout_gravity="center_horizontal"
+            android:textStyle="italic"
+            android:textColor="#ABABAB"
+            android:layout_marginBottom="30dp"/>
+
         <EditText
             android:id="@+id/sign_up_username"
             android:layout_width="fill_parent"
