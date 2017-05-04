@@ -18,13 +18,11 @@ import org.json.JSONObject;
 
 import java.util.concurrent.ExecutionException;
 
+import ingage.ingage20.ChatRoomActivity;
 import ingage.ingage20.MySQL.MySQLDbHelper;
 import ingage.ingage20.MySQL.QueryThreadsHandler;
 import ingage.ingage20.MySQL.ThreadsHelper;
-import ingage.ingage20.PostCommentActivity;
-import ingage.ingage20.PostThreadActivity;
 import ingage.ingage20.R;
-import ingage.ingage20.ViewThreadActivity;
 import ingage.ingage20.adapters.ThreadListAdapter;
 
 /**
@@ -105,7 +103,7 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
     }
 
     public void goInsertThread(){
-        startActivity(new Intent(getActivity(),PostThreadActivity.class));
+        startActivity(new Intent(getActivity(),ChatRoomActivity.class));
     }
 
 

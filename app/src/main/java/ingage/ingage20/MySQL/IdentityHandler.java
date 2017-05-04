@@ -31,8 +31,8 @@ public class IdentityHandler extends AsyncTask<String, String, String> {
     protected String doInBackground(String... params) {
         String type = params[0];
         //TODO need change for server change
-        String login_url = "http://10.0.0.199/login.php";  //10.0.2.2 CHANGE FOR OTHER SERVER
-        String registration_url = "http://10.0.0.199/registration.php";
+        String login_url = "http://168.150.111.124/login.php";  //10.0.2.2 CHANGE FOR OTHER SERVER
+        String registration_url = "http://168.150.111.124/registration.php";
 
         if (type.equals("login")) {
             try {
