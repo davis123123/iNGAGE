@@ -15,6 +15,12 @@
         android:gravity="center"
         >
 
+        <ImageView
+            android:layout_width="167dp"
+            android:layout_height="222dp"
+            android:id="@+id/logo"
+            android:src="@drawable/logo" />
+
         <TextView
             android:id="@+id/splashText"
             android:layout_width="fill_parent"
@@ -23,7 +29,17 @@
             android:textColor="@color/splash_text"
             android:layout_centerHorizontal="true"
             android:gravity="center_horizontal"
-            android:textSize="36dp" />
+            android:textSize="40dp"
+            android:textStyle="italic"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="The future of social media"
+            android:layout_marginTop="30dp"
+            android:id="@+id/footer"
+            android:layout_gravity="center_horizontal" />
 
     </LinearLayout>
 
