@@ -5,14 +5,37 @@
     android:layout_height="match_parent"
 
     tools:context="ingage.ingage20.Login2Activity">
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_centerVertical="true"
         android:gravity="center"
-        >
-    <EditText
+        android:weightSum="1">
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="130dp"
+            android:id="@+id/logo"
+            android:src="@drawable/logo" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="iNGAGE"
+            android:id="@+id/title"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1.04"
+            android:textColor="@color/splash_text"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="30dp"
+            android:gravity="center_horizontal"
+            android:textSize="40dp"
+            android:textStyle="italic"/>
+
+        <EditText
         android:id="@+id/username"
         android:layout_width="fill_parent"
         android:layout_height="40dp"
