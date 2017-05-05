@@ -1,6 +1,7 @@
 package ingage.ingage20;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -120,6 +121,13 @@ public class MainActivity extends AppCompatActivity
         if (navigationDrawer.isDrawerOpen()) {
             navigationDrawer.closeDrawer();
             return;
+        }
+        else{
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
         }
 
 
