@@ -124,6 +124,7 @@ public class MainActivity extends AppCompatActivity
                     session.logoutUser();
 
                     Intent intent = new Intent(MainActivity.this, Login2Activity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
 
                     Toast.makeText(getBaseContext(),"Successfully signed out!",Toast.LENGTH_SHORT).show();
