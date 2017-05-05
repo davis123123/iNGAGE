@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import ingage.ingage20.fragments.FrontPageFragment;
 
@@ -109,6 +110,26 @@ public class MainActivity extends AppCompatActivity
         final ActionBar actionBar = this.getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(getString(R.string.app_name));
+        }
+
+        //set up sign out listener
+        Button signOut = (Button) findViewById(R.id.button_signout);
+        if ( signOut != null) {
+            signOut.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+
+                    session = new SessionManager(getApplicationContext());
+                    session.logoutUser();
+
+                    Intent intent = new Intent(MainActivity.this, Login2Activity.class);
+                    startActivity(intent);
+
+                    Toast.makeText(getBaseContext(),"Successfully signed out!",Toast.LENGTH_SHORT).show();
+                }
+
+            });
         }
 
     }
