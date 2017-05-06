@@ -11,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +19,15 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
+
+import ingage.ingage20.MySQL.IdentityHandler;
 import ingage.ingage20.fragments.FrontPageFragment;
 
 public class MainActivity extends AppCompatActivity
@@ -37,6 +47,7 @@ public class MainActivity extends AppCompatActivity
     Context mContext;
     /** The toolbar view control. */
     private Toolbar toolbar;
+    protected static ArrayList<String> subs = new ArrayList<>();
 
     private Button   signOutButton;
 
@@ -120,7 +131,6 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onClick(View v) {
 
-                    session = new SessionManager(getApplicationContext());
                     session.logoutUser();
 
                     Intent intent = new Intent(MainActivity.this, Login2Activity.class);
@@ -133,6 +143,65 @@ public class MainActivity extends AppCompatActivity
             });
         }
 
+        /*final Intent getSubs = getIntent();
+        String str = getSubs.getStringExtra("thread_subs");
+        Log.d("STATE", "str: " + str);*/
+        //parseSubs(str);
+
+        parseJSON();
+
+    }
+
+    //get JSON object containing user info
+    protected void parseJSON(){
+        HashMap<String, String> user = session.getUserDetails();
+        String username = user.get(SessionManager.KEY_NAME);
+        String password = user.get(SessionManager.KEY_PASSWORD);
+        String type = "login";
+        IdentityHandler identityHandler = new IdentityHandler(this);
+        String loginStatus = null;
+        try {
+            loginStatus = identityHandler.execute(type, username, password).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = new JSONObject(loginStatus);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            JSONArray jsonArray = jsonObject.getJSONArray("user_profile");
+            int count = 0;
+            while(count < jsonArray.length()){
+                JSONObject JO = jsonArray.getJSONObject(count);
+                String thread_subscriptions = JO.getString("thread_subscriptions");
+                parseSubs(thread_subscriptions);
+                count++;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //Parse the thread subscriptions JSON string
+    protected ArrayList parseSubs(String thread_subscriptions){
+        thread_subscriptions = thread_subscriptions.replace("["," ");
+        thread_subscriptions = thread_subscriptions.replace("]"," ");
+
+        String arr[] = thread_subscriptions.split(",");
+        for(int i = 0; i < arr.length; i++) {
+            arr[i] = arr[i].substring(arr[i].lastIndexOf(":") + 1);
+            arr[i] = arr[i].replace("\"","");
+            arr[i] = arr[i].replace("}","");
+            subs.add(arr[i]);
+            Log.d("STATE", "Subs: " + subs.get(i));
+        }
+
+        return subs;
     }
 
 
