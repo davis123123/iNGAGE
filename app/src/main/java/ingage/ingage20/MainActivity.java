@@ -3,6 +3,7 @@ package ingage.ingage20;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -100,6 +102,10 @@ public class MainActivity extends AppCompatActivity
         lvItems.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
+        TextView userName = (TextView) findViewById(R.id.userName);
+        userName.setTextColor(Color.parseColor("#FFFFFF"));
+
+
         //set up sign out listener
         Button signOut = (Button) findViewById(R.id.button_signout);
         if ( signOut != null) {
@@ -109,11 +115,11 @@ public class MainActivity extends AppCompatActivity
                 public void onClick(View v) {
 
                     session.logoutUser();
-                    adapter.clear();
-                    adapter.notifyDataSetChanged();
 
                     Intent intent = new Intent(MainActivity.this, Login2Activity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    adapter.clear();
+                    adapter.notifyDataSetChanged();
                     startActivity(intent);
 
                     Toast.makeText(getBaseContext(),"Successfully signed out!",Toast.LENGTH_SHORT).show();
