@@ -36,9 +36,8 @@ public class SplashActivity extends Activity{
                     String username = user.get(SessionManager.KEY_NAME);
                     String password = user.get(SessionManager.KEY_PASSWORD);
                     String type = "login";
-//                  IdentityHandler identityHandler = new IdentityHandler(mcontext);
-//                  identityHandler.execute(type, username, password);
-                    goMain();
+                    IdentityHandler identityHandler = new IdentityHandler(mcontext);
+                    identityHandler.execute(type, username, password);
                 } else {
                     // Asyncronously go to the sign-in page (after the splash delay has expired).
                     goSignIn();

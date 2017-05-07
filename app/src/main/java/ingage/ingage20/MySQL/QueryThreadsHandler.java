@@ -57,7 +57,7 @@ public class QueryThreadsHandler extends AsyncTask<Void, Void, String> {
 
     @Override
     protected void onPreExecute(){
-            json_url = "http://24.7.128.143:80/query_post.php";
+            json_url = "http://10.0.0.199/query_post.php";
             }
 
     @Override

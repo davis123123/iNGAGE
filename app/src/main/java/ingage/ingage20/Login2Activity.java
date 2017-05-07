@@ -29,7 +29,6 @@ public class Login2Activity extends AppCompatActivity implements SharedPreferenc
     private SignInProvider signInProvider;
     SessionManager session;
     AlertDiaLogManager alert = new AlertDiaLogManager();
-    //String thread_subs;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,14 +61,11 @@ public class Login2Activity extends AppCompatActivity implements SharedPreferenc
     }
 
     public void goSignUp(){
-        Intent intent = new Intent(this, SignUpActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(this, SignUpActivity.class));
     }
 
     public void goMain() {
-        Intent intent = new Intent(this, MainActivity.class);
-        //intent.putExtra("thread_subs", thread_subs);
-        startActivity(intent);
+        startActivity(new Intent(this, MainActivity.class));
         finish();
     }
 
@@ -86,7 +82,7 @@ public class Login2Activity extends AppCompatActivity implements SharedPreferenc
         }
 
         /**toast = Toast.makeText(this, loginStatus, Toast.LENGTH_LONG);
-         toast.show();**/
+        toast.show();**/
         if(loginStatus.equals("login failed")){
             alert.showAlertDialog(Login2Activity.this, "Login failed..", "Username/Password is incorrect", false);
             usernameEt.getText().clear();
@@ -95,7 +91,7 @@ public class Login2Activity extends AppCompatActivity implements SharedPreferenc
 
         else{
             session.createLoginSession(username, password);
-            parseProfileJSON(loginStatus);
+            //parseProfileJSON(loginStatus);
             goMain();
             //TODO query the profile
 
@@ -116,7 +112,6 @@ public class Login2Activity extends AppCompatActivity implements SharedPreferenc
                 email = JO.getString("email");
                 tribute_points = JO.getString("tribute_points");
                 thread_subscriptions = JO.getString("thread_subscriptions");
-                //thread_subs = thread_subscriptions;
                 session.updateProfile(email, tribute_points, thread_subscriptions);
                 count++;
             }
