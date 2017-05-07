@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -91,6 +92,37 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    protected void setupNavigationDrawer(){
+
+        //set up array adapter for subscribed categories
+        ListView lvItems = (ListView) findViewById(R.id.nav_drawer_items);
+        final ArrayAdapter<String> adapter=new ArrayAdapter<String>(this, R.layout.lv_item, subs);
+        lvItems.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+
+        //set up sign out listener
+        Button signOut = (Button) findViewById(R.id.button_signout);
+        if ( signOut != null) {
+            signOut.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+
+                    session.logoutUser();
+                    adapter.clear();
+                    adapter.notifyDataSetChanged();
+
+                    Intent intent = new Intent(MainActivity.this, Login2Activity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+
+                    Toast.makeText(getBaseContext(),"Successfully signed out!",Toast.LENGTH_SHORT).show();
+                }
+
+            });
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,6 +137,10 @@ public class MainActivity extends AppCompatActivity
 
         setupNavigationMenu(savedInstanceState);
         /**RecyclerView (TEMPORARY, MOVE TO A FRAGMENT LATER)**/
+
+        parseJSON();
+
+        setupNavigationDrawer();
 
         /* initilize FrontPage Fragment*/
         final FragmentManager fragmentManager = this.getSupportFragmentManager();
@@ -122,33 +158,6 @@ public class MainActivity extends AppCompatActivity
         if (actionBar != null) {
             actionBar.setTitle(getString(R.string.app_name));
         }
-
-        //set up sign out listener
-        Button signOut = (Button) findViewById(R.id.button_signout);
-        if ( signOut != null) {
-            signOut.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-
-                    session.logoutUser();
-
-                    Intent intent = new Intent(MainActivity.this, Login2Activity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-
-                    Toast.makeText(getBaseContext(),"Successfully signed out!",Toast.LENGTH_SHORT).show();
-                }
-
-            });
-        }
-
-        /*final Intent getSubs = getIntent();
-        String str = getSubs.getStringExtra("thread_subs");
-        Log.d("STATE", "str: " + str);*/
-        //parseSubs(str);
-
-        parseJSON();
 
     }
 
