@@ -12,26 +12,38 @@
         android:layout_height="match_parent">
 
         <EditText
+            android:id="@+id/insert_thread_title_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:paddingLeft="10dp"
+            android:hint="Title"
+            android:layout_below="@+id/category_spinner"
+            android:background="@layout/textfield"
+            android:drawableLeft="@android:drawable/sym_action_chat"/>
+
+        <EditText
             android:id="@+id/insert_thread_content_text_view"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:hint="Text"
             android:layout_below="@+id/insert_thread_title_text_view"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="45dp" />
-
-        <EditText
-            android:id="@+id/insert_thread_title_text_view"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:hint="Title"
-            android:layout_below="@+id/category_spinner"/>
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="10dp"
+            android:background="@layout/textfield"
+            android:drawableLeft="@android:drawable/ic_menu_edit"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Pick a category:"
-            android:layout_toLeftOf="@+id/category_spinner"/>
+            android:layout_toLeftOf="@+id/category_spinner"
+            android:layout_marginTop="10dp"/>
 
         <Spinner
             android:id="@+id/category_spinner"
@@ -40,7 +52,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true">
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp">
         </Spinner>
 
         <Button
@@ -50,14 +63,20 @@
             android:text="Upload Image"
             android:layout_gravity="center_horizontal"
             android:layout_below="@+id/insert_thread_content_text_view"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:drawableLeft="@android:drawable/ic_menu_upload"
+            android:background="@layout/button"
+            android:textColor="#FFFFFF"
+            android:textStyle="italic"
+            android:layout_marginTop="20dp"
+            android:padding="10dp"/>
 
         <ImageView
             android:id="@+id/uploadImageView"
             android:layout_width="250dp"
             android:layout_height="250dp"
             android:layout_gravity="center_horizontal"
-            android:layout_below="@+id/upload_image_button"
+            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true" />
 
     </RelativeLayout>
