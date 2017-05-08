@@ -1,5 +1,6 @@
 package ingage.ingage20;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -54,6 +55,8 @@ public class MainActivity extends AppCompatActivity
 
     private Button   signOutButton;
 
+    private static ArrayAdapter<String> adapter = null;
+
     private void setupToolbar(final Bundle savedInstanceState) {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         // Set up the activity to use this toolbar. As a side effect this sets the Toolbar's title
@@ -98,7 +101,7 @@ public class MainActivity extends AppCompatActivity
 
         //set up array adapter for subscribed categories
         ListView lvItems = (ListView) findViewById(R.id.nav_drawer_items);
-        final ArrayAdapter<String> adapter=new ArrayAdapter<String>(this, R.layout.lv_item, subs);
+        adapter=new ArrayAdapter<String>(this, R.layout.lv_item, subs);
         lvItems.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
@@ -236,6 +239,21 @@ public class MainActivity extends AppCompatActivity
             finish();
         }
 
+
+    }
+
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+        adapter.clear();
+        adapter.notifyDataSetChanged();
+
+        parseJSON();
+        ListView lvItems = (ListView) findViewById(R.id.nav_drawer_items);
+        adapter=new ArrayAdapter<String>(this, R.layout.lv_item, subs);
+        lvItems.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
 
     }
 
