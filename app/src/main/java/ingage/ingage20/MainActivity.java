@@ -38,6 +38,9 @@ import ingage.ingage20.fragments.FrontPageFragment;
 public class MainActivity extends AppCompatActivity
         implements View.OnClickListener {
 
+    /** Alert Dialogue used for failed sign-out**/
+    AlertDiaLogManager alert = new AlertDiaLogManager();
+
     /** Class name for log messages. */
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
@@ -117,19 +120,41 @@ public class MainActivity extends AppCompatActivity
 
                 @Override
                 public void onClick(View v) {
-
-                    session.logoutUser();
-
-                    Intent intent = new Intent(MainActivity.this, Login2Activity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    adapter.clear();
-                    adapter.notifyDataSetChanged();
-                    startActivity(intent);
-
-                    Toast.makeText(getBaseContext(),"Successfully signed out!",Toast.LENGTH_SHORT).show();
+                    goSignOut();
                 }
 
             });
+        }
+    }
+
+    private void goSignOut(){
+        String type = "sign_out";
+        HashMap<String, String> user = session.getUserDetails();
+        String username = user.get(SessionManager.KEY_NAME);
+        String password = user.get(SessionManager.KEY_PASSWORD);
+        IdentityHandler identityHandler = new IdentityHandler(this);
+        String loginStatus = "";
+
+        try {
+            loginStatus = identityHandler.execute(type, username, password).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if(loginStatus.equals("sign out success")) {
+            //must logout user in phone AFTER successfully logged out in server
+            session.logoutUser();
+            Intent intent = new Intent(MainActivity.this, Login2Activity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            adapter.clear();
+            adapter.notifyDataSetChanged();
+            startActivity(intent);
+
+            Toast.makeText(getBaseContext(), "Successfully signed out!", Toast.LENGTH_SHORT).show();
+        }//only sign out if proper connection to server is made
+
+        else{
+            alert.showAlertDialog(MainActivity.this, "Sign out Failed", "Please Check Connection", false);
         }
     }
 
