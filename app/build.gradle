@@ -29,7 +29,9 @@ dependencies {
     compile 'com.android.support:preference-v7:25.2.0'
     compile 'com.android.support:recyclerview-v7:25.2.0'
     compile 'com.google.firebase:firebase-messaging:10.2.4'
+    compile 'com.google.android.gms:play-services:10.2.4'
     testCompile 'junit:junit:4.12'
+    compile 'com.android.volley:volley:1.0.0'
 }
 
 
