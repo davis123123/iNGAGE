@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
+import ingage.ingage20.FireBase.FirebaseSharedPrefManager;
 import ingage.ingage20.MySQL.IdentityHandler;
 import ingage.ingage20.fragments.FrontPageFragment;
 
@@ -175,11 +176,12 @@ public class MainActivity extends AppCompatActivity
         HashMap<String, String> user = session.getUserDetails();
         String username = user.get(SessionManager.KEY_NAME);
         String password = user.get(SessionManager.KEY_PASSWORD);
+        String appToken = FirebaseSharedPrefManager.getInstance(this).getToken();
         String type = "login";
         IdentityHandler identityHandler = new IdentityHandler(this);
         String loginStatus = null;
         try {
-            loginStatus = identityHandler.execute(type, username, password).get();
+            loginStatus = identityHandler.execute(type, username, password, appToken).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {

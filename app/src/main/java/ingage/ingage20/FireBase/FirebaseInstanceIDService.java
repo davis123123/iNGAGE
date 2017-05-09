@@ -2,6 +2,7 @@ package ingage.ingage20.FireBase;
 
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
@@ -19,7 +20,7 @@ public class FirebaseInstanceIDService extends FirebaseInstanceIdService {
     public void onTokenRefresh(){
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
         Log.d("myfirebaseid","Refreshed token: "+ refreshedToken);
-
+        Toast.makeText(this,refreshedToken,Toast.LENGTH_LONG).show();
         getApplicationContext().sendBroadcast(new Intent(TOKEN_BROADCAST));
         storeToken(refreshedToken);
     }

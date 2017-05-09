@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,6 +15,7 @@ import org.json.JSONObject;
 
 import java.util.concurrent.ExecutionException;
 
+import ingage.ingage20.FireBase.FirebaseSharedPrefManager;
 import ingage.ingage20.MySQL.IdentityHandler;
 
 /**
@@ -76,29 +76,38 @@ public class Login2Activity extends AppCompatActivity implements SharedPreferenc
     public void OnLogin(){
         String username = usernameEt.getText().toString();
         String password = passwordEt.getText().toString();
+        String appToken = FirebaseSharedPrefManager.getInstance(this).getToken();
         String type = "login";
         IdentityHandler identityHandler = new IdentityHandler(this);
         String loginStatus = null;
-        try {
-            loginStatus = identityHandler.execute(type, username, password).get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
+        if(appToken != null) {
+            try {
+                loginStatus = identityHandler.execute(type, username, password, appToken).get();
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
 
-        /**toast = Toast.makeText(this, loginStatus, Toast.LENGTH_LONG);
-         toast.show();**/
-        if(loginStatus.equals("login failed")){
-            alert.showAlertDialog(Login2Activity.this, "Login failed..", "Username/Password is incorrect", false);
+            /**toast = Toast.makeText(this, loginStatus, Toast.LENGTH_LONG);
+             toast.show();**/
+            if (loginStatus.equals("login failed")) {
+                alert.showAlertDialog(Login2Activity.this, "Login failed..", "Username/Password is incorrect", false);
+                usernameEt.getText().clear();
+                passwordEt.getText().clear();
+            } else if (loginStatus.equals("error getting token")) {
+                alert.showAlertDialog(Login2Activity.this, "Login failed..", "Token not Registered", false);
+                usernameEt.getText().clear();
+                passwordEt.getText().clear();
+            } else {
+                session.createLoginSession(username, password);
+                parseProfileJSON(loginStatus);
+                goMain();
+
+            }
+        }
+        else{
+            alert.showAlertDialog(Login2Activity.this, "Login failed..", "Token not Registered", false);
             usernameEt.getText().clear();
             passwordEt.getText().clear();
-        }
-
-        else{
-            session.createLoginSession(username, password);
-            parseProfileJSON(loginStatus);
-            goMain();
-            //TODO query the profile
-
         }
     }
 

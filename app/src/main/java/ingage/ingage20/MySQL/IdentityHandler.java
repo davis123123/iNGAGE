@@ -38,6 +38,7 @@ public class IdentityHandler extends AsyncTask<String, String, String> {
             try {
                 String user_name = params[1];
                 String password = params[2];
+                String token = params[3];
 
                 URL url = new URL(login_url);
                 HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
@@ -48,7 +49,8 @@ public class IdentityHandler extends AsyncTask<String, String, String> {
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
                 String post_data =
                         URLEncoder.encode("user_name","UTF-8")+"="+ URLEncoder.encode(user_name,"UTF-8")+"&"+
-                        URLEncoder.encode("password", "UTF-8")+"="+URLEncoder.encode(password,"UTF-8");
+                        URLEncoder.encode("password", "UTF-8")+"="+URLEncoder.encode(password,"UTF-8")+"&"+
+                        URLEncoder.encode("token", "UTF-8")+"="+URLEncoder.encode(token,"UTF-8");
 
                 bufferedWriter.write(post_data);
                 bufferedWriter.flush();
