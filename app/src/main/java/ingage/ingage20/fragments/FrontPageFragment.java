@@ -118,7 +118,7 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
         ThreadsHelper threadsHelper = (ThreadsHelper) threadListAdapter.getItem(clickedItemIndex);
         String thread_id = threadsHelper.getThread_id();
 
-        //LEAVVE UNJTIL COMMENTS A RE FINISSHED
+        //LEAVE UNTIL COMMENTS A RE FINISHED
         String toastMessage = "Item #" + thread_id + "clicked.";
         mToast = Toast.makeText(getActivity(), toastMessage, Toast.LENGTH_LONG);
         mToast.show();
