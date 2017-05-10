@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity
 
     /** Our navigation drawer class for handling navigation drawer logic. */
     private NavigationDrawer navigationDrawer;
-
     SessionManager session;
     private Bundle fragmentBundle;
     Context mContext;
@@ -89,7 +88,6 @@ public class MainActivity extends AppCompatActivity
         navigationDrawer = new NavigationDrawer(this, toolbar, drawerLayout, drawerItems,
                 R.id.main_fragment_container, mContext);
 
-
         //FOR DISPLAYING CATEGORIES
         /**for (Configurations.Feature feature : Configurations.getFeatureList()) {
             navigationDrawer.addFeatureToMenu(feature);
@@ -111,7 +109,6 @@ public class MainActivity extends AppCompatActivity
 
         TextView userName = (TextView) findViewById(R.id.userName);
         userName.setTextColor(Color.parseColor("#FFFFFF"));
-
 
         //set up sign out listener
         Button signOut = (Button) findViewById(R.id.button_signout);
@@ -265,8 +262,6 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
             finish();
         }
-
-
     }
 
 
@@ -281,7 +276,6 @@ public class MainActivity extends AppCompatActivity
         adapter=new ArrayAdapter<String>(this, R.layout.lv_item, subs);
         lvItems.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-
     }
 
     @Override

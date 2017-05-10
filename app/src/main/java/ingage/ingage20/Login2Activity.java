@@ -101,10 +101,8 @@ public class Login2Activity extends AppCompatActivity implements SharedPreferenc
                 session.createLoginSession(username, password);
                 parseProfileJSON(loginStatus);
                 goMain();
-
             }
-        }
-        else{
+        } else{
             alert.showAlertDialog(Login2Activity.this, "Login failed..", "Token not Registered", false);
             usernameEt.getText().clear();
             passwordEt.getText().clear();

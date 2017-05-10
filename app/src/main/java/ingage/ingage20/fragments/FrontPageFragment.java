@@ -108,7 +108,6 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
         startActivity(new Intent(getActivity(),PostThreadActivity.class));
     }
 
-
     @Override
     public void onListItemClick(int clickedItemIndex) {
 
@@ -127,7 +126,6 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
         Intent startChildActivityIntent = new Intent(getActivity(), ViewThreadActivity.class);
         startChildActivityIntent.putExtra(Intent.EXTRA_TEXT, thread_id);
         startActivity(startChildActivityIntent);**/
-
     }
 
     public void getJSON(){
@@ -140,5 +138,4 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
             e.printStackTrace();
         }
     }
-
 }
