@@ -35,7 +35,6 @@ public class SubmitThreadsHandler extends AsyncTask<String, String, String> {
         //TODO need change for server change
         String post_thread_url ="http://10.0.0.199/insert_thread.php";  //10.0.2.2 CHANGE FOR OTHER SERVER
 
-
         if (type.equals("submit")) {
             try {
                 String thread_title = params[1];

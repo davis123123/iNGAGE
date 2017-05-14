@@ -20,6 +20,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
 
 import ingage.ingage20.MySQL.SubmitThreadsHandler;
 import ingage.ingage20.MySQL.UploadImageHandler;
@@ -145,9 +146,21 @@ public class  PostThreadActivity extends AppCompatActivity {
         HashMap<String, String> user = session.getUserDetails();
         String threadBy = user.get(SessionManager.KEY_NAME);
         String type = "submit";
-
+        String submission_status = " ";
         SubmitThreadsHandler submitThreadsHandler = new SubmitThreadsHandler(context);
-        submitThreadsHandler.execute(type, threadTitle, threadContent, threadBy, cSpinner, image_link);
+
+        //CREATE NEW THREAD
+        try {
+            submission_status = submitThreadsHandler.execute(type, threadTitle, threadContent, threadBy, cSpinner, image_link).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if (submission_status.equals("Submission Failed")){
+            message = "Submission Failed";
+        }
 
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, MainActivity.class);
