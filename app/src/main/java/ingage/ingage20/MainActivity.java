@@ -60,6 +60,8 @@ public class MainActivity extends AppCompatActivity
 
     private static ArrayAdapter<String> adapter = null;
 
+    public static String appToken;
+
     private void setupToolbar(final Bundle savedInstanceState) {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         // Set up the activity to use this toolbar. As a side effect this sets the Toolbar's title
@@ -198,7 +200,7 @@ public class MainActivity extends AppCompatActivity
         HashMap<String, String> user = session.getUserDetails();
         String username = user.get(SessionManager.KEY_NAME);
         String password = user.get(SessionManager.KEY_PASSWORD);
-        String appToken = FirebaseSharedPrefManager.getInstance(this).getToken();
+        appToken = FirebaseSharedPrefManager.getInstance(this).getToken();
         String type = "login";
         IdentityHandler identityHandler = new IdentityHandler(this);
         String loginStatus = null;

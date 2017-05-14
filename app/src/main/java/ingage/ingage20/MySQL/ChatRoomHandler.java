@@ -17,40 +17,41 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 /**
- * Created by Davis on 4/17/2017.
+ * Created by wuv66 on 5/11/2017.
  */
+public class ChatRoomHandler  extends AsyncTask<String, String, String> {
 
-public class SubmitCommentsHandler extends AsyncTask<String, String, String> {
     Context context;
     AlertDialog alertDialog;
 
-    public SubmitCommentsHandler(Context mcontext){
+    public ChatRoomHandler(Context mcontext){
         context = mcontext;
     }
 
 
     @Override
-    protected String doInBackground(String...params) {
+    protected String doInBackground(String... params) {
         String type = params[0];
         //TODO need change for server change
-        String post_comment_url = "http://10.0.0.199/insert_comment.php";  //10.0.2.2 CHANGE FOR OTHER SERVER
+        String post_thread_url ="http://10.0.0.199/join_chatroom.php";  //10.0.2.2 CHANGE FOR OTHER SERVER
 
-        if (type.equals("submit")) {
+
+        if (type.equals("join")) {
             try {
-                String comment_content = params[1];
-                String comment_by = params[2];
-                String comment_side = params[3];
-                URL url = new URL(post_comment_url);
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                String thread_id = params[1];
+                String user = params[2];
+                String side = params[3];
+                URL url = new URL(post_thread_url);
+                HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
                 httpURLConnection.setDoOutput(true);
                 httpURLConnection.setDoInput(true);
                 OutputStream outputStream = httpURLConnection.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
                 String post_data =
-                        URLEncoder.encode("comment_content", "UTF-8") + "=" + URLEncoder.encode(comment_content, "UTF-8") + "&" +
-                                URLEncoder.encode("comment_by", "UTF-8") + "=" + URLEncoder.encode(comment_by, "UTF-8") + "&" +
-                                URLEncoder.encode("comment_side", "UTF-8") + "=" + URLEncoder.encode(comment_side, "UTF-8");
+                        URLEncoder.encode("thread_id","UTF-8")+"="+ URLEncoder.encode(thread_id,"UTF-8")+"&"+
+                                URLEncoder.encode("user", "UTF-8")+"="+URLEncoder.encode(user,"UTF-8")+"&"+
+                                URLEncoder.encode("side","UTF-8")+"="+ URLEncoder.encode(side,"UTF-8");
                 bufferedWriter.write(post_data);
                 bufferedWriter.flush();
                 bufferedWriter.close();
@@ -60,11 +61,10 @@ public class SubmitCommentsHandler extends AsyncTask<String, String, String> {
                         new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
                 String result = "";
                 String line;
-                while ((line = bufferedReader.readLine()) != null) {
+                while((line = bufferedReader.readLine()) != null){
                     result += line;
                 }
-                bufferedReader.close();
-                ;
+                bufferedReader.close();;
                 inputStream.close();
                 httpURLConnection.disconnect();
                 return result;
@@ -74,22 +74,23 @@ public class SubmitCommentsHandler extends AsyncTask<String, String, String> {
                 e.printStackTrace();
             }
         }
-
         return null;
     }
 
     @Override
-        protected void onPreExecute() {
-            alertDialog = new AlertDialog.Builder(context).create();
-            alertDialog.setTitle("Submission status");
-        }
+    protected void onPreExecute() {
+        alertDialog = new AlertDialog.Builder(context).create();
+        alertDialog.setTitle("Chatroom status");
+    }
 
-        @Override
-        protected void onPostExecute(String result) {
-            //TODO setup signin handler and new activity
-            alertDialog.setMessage(result);
-            alertDialog.show();
+    @Override
+    protected void onProgressUpdate(String... String){
+        super.onProgressUpdate(String);
+    }
 
-        }
+    @Override
+    protected void onPostExecute(String result) {
+
+    }
 
 }
