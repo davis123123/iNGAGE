@@ -31,11 +31,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
+import ingage.ingage20.FireBase.FirebaseSharedPrefManager;
 import ingage.ingage20.MySQL.IdentityHandler;
 import ingage.ingage20.fragments.FrontPageFragment;
 
 public class MainActivity extends AppCompatActivity
         implements View.OnClickListener {
+
+    /** Alert Dialogue used for failed sign-out**/
+    AlertDiaLogManager alert = new AlertDiaLogManager();
 
     /** Class name for log messages. */
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
@@ -45,7 +49,6 @@ public class MainActivity extends AppCompatActivity
 
     /** Our navigation drawer class for handling navigation drawer logic. */
     private NavigationDrawer navigationDrawer;
-
     SessionManager session;
     private Bundle fragmentBundle;
     Context mContext;
@@ -56,6 +59,8 @@ public class MainActivity extends AppCompatActivity
     private Button   signOutButton;
 
     private static ArrayAdapter<String> adapter = null;
+
+    public static String appToken;
 
     private void setupToolbar(final Bundle savedInstanceState) {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -85,7 +90,6 @@ public class MainActivity extends AppCompatActivity
         navigationDrawer = new NavigationDrawer(this, toolbar, drawerLayout, drawerItems,
                 R.id.main_fragment_container, mContext);
 
-
         //FOR DISPLAYING CATEGORIES
         /**for (Configurations.Feature feature : Configurations.getFeatureList()) {
             navigationDrawer.addFeatureToMenu(feature);
@@ -108,7 +112,6 @@ public class MainActivity extends AppCompatActivity
         TextView userName = (TextView) findViewById(R.id.userName);
         userName.setTextColor(Color.parseColor("#FFFFFF"));
 
-
         //set up sign out listener
         Button signOut = (Button) findViewById(R.id.button_signout);
         if ( signOut != null) {
@@ -116,19 +119,41 @@ public class MainActivity extends AppCompatActivity
 
                 @Override
                 public void onClick(View v) {
-
-                    session.logoutUser();
-
-                    Intent intent = new Intent(MainActivity.this, Login2Activity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    adapter.clear();
-                    adapter.notifyDataSetChanged();
-                    startActivity(intent);
-
-                    Toast.makeText(getBaseContext(),"Successfully signed out!",Toast.LENGTH_SHORT).show();
+                    goSignOut();
                 }
 
             });
+        }
+    }
+
+    private void goSignOut(){
+        String type = "sign_out";
+        HashMap<String, String> user = session.getUserDetails();
+        String username = user.get(SessionManager.KEY_NAME);
+        String password = user.get(SessionManager.KEY_PASSWORD);
+        IdentityHandler identityHandler = new IdentityHandler(this);
+        String loginStatus = "";
+
+        try {
+            loginStatus = identityHandler.execute(type, username, password).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if(loginStatus.equals("sign out success")) {
+            //must logout user in phone AFTER successfully logged out in server
+            session.logoutUser();
+            Intent intent = new Intent(MainActivity.this, Login2Activity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            adapter.clear();
+            adapter.notifyDataSetChanged();
+            startActivity(intent);
+
+            Toast.makeText(getBaseContext(), "Successfully signed out!", Toast.LENGTH_SHORT).show();
+        }//only sign out if proper connection to server is made
+
+        else{
+            alert.showAlertDialog(MainActivity.this, "Sign out Failed", "Please Check Connection", false);
         }
     }
 
@@ -175,11 +200,12 @@ public class MainActivity extends AppCompatActivity
         HashMap<String, String> user = session.getUserDetails();
         String username = user.get(SessionManager.KEY_NAME);
         String password = user.get(SessionManager.KEY_PASSWORD);
+        appToken = FirebaseSharedPrefManager.getInstance(this).getToken();
         String type = "login";
         IdentityHandler identityHandler = new IdentityHandler(this);
         String loginStatus = null;
         try {
-            loginStatus = identityHandler.execute(type, username, password).get();
+            loginStatus = identityHandler.execute(type, username, password, appToken).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -238,8 +264,6 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
             finish();
         }
-
-
     }
 
 
@@ -254,7 +278,6 @@ public class MainActivity extends AppCompatActivity
         adapter=new ArrayAdapter<String>(this, R.layout.lv_item, subs);
         lvItems.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-
     }
 
     @Override

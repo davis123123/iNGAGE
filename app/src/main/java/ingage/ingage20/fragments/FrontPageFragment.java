@@ -1,5 +1,6 @@
 package ingage.ingage20.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +18,19 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
+import ingage.ingage20.FireBase.FirebaseSharedPrefManager;
+import ingage.ingage20.MainActivity;
+import ingage.ingage20.MySQL.ChatRoomHandler;
 import ingage.ingage20.MySQL.MySQLDbHelper;
 import ingage.ingage20.MySQL.QueryThreadsHandler;
 import ingage.ingage20.MySQL.ThreadsHelper;
 import ingage.ingage20.PostCommentActivity;
 import ingage.ingage20.PostThreadActivity;
 import ingage.ingage20.R;
+import ingage.ingage20.SessionManager;
 import ingage.ingage20.ViewThreadActivity;
 import ingage.ingage20.adapters.ThreadListAdapter;
 
@@ -40,6 +47,7 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
     ThreadListAdapter threadListAdapter;
     QueryThreadsHandler queryThreadsHandler;
     View rootView;
+    SessionManager session;
 
     MySQLDbHelper mySQLDbHelper;
     String json_string;
@@ -108,9 +116,10 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
         startActivity(new Intent(getActivity(),PostThreadActivity.class));
     }
 
-
     @Override
     public void onListItemClick(int clickedItemIndex) {
+
+        Context context = getActivity().getApplicationContext();
 
         if(mToast != null){
             mToast.cancel();
@@ -118,27 +127,42 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
         ThreadsHelper threadsHelper = (ThreadsHelper) threadListAdapter.getItem(clickedItemIndex);
         String thread_id = threadsHelper.getThread_id();
 
-        //LEAVVE UNJTIL COMMENTS A RE FINISSHED
+        //LEAVE UNTIL COMMENTS A RE FINISHED
         String toastMessage = "Item #" + thread_id + "clicked.";
         mToast = Toast.makeText(getActivity(), toastMessage, Toast.LENGTH_LONG);
         mToast.show();
+
+
+        String type = "view";
+
+
+
+        type = "join";
+        //String token = MainActivity.appToken;
+        String side = "";
+
+        session = new SessionManager(getActivity().getApplicationContext());
+        HashMap<String, String> user = session.getUserDetails();
+        String username = user.get(SessionManager.KEY_NAME);
+
+        ChatRoomHandler chatRoomHandler = new ChatRoomHandler(context);
+        chatRoomHandler.execute(type, thread_id, username, side);
 
         /**
         Intent startChildActivityIntent = new Intent(getActivity(), ViewThreadActivity.class);
         startChildActivityIntent.putExtra(Intent.EXTRA_TEXT, thread_id);
         startActivity(startChildActivityIntent);**/
-
     }
 
     public void getJSON(){
         queryThreadsHandler = new QueryThreadsHandler();
         try {
             json_string = queryThreadsHandler.execute().get();
+            Log.d("STATE" , "result : " + json_string);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
     }
-
 }
