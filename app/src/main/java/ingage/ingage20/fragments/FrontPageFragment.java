@@ -134,18 +134,24 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
 
 
         String type = "view";
+        session = new SessionManager(getActivity().getApplicationContext());
+        HashMap<String, String> user = session.getUserDetails();
+        String username = user.get(SessionManager.KEY_NAME);
+        String side = "agree";
+
+        ChatRoomHandler chatRoomHandler = new ChatRoomHandler(context);
+        chatRoomHandler.execute(type, thread_id, username, side);
 
 
 
         type = "join";
         //String token = MainActivity.appToken;
-        String side = "";
 
         session = new SessionManager(getActivity().getApplicationContext());
-        HashMap<String, String> user = session.getUserDetails();
-        String username = user.get(SessionManager.KEY_NAME);
+        user = session.getUserDetails();
+        username = user.get(SessionManager.KEY_NAME);
 
-        ChatRoomHandler chatRoomHandler = new ChatRoomHandler(context);
+        chatRoomHandler = new ChatRoomHandler(context);
         chatRoomHandler.execute(type, thread_id, username, side);
 
         /**
