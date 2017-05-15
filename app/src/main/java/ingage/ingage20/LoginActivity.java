@@ -22,7 +22,7 @@ import ingage.ingage20.MySQL.IdentityHandler;
  * Created by Davis on 4/6/2017.
  */
 
-public class Login2Activity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class LoginActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
     EditText usernameEt, passwordEt;
     Button LoginEt;
     TextView signUpTV;
@@ -90,11 +90,11 @@ public class Login2Activity extends AppCompatActivity implements SharedPreferenc
             /**toast = Toast.makeText(this, loginStatus, Toast.LENGTH_LONG);
              toast.show();**/
             if (loginStatus.equals("login failed")) {
-                alert.showAlertDialog(Login2Activity.this, "Login failed..", "Username/Password is incorrect", false);
+                alert.showAlertDialog(LoginActivity.this, "Login failed..", "Username/Password is incorrect", false);
                 usernameEt.getText().clear();
                 passwordEt.getText().clear();
             } else if (loginStatus.equals("error getting token")) {
-                alert.showAlertDialog(Login2Activity.this, "Login failed..", "Token not Registered", false);
+                alert.showAlertDialog(LoginActivity.this, "Login failed..", "Token not Registered", false);
                 usernameEt.getText().clear();
                 passwordEt.getText().clear();
             } else {
@@ -103,7 +103,7 @@ public class Login2Activity extends AppCompatActivity implements SharedPreferenc
                 goMain();
             }
         } else{
-            alert.showAlertDialog(Login2Activity.this, "Login failed..", "Token not Registered", false);
+            alert.showAlertDialog(LoginActivity.this, "Login failed..", "Token not Registered", false);
             usernameEt.getText().clear();
             passwordEt.getText().clear();
         }

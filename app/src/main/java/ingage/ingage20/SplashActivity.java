@@ -10,8 +10,6 @@ import android.view.MotionEvent;
 import java.util.HashMap;
 import java.util.concurrent.CountDownLatch;
 
-import ingage.ingage20.MySQL.IdentityHandler;
-
 public class SplashActivity extends Activity{
     private static final String LOG_TAG = SplashActivity.class.getSimpleName();
     private final CountDownLatch timeoutLatch = new CountDownLatch(1);
@@ -101,7 +99,7 @@ public class SplashActivity extends Activity{
      */
     protected void goSignIn() {
         Log.d(LOG_TAG, "Launching Sign-in Activity...");
-        goAfterSplashTimeout(new Intent(this, Login2Activity.class));
+        goAfterSplashTimeout(new Intent(this, LoginActivity.class));
     }
 
 }

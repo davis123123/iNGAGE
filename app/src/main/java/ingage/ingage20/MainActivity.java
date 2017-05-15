@@ -1,9 +1,7 @@
 package ingage.ingage20;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -143,7 +141,7 @@ public class MainActivity extends AppCompatActivity
         if(loginStatus.equals("sign out success")) {
             //must logout user in phone AFTER successfully logged out in server
             session.logoutUser();
-            Intent intent = new Intent(MainActivity.this, Login2Activity.class);
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             adapter.clear();
             adapter.notifyDataSetChanged();
