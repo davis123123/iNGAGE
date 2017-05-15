@@ -132,32 +132,69 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
         mToast = Toast.makeText(getActivity(), toastMessage, Toast.LENGTH_LONG);
         mToast.show();
 
-
         String type = "view";
-        session = new SessionManager(getActivity().getApplicationContext());
-        HashMap<String, String> user = session.getUserDetails();
-        String username = user.get(SessionManager.KEY_NAME);
-        String side = "agree";
-
-        ChatRoomHandler chatRoomHandler = new ChatRoomHandler(context);
-        chatRoomHandler.execute(type, thread_id, username, side);
-
-
+        viewRoomStatus(context, type, thread_id);
 
         type = "join";
-        //String token = MainActivity.appToken;
+        joinRoom(context, type, thread_id);
 
-        session = new SessionManager(getActivity().getApplicationContext());
-        user = session.getUserDetails();
-        username = user.get(SessionManager.KEY_NAME);
-
-        chatRoomHandler = new ChatRoomHandler(context);
-        chatRoomHandler.execute(type, thread_id, username, side);
 
         /**
         Intent startChildActivityIntent = new Intent(getActivity(), ViewThreadActivity.class);
         startChildActivityIntent.putExtra(Intent.EXTRA_TEXT, thread_id);
         startActivity(startChildActivityIntent);**/
+    }
+
+    public void viewRoomStatus(Context context, String type, String thread_id){
+        session = new SessionManager(getActivity().getApplicationContext());
+        String side = "agree";
+        HashMap<String, String> user = session.getUserDetails();
+        String username = user.get(SessionManager.KEY_NAME);
+        String token = MainActivity.appToken;
+
+        ChatRoomHandler chatRoomHandler = new ChatRoomHandler(context);
+        //chatRoomHandler.execute(type, thread_id, side);
+
+
+        try {
+            String store = chatRoomHandler.execute(type, thread_id, side).get();
+            Log.d("STATE", "view: " + store);
+            //Toast.makeText(getActivity().getApplicationContext(), "view: " + store, Toast.LENGTH_LONG).show();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void joinRoom(Context context, String type, String thread_id){
+
+        HashMap<String, String> user = session.getUserDetails();
+        String username = user.get(SessionManager.KEY_NAME);
+        String token = MainActivity.appToken;
+        String side = "agree";
+
+
+        JSONObject objJson= new JSONObject();
+        JSONArray arrJSON = new JSONArray();
+        try {
+            objJson.put("user_name", username);
+            arrJSON.put(objJson);
+            objJson = new JSONObject();
+            objJson.put("token", token);
+            arrJSON.put(objJson);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        ChatRoomHandler chatRoomHandler = new ChatRoomHandler(context);
+
+        try {
+            String store = chatRoomHandler.execute(type, thread_id, arrJSON.toString(), side).get();
+            Log.d("STATE", "join: " + store);
+            //Toast.makeText(getActivity().getApplicationContext(), "view: " + store, Toast.LENGTH_LONG).show();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
     public void getJSON(){
