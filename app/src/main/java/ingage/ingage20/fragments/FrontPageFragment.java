@@ -1,11 +1,13 @@
 package ingage.ingage20.fragments;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,6 +23,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
+import ingage.ingage20.ChatActivity;
 import ingage.ingage20.FireBase.FirebaseSharedPrefManager;
 import ingage.ingage20.MainActivity;
 import ingage.ingage20.MySQL.ChatRoomHandler;
@@ -53,6 +56,7 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
     String json_string;
     JSONObject jsonObject;
     JSONArray jsonArray;
+    String side = "agree";      //set to agree by default
 
     Toast mToast;
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -145,12 +149,34 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
         startActivity(startChildActivityIntent);**/
     }
 
+    private void chooseSideDialog(){
+
+        new AlertDialog.Builder(getActivity())
+                .setTitle("Choose a side")
+                .setMessage("Do you agree/disagree with this issue?")
+                .setPositiveButton("agree", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+
+                    }
+                })
+                .setNegativeButton("disagree", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                       side= "disagree";
+
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
     public void viewRoomStatus(Context context, String type, String thread_id){
         session = new SessionManager(getActivity().getApplicationContext());
-        String side = "agree";
         HashMap<String, String> user = session.getUserDetails();
         String username = user.get(SessionManager.KEY_NAME);
         String token = MainActivity.appToken;
+        chooseSideDialog();
 
         ChatRoomHandler chatRoomHandler = new ChatRoomHandler(context);
         //chatRoomHandler.execute(type, thread_id, side);
@@ -170,7 +196,6 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
         HashMap<String, String> user = session.getUserDetails();
         String username = user.get(SessionManager.KEY_NAME);
         String token = MainActivity.appToken;
-        String side = "agree";
 
 
         JSONObject objJson= new JSONObject();
