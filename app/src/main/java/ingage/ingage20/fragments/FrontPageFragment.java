@@ -122,6 +122,7 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
 
         Context context = getActivity().getApplicationContext();
 
+
         if(mToast != null){
             mToast.cancel();
         }
@@ -134,14 +135,28 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
         mToast.show();
 
         String type = "view";
-        viewRoomStatus(context, type, thread_id);
+        String result = null;
+        result = viewRoomStatus(context, type, thread_id);
 
-        type = "join";
-        joinRoom(context, type, thread_id);
+        //Error checking for room status
+        if (result != null && !result.equals("Number of disagreeing users is at maximum")
+                && !result.equals("Number of agreeing users is at maximum")
+                && !result.equals("Room/Thread Doesn't Exist")) {
+            type = "join";
+            result = joinRoom(context, type, thread_id);
+            //Error checking for join status
+            if (result != null && !result.equals("Number of disagreeing users is at maximum")
+                    && !result.equals("Number of agreeing users is at maximum")
+                    && !result.equals("Room/Thread Doesn't Exist")){
+                Intent startChildActivityIntent = new Intent(getActivity(), ChatActivity.class);
+                startActivity(startChildActivityIntent);
+            } else{
+                mToast = Toast.makeText(getActivity(), "Error", Toast.LENGTH_LONG);
+            }
+        } else {
+            mToast = Toast.makeText(getActivity(), "Error", Toast.LENGTH_LONG);
+        }
 
-
-        Intent startChildActivityIntent = new Intent(getActivity(), ChatActivity.class);
-        startActivity(startChildActivityIntent);
 
         /**
         Intent startChildActivityIntent = new Intent(getActivity(), ViewThreadActivity.class);
@@ -171,32 +186,33 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
                 .show();
     }
 
-    public void viewRoomStatus(Context context, String type, String thread_id){
+    public String viewRoomStatus(Context context, String type, String thread_id){
         session = new SessionManager(getActivity().getApplicationContext());
         HashMap<String, String> user = session.getUserDetails();
         String username = user.get(SessionManager.KEY_NAME);
         String token = MainActivity.appToken;
+        String store = null;
         chooseSideDialog();
 
         ChatRoomHandler chatRoomHandler = new ChatRoomHandler(context);
-        //chatRoomHandler.execute(type, thread_id, side);
 
 
         try {
-            String store = chatRoomHandler.execute(type, thread_id, side).get();
+            store = chatRoomHandler.execute(type, thread_id, side).get();
             Log.d("STATE", "view: " + store);
             //Toast.makeText(getActivity().getApplicationContext(), "view: " + store, Toast.LENGTH_LONG).show();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
+        return store;
     }
 
-    public void joinRoom(Context context, String type, String thread_id){
+    public String joinRoom(Context context, String type, String thread_id){
 
         HashMap<String, String> user = session.getUserDetails();
         String username = user.get(SessionManager.KEY_NAME);
         String token = MainActivity.appToken;
-
+        String store = null;
 
         JSONObject objJson= new JSONObject();
         JSONArray arrJSON = new JSONArray();
@@ -214,12 +230,14 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
         ChatRoomHandler chatRoomHandler = new ChatRoomHandler(context);
 
         try {
-            String store = chatRoomHandler.execute(type, thread_id, arrJSON.toString(), side).get();
+            store = chatRoomHandler.execute(type, thread_id, arrJSON.toString(), side).get();
             Log.d("STATE", "join: " + store);
             //Toast.makeText(getActivity().getApplicationContext(), "view: " + store, Toast.LENGTH_LONG).show();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
+
+        return store;
     }
 
     public void getJSON(){
