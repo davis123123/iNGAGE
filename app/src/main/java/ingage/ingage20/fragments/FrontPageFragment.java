@@ -143,6 +143,9 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
         joinRoom(context, type, thread_id);
 
 
+        Intent startChildActivityIntent = new Intent(getActivity(), ChatActivity.class);
+        startActivity(startChildActivityIntent);
+
         /**
         Intent startChildActivityIntent = new Intent(getActivity(), ViewThreadActivity.class);
         startChildActivityIntent.putExtra(Intent.EXTRA_TEXT, thread_id);

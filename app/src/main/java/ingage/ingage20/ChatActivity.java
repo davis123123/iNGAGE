@@ -1,199 +1,132 @@
 package ingage.ingage20;
 
-import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
-import android.text.Html;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import ingage.ingage20.adapters.ChatArrayAdapter;
+import ingage.ingage20.adapters.ThreadListAdapter;
 
+public class ChatActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
-public class ChatActivity extends Activity {
-    /**SharedPreferences prefs;
-    List<NameValuePair> params;
-    EditText chat_msg;
-    Button send_btn;
-    Bundle bundle;
-    TableLayout tab;
+    RecyclerView recyclerView;
+    ChatArrayAdapter chatAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        tab = (TableLayout)findViewById(R.id.tab);
-
-        prefs = getSharedPreferences("Chat", 0);
-        bundle = getIntent().getBundleExtra("INFO");
-        SharedPreferences.Editor edit = prefs.edit();
-        edit.putString("CURRENT_ACTIVE", bundle.getString("mobno"));
-        edit.commit();
-        LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, new IntentFilter("Msg"));
-
-
-        if(bundle.getString("name") != null){
-            TableRow tr1 = new TableRow(getApplicationContext());
-            tr1.setLayoutParams(new TableRow.LayoutParams( TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
-            TextView textview = new TextView(getApplicationContext());
-            textview.setTextSize(20);
-            textview.setTextColor(Color.parseColor("#0B0719"));
-            textview.setText(Html.fromHtml("<b>"+bundle.getString("name")+" : </b>"+bundle.getString("msg")));
-            tr1.addView(textview);
-            tab.addView(tr1);
-
-        }
-
-        chat_msg = (EditText)findViewById(R.id.chat_msg);
-        send_btn = (Button)findViewById(R.id.sendbtn);
-
-        send_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TableRow tr2 = new TableRow(getApplicationContext());
-                tr2.setLayoutParams(new TableRow.LayoutParams( TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
-                TextView textview = new TextView(getApplicationContext());
-                textview.setTextSize(20);
-                textview.setTextColor(Color.parseColor("#A901DB"));
-                textview.setText(Html.fromHtml("<b>You : </b>" + chat_msg.getText().toString()));
-                tr2.addView(textview);
-                tab.addView(tr2);
-                new Send().execute();
-            }
-        });
-
-
-    }
-
-    private BroadcastReceiver onNotice= new BroadcastReceiver() {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String str = intent.getStringExtra("msg");
-            String str1 = intent.getStringExtra("fromname");
-            String str2 = intent.getStringExtra("fromu");
-            if(str2.equals(bundle.getString("mobno"))){
-
-                TableRow tr1 = new TableRow(getApplicationContext());
-                tr1.setLayoutParams(new TableRow.LayoutParams( TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
-                TextView textview = new TextView(getApplicationContext());
-                textview.setTextSize(20);
-                textview.setTextColor(Color.parseColor("#0B0719"));
-                textview.setText(Html.fromHtml("<b>"+str1+" : </b>"+str));
-                tr1.addView(textview);
-                tab.addView(tr1);
-            }
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
 
 
-        }
-    };
-    private class Send extends AsyncTask<String, String, JSONObject> {
+        recyclerView = (RecyclerView) findViewById(R.id.listView);
 
-        @Override
-        protected JSONObject doInBackground(String... args) {
-            JSONParser json = new JSONParser();
-            params = new ArrayList<NameValuePair>();
-
-            params.add(new BasicNameValuePair("from", prefs.getString("REG_FROM","")));
-            params.add(new BasicNameValuePair("fromn", prefs.getString("FROM_NAME","")));
-            params.add(new BasicNameValuePair("to", bundle.getString("mobno")));
-            params.add((new BasicNameValuePair("msg",chat_msg.getText().toString())));
-
-            JSONObject jObj = json.getJSONFromUrl("http://10.0.2.2:8080/send",params);
-            return jObj;
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        chatAdapter = new ChatArrayAdapter();
+        recyclerView.setAdapter(chatAdapter);
 
 
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
 
-        }
-        @Override
-        protected void onPostExecute(JSONObject json) {
-            chat_msg.setText("");
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
-            String res = null;
-            try {
-                res = json.getString("response");
-                if(res.equals("Failure")){
-                    Toast.makeText(getApplicationContext(),"The user has logged out. You cant send message anymore !",Toast.LENGTH_SHORT).show();
+        //add messages to recycler view by clicking send
+        Button addButton = (Button) findViewById(R.id.send);
+        if (addButton != null) {
+            addButton.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    EditText textField = (EditText) findViewById(R.id.msgField);
+                    String itemText = textField.getText().toString();
+
+                    textField.setText("");
+
+                    ChatMessage msg = new ChatMessage(true, itemText);
+                    chatAdapter.add(msg);
 
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
 
+            });
         }
-    }**/
-}
-
-/** OLD version
-public class ChatActivity extends Activity {
-    private static final String TAG = "ChatActivity";
-
-    private ChatArrayAdapter chatArrayAdapter;
-    private ListView listView;
-    private EditText chatText;
-    private Button buttonSend;
-    private boolean side = false;
+    }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_chat);
-
-        buttonSend = (Button) findViewById(R.id.send);
-
-        listView = (ListView) findViewById(R.id.msgview);
-
-        chatArrayAdapter = new ChatArrayAdapter(getApplicationContext(), R.layout.right);
-        listView.setAdapter(chatArrayAdapter);
-
-        chatText = (EditText) findViewById(R.id.msg);
-        chatText.setOnKeyListener(new View.OnKeyListener() {
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                    return sendChatMessage();
-                }
-                return false;
-            }
-        });
-        buttonSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                sendChatMessage();
-            }
-        });
-
-        listView.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
-        listView.setAdapter(chatArrayAdapter);
-
-        //to scroll the list view to bottom on data change
-        chatArrayAdapter.registerDataSetObserver(new DataSetObserver() {
-            @Override
-            public void onChanged() {
-                super.onChanged();
-                listView.setSelection(chatArrayAdapter.getCount() - 1);
-            }
-        });
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
-    private boolean sendChatMessage() {
-        chatArrayAdapter.add(new ChatMessage(side, chatText.getText().toString()));
-        chatText.setText("");
-        side = !side;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.chat, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_camera) {
+            // Handle the camera action
+        } else if (id == R.id.nav_gallery) {
+
+        } else if (id == R.id.nav_slideshow) {
+
+        } else if (id == R.id.nav_manage) {
+
+        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_send) {
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 }
- **/

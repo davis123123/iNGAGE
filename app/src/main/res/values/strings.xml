@@ -66,5 +66,6 @@
     <string name="c_sports">Sports</string>
     <string name="c_games">Games</string>
     <string name="c_philosophy">Philosophy</string>
+    <string name="title_activity_chat">ChatActivity</string>
 
 </resources>
