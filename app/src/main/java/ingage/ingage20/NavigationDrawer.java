@@ -36,7 +36,7 @@ public class NavigationDrawer {
     private AppCompatActivity containingActivity;
 
     /**
-     * The helper class used to toggle the left navigation drawer open and closed.
+     * The helper class used to toggle the side navigation drawer open and closed.
      */
     private ActionBarDrawerToggle drawerToggle;
 

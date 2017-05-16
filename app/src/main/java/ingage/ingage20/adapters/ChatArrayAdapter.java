@@ -26,9 +26,6 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
     List <ChatMessage> list = new ArrayList<ChatMessage>();
     private static ListItemClickListener mOnClickListener;
 
-
-
-
     public interface ListItemClickListener{
         void onListItemClick(int clickedItemIndex);
     }
@@ -45,7 +42,7 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
         Context context = viewGroup.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         boolean shouldAttachToParentImmediately = false;
-        View view = inflater.inflate(R.layout.thread_row_layout, viewGroup, shouldAttachToParentImmediately);
+        View view = inflater.inflate(R.layout.chat_layout, viewGroup, shouldAttachToParentImmediately);
         ChatViewHolder viewHolder = new ChatViewHolder(view);
         return viewHolder;
     }
@@ -65,7 +62,7 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
 
     @Override
     public void onBindViewHolder(ChatArrayAdapter.ChatViewHolder holder, int position) {
-        ChatMessage threadsHelper = (ChatMessage) this.getItem(position);
+        ChatMessage chatMessage = (ChatMessage) this.getItem(position);
         holder.bind(position);
     }
 
@@ -73,7 +70,7 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
 
     class ChatViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        TextView threadTitleTextView, threadByTextView, threadCategoryTextView;
+        //TextView threadTitleTextView, threadByTextView, threadCategoryTextView;
 
         /**
          * Constructor for our ViewHolder. Within this constructor, we get a reference to our
@@ -84,9 +81,9 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
          */
         public ChatViewHolder(View itemView) {
             super(itemView);
-            threadTitleTextView = (TextView) itemView.findViewById(R.id.thread_title_view);
-            threadByTextView = (TextView) itemView.findViewById(R.id.thread_by_view);
-            threadCategoryTextView = (TextView) itemView.findViewById(R.id.thread_category_view);
+            //threadTitleTextView = (TextView) itemView.findViewById(R.id.thread_title_view);
+            //threadByTextView = (TextView) itemView.findViewById(R.id.thread_by_view);
+            //threadCategoryTextView = (TextView) itemView.findViewById(R.id.thread_category_view);
 
             itemView.setOnClickListener(this);
         }
@@ -98,7 +95,7 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
         }
 
         private void bind(int listIndex){
-            ChatMessage threadsHelper = (ChatMessage) getItem(listIndex);
+            ChatMessage chatMessage = (ChatMessage) getItem(listIndex);
             //threadTitleTextView.setText(threadsHelper.getThread_title());
            // threadByTextView.setText(threadsHelper.getThread_by());
            // threadCategoryTextView.setText(threadsHelper.getThread_category());

@@ -1,25 +1,19 @@
 package ingage.ingage20;
 
+import java.util.Date;
+
 /**
  * Created by Davis on 5/4/2017.
  */
 
 public class ChatMessage {
-    public boolean left;
-    public String message;
-
-    public ChatMessage(boolean left, String message) {
-        super();
-        this.left = left;
-        this.message = message;
-    }
-
-
-    /** private String messageText;
+    private boolean side;
+    private String messageText;
     private String messageUser;
     private long messageTime;
 
-    public ChatMessage(String messageText, String messageUser){
+    public ChatMessage(boolean side, String messageText, String messageUser){
+        this.side = side;
         this.messageText = messageText;
         this.messageUser = messageUser;
 
@@ -49,5 +43,13 @@ public class ChatMessage {
 
     public void setMessageTime(long messageTime) {
         this.messageTime = messageTime;
-    }**/
+    }
+
+    public boolean isSide() {
+        return side;
+    }
+
+    public void setSide(boolean side) {
+        this.side = side;
+    }
 }
