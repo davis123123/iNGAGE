@@ -201,5 +201,4 @@ public class  PostThreadActivity extends AppCompatActivity {
             usedImage = true;
         }
     }
-
 }

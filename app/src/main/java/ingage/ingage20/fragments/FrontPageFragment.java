@@ -62,7 +62,7 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
                              final Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        getJSON();
+        getThreadsJSON();
         rootView = inflater.inflate(R.layout.fragment_front_page, container, false);
         rootView.setTag(TAG);
         return rootView;
@@ -149,12 +149,13 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
                     && !result.equals("Number of agreeing users is at maximum")
                     && !result.equals("Room/Thread Doesn't Exist")){
                 Intent startChildActivityIntent = new Intent(getActivity(), ChatActivity.class);
+                startChildActivityIntent.putExtra(Intent.EXTRA_TEXT, result);
                 startActivity(startChildActivityIntent);
             } else{
-                mToast = Toast.makeText(getActivity(), "Error", Toast.LENGTH_LONG);
+                Toast.makeText(getActivity(), "Error", Toast.LENGTH_LONG).show();
             }
         } else {
-            mToast = Toast.makeText(getActivity(), "Error", Toast.LENGTH_LONG);
+            Toast.makeText(getActivity(), "Error", Toast.LENGTH_LONG).show();
         }
 
 
@@ -177,9 +178,7 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
                 })
                 .setNegativeButton("disagree", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-
                        side= "disagree";
-
                     }
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)
@@ -191,20 +190,20 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
         HashMap<String, String> user = session.getUserDetails();
         String username = user.get(SessionManager.KEY_NAME);
         String token = MainActivity.appToken;
-        String store = null;
+        String result = null;
         chooseSideDialog();
 
         ChatRoomHandler chatRoomHandler = new ChatRoomHandler(context);
 
 
         try {
-            store = chatRoomHandler.execute(type, thread_id, side).get();
-            Log.d("STATE", "view: " + store);
+            result = chatRoomHandler.execute(type, thread_id, side).get();
+            Log.d("STATE", "view: " + result);
             //Toast.makeText(getActivity().getApplicationContext(), "view: " + store, Toast.LENGTH_LONG).show();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-        return store;
+        return result;
     }
 
     public String joinRoom(Context context, String type, String thread_id){
@@ -212,7 +211,7 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
         HashMap<String, String> user = session.getUserDetails();
         String username = user.get(SessionManager.KEY_NAME);
         String token = MainActivity.appToken;
-        String store = null;
+        String result = null;
 
         JSONObject objJson= new JSONObject();
         JSONArray arrJSON = new JSONArray();
@@ -230,17 +229,17 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
         ChatRoomHandler chatRoomHandler = new ChatRoomHandler(context);
 
         try {
-            store = chatRoomHandler.execute(type, thread_id, arrJSON.toString(), side).get();
-            Log.d("STATE", "join: " + store);
+            result = chatRoomHandler.execute(type, thread_id, arrJSON.toString(), side).get();
+            Log.d("STATE", "join: " + result);
             //Toast.makeText(getActivity().getApplicationContext(), "view: " + store, Toast.LENGTH_LONG).show();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
 
-        return store;
+        return result;
     }
 
-    public void getJSON(){
+    public void getThreadsJSON(){
         queryThreadsHandler = new QueryThreadsHandler();
         try {
             json_string = queryThreadsHandler.execute().get();
