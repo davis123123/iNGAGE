@@ -37,9 +37,11 @@ public class SubmitCommentsHandler extends AsyncTask<String, String, String> {
 
         if (type.equals("submit")) {
             try {
-                String comment_content = params[1];
-                String comment_by = params[2];
-                String comment_side = params[3];
+                String thread_id = params[1];
+                String comment_content = params[2];
+                String comment_by = params[3];
+                String comment_side = params[4];
+
                 URL url = new URL(post_comment_url);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
@@ -48,6 +50,7 @@ public class SubmitCommentsHandler extends AsyncTask<String, String, String> {
                 OutputStream outputStream = httpURLConnection.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
                 String post_data =
+                        URLEncoder.encode("thread_id", "UTF-8") + "=" + URLEncoder.encode(thread_id, "UTF-8") + "&" +
                         URLEncoder.encode("comment_content", "UTF-8") + "=" + URLEncoder.encode(comment_content, "UTF-8") + "&" +
                                 URLEncoder.encode("comment_by", "UTF-8") + "=" + URLEncoder.encode(comment_by, "UTF-8") + "&" +
                                 URLEncoder.encode("comment_side", "UTF-8") + "=" + URLEncoder.encode(comment_side, "UTF-8");
