@@ -16,7 +16,7 @@ import org.json.JSONObject;
 import java.util.concurrent.ExecutionException;
 
 import ingage.ingage20.FireBase.FirebaseSharedPrefManager;
-import ingage.ingage20.MySQL.IdentityHandler;
+import ingage.ingage20.Handlers.IdentityHandler;
 
 /**
  * Created by Davis on 4/6/2017.

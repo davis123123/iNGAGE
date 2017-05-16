@@ -1,4 +1,4 @@
-package ingage.ingage20.adapters;
+package ingage.ingage20.Adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +10,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import ingage.ingage20.MySQL.ThreadsHelper;
+import ingage.ingage20.Helpers.ThreadsHelper;
 import ingage.ingage20.R;
 
 /**

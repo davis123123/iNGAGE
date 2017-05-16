@@ -1,20 +1,16 @@
-package ingage.ingage20.adapters;
+package ingage.ingage20.Adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import ingage.ingage20.ChatMessage;
-import ingage.ingage20.MySQL.ThreadsHelper;
+import ingage.ingage20.Helpers.ChatMessageHelper;
 import ingage.ingage20.R;
 
 
@@ -23,8 +19,7 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
     private Context mContext;
 
     private static final String TAG = ThreadListAdapter.class.getSimpleName();
-    List <ChatMessage> list = new ArrayList<ChatMessage>();
-    private static ListItemClickListener mOnClickListener;
+    List <ChatMessageHelper> list = new ArrayList<ChatMessageHelper>();
 
     public interface ListItemClickListener{
         void onListItemClick(int clickedItemIndex);
@@ -47,7 +42,7 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
         return viewHolder;
     }
 
-    public void add(ChatMessage object){
+    public void add(ChatMessageHelper object){
         list.add(object);
     }
 
@@ -62,43 +57,29 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
 
     @Override
     public void onBindViewHolder(ChatArrayAdapter.ChatViewHolder holder, int position) {
-        ChatMessage chatMessage = (ChatMessage) this.getItem(position);
+        ChatMessageHelper chatMessageHelper = (ChatMessageHelper) this.getItem(position);
         holder.bind(position);
     }
 
 
 
-    class ChatViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    class ChatViewHolder extends RecyclerView.ViewHolder{
+        TextView messageContentView, messageUserView, messageDateView;
 
-        //TextView threadTitleTextView, threadByTextView, threadCategoryTextView;
-
-        /**
-         * Constructor for our ViewHolder. Within this constructor, we get a reference to our
-         * TextViews
-         *
-         * @param itemView The View that you inflated in
-         *
-         */
         public ChatViewHolder(View itemView) {
             super(itemView);
-            //threadTitleTextView = (TextView) itemView.findViewById(R.id.thread_title_view);
-            //threadByTextView = (TextView) itemView.findViewById(R.id.thread_by_view);
-            //threadCategoryTextView = (TextView) itemView.findViewById(R.id.thread_category_view);
+            messageContentView = (TextView) itemView.findViewById(R.id.message_content_view);
+            messageUserView = (TextView) itemView.findViewById(R.id.message_user_view);
+            messageDateView = (TextView) itemView.findViewById(R.id.message_date_view);
 
-            itemView.setOnClickListener(this);
         }
 
-        @Override
-        public void onClick(View view) {
-            int clickedPosition = getAdapterPosition();
-            mOnClickListener.onListItemClick(clickedPosition);
-        }
 
         private void bind(int listIndex){
-            ChatMessage chatMessage = (ChatMessage) getItem(listIndex);
-            //threadTitleTextView.setText(threadsHelper.getThread_title());
-           // threadByTextView.setText(threadsHelper.getThread_by());
-           // threadCategoryTextView.setText(threadsHelper.getThread_category());
+            ChatMessageHelper chatMessageHelper = (ChatMessageHelper) getItem(listIndex);
+            messageContentView.setText(chatMessageHelper.getMessageText());
+            messageUserView.setText(chatMessageHelper.getMessageUser());
+            messageDateView.setText(chatMessageHelper.getMessageTime());
         }
     }
 }

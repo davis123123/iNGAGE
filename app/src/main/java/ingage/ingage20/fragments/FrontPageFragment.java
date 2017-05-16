@@ -1,4 +1,4 @@
-package ingage.ingage20.fragments;
+package ingage.ingage20.Fragments;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -24,18 +24,15 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 import ingage.ingage20.ChatActivity;
-import ingage.ingage20.FireBase.FirebaseSharedPrefManager;
 import ingage.ingage20.MainActivity;
-import ingage.ingage20.MySQL.ChatRoomHandler;
-import ingage.ingage20.MySQL.MySQLDbHelper;
-import ingage.ingage20.MySQL.QueryThreadsHandler;
-import ingage.ingage20.MySQL.ThreadsHelper;
-import ingage.ingage20.PostCommentActivity;
+import ingage.ingage20.Handlers.ChatRoomHandler;
+import ingage.ingage20.Handlers.MySQLDbHelper;
+import ingage.ingage20.Handlers.QueryThreadsHandler;
+import ingage.ingage20.Helpers.ThreadsHelper;
 import ingage.ingage20.PostThreadActivity;
 import ingage.ingage20.R;
 import ingage.ingage20.SessionManager;
-import ingage.ingage20.ViewThreadActivity;
-import ingage.ingage20.adapters.ThreadListAdapter;
+import ingage.ingage20.Adapters.ThreadListAdapter;
 
 /**
  * Created by Davis on 4/4/2017.

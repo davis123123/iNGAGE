@@ -1,4 +1,4 @@
-package ingage.ingage20.MySQL;
+package ingage.ingage20.Handlers;
 
 import android.content.Context;
 import android.os.AsyncTask;

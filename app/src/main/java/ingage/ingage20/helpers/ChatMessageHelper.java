@@ -1,23 +1,24 @@
-package ingage.ingage20;
+package ingage.ingage20.Helpers;
 
+import java.text.DateFormat;
 import java.util.Date;
 
 /**
  * Created by Davis on 5/4/2017.
  */
 
-public class ChatMessage {
+public class ChatMessageHelper {
     private boolean side;
     private String messageText;
     private String messageUser;
-    private long messageTime;
+    private String messageTime;
 
-    public ChatMessage(boolean side, String messageText, String messageUser){
+    public ChatMessageHelper(boolean side, String messageText, String messageUser){
         this.side = side;
         this.messageText = messageText;
         this.messageUser = messageUser;
 
-        messageTime = new Date().getTime();
+        messageTime = DateFormat.getDateTimeInstance().format(new Date());
     }
 
 
@@ -37,11 +38,11 @@ public class ChatMessage {
         this.messageUser = messageUser;
     }
 
-    public long getMessageTime() {
+    public String getMessageTime() {
         return messageTime;
     }
 
-    public void setMessageTime(long messageTime) {
+    public void setMessageTime(String messageTime) {
         this.messageTime = messageTime;
     }
 

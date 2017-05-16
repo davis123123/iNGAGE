@@ -1,4 +1,4 @@
-package ingage.ingage20.MySQL;
+package ingage.ingage20.Handlers;
 
 import android.app.AlertDialog;
 import android.content.Context;

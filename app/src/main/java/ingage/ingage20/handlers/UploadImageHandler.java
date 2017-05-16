@@ -1,4 +1,4 @@
-package ingage.ingage20.MySQL;
+package ingage.ingage20.Handlers;
 
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -16,10 +16,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Davis on 5/1/2017.

@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import java.util.HashMap;
 
-import ingage.ingage20.MySQL.SubmitCommentsHandler;
+import ingage.ingage20.Handlers.SubmitCommentsHandler;
 
 /**
  * Created by Davis on 4/17/2017.

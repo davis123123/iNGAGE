@@ -1,4 +1,4 @@
-package ingage.ingage20.MySQL;
+package ingage.ingage20.Handlers;
 
 /**
  * Created by Davis on 4/27/2017.

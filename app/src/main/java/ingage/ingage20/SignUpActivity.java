@@ -14,7 +14,7 @@ import org.json.JSONObject;
 
 import java.util.concurrent.ExecutionException;
 
-import ingage.ingage20.MySQL.IdentityHandler;
+import ingage.ingage20.Handlers.IdentityHandler;
 
 public class SignUpActivity extends AppCompatActivity {
     EditText mUserName, mPassword, mEmail, mRePassword;

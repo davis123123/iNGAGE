@@ -1,6 +1,4 @@
-package ingage.ingage20.MySQL;
-
-import java.util.HashMap;
+package ingage.ingage20.Helpers;
 
 /**
  * Created by Davis on 4/14/2017.

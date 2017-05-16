@@ -3,7 +3,6 @@ package ingage.ingage20;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -16,8 +15,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
-import ingage.ingage20.MySQL.MySQLDbHelper;
-import ingage.ingage20.MySQL.QueryThreadsHandler;
+import ingage.ingage20.Handlers.MySQLDbHelper;
+import ingage.ingage20.Handlers.QueryThreadsHandler;
 
 /**
  * Created by Davis on 4/24/2017.

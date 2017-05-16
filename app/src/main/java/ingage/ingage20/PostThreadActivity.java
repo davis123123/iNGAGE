@@ -22,8 +22,8 @@ import android.widget.Toast;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
-import ingage.ingage20.MySQL.SubmitThreadsHandler;
-import ingage.ingage20.MySQL.UploadImageHandler;
+import ingage.ingage20.Handlers.SubmitThreadsHandler;
+import ingage.ingage20.Handlers.UploadImageHandler;
 
 public class  PostThreadActivity extends AppCompatActivity {
     /** Class name for log messages. */

@@ -1,73 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="match_parent"
-        android:textSize="40px"
-        android:textColor="#ff5bb111"
-        android:layout_height="50px"/>
-    <TextView
-        android:id="@+id/mobno"
-        android:layout_width="match_parent"
-        android:textSize="30px"
-        android:textColor="#8904B1"
-        android:layout_height="50px"/>
-
-</LinearLayout>
-<!--
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:background="#e1e1e1"
     android:orientation="vertical" >
-
-    <ListView
-        android:id="@+id/msgListView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/form"
-        android:divider="@null"
-        android:dividerHeight="0dp"
-        android:paddingBottom="10dp" />
-
-    <LinearLayout
-        android:id="@+id/form"
+    <TextView
+        android:id="@+id/message_content_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:background="#91f1f1f1"
-        android:orientation="horizontal"
-        android:paddingBottom="2dp" >
+        android:fontFamily="casual"
+        android:text="sdf"
+        android:gravity="left"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="30sp" />
 
+    <TextView
+        android:id="@+id/message_user_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:textStyle="italic"
+        android:text="sdsdasdasdsadaf"
+        android:gravity="left"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textSize="15sp"
+        android:layout_below="@+id/message_content_view" />
 
-        <EditText
-            android:id="@+id/messageEditText"
-            android:layout_width="252dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignTop="@+id/button1"
-            android:layout_toLeftOf="@+id/sendMessageButton"
-            android:layout_weight="0.72"
-            android:ems="10"
-            android:maxHeight="80dp" />
-
-        <ImageButton
-            android:id="@+id/sendMessageButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/ic_menu_send"
-            android:text="d" />
-    </LinearLayout>
-
-
+    <TextView
+        android:id="@+id/message_date_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="italic|bold|normal"
+        android:text="sdasdasdsadasdasf"
+        android:gravity="left"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="15sp"
+        android:layout_alignBaseline="@+id/message_content_view"
+        android:layout_alignBottom="@+id/message_content_view"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dp" />
 </RelativeLayout>
-    -->

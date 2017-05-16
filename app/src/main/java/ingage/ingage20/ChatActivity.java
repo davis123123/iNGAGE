@@ -1,26 +1,17 @@
 package ingage.ingage20;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import java.util.HashMap;
 
-import ingage.ingage20.adapters.ChatArrayAdapter;
-import ingage.ingage20.adapters.ThreadListAdapter;
+import ingage.ingage20.Adapters.ChatArrayAdapter;
+import ingage.ingage20.Helpers.ChatMessageHelper;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -34,7 +25,7 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
 
         session = new SessionManager(getApplicationContext());
-        recyclerView = (RecyclerView) findViewById(R.id.listView);
+        recyclerView = (RecyclerView) findViewById(R.id.chatrecyclerView);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -43,7 +34,7 @@ public class ChatActivity extends AppCompatActivity {
 
 
         //add messages to recycler view by clicking send
-        Button addButton = (Button) findViewById(R.id.send);
+        ImageButton addButton = (ImageButton) findViewById(R.id.sendMessageButton);
         if (addButton != null) {
             addButton.setOnClickListener(new View.OnClickListener() {
 
@@ -57,7 +48,7 @@ public class ChatActivity extends AppCompatActivity {
 
                     textField.setText("");
 
-                    ChatMessage msg = new ChatMessage(true, messageText, messageBy);
+                    ChatMessageHelper msg = new ChatMessageHelper(true, messageText, messageBy);
                     chatAdapter.add(msg);
 
                 }

@@ -7,15 +7,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.concurrent.ExecutionException;
 
-import ingage.ingage20.MySQL.MySQLDbHelper;
-import ingage.ingage20.MySQL.QueryThreadsHandler;
-import ingage.ingage20.MySQL.ThreadsHelper;
-import ingage.ingage20.adapters.Testadapter;
+import ingage.ingage20.Handlers.MySQLDbHelper;
+import ingage.ingage20.Handlers.QueryThreadsHandler;
+import ingage.ingage20.Adapters.Testadapter;
 
 /**
  * Created by Davis on 4/17/2017.

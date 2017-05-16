@@ -1,7 +1,6 @@
 package ingage.ingage20;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.support.v4.app.Fragment;
@@ -24,7 +23,7 @@ import android.widget.TextView;
 
 import java.util.HashMap;
 
-import ingage.ingage20.fragments.FrontPageFragment;
+import ingage.ingage20.Fragments.FrontPageFragment;
 
 import static ingage.ingage20.R.string.app_name;
 

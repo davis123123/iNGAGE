@@ -30,8 +30,8 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 import ingage.ingage20.FireBase.FirebaseSharedPrefManager;
-import ingage.ingage20.MySQL.IdentityHandler;
-import ingage.ingage20.fragments.FrontPageFragment;
+import ingage.ingage20.Handlers.IdentityHandler;
+import ingage.ingage20.Fragments.FrontPageFragment;
 
 public class MainActivity extends AppCompatActivity
         implements View.OnClickListener {
