@@ -1,5 +1,6 @@
 package ingage.ingage20;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,7 +19,7 @@ public class ChatActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     ChatArrayAdapter chatAdapter;
     SessionManager session;
-
+    String JsonString;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +33,11 @@ public class ChatActivity extends AppCompatActivity {
         chatAdapter = new ChatArrayAdapter();
         recyclerView.setAdapter(chatAdapter);
 
+
+        Intent intentThatStartedThisActivity = getIntent();
+        if(intentThatStartedThisActivity.hasExtra(Intent.EXTRA_TEXT)){
+            JsonString = intentThatStartedThisActivity.getStringExtra(Intent.EXTRA_TEXT);
+        }
 
         //add messages to recycler view by clicking send
         ImageButton addButton = (ImageButton) findViewById(R.id.sendMessageButton);
