@@ -56,6 +56,9 @@ public class ChatActivity extends AppCompatActivity {
 
                     ChatMessageHelper msg = new ChatMessageHelper(true, messageText, messageBy);
                     chatAdapter.add(msg);
+                    RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
+                    int pos = chatAdapter.getItemCount()-1;
+                    manager.scrollToPosition(pos);
 
                 }
 
