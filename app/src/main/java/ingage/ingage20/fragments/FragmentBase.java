@@ -1,4 +1,4 @@
-package ingage.ingage20.Fragments;
+package ingage.ingage20.fragments;
 
 import android.os.AsyncTask;
 import android.os.Bundle;

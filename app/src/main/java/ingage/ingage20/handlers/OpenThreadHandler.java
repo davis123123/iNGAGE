@@ -1,4 +1,4 @@
-package ingage.ingage20.Handlers;
+package ingage.ingage20.handlers;
 
 /**
  * Created by Davis on 4/27/2017.

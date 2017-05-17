@@ -11,9 +11,9 @@ import org.json.JSONObject;
 
 import java.util.concurrent.ExecutionException;
 
-import ingage.ingage20.Handlers.MySQLDbHelper;
-import ingage.ingage20.Handlers.QueryThreadsHandler;
-import ingage.ingage20.Adapters.Testadapter;
+import ingage.ingage20.handlers.MySQLDbHelper;
+import ingage.ingage20.handlers.QueryThreadsHandler;
+import ingage.ingage20.adapters.Testadapter;
 
 /**
  * Created by Davis on 4/17/2017.

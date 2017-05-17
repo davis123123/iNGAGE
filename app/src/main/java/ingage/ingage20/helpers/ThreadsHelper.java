@@ -1,4 +1,4 @@
-package ingage.ingage20.Helpers;
+package ingage.ingage20.helpers;
 
 /**
  * Created by Davis on 4/14/2017.

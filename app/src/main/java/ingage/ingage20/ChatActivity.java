@@ -11,8 +11,8 @@ import android.widget.ImageButton;
 
 import java.util.HashMap;
 
-import ingage.ingage20.Adapters.ChatArrayAdapter;
-import ingage.ingage20.Helpers.ChatMessageHelper;
+import ingage.ingage20.adapters.ChatArrayAdapter;
+import ingage.ingage20.helpers.ChatMessageHelper;
 
 public class ChatActivity extends AppCompatActivity {
 

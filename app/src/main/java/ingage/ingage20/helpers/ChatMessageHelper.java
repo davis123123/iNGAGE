@@ -1,4 +1,4 @@
-package ingage.ingage20.Helpers;
+package ingage.ingage20.helpers;
 
 import java.text.DateFormat;
 import java.util.Date;

@@ -1,4 +1,4 @@
-package ingage.ingage20.Handlers;
+package ingage.ingage20.handlers;
 
 import android.content.Context;
 

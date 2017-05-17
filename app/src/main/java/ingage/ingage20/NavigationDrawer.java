@@ -23,7 +23,7 @@ import android.widget.TextView;
 
 import java.util.HashMap;
 
-import ingage.ingage20.Fragments.FrontPageFragment;
+import ingage.ingage20.fragments.FrontPageFragment;
 
 import static ingage.ingage20.R.string.app_name;
 

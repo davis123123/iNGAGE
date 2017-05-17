@@ -1,4 +1,4 @@
-package ingage.ingage20.Handlers;
+package ingage.ingage20.handlers;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -57,7 +57,7 @@ public class QueryThreadsHandler extends AsyncTask<Void, Void, String> {
 
     @Override
     protected void onPreExecute(){
-            json_url = "http://10.0.0.199/query_post.php";
+            json_url = "http://24.7.128.143/query_post.php";
             }
 
     @Override

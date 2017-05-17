@@ -1,4 +1,4 @@
-package ingage.ingage20.Fragments;
+package ingage.ingage20.fragments;
 
 import android.content.Intent;
 import android.os.Build;
@@ -18,11 +18,11 @@ import org.json.JSONObject;
 
 import java.util.concurrent.ExecutionException;
 
-import ingage.ingage20.Handlers.QueryThreadsHandler;
-import ingage.ingage20.Helpers.ThreadsHelper;
+import ingage.ingage20.handlers.QueryThreadsHandler;
+import ingage.ingage20.helpers.ThreadsHelper;
 import ingage.ingage20.PostThreadActivity;
 import ingage.ingage20.R;
-import ingage.ingage20.Adapters.ThreadListAdapter;
+import ingage.ingage20.adapters.ThreadListAdapter;
 
 /**
  * Created by Davis on 4/4/2017.

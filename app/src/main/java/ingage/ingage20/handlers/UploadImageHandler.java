@@ -1,4 +1,4 @@
-package ingage.ingage20.Handlers;
+package ingage.ingage20.handlers;
 
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -32,7 +32,7 @@ public class UploadImageHandler extends AsyncTask<String, String, String> {
 
     @Override
     protected String doInBackground(String... params) {
-        String post_image_url = "http://10.0.0.199/upload_image.php";
+        String post_image_url = "http://24.7.128.143/upload_image.php";
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
         String encodedImage = Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);

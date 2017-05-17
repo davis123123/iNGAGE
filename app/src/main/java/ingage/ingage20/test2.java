@@ -15,8 +15,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
-import ingage.ingage20.Handlers.MySQLDbHelper;
-import ingage.ingage20.Handlers.QueryThreadsHandler;
+import ingage.ingage20.handlers.MySQLDbHelper;
+import ingage.ingage20.handlers.QueryThreadsHandler;
 
 /**
  * Created by Davis on 4/24/2017.

@@ -1,4 +1,4 @@
-package ingage.ingage20.Adapters;
+package ingage.ingage20.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import ingage.ingage20.Helpers.ThreadsHelper;
+import ingage.ingage20.helpers.ThreadsHelper;
 import ingage.ingage20.R;
 
 /**
