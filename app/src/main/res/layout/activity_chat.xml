@@ -17,7 +17,7 @@
         <View
             android:id="@+id/rect"
             android:layout_width="wrap_content"
-            android:layout_height="75dp"
+            android:layout_height="88dp"
             android:background="#e0e0db"
             android:layout_gravity="bottom" />
     </LinearLayout>
@@ -33,7 +33,7 @@
 
     <EditText
         android:layout_width="wrap_content"
-        android:layout_height="60dp"
+        android:layout_height="75dp"
         android:id="@+id/msgField"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
@@ -42,16 +42,19 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginBottom="5dp"
-        android:layout_marginTop="25dp" />
+        android:gravity="top"
+        android:hint="Enter message"
+        android:imeOptions="actionDone"
+        android:maxLines="3"
+        android:padding="5dp" />
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
         android:id="@+id/chatrecyclerView"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/sendMessageButton"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/msgField" />
 
 </RelativeLayout>
