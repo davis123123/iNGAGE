@@ -19,7 +19,11 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import ingage.ingage20.handlers.SubmitThreadsHandler;
@@ -45,7 +49,7 @@ public class  PostThreadActivity extends AppCompatActivity {
     private ImageView imageToUpload;
     UploadImageHandler uploadImageHandler;
     private boolean usedImage = false;
-
+    private DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot();
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -162,11 +166,20 @@ public class  PostThreadActivity extends AppCompatActivity {
             message = "Submission Failed";
         }
 
+
+       addDataToFirebase(threadTitle);
+
+
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
+    private void addDataToFirebase(String threadTitle){
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put(threadTitle,"");
+        root.updateChildren(map);
+    }
 
     private void goUploadImage(){
         Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);

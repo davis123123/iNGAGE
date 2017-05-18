@@ -40,7 +40,9 @@ public class SessionManager {
     // Tribute_points (make variable public to access from outside)
     public static final String KEY_TRIBUTE_POINTS = "tribute_points";
     // Subscriptions (make variable public to access from outside)
-    public static final String KEY_SUBSCRIPTTIONS = "subscriptions";
+    public static final String KEY_SUBSCRIPTIONS = "subscriptions";
+
+
     // Constructor
     public SessionManager(Context context){
         this._context = context;
@@ -72,7 +74,10 @@ public class SessionManager {
 
         editor.putString(KEY_TRIBUTE_POINTS, tribute_points);
 
-        editor.putString(KEY_SUBSCRIPTTIONS, subscriptions);
+        editor.putString(KEY_SUBSCRIPTIONS, subscriptions);
+
+        // commit changes
+        editor.commit();
     }
 
     public void checkLogin(){

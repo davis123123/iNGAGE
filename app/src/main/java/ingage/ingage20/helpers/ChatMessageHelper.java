@@ -8,12 +8,12 @@ import java.util.Date;
  */
 
 public class ChatMessageHelper {
-    private boolean side;
+    private String side;
     private String messageText;
     private String messageUser;
     private String messageTime;
 
-    public ChatMessageHelper(boolean side, String messageText, String messageUser){
+    public ChatMessageHelper(String side, String messageText, String messageUser){
         this.side = side;
         this.messageText = messageText;
         this.messageUser = messageUser;
@@ -46,11 +46,11 @@ public class ChatMessageHelper {
         this.messageTime = messageTime;
     }
 
-    public boolean isSide() {
+    public String isSide() {
         return side;
     }
 
-    public void setSide(boolean side) {
+    public void setSide(String side) {
         this.side = side;
     }
 }

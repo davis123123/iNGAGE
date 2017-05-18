@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 import ingage.ingage20.ChatActivity;
+import ingage.ingage20.ChatRoomManager;
 import ingage.ingage20.MainActivity;
 import ingage.ingage20.PostThreadActivity;
 import ingage.ingage20.R;
@@ -48,6 +49,7 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
     QueryThreadsHandler queryThreadsHandler;
     View rootView;
     SessionManager session;
+    ChatRoomManager chatRoomManager;
 
     MySQLDbHelper mySQLDbHelper;
     String json_string;
@@ -250,6 +252,10 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
+
+        chatRoomManager = new ChatRoomManager(getActivity().getApplicationContext());
+        chatRoomManager.updateUserRoomSession(thread_id, side);
+        HashMap<String, String> chat2 = chatRoomManager.getUserRDetails();
 
         return result;
     }
