@@ -21,7 +21,8 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"
             android:text="Hello world"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginLeft="10dp"
             android:gravity="left"
             android:textSize="22sp"
             android:textColor="#FFFFFF"/>
@@ -36,6 +37,8 @@
             android:gravity="left"
             android:textSize="15sp"
             android:layout_below="@+id/message_content_view"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
             android:textColor="#FFFFFF"/>
     </LinearLayout>
 
