@@ -55,6 +55,8 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
     JSONArray jsonArray;
     String side = "agree";      //set to agree by default
 
+    String result = null;
+
     Toast mToast;
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -135,7 +137,6 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
         mToast.show();
 
         String type = "view";
-        String result = null;
         result = viewRoomStatus(context, type, thread_id);
 
         //Error checking for room status
@@ -143,18 +144,8 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
                 && !result.equals("Number of agreeing users is at maximum")
                 && !result.equals("Room/Thread Doesn't Exist")) {
             type = "join";
-            result = joinRoom(context, type, thread_id);
-            //Error checking for join status
-            if (result != null && !result.equals("Number of disagreeing users is at maximum")
-                    && !result.equals("Number of agreeing users is at maximum")
-                    && !result.equals("Room/Thread Doesn't Exist")){
-                chooseSideDialog(result);
-                //Intent startChildActivityIntent = new Intent(getActivity(), ChatActivity.class);
-                //startChildActivityIntent.putExtra(Intent.EXTRA_TEXT, result);
-                //startActivity(startChildActivityIntent);
-            } else{
-                Toast.makeText(getActivity(), "Error", Toast.LENGTH_LONG).show();
-            }
+            chooseSideDialog(context, thread_id, type);
+
         } else {
             Toast.makeText(getActivity(), "Error", Toast.LENGTH_LONG).show();
         }
@@ -166,19 +157,25 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
         startActivity(startChildActivityIntent);**/
     }
 
-    private void chooseSideDialog(final String result){
+    private void chooseSideDialog(final Context context, final String thread_id, final String type){
 
         new AlertDialog.Builder(getActivity())
                 .setTitle("Choose a side")
                 .setMessage("Do you agree/disagree with this issue?")
                 .setPositiveButton("agree", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+
+                        result = joinRoom(context, type, thread_id);
+
                         goToChat(result);
                     }
                 })
                 .setNegativeButton("disagree", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                       side= "disagree";
+                        side= "disagree";
+
+                        result = joinRoom(context, type, thread_id);
+
                         goToChat(result);
                     }
                 })
@@ -187,9 +184,21 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
     }
 
     private void goToChat(String result){
-        Intent startChildActivityIntent = new Intent(getActivity(), ChatActivity.class);
-        startChildActivityIntent.putExtra(Intent.EXTRA_TEXT, result);
-        startActivity(startChildActivityIntent);
+
+        //Error checking for join status
+        if (result != null && !result.equals("Number of disagreeing users is at maximum")
+                && !result.equals("Number of agreeing users is at maximum")
+                && !result.equals("Room/Thread Doesn't Exist")){
+
+            Intent startChildActivityIntent = new Intent(getActivity(), ChatActivity.class);
+            startChildActivityIntent.putExtra(Intent.EXTRA_TEXT, result);
+            startActivity(startChildActivityIntent);
+
+        } else{
+            Toast.makeText(getActivity(), "Error", Toast.LENGTH_LONG).show();
+        }
+
+
     }
 
     public String viewRoomStatus(Context context, String type, String thread_id){
