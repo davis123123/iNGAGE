@@ -9,6 +9,15 @@
     tools:showIn="@layout/app_bar_chat"
     android:background="#000000">
 
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/chatrecyclerView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/msgField" />
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -23,13 +32,13 @@
     </LinearLayout>
 
     <ImageButton
-    android:id="@+id/sendMessageButton"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignParentBottom="true"
-    android:layout_alignParentRight="true"
-    android:background="@drawable/ic_menu_send"
-    />
+        android:id="@+id/sendMessageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/ic_menu_send"
+        />
 
     <EditText
         android:layout_width="wrap_content"
@@ -47,14 +56,5 @@
         android:imeOptions="actionDone"
         android:maxLines="3"
         android:padding="5dp" />
-
-    <android.support.v7.widget.RecyclerView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/chatrecyclerView"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_above="@+id/msgField" />
 
 </RelativeLayout>
