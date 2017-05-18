@@ -15,13 +15,12 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 import ingage.ingage20.adapters.ChatArrayAdapter;
 import ingage.ingage20.helpers.ChatMessageHelper;
@@ -35,7 +34,7 @@ public class ChatActivity extends AppCompatActivity {
     String JsonString;
     String temp_key;
     DatabaseReference root;
-    String chat_msg, chat_username, chat_side;
+    String chat_msg, chat_username, chat_side, chat_timestamp;
     String user_side;
 
     @Override
@@ -83,12 +82,14 @@ public class ChatActivity extends AppCompatActivity {
                     Map<String, Object> map = new HashMap<String, Object>();
                     temp_key = root.push().getKey();
                     root.updateChildren(map);
+                    String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
 
                     DatabaseReference message_root = root.child(temp_key);
                     Map<String, Object> map_message = new HashMap<String, Object>();
                     map_message.put("Usernane", messageBy);
                     map_message.put("Msg", messageText);
                     map_message.put("Side", user_side);
+                    map_message.put("TimeStamp", currentDateTimeString);
                     message_root.updateChildren(map_message);
                     textField.setText("");
 
@@ -144,7 +145,8 @@ public class ChatActivity extends AppCompatActivity {
             chat_msg = (String) ((DataSnapshot)i.next()).getValue();
             chat_side = (String) ((DataSnapshot)i.next()).getValue();
             chat_username = (String) ((DataSnapshot)i.next()).getValue();
-            ChatMessageHelper msg = new ChatMessageHelper(chat_side, chat_msg, chat_username);
+            chat_timestamp = (String) ((DataSnapshot)i.next()).getValue();
+            ChatMessageHelper msg = new ChatMessageHelper(chat_side, chat_msg, chat_username, chat_timestamp);
             chatAdapter.add(msg);
         }
     }

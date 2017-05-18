@@ -13,12 +13,11 @@ public class ChatMessageHelper {
     private String messageUser;
     private String messageTime;
 
-    public ChatMessageHelper(String side, String messageText, String messageUser){
+    public ChatMessageHelper(String side, String messageText, String messageUser, String messageTime){
         this.side = side;
         this.messageText = messageText;
         this.messageUser = messageUser;
-
-        messageTime = DateFormat.getDateTimeInstance().format(new Date());
+        this.messageTime = messageTime;
     }
 
 
