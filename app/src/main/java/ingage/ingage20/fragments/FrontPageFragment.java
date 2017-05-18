@@ -25,14 +25,14 @@ import java.util.concurrent.ExecutionException;
 
 import ingage.ingage20.ChatActivity;
 import ingage.ingage20.MainActivity;
-import ingage.ingage20.handlers.ChatRoomHandler;
-import ingage.ingage20.handlers.MySQLDbHelper;
-import ingage.ingage20.handlers.QueryThreadsHandler;
-import ingage.ingage20.helpers.ThreadsHelper;
 import ingage.ingage20.PostThreadActivity;
 import ingage.ingage20.R;
 import ingage.ingage20.SessionManager;
 import ingage.ingage20.adapters.ThreadListAdapter;
+import ingage.ingage20.handlers.ChatRoomHandler;
+import ingage.ingage20.handlers.MySQLDbHelper;
+import ingage.ingage20.handlers.QueryThreadsHandler;
+import ingage.ingage20.helpers.ThreadsHelper;
 
 /**
  * Created by Davis on 4/4/2017.
@@ -148,9 +148,10 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
             if (result != null && !result.equals("Number of disagreeing users is at maximum")
                     && !result.equals("Number of agreeing users is at maximum")
                     && !result.equals("Room/Thread Doesn't Exist")){
-                Intent startChildActivityIntent = new Intent(getActivity(), ChatActivity.class);
-                startChildActivityIntent.putExtra(Intent.EXTRA_TEXT, result);
-                startActivity(startChildActivityIntent);
+                chooseSideDialog(result);
+                //Intent startChildActivityIntent = new Intent(getActivity(), ChatActivity.class);
+                //startChildActivityIntent.putExtra(Intent.EXTRA_TEXT, result);
+                //startActivity(startChildActivityIntent);
             } else{
                 Toast.makeText(getActivity(), "Error", Toast.LENGTH_LONG).show();
             }
@@ -165,23 +166,30 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
         startActivity(startChildActivityIntent);**/
     }
 
-    private void chooseSideDialog(){
+    private void chooseSideDialog(final String result){
 
         new AlertDialog.Builder(getActivity())
                 .setTitle("Choose a side")
                 .setMessage("Do you agree/disagree with this issue?")
                 .setPositiveButton("agree", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        // do nothing
+                        goToChat(result);
                     }
                 })
                 .setNegativeButton("disagree", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                        side= "disagree";
+                        goToChat(result);
                     }
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
+    }
+
+    private void goToChat(String result){
+        Intent startChildActivityIntent = new Intent(getActivity(), ChatActivity.class);
+        startChildActivityIntent.putExtra(Intent.EXTRA_TEXT, result);
+        startActivity(startChildActivityIntent);
     }
 
     public String viewRoomStatus(Context context, String type, String thread_id){
@@ -227,7 +235,6 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
         ChatRoomHandler chatRoomHandler = new ChatRoomHandler(context);
 
         try {
-            chooseSideDialog();
             result = chatRoomHandler.execute(type, thread_id, arrJSON.toString(), side).get();
             Log.d("STATE", "join: " + result);
             //Toast.makeText(getActivity().getApplicationContext(), "view: " + store, Toast.LENGTH_LONG).show();
