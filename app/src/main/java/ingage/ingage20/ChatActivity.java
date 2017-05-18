@@ -72,13 +72,12 @@ public class ChatActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     EditText textField = (EditText) findViewById(R.id.msgField);
-                    //chat message
+
                     String messageText = textField.getText().toString();
                     HashMap<String, String> user = session.getUserDetails();
                     String messageBy = user.get(SessionManager.KEY_NAME);
 
-                    //firebase test area
-
+                    //firebase area
                     Map<String, Object> map = new HashMap<String, Object>();
                     temp_key = root.push().getKey();
                     root.updateChildren(map);
@@ -93,14 +92,13 @@ public class ChatActivity extends AppCompatActivity {
                     message_root.updateChildren(map_message);
                     textField.setText("");
 
-                    //ChatMessageHelper msg = new ChatMessageHelper(user_side, messageText, messageBy);
-                    //chatAdapter.add(msg);
                     RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
                     int pos = chatAdapter.getItemCount()-1;
                     manager.scrollToPosition(pos);
                 }
-            });
+            });//click to send message
 
+            //calls event listener to update message in realtime
             eventListener(root);
         }
     }
@@ -149,6 +147,5 @@ public class ChatActivity extends AppCompatActivity {
             ChatMessageHelper msg = new ChatMessageHelper(chat_side, chat_msg, chat_username, chat_timestamp);
             chatAdapter.add(msg);
         }
-    }
-
+    } //iterates through all comments under the thread_id to get information
 }

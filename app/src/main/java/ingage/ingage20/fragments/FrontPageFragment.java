@@ -166,7 +166,7 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
                 .setMessage("Do you agree/disagree with this issue?")
                 .setPositiveButton("agree", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-
+                        side= "agree";
                         result = joinRoom(context, type, thread_id);
 
                         goToChat(result);
@@ -247,7 +247,7 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
 
         try {
             result = chatRoomHandler.execute(type, thread_id, arrJSON.toString(), side).get();
-            Log.d("STATE", "join: " + result);
+            Log.d("STATE", "join: " +  side.toString());
             //Toast.makeText(getActivity().getApplicationContext(), "view: " + store, Toast.LENGTH_LONG).show();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
