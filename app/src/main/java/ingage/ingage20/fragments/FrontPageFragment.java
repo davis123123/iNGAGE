@@ -139,19 +139,7 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
         mToast.show();
 
         String type = "view";
-        result = viewRoomStatus(context, type, thread_id);
-
-        //Error checking for room status
-        if (result != null && !result.equals("Number of disagreeing users is at maximum")
-                && !result.equals("Number of agreeing users is at maximum")
-                && !result.equals("Room/Thread Doesn't Exist")) {
-            type = "join";
-            chooseSideDialog(context, thread_id, type);
-
-        } else {
-            Toast.makeText(getActivity(), "Error", Toast.LENGTH_LONG).show();
-        }
-
+        chooseSideDialog(context, thread_id, type);
 
         /**
         Intent startChildActivityIntent = new Intent(getActivity(), ViewThreadActivity.class);
@@ -161,28 +149,53 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
 
     private void chooseSideDialog(final Context context, final String thread_id, final String type){
 
+
         new AlertDialog.Builder(getActivity())
                 .setTitle("Choose a side")
                 .setMessage("Do you agree/disagree with this issue?")
                 .setPositiveButton("agree", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         side= "agree";
-                        result = joinRoom(context, type, thread_id);
+                        //result = joinRoom(context, type, thread_id);
 
-                        goToChat(result);
+                        verify(context, type, thread_id);
+
+                        //goToChat(result);
                     }
                 })
                 .setNegativeButton("disagree", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         side= "disagree";
 
-                        result = joinRoom(context, type, thread_id);
+                        //result = joinRoom(context, type, thread_id);
 
-                        goToChat(result);
+                        verify(context, type, thread_id);
+
+                        //goToChat(result);
                     }
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
+    }
+
+    //check room status after user selects a side from the dialog
+    private void verify(Context context, String type, String thread_id){
+        result = viewRoomStatus(context, type, thread_id);
+
+        Log.d("STATE", "side: " + side);
+
+        //Error checking for room status
+        if (result != null && !result.equals("Number of disagreeing users is at maximum")
+                && !result.equals("Number of agreeing users is at maximum")
+                && !result.equals("Room/Thread Doesn't Exist")) {
+            String join = "join";
+            // chooseSideDialog(context, thread_id, type);
+            result = joinRoom(context, join, thread_id);
+            goToChat(result);
+
+        } else {
+            Toast.makeText(getActivity(), "Error", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void goToChat(String result){
