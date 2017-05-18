@@ -173,7 +173,6 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
                 .setPositiveButton("agree", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // do nothing
-
                     }
                 })
                 .setNegativeButton("disagree", new DialogInterface.OnClickListener() {
@@ -191,7 +190,6 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
         String username = user.get(SessionManager.KEY_NAME);
         String token = MainActivity.appToken;
         String result = null;
-        chooseSideDialog();
 
         ChatRoomHandler chatRoomHandler = new ChatRoomHandler(context);
 
@@ -229,6 +227,7 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
         ChatRoomHandler chatRoomHandler = new ChatRoomHandler(context);
 
         try {
+            chooseSideDialog();
             result = chatRoomHandler.execute(type, thread_id, arrJSON.toString(), side).get();
             Log.d("STATE", "join: " + result);
             //Toast.makeText(getActivity().getApplicationContext(), "view: " + store, Toast.LENGTH_LONG).show();
