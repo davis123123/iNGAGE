@@ -21,6 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 import ingage.ingage20.ChatActivity;
@@ -142,9 +143,9 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
         chooseSideDialog(context, thread_id, type);
 
         /**
-        Intent startChildActivityIntent = new Intent(getActivity(), ViewThreadActivity.class);
-        startChildActivityIntent.putExtra(Intent.EXTRA_TEXT, thread_id);
-        startActivity(startChildActivityIntent);**/
+         Intent startChildActivityIntent = new Intent(getActivity(), ViewThreadActivity.class);
+         startChildActivityIntent.putExtra(Intent.EXTRA_TEXT, thread_id);
+         startActivity(startChildActivityIntent);**/
     }
 
     private void chooseSideDialog(final Context context, final String thread_id, final String type){
@@ -190,7 +191,7 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
                 && !result.equals("Room/Thread Doesn't Exist")) {
             String join = "join";
             // chooseSideDialog(context, thread_id, type);
-            result = joinRoom(context, join, thread_id);
+            result = joinRoom(context, join, thread_id, result);
             goToChat(result);
 
         } else {
@@ -236,40 +237,78 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
         return result;
     }
 
-    public String joinRoom(Context context, String type, String thread_id){
+    public String joinRoom(Context context, String type, String thread_id, String userJSON){
 
         HashMap<String, String> user = session.getUserDetails();
         String username = user.get(SessionManager.KEY_NAME);
         String token = MainActivity.appToken;
         String result = null;
 
-        JSONObject objJson= new JSONObject();
+        JSONObject objJson= null;
         JSONArray arrJSON = new JSONArray();
         try {
-            objJson.put("user_name", username);
-            arrJSON.put(objJson);
-            objJson = new JSONObject();
-            objJson.put("token", token);
-            arrJSON.put(objJson);
+            //get jsonObx
+            objJson = new JSONObject(userJSON);
+            //get array of the jsonObj
+            arrJSON = objJson.getJSONArray("users");
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        Log.d("STATE", "userJSON " + arrJSON);
+        if(arrJSON != null && arrJSON.length() > 0){
+            Log.d("STATE", "if ");
+            try {
+                //get jsonObj
+                objJson = new JSONObject(userJSON);
+                //get array of the jsonObj
+                arrJSON = objJson.getJSONArray("users");
+
+                //create new jsonObj for the new insertion
+                objJson = new JSONObject();
+                objJson.put("user_name", username);
+                objJson.put("token", token);
+                //insert into users array
+                arrJSON.put(objJson);
+                //convert array into jsonObj
+                objJson = new JSONObject();
+                objJson.put("users",arrJSON);
+                Log.d("STATE", "json1: " +  arrJSON.toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }//if users already exist in the room
+        else {
+            Log.d("STATE", "else ");
+            try {
+
+                //create new json with use detail
+                objJson = new JSONObject();
+                objJson.put("user_name", username);
+                objJson.put("token", token);
+                //put into array
+                arrJSON.put(objJson);
+                //convert array into json obj
+                objJson = new JSONObject();
+                objJson.put("users",arrJSON);
+                Log.d("STATE", "json2: " +  arrJSON.toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }//if room is empty
 
 
         ChatRoomHandler chatRoomHandler = new ChatRoomHandler(context);
 
         try {
-            result = chatRoomHandler.execute(type, thread_id, arrJSON.toString(), side).get();
-            Log.d("STATE", "join: " +  side.toString());
+            result = chatRoomHandler.execute(type, thread_id, objJson.toString(), side).get();
+            Log.d("STATE", "join: " +  arrJSON.toString());
             //Toast.makeText(getActivity().getApplicationContext(), "view: " + store, Toast.LENGTH_LONG).show();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
 
         chatRoomManager = new ChatRoomManager(getActivity().getApplicationContext());
-        chatRoomManager.updateUserRoomSession(thread_id, side);
-        HashMap<String, String> chat2 = chatRoomManager.getUserRDetails();
-
+        chatRoomManager.updateUserRoomSession(thread_id, side, arrJSON.toString());
         return result;
     }
 

@@ -25,7 +25,10 @@ public class ChatRoomManager {
 
     private static final String IS_IN_ROOM = "IsInRoom";
 
+    public static final String ROOM_USERS = "room_users";
+
     public static final String SIDE = "side";
+
     private static final String PREF_NAME = "ChatRoomPref";
 
     public ChatRoomManager(Context context){
@@ -35,9 +38,10 @@ public class ChatRoomManager {
     }
 
 
-    public void updateUserRoomSession(String thread_id, String side){
+    public void updateUserRoomSession(String thread_id, String side,  String room_users){
         editor.putString(THREAD_ID, thread_id);
         editor.putString(SIDE, side);
+        editor.putString(ROOM_USERS, room_users);
         // commit changes
         editor.commit();
     }
