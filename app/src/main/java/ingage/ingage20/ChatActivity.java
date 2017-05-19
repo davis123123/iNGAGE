@@ -106,6 +106,10 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        leaveRoom();
+    }
+
+    private void leaveRoom() {
     }
 
     private void eventListener(DatabaseReference root){
