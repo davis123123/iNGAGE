@@ -21,7 +21,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 import ingage.ingage20.ChatActivity;
@@ -89,6 +88,7 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
             jsonArray = jsonObject.getJSONArray("server_response");
             int count= 0;
             String thread_id, thread_title, thread_content, thread_by, thread_date, thread_category;
+            String thread_img = null;
             while(count < jsonArray.length()){
                 JSONObject JO = jsonArray.getJSONObject(count);
                 thread_id = JO.getString("thread_id");
@@ -98,7 +98,8 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
                 thread_date = JO.getString("thread_date");
                 thread_category = JO.getString("thread_category");
                 ThreadsHelper threadsHelper = new ThreadsHelper(thread_id, thread_title,
-                        thread_content,thread_by,thread_date, thread_category);
+                        thread_content,thread_by,thread_date, thread_category, thread_img);
+
                 threadListAdapter.add(threadsHelper);
                 count++;
             }

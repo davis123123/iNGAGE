@@ -103,7 +103,7 @@ public class LoginActivity extends AppCompatActivity implements SharedPreference
                 goMain();
             }
         } else{
-            alert.showAlertDialog(LoginActivity.this, "Login failed..", "Token not Registered", false);
+            alert.showAlertDialog(LoginActivity.this, "Login failed...", "Token not Registered", false);
             usernameEt.getText().clear();
             passwordEt.getText().clear();
         }

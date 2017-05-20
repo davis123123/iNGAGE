@@ -5,15 +5,16 @@ package ingage.ingage20.helpers;
  */
 
 public class ThreadsHelper {
-    private String thread_id, thread_title, thread_content, thread_by, thread_date, thread_category;
+    private String thread_id, thread_title, thread_content, thread_by, thread_date, thread_category, thread_img;
     public ThreadsHelper(String thread_id, String thread_title, String thread_content,
-                         String thread_by, String thread_date, String thread_category){
+                         String thread_by, String thread_date, String thread_category, String thread_img){
         this.setThread_id(thread_id);
         this.setThread_title(thread_title);
         this.setThread_content(thread_content);
         this.setThread_by(thread_by);
         this.setThread_date(thread_date);
         this.setThread_category(thread_category);
+        this.setThread_img(thread_img);
     }
 
     public String getThread_id() {
@@ -38,6 +39,11 @@ public class ThreadsHelper {
 
     public String getThread_category(){return thread_category; }
 
+    public String getThread_img() {
+        return thread_img;
+    }
+
+
     public void setThread_title(String thread_title){
         this.thread_title = thread_title;
     }
@@ -58,5 +64,9 @@ public class ThreadsHelper {
 
     public void setThread_id(String thread_id) {
         this.thread_id = thread_id;
+    }
+
+    public void setThread_img(String thread_img) {
+        this.thread_img = thread_img;
     }
 }

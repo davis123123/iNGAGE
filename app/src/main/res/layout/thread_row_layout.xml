@@ -45,6 +45,14 @@
         android:layout_alignBottom="@+id/thread_category_view"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="20dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/img_post"
+        android:layout_alignEnd="@+id/thread_by_view"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/thread_by_view" />
     <!-- SHOULD OR SHOULDNOT DISPLAY CONTENT IN VIEW?
     <TextView
         android:id="@+id/thread_content_view"
