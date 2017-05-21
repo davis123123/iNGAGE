@@ -5,13 +5,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import ingage.ingage20.helpers.ThreadsHelper;
 import ingage.ingage20.R;
+import ingage.ingage20.helpers.ThreadsHelper;
 
 /**
  * Created by Davis on 4/4/2017.
@@ -71,6 +72,7 @@ public class ThreadListAdapter extends RecyclerView.Adapter<ThreadListAdapter.Th
     class ThreadViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView threadTitleTextView, threadByTextView, threadCategoryTextView;
+        ImageView threadImageView;
 
         /**
          * Constructor for our ViewHolder. Within this constructor, we get a reference to our
@@ -84,7 +86,14 @@ public class ThreadListAdapter extends RecyclerView.Adapter<ThreadListAdapter.Th
             threadTitleTextView = (TextView) itemView.findViewById(R.id.thread_title_view);
             threadByTextView = (TextView) itemView.findViewById(R.id.thread_by_view);
             threadCategoryTextView = (TextView) itemView.findViewById(R.id.thread_category_view);
+            threadImageView = (ImageView) itemView.findViewById(R.id.img_post);
 
+            //testing setting a drawable programatically
+            /*if(threadImageView != null)
+                threadImageView.setImageResource(R.drawable.logo);
+            else
+                Log.d("STATE", "img is null");
+*/
             itemView.setOnClickListener(this);
         }
 
