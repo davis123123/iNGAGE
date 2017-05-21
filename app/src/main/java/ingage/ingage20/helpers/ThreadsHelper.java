@@ -15,6 +15,7 @@ public class ThreadsHelper {
         this.setThread_date(thread_date);
         this.setThread_category(thread_category);
         this.setThread_img(thread_img);
+
     }
 
     public String getThread_id() {
