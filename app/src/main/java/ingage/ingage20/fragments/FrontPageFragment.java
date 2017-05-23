@@ -251,6 +251,8 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
             e.printStackTrace();
         }
 
+        chatRoomManager = new ChatRoomManager(getActivity().getApplicationContext());
+        chatRoomManager.updateUserRoomSession(thread_id, side);
         return result;
     }
 

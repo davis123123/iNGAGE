@@ -38,7 +38,7 @@ public class ChatRoomManager {
     }
 
 
-    public void updateUserRoomSession(String thread_id, String side,  String room_users){
+    public void updateUserRoomSession(String thread_id, String side){
         editor.putString(THREAD_ID, thread_id);
         editor.putString(SIDE, side);
         //editor.putString(ROOM_USERS, room_users);

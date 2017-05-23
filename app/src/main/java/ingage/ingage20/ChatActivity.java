@@ -39,7 +39,8 @@ public class ChatActivity extends AppCompatActivity {
     String JsonString;
     String temp_key;
     DatabaseReference root;
-    String chat_msg, chat_username, chat_side, chat_timestamp;
+    String chat_msg, chat_username, chat_side, chat_timestamp, chat_id;
+    Long chat_upvote, chat_downvote;
     String user_side;
     TextView timerTv;
     ImageButton addButton;
@@ -94,9 +95,11 @@ public class ChatActivity extends AppCompatActivity {
 
                     DatabaseReference message_root = root.child(temp_key);
                     Map<String, Object> map_message = new HashMap<String, Object>();
-                    map_message.put("Usernane", messageBy);
+                    map_message.put("Username", messageBy);
                     map_message.put("Msg", messageText);
                     map_message.put("Side", user_side);
+                    map_message.put("upvotes", 0);
+                    map_message.put("downvotes", 0);
                     map_message.put("TimeStamp", currentDateTimeString);
                     message_root.updateChildren(map_message);
                     textField.setText("");
@@ -168,12 +171,19 @@ public class ChatActivity extends AppCompatActivity {
 
     private void append_chat_conversation(DataSnapshot dataSnapshot) {
         Iterator i = dataSnapshot.getChildren().iterator();
+
         while (i.hasNext()){
+            chat_id = dataSnapshot.getValue().toString();
+            Log.d("STATE" , "result : " + chat_id);
             chat_msg = (String) ((DataSnapshot)i.next()).getValue();
             chat_side = (String) ((DataSnapshot)i.next()).getValue();
-            chat_username = (String) ((DataSnapshot)i.next()).getValue();
             chat_timestamp = (String) ((DataSnapshot)i.next()).getValue();
-            ChatMessageHelper msg = new ChatMessageHelper(chat_side, chat_msg, chat_username, chat_timestamp);
+            chat_username = (String) ((DataSnapshot)i.next()).getValue();
+            chat_upvote = (Long)((DataSnapshot)i.next()).getValue();
+            chat_downvote = (Long)((DataSnapshot)i.next()).getValue();
+
+            ChatMessageHelper msg = new ChatMessageHelper(chat_id, chat_side, chat_msg, chat_username, chat_upvote,
+                    chat_downvote, chat_timestamp);
             chatAdapter.add(msg);
         }
     } //iterates through all comments under the thread_id to get information
@@ -204,4 +214,8 @@ public class ChatActivity extends AppCompatActivity {
         addButton.setVisibility(View.VISIBLE);
         timerTv.setVisibility(View.INVISIBLE);
     }//modify unblock functions here
+
+    private void upVote(){
+
+    }
 }

@@ -12,12 +12,19 @@ public class ChatMessageHelper {
     private String messageText;
     private String messageUser;
     private String messageTime;
+    private Long messageUpvote;
+    private Long messageDownvote;
+    private String messageID;
 
-    public ChatMessageHelper(String side, String messageText, String messageUser, String messageTime){
+    public ChatMessageHelper(String messageID, String side, String messageText, String messageUser,
+                             Long messageUpvote, Long messageDownvote, String messageTime){
+        this.messageID = messageID;
         this.side = side;
         this.messageText = messageText;
         this.messageUser = messageUser;
         this.messageTime = messageTime;
+        this.messageUpvote = messageUpvote;
+        this.messageDownvote = messageDownvote;
     }
 
 
@@ -51,5 +58,29 @@ public class ChatMessageHelper {
 
     public void setSide(String side) {
         this.side = side;
+    }
+
+    public Long getMessageDownvote() {
+        return messageDownvote;
+    }
+
+    public void setMessageDownvote(Long messageDownvote) {
+        this.messageDownvote = messageDownvote;
+    }
+
+    public Long getMessageUpvote() {
+        return messageUpvote;
+    }
+
+    public void setMessageUpvote(Long messageUpvote) {
+        this.messageUpvote = messageUpvote;
+    }
+
+    public String getMessageID() {
+        return messageID;
+    }
+
+    public void setMessageID(String messageID) {
+        this.messageID = messageID;
     }
 }
