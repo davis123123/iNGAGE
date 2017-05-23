@@ -42,6 +42,7 @@ public class ChatActivity extends AppCompatActivity {
     String chat_msg, chat_username, chat_side, chat_timestamp;
     String user_side;
     TextView timerTv;
+    ImageButton addButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +74,7 @@ public class ChatActivity extends AppCompatActivity {
         }
 
         //add messages to recycler view by clicking send
-        ImageButton addButton = (ImageButton) findViewById(R.id.sendMessageButton);
+        addButton = (ImageButton) findViewById(R.id.sendMessageButton);
         if (addButton != null) {
             addButton.setOnClickListener(new View.OnClickListener() {
 
@@ -184,12 +185,23 @@ public class ChatActivity extends AppCompatActivity {
         new CountDownTimer(180000, 1000) {
 
             public void onTick(long millisUntilFinished) {
+                blockMSG();
                 timerTv.setText("seconds remaining: " + millisUntilFinished / 1000);
             }
 
             public void onFinish() {
-                timerTv.setVisibility(View.INVISIBLE);
+                unblockMSG();
+
             }
         }.start();
     }
+
+    private void blockMSG(){
+        addButton.setVisibility(View.INVISIBLE);
+    }//modify block functions here
+
+    private void unblockMSG(){
+        addButton.setVisibility(View.VISIBLE);
+        timerTv.setVisibility(View.INVISIBLE);
+    }//modify unblock functions here
 }
