@@ -59,5 +59,24 @@
             android:layout_marginLeft="30dp"
             android:layout_marginBottom="10dp"/>
 
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Up"
+        android:id="@+id/upvote"
+        android:layout_alignBottom="@+id/message_date_view"
+        android:layout_toEndOf="@+id/message_date_view"
+        android:layout_marginStart="84dp" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Down"
+        android:id="@+id/downvote"
+        android:layout_alignBottom="@+id/upvote"
+        android:layout_toEndOf="@+id/upvote" />
+
 
 </RelativeLayout>
