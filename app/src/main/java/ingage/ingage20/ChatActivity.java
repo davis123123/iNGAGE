@@ -2,6 +2,7 @@ package ingage.ingage20;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -21,8 +23,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Timer;
+import java.util.concurrent.ExecutionException;
 
 import ingage.ingage20.adapters.ChatArrayAdapter;
+import ingage.ingage20.handlers.ChatRoomHandler;
 import ingage.ingage20.helpers.ChatMessageHelper;
 
 public class ChatActivity extends AppCompatActivity {
@@ -36,6 +41,7 @@ public class ChatActivity extends AppCompatActivity {
     DatabaseReference root;
     String chat_msg, chat_username, chat_side, chat_timestamp;
     String user_side;
+    TextView timerTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +53,14 @@ public class ChatActivity extends AppCompatActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.chatrecyclerView);
 
+        timerTv = (TextView) findViewById(R.id.timertv);
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         chatAdapter = new ChatArrayAdapter();
         recyclerView.setAdapter(chatAdapter);
 
-        HashMap<String, String> chat = chatRoomManager.getUserRDetails();
+        HashMap<String, String> chat = chatRoomManager.getUserDetails();
         String thread_id = chat.get(ChatRoomManager.THREAD_ID);
         user_side = chat.get(ChatRoomManager.SIDE);
         Log.d("STATE", "side: " + user_side);
@@ -72,7 +80,7 @@ public class ChatActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     EditText textField = (EditText) findViewById(R.id.msgField);
-
+                    timer();
                     String messageText = textField.getText().toString();
                     HashMap<String, String> user = session.getUserDetails();
                     String messageBy = user.get(SessionManager.KEY_NAME);
@@ -110,6 +118,22 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void leaveRoom() {
+        HashMap<String, String> chat_user = chatRoomManager.getUserDetails();
+        String side = chat_user.get(ChatRoomManager.SIDE);
+        String thread_id = chat_user.get(ChatRoomManager.THREAD_ID);
+
+        String type = "leave";
+        String result = null;
+
+        HashMap<String, String> user = session.getUserDetails();
+        String username = user.get(SessionManager.KEY_NAME);
+
+        ChatRoomHandler chatRoomHandler = new ChatRoomHandler(getApplicationContext());
+        try {
+            result = chatRoomHandler.execute(type, thread_id, username, side).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
     private void eventListener(DatabaseReference root){
@@ -152,4 +176,20 @@ public class ChatActivity extends AppCompatActivity {
             chatAdapter.add(msg);
         }
     } //iterates through all comments under the thread_id to get information
+
+    private void timer() {
+        Timer t = new Timer();
+        timerTv = (TextView) findViewById(R.id.timertv);
+        //Set the schedule function and rate
+        new CountDownTimer(180000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                timerTv.setText("seconds remaining: " + millisUntilFinished / 1000);
+            }
+
+            public void onFinish() {
+                timerTv.setVisibility(View.INVISIBLE);
+            }
+        }.start();
+    }
 }

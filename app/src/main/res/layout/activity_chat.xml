@@ -31,6 +31,15 @@
             android:layout_gravity="bottom" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/timertv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:textSize="10dp"
+        android:layout_above="@+id/sendMessageButton"
+        android:text="sddsfgdf"
+        android:layout_toEndOf="@+id/msgField" />
     <ImageButton
         android:id="@+id/sendMessageButton"
         android:layout_width="wrap_content"
@@ -49,7 +58,7 @@
         android:layout_toStartOf="@+id/sendMessageButton"
         android:background="@layout/message_field"
         android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginRight="10dp"
         android:layout_marginBottom="5dp"
         android:gravity="top"
         android:hint="Enter message"

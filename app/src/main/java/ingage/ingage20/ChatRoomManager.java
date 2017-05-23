@@ -25,7 +25,7 @@ public class ChatRoomManager {
 
     private static final String IS_IN_ROOM = "IsInRoom";
 
-    public static final String ROOM_USERS = "room_users";
+    //public static final String ROOM_USERS = "room_users";
 
     public static final String SIDE = "side";
 
@@ -41,12 +41,12 @@ public class ChatRoomManager {
     public void updateUserRoomSession(String thread_id, String side,  String room_users){
         editor.putString(THREAD_ID, thread_id);
         editor.putString(SIDE, side);
-        editor.putString(ROOM_USERS, room_users);
+        //editor.putString(ROOM_USERS, room_users);
         // commit changes
         editor.commit();
     }
 
-    public HashMap<String, String> getUserRDetails(){
+    public HashMap<String, String> getUserDetails(){
         HashMap<String, String> user = new HashMap<String, String>();
         // thread_id
         user.put(THREAD_ID, pref.getString(THREAD_ID, null));

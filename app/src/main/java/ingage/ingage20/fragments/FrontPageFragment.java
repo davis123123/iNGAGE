@@ -82,13 +82,13 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
         threadListRecyclerView.setLayoutManager(layoutManager);
         threadListAdapter = new ThreadListAdapter(this);
         threadListRecyclerView.setAdapter(threadListAdapter);
-
+        Log.d("STATE", "serverstring" + json_string);
         try {
             jsonObject = new JSONObject(json_string);
             jsonArray = jsonObject.getJSONArray("server_response");
             int count= 0;
             String thread_id, thread_title, thread_content, thread_by, thread_date, thread_category;
-            String thread_img_link = null;
+            String thread_img = null;
             while(count < jsonArray.length()){
                 JSONObject JO = jsonArray.getJSONObject(count);
                 thread_id = JO.getString("thread_id");
@@ -98,8 +98,7 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
                 thread_date = JO.getString("thread_date");
                 thread_category = JO.getString("thread_category");
                 ThreadsHelper threadsHelper = new ThreadsHelper(thread_id, thread_title,
-                        thread_content,thread_by,thread_date, thread_category, thread_img_link);
-
+                        thread_content,thread_by,thread_date, thread_category, thread_img);
                 threadListAdapter.add(threadsHelper);
                 count++;
             }
@@ -183,7 +182,7 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
     //check room status after user selects a side from the dialog
     private void verify(Context context, String type, String thread_id){
         result = viewRoomStatus(context, type, thread_id);
-
+        Log.d("STATE", "view: " + result);
         Log.d("STATE", "side: " + side);
 
         //Error checking for room status
@@ -192,6 +191,7 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
                 && !result.equals("Room/Thread Doesn't Exist")) {
             String join = "join";
             // chooseSideDialog(context, thread_id, type);
+
             result = joinRoom(context, join, thread_id, result);
             goToChat(result);
 
@@ -221,8 +221,6 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
     public String viewRoomStatus(Context context, String type, String thread_id){
         session = new SessionManager(getActivity().getApplicationContext());
         HashMap<String, String> user = session.getUserDetails();
-        String username = user.get(SessionManager.KEY_NAME);
-        String token = MainActivity.appToken;
         String result = null;
 
         ChatRoomHandler chatRoomHandler = new ChatRoomHandler(context);
@@ -245,71 +243,14 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
         String token = MainActivity.appToken;
         String result = null;
 
-        JSONObject objJson= null;
-        JSONArray arrJSON = new JSONArray();
-        try {
-            //get jsonObx
-            objJson = new JSONObject(userJSON);
-            //get array of the jsonObj
-            arrJSON = objJson.getJSONArray("users");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Log.d("STATE", "userJSON " + arrJSON);
-        if(arrJSON != null && arrJSON.length() > 0){
-            Log.d("STATE", "if ");
-            try {
-                //get jsonObj
-                objJson = new JSONObject(userJSON);
-                //get array of the jsonObj
-                arrJSON = objJson.getJSONArray("users");
-
-                //create new jsonObj for the new insertion
-                objJson = new JSONObject();
-                objJson.put("user_name", username);
-                objJson.put("token", token);
-                //insert into users array
-                arrJSON.put(objJson);
-                //convert array into jsonObj
-                objJson = new JSONObject();
-                objJson.put("users",arrJSON);
-                Log.d("STATE", "json1: " +  arrJSON.toString());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }//if users already exist in the room
-        else {
-            Log.d("STATE", "else ");
-            try {
-
-                //create new json with use detail
-                objJson = new JSONObject();
-                objJson.put("user_name", username);
-                objJson.put("token", token);
-                //put into array
-                arrJSON.put(objJson);
-                //convert array into json obj
-                objJson = new JSONObject();
-                objJson.put("users",arrJSON);
-                Log.d("STATE", "json2: " +  arrJSON.toString());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }//if room is empty
-
-
         ChatRoomHandler chatRoomHandler = new ChatRoomHandler(context);
 
         try {
-            result = chatRoomHandler.execute(type, thread_id, objJson.toString(), side).get();
-            Log.d("STATE", "join: " +  arrJSON.toString());
-            //Toast.makeText(getActivity().getApplicationContext(), "view: " + store, Toast.LENGTH_LONG).show();
+            result = chatRoomHandler.execute(type, thread_id, username, token, side).get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
 
-        chatRoomManager = new ChatRoomManager(getActivity().getApplicationContext());
-        chatRoomManager.updateUserRoomSession(thread_id, side, arrJSON.toString());
         return result;
     }
 

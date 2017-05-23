@@ -33,9 +33,9 @@ public class ChatRoomHandler  extends AsyncTask<String, String, String> {
     protected String doInBackground(String... params) {
         String type = params[0];
         //TODO need change for server change
-        String view_url ="http://24.7.128.143/view_chatroom_status.php";     //10.0.2.2 CHANGE FOR OTHER SERVER
-        String join_url ="http://24.7.128.143/join_chatroom.php";
-        String leave_url = "http://24.7.128.143/leave_room.php";
+        String view_url ="http://10.0.0.199/view_chatroom_status.php";     //10.0.2.2 CHANGE FOR OTHER SERVER
+        String join_url ="http://10.0.0.199/join_chatroom.php";
+        String leave_url = "http://10.0.0.199/leave_room.php";
 
         if (type.equals("view")) {
             try {
@@ -77,8 +77,9 @@ public class ChatRoomHandler  extends AsyncTask<String, String, String> {
         else if (type.equals("join")) {
             try {
                 String thread_id = params[1];
-                String user = params[2];
-                String side = params[3];
+                String username = params[2];
+                String token = params[3];
+                String side = params[4];
                 URL url = new URL(join_url);
                 HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
@@ -88,7 +89,8 @@ public class ChatRoomHandler  extends AsyncTask<String, String, String> {
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
                 String post_data =
                         URLEncoder.encode("thread_id","UTF-8")+"="+ URLEncoder.encode(thread_id,"UTF-8")+"&"+
-                                URLEncoder.encode("user", "UTF-8")+"="+URLEncoder.encode(user,"UTF-8")+"&"+
+                                URLEncoder.encode("username", "UTF-8")+"="+URLEncoder.encode(username,"UTF-8")+"&"+
+                                URLEncoder.encode("token", "UTF-8")+"="+URLEncoder.encode(token,"UTF-8")+"&"+
                                 URLEncoder.encode("side","UTF-8")+"="+ URLEncoder.encode(side,"UTF-8");
                 bufferedWriter.write(post_data);
                 bufferedWriter.flush();
@@ -116,7 +118,7 @@ public class ChatRoomHandler  extends AsyncTask<String, String, String> {
         else if (type.equals("leave")) {
             try {
                 String thread_id = params[1];
-                String user = params[2];
+                String username = params[2];
                 String side = params[3];
                 URL url = new URL(leave_url);
                 HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
@@ -127,7 +129,7 @@ public class ChatRoomHandler  extends AsyncTask<String, String, String> {
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
                 String post_data =
                         URLEncoder.encode("thread_id","UTF-8")+"="+ URLEncoder.encode(thread_id,"UTF-8")+"&"+
-                                URLEncoder.encode("user", "UTF-8")+"="+URLEncoder.encode(user,"UTF-8")+"&"+
+                                URLEncoder.encode("username", "UTF-8")+"="+URLEncoder.encode(username,"UTF-8")+"&"+
                                 URLEncoder.encode("side","UTF-8")+"="+ URLEncoder.encode(side,"UTF-8");
                 bufferedWriter.write(post_data);
                 bufferedWriter.flush();
