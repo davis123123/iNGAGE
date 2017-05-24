@@ -1,5 +1,6 @@
 package ingage.ingage20;
 
+import android.app.LauncherActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -19,6 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -30,7 +32,7 @@ import ingage.ingage20.adapters.ChatArrayAdapter;
 import ingage.ingage20.handlers.ChatRoomHandler;
 import ingage.ingage20.helpers.ChatMessageHelper;
 
-public class ChatActivity extends AppCompatActivity {
+public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.ItemClickCallback{
 
     RecyclerView recyclerView;
     ChatArrayAdapter chatAdapter;
@@ -50,6 +52,7 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+
         session = new SessionManager(getApplicationContext());
         chatRoomManager = new ChatRoomManager(getApplicationContext());
 
@@ -57,15 +60,21 @@ public class ChatActivity extends AppCompatActivity {
 
         timerTv = (TextView) findViewById(R.id.timertv);
 
+        //start adapter
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         chatAdapter = new ChatArrayAdapter();
         recyclerView.setAdapter(chatAdapter);
 
+        //set click for upvote and downvotes in each chatmessage
+        chatAdapter.setItemClickCallback(this);
+
+        //getuser details
         HashMap<String, String> chat = chatRoomManager.getUserDetails();
         String thread_id = chat.get(ChatRoomManager.THREAD_ID);
         user_side = chat.get(ChatRoomManager.SIDE);
         Log.d("STATE", "side: " + user_side);
+
 
         root = FirebaseDatabase.getInstance().getReference().child(thread_id);
 
@@ -173,7 +182,7 @@ public class ChatActivity extends AppCompatActivity {
         Iterator i = dataSnapshot.getChildren().iterator();
 
         while (i.hasNext()){
-            chat_id = dataSnapshot.getValue().toString();
+            chat_id = dataSnapshot.getKey();
             Log.d("STATE" , "result : " + chat_id);
             chat_msg = (String) ((DataSnapshot)i.next()).getValue();
             chat_side = (String) ((DataSnapshot)i.next()).getValue();
@@ -215,7 +224,55 @@ public class ChatActivity extends AppCompatActivity {
         timerTv.setVisibility(View.INVISIBLE);
     }//modify unblock functions here
 
-    private void upVote(){
+    @Override
+    public void onUpvoteClick(int p) {
 
+        ChatMessageHelper chatMessageHelper = (ChatMessageHelper) chatAdapter.getItem(p);
+        String chat_key = chatMessageHelper.getMessageID();
+
+        DatabaseReference message_root = root.child(chat_key);
+
+        Long curUpvotes = chatMessageHelper.getMessageUpvote();
+        String msgBy = chatMessageHelper.getMessageUser();
+        String msg = chatMessageHelper.getMessageText();
+        String side = chatMessageHelper.getSide();
+        Long curDownvotes = chatMessageHelper.getMessageDownvote();
+        String time = chatMessageHelper.getMessageTime();
+        curUpvotes += 1;
+        Map<String, Object> map_message = new HashMap<String, Object>();
+        map_message.put("Username", msgBy);
+        map_message.put("Msg", msg);
+        map_message.put("Side", side);
+        map_message.put("upvotes", curUpvotes);
+        map_message.put("downvotes", curDownvotes);
+        map_message.put("TimeStamp", time);
+        message_root.updateChildren(map_message);
+        Log.d("vote" , "up : " + chat_key);
+    }
+
+    @Override
+    public void onDownvoteClick(int p) {
+
+        ChatMessageHelper chatMessageHelper = (ChatMessageHelper) chatAdapter.getItem(p);
+        String chat_key = chatMessageHelper.getMessageID();
+
+        DatabaseReference message_root = root.child(chat_key);
+
+        Long curUpvotes = chatMessageHelper.getMessageUpvote();
+        String msgBy = chatMessageHelper.getMessageUser();
+        String msg = chatMessageHelper.getMessageText();
+        String side = chatMessageHelper.getSide();
+        Long curDownvotes = chatMessageHelper.getMessageDownvote();
+        String time = chatMessageHelper.getMessageTime();
+        curDownvotes += 1;
+        Map<String, Object> map_message = new HashMap<String, Object>();
+        map_message.put("Username", msgBy);
+        map_message.put("Msg", msg);
+        map_message.put("Side", side);
+        map_message.put("upvotes", curUpvotes);
+        map_message.put("downvotes", curDownvotes);
+        map_message.put("TimeStamp", time);
+        message_root.updateChildren(map_message);
+        Log.d("vote" , "down : " + chat_key);
     }
 }

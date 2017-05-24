@@ -52,7 +52,7 @@ public class ChatMessageHelper {
         this.messageTime = messageTime;
     }
 
-    public String isSide() {
+    public String getSide() {
         return side;
     }
 
