@@ -114,7 +114,17 @@ public class ThreadListAdapter extends RecyclerView.Adapter<ThreadListAdapter.Th
             threadByTextView.setText(threadsHelper.getThread_by());
             threadCategoryTextView.setText(threadsHelper.getThread_category());
 
-            downloadImage(threadsHelper);
+            threadImageView = (ImageView) itemView.findViewById(R.id.img_post);
+
+            String str = threadsHelper.getThread_img();
+            //Log.d("STATE", "room title: " + threadsHelper.getThread_title());
+            //Log.d("STATE", "thread helper img: "+ str + ",length: " + str.length());
+            //if(!threadsHelper.getThread_img().equalsIgnoreCase("") && str.length() != 0) {
+                //Log.d("STATE", "call download...");
+                downloadImage(threadsHelper);
+            //}
+           // else
+             //   threadImageView.setImageBitmap(null);
         }
 
         //retrieve Base64 from FireBase and convert to image
@@ -129,6 +139,8 @@ public class ThreadListAdapter extends RecyclerView.Adapter<ThreadListAdapter.Th
             try {
                 threadImageView = (ImageView) itemView.findViewById(R.id.img_post);
                 String result = dlHandler.execute(type, thread_id).get();
+                //Log.d("STATE", "room title: " + threadsHelper.getThread_title());
+                //Log.d("STATE", "download result: " + result);
                 if(result.substring(0,4).equals("data")) {
                     int index =result.indexOf(",") + 1;
                     String code = result.substring(index, result.length());
@@ -136,6 +148,8 @@ public class ThreadListAdapter extends RecyclerView.Adapter<ThreadListAdapter.Th
                     Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                     threadImageView.setImageBitmap(decodedByte);
                 }
+                else
+                    threadImageView.setImageBitmap(null);
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }

@@ -97,6 +97,7 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
                 thread_by = JO.getString("thread_by");
                 thread_date = JO.getString("thread_date");
                 thread_category = JO.getString("thread_category");
+                thread_img = JO.getString("thread_image_link");
                 ThreadsHelper threadsHelper = new ThreadsHelper(thread_id, thread_title,
                         thread_content,thread_by,thread_date, thread_category, thread_img);
                 threadListAdapter.add(threadsHelper);
@@ -260,7 +261,7 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
         queryThreadsHandler = new QueryThreadsHandler();
         try {
             json_string = queryThreadsHandler.execute().get();
-            Log.d("STATE" , "result : " + json_string);
+            Log.d("STATE" , "query result : " + json_string);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
