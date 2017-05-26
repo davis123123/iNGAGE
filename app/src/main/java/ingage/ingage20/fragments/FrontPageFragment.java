@@ -183,8 +183,8 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
     //check room status after user selects a side from the dialog
     private void verify(Context context, String type, String thread_id){
         result = viewRoomStatus(context, type, thread_id);
-        Log.d("STATE", "view: " + result);
-        Log.d("STATE", "side: " + side);
+        //Log.d("STATE", "view: " + result);
+        //Log.d("STATE", "side: " + side);
 
         //Error checking for room status
         if (result != null && !result.equals("Number of disagreeing users is at maximum")

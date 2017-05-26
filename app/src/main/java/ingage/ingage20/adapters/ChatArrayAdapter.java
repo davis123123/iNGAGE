@@ -1,8 +1,6 @@
 package ingage.ingage20.adapters;
 
 import android.content.Context;
-import android.nfc.Tag;
-import android.support.v4.media.MediaBrowserCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +21,7 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
     private Context mContext;
 
     private ItemClickCallback itemClickCallback;
+    String side;
 
     public interface ItemClickCallback{
         void onUpvoteClick(int p);
@@ -48,7 +47,12 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
         Context context = viewGroup.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         boolean shouldAttachToParentImmediately = false;
+        Log.d("STATE", "side: " + side);
         View view = inflater.inflate(R.layout.chat_layout, viewGroup, shouldAttachToParentImmediately);
+        if(side == null)
+            view = inflater.inflate(R.layout.chat_layout, viewGroup, shouldAttachToParentImmediately);
+        else if(side.equals("disagree"))
+            view = inflater.inflate(R.layout.chat_layout_right, viewGroup, shouldAttachToParentImmediately);
         ChatViewHolder viewHolder = new ChatViewHolder(view);
         return viewHolder;
     }
@@ -69,6 +73,7 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
     @Override
     public void onBindViewHolder(ChatArrayAdapter.ChatViewHolder holder, int position) {
         ChatMessageHelper chatMessageHelper = (ChatMessageHelper) this.getItem(position);
+        side = chatMessageHelper.getSide();
         holder.bind(position);
     }
 
