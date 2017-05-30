@@ -33,9 +33,10 @@ public class ChatRoomHandler  extends AsyncTask<String, String, String> {
     protected String doInBackground(String... params) {
         String type = params[0];
         //TODO need change for server change
-        String view_url ="http://24.7.128.143/view_chatroom_status.php";     //10.0.2.2 CHANGE FOR OTHER SERVER
-        String join_url ="http://24.7.128.143/join_chatroom.php";
-        String leave_url = "http://24.7.128.143/leave_room.php";
+        String view_url ="http://10.0.0.199/view_chatroom_status.php";
+        String join_url ="http://10.0.0.199/join_chatroom.php";
+        String leave_url = "http://10.0.0.199/leave_room.php";
+        String check_url = "http://10.0.0.199/view_current_room_users.php";
 
         if (type.equals("view")) {
             try {
@@ -131,6 +132,41 @@ public class ChatRoomHandler  extends AsyncTask<String, String, String> {
                         URLEncoder.encode("thread_id","UTF-8")+"="+ URLEncoder.encode(thread_id,"UTF-8")+"&"+
                                 URLEncoder.encode("username", "UTF-8")+"="+URLEncoder.encode(username,"UTF-8")+"&"+
                                 URLEncoder.encode("side","UTF-8")+"="+ URLEncoder.encode(side,"UTF-8");
+                bufferedWriter.write(post_data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                outputStream.close();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader =
+                        new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                String result = "";
+                String line;
+                while((line = bufferedReader.readLine()) != null){
+                    result += line;
+                }
+                bufferedReader.close();;
+                inputStream.close();
+                httpURLConnection.disconnect();
+                return result;
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        else if (type.equals("check")) {
+            try {
+                String thread_id = params[1];
+                URL url = new URL(check_url);
+                HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                String post_data =
+                        URLEncoder.encode("thread_id","UTF-8")+"="+ URLEncoder.encode(thread_id,"UTF-8");
                 bufferedWriter.write(post_data);
                 bufferedWriter.flush();
                 bufferedWriter.close();

@@ -2,16 +2,22 @@ package ingage.ingage20;
 
 import android.app.LauncherActivity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -40,13 +46,17 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
     ChatRoomManager chatRoomManager;
     String JsonString;
     String temp_key;
+    String thread_id, targetUser;
+    private static final int RESULT_TARGET_USER = 1;
     DatabaseReference root;
     String chat_msg, chat_username, chat_side, chat_timestamp, chat_id;
     Long chat_upvote, chat_downvote;
     String user_side;
     TextView timerTv;
     ImageButton addButton;
-
+    EditText textField;
+    boolean haschar = false;
+    ChatRoomHandler chatRoomHandler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,9 +81,39 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
 
         //getuser details
         HashMap<String, String> chat = chatRoomManager.getUserDetails();
-        String thread_id = chat.get(ChatRoomManager.THREAD_ID);
+        thread_id = chat.get(ChatRoomManager.THREAD_ID);
         user_side = chat.get(ChatRoomManager.SIDE);
         Log.d("STATE", "side: " + user_side);
+
+        //ENTER MESSAGES WITH @TAGS
+        textField = (EditText) findViewById(R.id.msgField);
+        textField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                String ss =  textField.getText().toString();
+                Toast.makeText(getBaseContext(),"itemclick" + haschar,Toast.LENGTH_SHORT).show();
+                if (ss.contains("@") && !haschar){
+                    haschar = true;
+                    //Start Tagging here
+                    startTagActivity();
+                }
+                else if (!(ss.contains("@"))){
+                    haschar = false;
+                    Log.d("STATE", "text: " + ss);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
 
         root = FirebaseDatabase.getInstance().getReference().child(thread_id);
@@ -90,7 +130,6 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
 
                 @Override
                 public void onClick(View v) {
-                    EditText textField = (EditText) findViewById(R.id.msgField);
                     timer();
                     String messageText = textField.getText().toString();
                     HashMap<String, String> user = session.getUserDetails();
@@ -233,19 +272,12 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
         DatabaseReference message_root = root.child(chat_key);
 
         Long curUpvotes = chatMessageHelper.getMessageUpvote();
-        String msgBy = chatMessageHelper.getMessageUser();
-        String msg = chatMessageHelper.getMessageText();
-        String side = chatMessageHelper.getSide();
         Long curDownvotes = chatMessageHelper.getMessageDownvote();
-        String time = chatMessageHelper.getMessageTime();
         curUpvotes += 1;
         Map<String, Object> map_message = new HashMap<String, Object>();
-        map_message.put("Username", msgBy);
-        map_message.put("Msg", msg);
-        map_message.put("Side", side);
         map_message.put("upvotes", curUpvotes);
         map_message.put("downvotes", curDownvotes);
-        map_message.put("TimeStamp", time);
+        //map_message.put("TimeStamp", time);
         message_root.updateChildren(map_message);
         Log.d("vote" , "up : " + chat_key);
     }
@@ -259,20 +291,40 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
         DatabaseReference message_root = root.child(chat_key);
 
         Long curUpvotes = chatMessageHelper.getMessageUpvote();
-        String msgBy = chatMessageHelper.getMessageUser();
-        String msg = chatMessageHelper.getMessageText();
-        String side = chatMessageHelper.getSide();
         Long curDownvotes = chatMessageHelper.getMessageDownvote();
-        String time = chatMessageHelper.getMessageTime();
         curDownvotes += 1;
         Map<String, Object> map_message = new HashMap<String, Object>();
-        map_message.put("Username", msgBy);
-        map_message.put("Msg", msg);
-        map_message.put("Side", side);
         map_message.put("upvotes", curUpvotes);
         map_message.put("downvotes", curDownvotes);
-        map_message.put("TimeStamp", time);
         message_root.updateChildren(map_message);
         Log.d("vote" , "down : " + chat_key);
+    }
+
+    @Override
+    public void  onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putString("savedTitle", textField.getText().toString());
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        textField.getText().insert(textField.getSelectionStart(),
+                savedInstanceState.getString("savedTitle"));
+    }
+
+    private void startTagActivity(){
+        Intent selectUser = new Intent(this, RoomUsersActivity.class);
+        startActivityForResult(selectUser, RESULT_TARGET_USER);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RESULT_TARGET_USER && resultCode == RESULT_OK && data != null) {
+            targetUser = data.getExtras().getString("Username");
+            textField.append(targetUser);
+            Log.d("TARGET" , "user : " + targetUser);
+        }
     }
 }

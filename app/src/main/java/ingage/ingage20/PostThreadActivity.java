@@ -82,7 +82,6 @@ public class  PostThreadActivity extends AppCompatActivity {
         imageToUpload = (ImageView) findViewById(R.id.uploadImageView);
         addListenerOnSpinnerItemSelection();
 
-        //UPLOAD TO IMGUR BUTTON GOES TO NEW ACTVITY
         bUploadImage = (Button) findViewById(R.id.upload_image_button);
         bUploadImage.setOnClickListener(new View.OnClickListener() {
             @Override

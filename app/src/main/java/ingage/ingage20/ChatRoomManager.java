@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * Created by Davis on 5/18/2017.
@@ -29,7 +30,9 @@ public class ChatRoomManager {
 
     public static final String SIDE = "side";
 
+    public static final String ROOM_USERS = "room_users";
     private static final String PREF_NAME = "ChatRoomPref";
+    public static final Set<String> none = null;
 
     public ChatRoomManager(Context context){
         this._context = context;
@@ -41,8 +44,13 @@ public class ChatRoomManager {
     public void updateUserRoomSession(String thread_id, String side){
         editor.putString(THREAD_ID, thread_id);
         editor.putString(SIDE, side);
-        //editor.putString(ROOM_USERS, room_users);
+
         // commit changes
+        editor.commit();
+    }
+
+    public void updateRoomUsers(Set<String> roomUsers){
+        editor.putStringSet(ROOM_USERS, roomUsers);
         editor.commit();
     }
 

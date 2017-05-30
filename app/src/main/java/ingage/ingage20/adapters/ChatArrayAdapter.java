@@ -49,6 +49,7 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
         boolean shouldAttachToParentImmediately = false;
         Log.d("STATE", "side: " + side);
         View view = inflater.inflate(R.layout.chat_layout, viewGroup, shouldAttachToParentImmediately);
+
         if(side == null)
             view = inflater.inflate(R.layout.chat_layout, viewGroup, shouldAttachToParentImmediately);
         else if(side.equals("disagree"))

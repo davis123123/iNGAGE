@@ -54,6 +54,7 @@
         <activity android:name=".SignUpActivity" />
         <activity android:name=".DisplayListView" />
         <activity android:name=".PostCommentActivity" />
+        <activity android:name=".RoomUsersActivity"/>
         <activity android:name=".test2" />
         <activity
             android:name=".ChatActivity"
