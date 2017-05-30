@@ -47,16 +47,33 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
         Context context = viewGroup.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         boolean shouldAttachToParentImmediately = false;
-        Log.d("STATE", "side: " + side);
         View view = inflater.inflate(R.layout.chat_layout, viewGroup, shouldAttachToParentImmediately);
+        Log.d("STATE", "viewType: " + viewType);
 
-        if(side == null)
+        if(viewType == 0)
             view = inflater.inflate(R.layout.chat_layout, viewGroup, shouldAttachToParentImmediately);
-        else if(side.equals("disagree"))
+        else if(viewType == 1)
             view = inflater.inflate(R.layout.chat_layout_right, viewGroup, shouldAttachToParentImmediately);
+
         ChatViewHolder viewHolder = new ChatViewHolder(view);
         return viewHolder;
     }
+
+    @Override
+    public int getItemViewType(int position) {
+        //final Object dataObj = list.get(position);
+
+        if (list.get(position).getSide().equals("agree")) {
+            return 0;
+        }
+
+        else if (list.get(position).getSide().equals("disagree")) {
+            return 1;
+        }
+
+        return -1;
+    }
+
 
     public void add(ChatMessageHelper object){
         list.add(object);
@@ -74,7 +91,7 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
     @Override
     public void onBindViewHolder(ChatArrayAdapter.ChatViewHolder holder, int position) {
         ChatMessageHelper chatMessageHelper = (ChatMessageHelper) this.getItem(position);
-        side = chatMessageHelper.getSide();
+        //side = chatMessageHelper.getSide();
         holder.bind(position);
     }
 

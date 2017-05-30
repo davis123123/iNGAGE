@@ -1,8 +1,6 @@
 package ingage.ingage20;
 
-import android.app.LauncherActivity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
@@ -12,8 +10,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -26,7 +22,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -51,7 +46,7 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
     DatabaseReference root;
     String chat_msg, chat_username, chat_side, chat_timestamp, chat_id;
     Long chat_upvote, chat_downvote;
-    String user_side;
+    public static String user_side;
     TextView timerTv;
     ImageButton addButton;
     EditText textField;
@@ -70,6 +65,13 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
 
         timerTv = (TextView) findViewById(R.id.timertv);
 
+        //getuser details
+        HashMap<String, String> chat = chatRoomManager.getUserDetails();
+        String thread_id = chat.get(ChatRoomManager.THREAD_ID);
+        user_side = chat.get(ChatRoomManager.SIDE);
+        Log.d("STATE", "side: " + user_side);
+
+
         //start adapter
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -78,12 +80,6 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
 
         //set click for upvote and downvotes in each chatmessage
         chatAdapter.setItemClickCallback(this);
-
-        //getuser details
-        HashMap<String, String> chat = chatRoomManager.getUserDetails();
-        thread_id = chat.get(ChatRoomManager.THREAD_ID);
-        user_side = chat.get(ChatRoomManager.SIDE);
-        Log.d("STATE", "side: " + user_side);
 
         //ENTER MESSAGES WITH @TAGS
         textField = (EditText) findViewById(R.id.msgField);
