@@ -30,6 +30,7 @@ import java.util.Timer;
 import java.util.concurrent.ExecutionException;
 
 import ingage.ingage20.adapters.ChatArrayAdapter;
+import ingage.ingage20.handlers.ChatFeaturesHandler;
 import ingage.ingage20.handlers.ChatRoomHandler;
 import ingage.ingage20.helpers.ChatMessageHelper;
 
@@ -52,6 +53,7 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
     EditText textField;
     boolean haschar = false;
     ChatRoomHandler chatRoomHandler;
+    boolean tagged = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,6 +103,7 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
                 }
                 else if (!(ss.contains("@"))){
                     haschar = false;
+                    tagged = false;
                     Log.d("STATE", "text: " + ss);
                 }
             }
@@ -126,37 +129,47 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
 
                 @Override
                 public void onClick(View v) {
-                    timer();
-                    String messageText = textField.getText().toString();
-                    HashMap<String, String> user = session.getUserDetails();
-                    String messageBy = user.get(SessionManager.KEY_NAME);
-
-                    //firebase area
-                    Map<String, Object> map = new HashMap<String, Object>();
-                    temp_key = root.push().getKey();
-                    root.updateChildren(map);
-                    String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
-
-                    DatabaseReference message_root = root.child(temp_key);
-                    Map<String, Object> map_message = new HashMap<String, Object>();
-                    map_message.put("Username", messageBy);
-                    map_message.put("Msg", messageText);
-                    map_message.put("Side", user_side);
-                    map_message.put("upvotes", 0);
-                    map_message.put("downvotes", 0);
-                    map_message.put("TimeStamp", currentDateTimeString);
-                    message_root.updateChildren(map_message);
-                    textField.setText("");
-
-                    RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
-                    int pos = chatAdapter.getItemCount()-1;
-                    manager.scrollToPosition(pos);
+                    sendMsg();
                 }
             });//click to send message
 
             //calls event listener to update message in realtime
             eventListener(root);
         }
+    }
+
+    private void sendMsg(){
+        timer();
+        String messageText = textField.getText().toString();
+        HashMap<String, String> user = session.getUserDetails();
+        String messageBy = user.get(SessionManager.KEY_NAME);
+
+        //firebase area to send msg
+        Map<String, Object> map = new HashMap<String, Object>();
+        temp_key = root.push().getKey();
+        root.updateChildren(map);
+        String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+
+        DatabaseReference message_root = root.child(temp_key);
+        Map<String, Object> map_message = new HashMap<String, Object>();
+        map_message.put("Username", messageBy);
+        map_message.put("Msg", messageText);
+        map_message.put("Side", user_side);
+        map_message.put("upvotes", 0);
+        map_message.put("downvotes", 0);
+        map_message.put("TimeStamp", currentDateTimeString);
+        message_root.updateChildren(map_message);
+
+        //send token
+        if (tagged) {
+            tagged = false;
+            sendCoin();
+        }
+        textField.setText("");
+
+        RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
+        int pos = chatAdapter.getItemCount()-1;
+        manager.scrollToPosition(pos);
     }
 
     @Override
@@ -179,6 +192,17 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
         ChatRoomHandler chatRoomHandler = new ChatRoomHandler(getApplicationContext());
         try {
             result = chatRoomHandler.execute(type, thread_id, username, side).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void sendCoin(){
+        String type = "send_coin";
+        String result;
+        ChatFeaturesHandler chatFeaturesHandler= new ChatFeaturesHandler(getApplicationContext());
+        try {
+            result = chatRoomHandler.execute(type, targetUser).get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
@@ -321,6 +345,7 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
             targetUser = data.getExtras().getString("Username");
             textField.append(targetUser);
             Log.d("TARGET" , "user : " + targetUser);
+            tagged = true;
         }
     }
 }
