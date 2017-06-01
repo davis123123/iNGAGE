@@ -78,5 +78,27 @@
         android:layout_alignBottom="@+id/upvote"
         android:layout_toEndOf="@+id/upvote" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="  Up"
+        android:textColor="#FFFFFF"
+        android:id="@+id/up_label"
+        android:layout_below="@+id/upvote"
+        android:layout_alignStart="@+id/upvote"
+        android:layout_alignEnd="@+id/upvote" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#FFFFFF"
+        android:text="Down"
+        android:id="@+id/down_label"
+        android:layout_below="@+id/downvote"
+        android:layout_alignEnd="@+id/downvote" />
+
+
 
 </RelativeLayout>

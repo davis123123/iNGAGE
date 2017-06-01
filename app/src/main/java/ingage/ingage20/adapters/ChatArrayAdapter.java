@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import ingage.ingage20.R;
@@ -19,6 +20,10 @@ import ingage.ingage20.helpers.ChatMessageHelper;
 public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.ChatViewHolder>{
 
     private Context mContext;
+    private static final String TAG = ThreadListAdapter.class.getSimpleName();
+    List <ChatMessageHelper> list = new ArrayList<ChatMessageHelper>();
+    HashMap<String, Integer> chatHash = new HashMap<String, Integer>();
+
 
     private ItemClickCallback itemClickCallback;
     String side;
@@ -32,14 +37,9 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
         this.itemClickCallback = itemClickCallback;
     }
 
-    private static final String TAG = ThreadListAdapter.class.getSimpleName();
-    List <ChatMessageHelper> list = new ArrayList<ChatMessageHelper>();
 
     public ChatArrayAdapter( ){
-
-        //mOnClickListener = listener;
-
-    }//interface for thread-click
+    }
 
     @Override
     public ChatViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
@@ -77,6 +77,19 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
 
     public void add(ChatMessageHelper object){
         list.add(object);
+        String chat_id = object.getMessageID();
+        chatHash.put(chat_id, getItemCount() - 1);
+    }
+
+    public void update(ChatMessageHelper newObject, String chat_id){
+        //get old chatmsg
+        int position = chatHash.get(chat_id);
+
+        //update oldmsg with newobject
+        ChatMessageHelper chatMessageHelper = (ChatMessageHelper) getItem(position);
+        chatMessageHelper.setMessageDownvote(newObject.getMessageDownvote());
+        chatMessageHelper.setMessageUpvote(newObject.getMessageUpvote());
+        chatMessageHelper.setMessageText(newObject.getMessageText());
     }
 
     @Override
@@ -98,7 +111,7 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
 
 
     class ChatViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        TextView messageContentView, messageUserView, messageDateView;
+        TextView messageContentView, messageUserView, messageDateView, upVoteView, downVoteView;
         Button bUpvote, bDownvote;
 
         public ChatViewHolder(View itemView) {
@@ -110,6 +123,8 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
             messageContentView = (TextView) itemView.findViewById(R.id.message_content_view);
             messageUserView = (TextView) itemView.findViewById(R.id.message_user_view);
             messageDateView = (TextView) itemView.findViewById(R.id.message_date_view);
+            upVoteView = (TextView) itemView.findViewById(R.id.up_label);
+            downVoteView = (TextView) itemView.findViewById(R.id.down_label);
 
         }
 
@@ -119,6 +134,8 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
             messageContentView.setText(chatMessageHelper.getMessageText());
             messageUserView.setText(chatMessageHelper.getMessageUser());
             messageDateView.setText(chatMessageHelper.getMessageTime());
+            upVoteView.setText(chatMessageHelper.getMessageUpvote().toString());
+            downVoteView.setText(chatMessageHelper.getMessageDownvote().toString());
         }
 
         @Override
