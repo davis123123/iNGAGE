@@ -426,6 +426,17 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
         });
     }
 
+    @Override
+    public void insertVote(int p, String prev_voted, String vote) {
+        String type = "insert_vote";
+        ChatFeaturesHandler chatFeaturesHandler = new ChatFeaturesHandler(getApplicationContext());
+        ChatMessageHelper chatMessageHelper = (ChatMessageHelper) chatAdapter.getItem(p);
+        String chat_user = chatMessageHelper.getMessageUser();
+        Log.d("insertvote", type+ chat_user+ vote+ prev_voted);
+
+        chatFeaturesHandler.execute(type, chat_user, vote, prev_voted);
+    }
+
 
     @Override
     public void  onSaveInstanceState(Bundle savedInstanceState) {

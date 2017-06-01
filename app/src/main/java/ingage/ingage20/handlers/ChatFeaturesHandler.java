@@ -34,6 +34,7 @@ public class ChatFeaturesHandler  extends AsyncTask<String, String, String> {
         String type = params[0];
         //TODO need change for server change
         String send_token_url ="http://10.0.0.199/send_coin.php";
+        String insert_vote_url = "http://10.0.0.199/insert_vote.php";
         if (type.equals("send_coin")) {
             try {
                 String target_user = params[1];
@@ -45,7 +46,44 @@ public class ChatFeaturesHandler  extends AsyncTask<String, String, String> {
                 OutputStream outputStream = httpURLConnection.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
                 String post_data =
-                        URLEncoder.encode("user_name","UTF-8")+"="+ URLEncoder.encode(target_user,"UTF-8");
+                        URLEncoder.encode("username","UTF-8")+"="+ URLEncoder.encode(target_user,"UTF-8");
+                bufferedWriter.write(post_data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                outputStream.close();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader =
+                        new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                String result = "";
+                String line;
+                while((line = bufferedReader.readLine()) != null){
+                    result += line;
+                }
+                bufferedReader.close();;
+                inputStream.close();
+                httpURLConnection.disconnect();
+                return result;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        else if (type.equals("insert_vote")) {
+            try {
+                String username = params[1];
+                String vote = params[2];
+                String prev_voted = params[3];
+                URL url = new URL(insert_vote_url);
+                HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                String post_data =
+                        URLEncoder.encode("username","UTF-8")+"="+ URLEncoder.encode(username,"UTF-8")+"&"+
+                        URLEncoder.encode("vote","UTF-8")+"="+ URLEncoder.encode(vote,"UTF-8")+"&"+
+                        URLEncoder.encode("prev_voted","UTF-8")+"="+ URLEncoder.encode(prev_voted,"UTF-8");
                 bufferedWriter.write(post_data);
                 bufferedWriter.flush();
                 bufferedWriter.close();

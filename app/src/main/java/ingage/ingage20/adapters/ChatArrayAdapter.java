@@ -33,6 +33,8 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
         void onDownvoteClick(int p);
         void removeUpvote(int p);
         void removeDownvote(int p);
+        //inserts vote into userprofile
+        void insertVote(int p, String prev_voted, String vote);
     }
 
     public void setItemClickCallback(final ItemClickCallback itemClickCallback){
@@ -144,19 +146,31 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
         public void onClick(View v) {
             if (v.getId() == R.id.upvote){
                 itemClickCallback.onUpvoteClick(getAdapterPosition());
+                //MAKE boolean LOL
+                String prev_voted = "false", vote = "up";;
                 bUpvote.setEnabled(false);
                 if(!bDownvote.isEnabled()) {
                     bDownvote.setEnabled(true);
                     itemClickCallback.removeDownvote(getAdapterPosition());
+                    prev_voted = "true";
                 }
+
+                //insert into user profile
+                itemClickCallback.insertVote(getAdapterPosition(), prev_voted, vote);
             }
             if (v.getId() == R.id.downvote){
                 itemClickCallback.onDownvoteClick(getAdapterPosition());
+                //MAKE boolean LOL
+                String prev_voted = "false", vote = "down";
                 bDownvote.setEnabled(false);
                 if(!bUpvote.isEnabled()) {
                     bUpvote.setEnabled(true);
                     itemClickCallback.removeUpvote(getAdapterPosition());
+                    prev_voted = "true";
                 }
+
+                //insert into user profile
+                itemClickCallback.insertVote(getAdapterPosition(), prev_voted, vote);
             }
         }
 
