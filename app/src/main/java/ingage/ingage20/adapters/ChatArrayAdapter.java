@@ -31,6 +31,8 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
     public interface ItemClickCallback{
         void onUpvoteClick(int p);
         void onDownvoteClick(int p);
+        void removeUpvote(int p);
+        void removeDownvote(int p);
     }
 
     public void setItemClickCallback(final ItemClickCallback itemClickCallback){
@@ -142,9 +144,19 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
         public void onClick(View v) {
             if (v.getId() == R.id.upvote){
                 itemClickCallback.onUpvoteClick(getAdapterPosition());
+                bUpvote.setEnabled(false);
+                if(!bDownvote.isEnabled()) {
+                    bDownvote.setEnabled(true);
+                    itemClickCallback.removeDownvote(getAdapterPosition());
+                }
             }
             if (v.getId() == R.id.downvote){
                 itemClickCallback.onDownvoteClick(getAdapterPosition());
+                bDownvote.setEnabled(false);
+                if(!bUpvote.isEnabled()) {
+                    bUpvote.setEnabled(true);
+                    itemClickCallback.removeUpvote(getAdapterPosition());
+                }
             }
         }
 

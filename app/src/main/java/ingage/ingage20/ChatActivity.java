@@ -257,6 +257,7 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
             chatAdapter.notifyDataSetChanged();
         }
 
+
     }
 
     private void appendChatConversation(DataSnapshot dataSnapshot) {
@@ -308,13 +309,14 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
 
     @Override
     public void onUpvoteClick(int p) {
-        Log.d("vote" , "up : ");
+        //Log.d("vote" , "up : ");
         //get correct chat msg with ith key from chatmessage helper
         ChatMessageHelper chatMessageHelper = (ChatMessageHelper) chatAdapter.getItem(p);
         String chat_key = chatMessageHelper.getMessageID();
         DatabaseReference message_root = root.child(chat_key);
         //get upvote data
         DatabaseReference upvote_count = message_root.child("upvotes");
+
 
         upvote_count.runTransaction(new Transaction.Handler() {
             @Override
@@ -329,33 +331,17 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
                 return Transaction.success(currentData); //we can also abort by calling Transaction.abort()
             }
 
-
             //TODO:Error handle here
             @Override
             public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
 
             }
         });
-/**
-        ChatMessageHelper chatMessageHelper = (ChatMessageHelper) chatAdapter.getItem(p);
-        String chat_key = chatMessageHelper.getMessageID();
-        root = FirebaseDatabase.getInstance().getReference().child(thread_id);
-        DatabaseReference message_root = root.child(chat_key);
-
-        Long curUpvotes = chatMessageHelper.getMessageUpvote();
-        Long curDownvotes = chatMessageHelper.getMessageDownvote();
-        curUpvotes += 1;
-        Map<String, Object> map_message = new HashMap<String, Object>();
-        map_message.put("upvotes", curUpvotes);
-        map_message.put("downvotes", curDownvotes);
-        //map_message.put("TimeStamp", time);
-        message_root.updateChildren(map_message);
-        Log.d("vote" , "up : " + chat_key);**/
     }
 
     @Override
     public void onDownvoteClick(int p) {
-        Log.d("vote" , "down : ");
+        //Log.d("vote" , "down : ");
         ChatMessageHelper chatMessageHelper = (ChatMessageHelper) chatAdapter.getItem(p);
         String chat_key = chatMessageHelper.getMessageID();
         DatabaseReference message_root = root.child(chat_key);
@@ -378,25 +364,68 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
             //TODO:Error handle here
             @Override
             public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
-
             }
         });
+    }
 
-
-/**
+    @Override
+    public void removeUpvote(int p) {
         ChatMessageHelper chatMessageHelper = (ChatMessageHelper) chatAdapter.getItem(p);
         String chat_key = chatMessageHelper.getMessageID();
         DatabaseReference message_root = root.child(chat_key);
+        //get upvote data
+        DatabaseReference upvote_count = message_root.child("upvotes");
 
-        Long curUpvotes = chatMessageHelper.getMessageUpvote();
-        Long curDownvotes = chatMessageHelper.getMessageDownvote();
-        curDownvotes += 1;
-        Map<String, Object> map_message = new HashMap<String, Object>();
-        map_message.put("upvotes", curUpvotes);
-        map_message.put("downvotes", curDownvotes);
-        message_root.updateChildren(map_message);
-        Log.d("vote" , "down : " + chat_key);**/
+
+        upvote_count.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData currentData) {
+                Log.d("Data", String.valueOf(currentData));
+
+                if(currentData.getValue() == null) {
+                    currentData.setValue(0);
+                } else {
+                    currentData.setValue((Long) currentData.getValue() - 1);
+                }
+                return Transaction.success(currentData); //we can also abort by calling Transaction.abort()
+            }
+
+            //TODO:Error handle here
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+
+            }
+        });
     }
+
+    @Override
+    public void removeDownvote(int p) {
+        ChatMessageHelper chatMessageHelper = (ChatMessageHelper) chatAdapter.getItem(p);
+        String chat_key = chatMessageHelper.getMessageID();
+        DatabaseReference message_root = root.child(chat_key);
+        //get upvote data
+        DatabaseReference downvote_count = message_root.child("downvotes");
+
+        downvote_count.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData currentData) {
+                Log.d("Data", String.valueOf(currentData));
+
+                if(currentData.getValue() == null) {
+                    currentData.setValue(0);
+                } else {
+                    currentData.setValue((Long) currentData.getValue() - 1);
+                }
+                return Transaction.success(currentData); //we can also abort by calling Transaction.abort()
+            }
+
+            //TODO:Error handle here
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+            }
+        });
+    }
+
 
     @Override
     public void  onSaveInstanceState(Bundle savedInstanceState) {
