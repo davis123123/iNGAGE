@@ -276,8 +276,8 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
             ChatMessageHelper msg = new ChatMessageHelper(chat_id, chat_side, chat_msg, chat_username, chat_upvote,
                     chat_downvote, chat_timestamp);
             chatAdapter.add(msg);
-            chatAdapter.notifyDataSetChanged();
         }
+        chatAdapter.notifyDataSetChanged();
     } //iterates through all comments under the thread_id to get information
 
     private void timer() {
