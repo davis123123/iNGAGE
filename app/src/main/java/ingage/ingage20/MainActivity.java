@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity
         TextView userName = (TextView) findViewById(R.id.userName);
         userName.setTextColor(Color.parseColor("#FFFFFF"));
 
-        //set up sign out listener
+        //set up sign out and user profile listener
         Button signOut = (Button) findViewById(R.id.button_signout);
         if ( signOut != null) {
             signOut.setOnClickListener(new View.OnClickListener() {
@@ -118,6 +118,21 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onClick(View v) {
                     goSignOut();
+                }
+
+            });
+        }
+
+        Button viewProfile = (Button) findViewById(R.id.button_profile);
+        if ( viewProfile != null) {
+            viewProfile.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+
+                    Intent intent = new Intent(MainActivity.this, UserProfileActivity.class);
+                    startActivity(intent);
+
                 }
 
             });

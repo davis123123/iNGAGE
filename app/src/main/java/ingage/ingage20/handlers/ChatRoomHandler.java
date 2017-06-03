@@ -33,10 +33,10 @@ public class ChatRoomHandler  extends AsyncTask<String, String, String> {
     protected String doInBackground(String... params) {
         String type = params[0];
         //TODO need change for server change
-        String view_url ="http://10.0.0.199/view_chatroom_status.php";
-        String join_url ="http://10.0.0.199/join_chatroom.php";
-        String leave_url = "http://10.0.0.199/leave_room.php";
-        String check_url = "http://10.0.0.199/view_current_room_users.php";
+        String view_url ="http://24.7.128.143/view_chatroom_status.php";
+        String join_url ="http://24.7.128.143/join_chatroom.php";
+        String leave_url = "http://24.7.128.143leave_room.php";
+        String check_url = "http://24.7.128.143/view_current_room_users.php";
 
         if (type.equals("view")) {
             try {
