@@ -278,6 +278,7 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
             chatAdapter.add(msg);
         }
         chatAdapter.notifyDataSetChanged();
+        recyclerView.scrollToPosition(chatAdapter.getItemCount() - 1);
     } //iterates through all comments under the thread_id to get information
 
     private void timer() {
