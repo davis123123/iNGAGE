@@ -108,6 +108,8 @@ public class SessionManager {
         user.put(KEY_PASSWORD, pref.getString(KEY_PASSWORD, null));
 
         // user email id
+        user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
+        user.put(KEY_SUBSCRIPTIONS, pref.getString(KEY_SUBSCRIPTIONS, null));
         user.put(KEY_TRIBUTE_POINTS, pref.getString(KEY_TRIBUTE_POINTS, null));
 
         // return user
