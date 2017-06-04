@@ -1,4 +1,4 @@
-package ingage.ingage20;
+package ingage.ingage20.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,9 +16,11 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
+import ingage.ingage20.R;
 import ingage.ingage20.adapters.RoomUserAdapter;
 import ingage.ingage20.handlers.ChatRoomHandler;
 import ingage.ingage20.helpers.ChatRoomUserHelper;
+import ingage.ingage20.managers.ChatRoomManager;
 
 /**
  * Created by Davis on 5/29/2017.

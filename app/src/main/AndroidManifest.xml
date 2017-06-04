@@ -35,7 +35,7 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".SplashActivity"
+            android:name=".activities.SplashActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:label="@string/app_name">
             >
@@ -46,19 +46,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".LoginActivity"></activity>
-        <activity android:name=".PostThreadActivity" />
-        <activity android:name=".SignUpActivity" />
+        <activity android:name=".activities.LoginActivity"></activity>
+        <activity android:name=".activities.PostThreadActivity" />
+        <activity android:name=".activities.SignUpActivity" />
         <activity android:name=".DisplayListView" />
-        <activity android:name=".PostCommentActivity" />
-        <activity android:name=".RoomUsersActivity"/>
-        <activity android:name=".UserProfileActivity"/>
+        <activity android:name=".activities.PostCommentActivity" />
+        <activity android:name=".activities.RoomUsersActivity"/>
+        <activity android:name=".activities.UserProfileActivity"/>
         <activity android:name=".test2" />
         <activity
-            android:name=".ChatActivity"
+            android:name=".activities.ChatActivity"
             android:label="@string/title_activity_chat"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>

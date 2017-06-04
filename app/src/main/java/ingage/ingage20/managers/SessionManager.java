@@ -1,10 +1,12 @@
-package ingage.ingage20;
+package ingage.ingage20.managers;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
 import java.util.HashMap;
+
+import ingage.ingage20.activities.LoginActivity;
 
 /**
  * Created by Davis on 4/10/2017.

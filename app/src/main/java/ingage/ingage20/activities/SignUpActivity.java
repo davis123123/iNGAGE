@@ -1,4 +1,4 @@
-package ingage.ingage20;
+package ingage.ingage20.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +14,9 @@ import org.json.JSONObject;
 
 import java.util.concurrent.ExecutionException;
 
+import ingage.ingage20.R;
 import ingage.ingage20.handlers.IdentityHandler;
+import ingage.ingage20.managers.AlertDiaLogManager;
 
 public class SignUpActivity extends AppCompatActivity {
     EditText mUserName, mPassword, mEmail, mRePassword;

@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.google.firebase.messaging.RemoteMessage;
 
-import ingage.ingage20.MainActivity;
+import ingage.ingage20.activities.MainActivity;
 
 /**
  * Created by Davis on 5/8/2017.

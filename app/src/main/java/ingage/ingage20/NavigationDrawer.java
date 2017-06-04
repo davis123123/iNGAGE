@@ -24,6 +24,7 @@ import android.widget.TextView;
 import java.util.HashMap;
 
 import ingage.ingage20.fragments.FrontPageFragment;
+import ingage.ingage20.managers.SessionManager;
 
 import static ingage.ingage20.R.string.app_name;
 

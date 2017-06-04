@@ -1,4 +1,4 @@
-package ingage.ingage20;
+package ingage.ingage20.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,7 +16,11 @@ import org.json.JSONObject;
 import java.util.concurrent.ExecutionException;
 
 import ingage.ingage20.FireBase.FirebaseSharedPrefManager;
+import ingage.ingage20.R;
+import ingage.ingage20.SignInProvider;
 import ingage.ingage20.handlers.IdentityHandler;
+import ingage.ingage20.managers.AlertDiaLogManager;
+import ingage.ingage20.managers.SessionManager;
 
 /**
  * Created by Davis on 4/6/2017.

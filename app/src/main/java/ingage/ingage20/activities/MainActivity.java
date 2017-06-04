@@ -1,4 +1,4 @@
-package ingage.ingage20;
+package ingage.ingage20.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -30,8 +30,12 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 import ingage.ingage20.FireBase.FirebaseSharedPrefManager;
+import ingage.ingage20.NavigationDrawer;
+import ingage.ingage20.R;
 import ingage.ingage20.handlers.IdentityHandler;
 import ingage.ingage20.fragments.FrontPageFragment;
+import ingage.ingage20.managers.AlertDiaLogManager;
+import ingage.ingage20.managers.SessionManager;
 
 public class MainActivity extends AppCompatActivity
         implements View.OnClickListener {

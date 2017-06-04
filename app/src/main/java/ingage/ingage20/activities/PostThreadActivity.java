@@ -1,4 +1,4 @@
-package ingage.ingage20;
+package ingage.ingage20.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -26,8 +26,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import ingage.ingage20.R;
 import ingage.ingage20.handlers.SubmitThreadsHandler;
 import ingage.ingage20.handlers.UploadImageHandler;
+import ingage.ingage20.managers.SessionManager;
 
 public class  PostThreadActivity extends AppCompatActivity {
     /** Class name for log messages. */

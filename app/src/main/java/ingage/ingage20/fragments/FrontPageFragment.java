@@ -23,12 +23,12 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
-import ingage.ingage20.ChatActivity;
-import ingage.ingage20.ChatRoomManager;
-import ingage.ingage20.MainActivity;
-import ingage.ingage20.PostThreadActivity;
+import ingage.ingage20.activities.ChatActivity;
+import ingage.ingage20.managers.ChatRoomManager;
+import ingage.ingage20.activities.MainActivity;
+import ingage.ingage20.activities.PostThreadActivity;
 import ingage.ingage20.R;
-import ingage.ingage20.SessionManager;
+import ingage.ingage20.managers.SessionManager;
 import ingage.ingage20.adapters.ThreadListAdapter;
 import ingage.ingage20.handlers.ChatRoomHandler;
 import ingage.ingage20.handlers.MySQLDbHelper;

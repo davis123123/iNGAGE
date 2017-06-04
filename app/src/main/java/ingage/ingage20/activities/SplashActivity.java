@@ -1,4 +1,4 @@
-package ingage.ingage20;
+package ingage.ingage20.activities;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,6 +9,9 @@ import android.view.MotionEvent;
 
 import java.util.HashMap;
 import java.util.concurrent.CountDownLatch;
+
+import ingage.ingage20.R;
+import ingage.ingage20.managers.SessionManager;
 
 public class SplashActivity extends Activity{
     private static final String LOG_TAG = SplashActivity.class.getSimpleName();

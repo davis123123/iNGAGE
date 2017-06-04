@@ -1,4 +1,4 @@
-package ingage.ingage20;
+package ingage.ingage20.managers;
 
 import android.app.AlertDialog;
 import android.content.Context;

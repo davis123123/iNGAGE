@@ -1,4 +1,4 @@
-package ingage.ingage20;
+package ingage.ingage20.managers;
 
 import android.content.Context;
 import android.content.SharedPreferences;

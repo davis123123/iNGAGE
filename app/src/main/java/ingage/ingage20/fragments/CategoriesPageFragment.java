@@ -20,7 +20,7 @@ import java.util.concurrent.ExecutionException;
 
 import ingage.ingage20.handlers.QueryThreadsHandler;
 import ingage.ingage20.helpers.ThreadsHelper;
-import ingage.ingage20.PostThreadActivity;
+import ingage.ingage20.activities.PostThreadActivity;
 import ingage.ingage20.R;
 import ingage.ingage20.adapters.ThreadListAdapter;
 

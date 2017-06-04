@@ -1,4 +1,4 @@
-package ingage.ingage20;
+package ingage.ingage20.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +14,9 @@ import android.widget.Toast;
 
 import java.util.HashMap;
 
+import ingage.ingage20.R;
 import ingage.ingage20.handlers.SubmitCommentsHandler;
+import ingage.ingage20.managers.SessionManager;
 
 /**
  * Created by Davis on 4/17/2017.

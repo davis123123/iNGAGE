@@ -1,10 +1,13 @@
-package ingage.ingage20;
+package ingage.ingage20.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import java.util.HashMap;
+
+import ingage.ingage20.R;
+import ingage.ingage20.managers.SessionManager;
 
 /**
  * Created by Davis on 4/27/2017.

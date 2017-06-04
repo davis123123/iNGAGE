@@ -1,4 +1,4 @@
-package ingage.ingage20;
+package ingage.ingage20.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,10 +31,13 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.concurrent.ExecutionException;
 
+import ingage.ingage20.R;
 import ingage.ingage20.adapters.ChatArrayAdapter;
 import ingage.ingage20.handlers.ChatFeaturesHandler;
 import ingage.ingage20.handlers.ChatRoomHandler;
 import ingage.ingage20.helpers.ChatMessageHelper;
+import ingage.ingage20.managers.ChatRoomManager;
+import ingage.ingage20.managers.SessionManager;
 
 public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.ItemClickCallback{
 
@@ -162,10 +165,10 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
         message_root.updateChildren(map_message);
 
         //send token
-        if (tagged) {
+        /*if (tagged) {
             tagged = false;
             sendCoin();
-        }
+        }*/
         textField.setText("");
 
         RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
@@ -203,7 +206,7 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
         String result;
         ChatFeaturesHandler chatFeaturesHandler= new ChatFeaturesHandler(getApplicationContext());
         try {
-            result = chatRoomHandler.execute(type, targetUser).get();
+            result = chatFeaturesHandler.execute(type, targetUser).get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
