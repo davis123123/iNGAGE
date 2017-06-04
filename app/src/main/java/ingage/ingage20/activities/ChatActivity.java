@@ -284,7 +284,7 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
     } //iterates through all comments under the thread_id to get information
 
     private void useCoin(){
-        String type = "send_coin";
+        String type = "use_coin";
         String result = "";
         ChatFeaturesHandler chatFeaturesHandler= new ChatFeaturesHandler(getApplicationContext());
         try {
