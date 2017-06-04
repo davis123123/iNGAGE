@@ -67,6 +67,18 @@
 
     </LinearLayout>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Spectate"
+        android:background="@layout/button"
+        android:id="@+id/spectate"
+        android:layout_alignParentTop="true"
+        android:layout_alignEnd="@+id/thread_title_view"
+        android:layout_above="@+id/thread_by_view"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"/>
+
     <!-- SHOULD OR SHOULDNOT DISPLAY CONTENT IN VIEW?
     <TextView
         android:id="@+id/thread_content_view"
