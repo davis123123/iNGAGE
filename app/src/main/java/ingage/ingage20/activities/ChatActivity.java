@@ -47,17 +47,17 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
     ChatRoomManager chatRoomManager;
     String JsonString;
     String temp_key;
-    String thread_id, targetUser;
+    String targetUser;
     private static final int RESULT_TARGET_USER = 1;
     DatabaseReference root;
     String chat_msg, chat_username, chat_side, chat_timestamp, chat_id;
-    Long chat_upvote, chat_downvote;
+    Long chat_upvote, chat_downvote, currentCooldown;
     public static String user_side;
     TextView timerTv;
     ImageButton addButton;
     EditText textField;
     boolean haschar = false;
-    ChatRoomHandler chatRoomHandler;
+    CountDownTimer mCountDownTimer;
     boolean tagged = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,7 +143,7 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
     }
 
     private void sendMsg(){
-        timer();
+        timer(180000);
         String messageText = textField.getText().toString();
         HashMap<String, String> user = session.getUserDetails();
         String messageBy = user.get(SessionManager.KEY_NAME);
@@ -165,10 +165,10 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
         message_root.updateChildren(map_message);
 
         //send token
-        /*if (tagged) {
+        if (tagged) {
             tagged = false;
             sendCoin();
-        }*/
+        }
         textField.setText("");
 
         RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
@@ -221,7 +221,6 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                //appendChatConversation(dataSnapshot);
                 updateChatConversation(dataSnapshot);
 
             }
@@ -284,14 +283,40 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
         recyclerView.scrollToPosition(chatAdapter.getItemCount() - 1);
     } //iterates through all comments under the thread_id to get information
 
-    private void timer() {
+    private void useCoin(){
+        String type = "send_coin";
+        String result = "";
+        ChatFeaturesHandler chatFeaturesHandler= new ChatFeaturesHandler(getApplicationContext());
+        try {
+            result = chatFeaturesHandler.execute(type, targetUser).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if(result.equals("success")) {
+            if (mCountDownTimer != null)
+                mCountDownTimer.cancel();
+            if (currentCooldown > 30000) {
+                timer(currentCooldown - 30000);
+            }
+        }
+        else{
+            //tell user no coins left
+        }
+    }
+
+    private void timer(long initialCooldown) {
         Timer t = new Timer();
         timerTv = (TextView) findViewById(R.id.timertv);
+
         //Set the schedule function and rate
-        new CountDownTimer(180000, 1000) {
+        mCountDownTimer =
+        new CountDownTimer(initialCooldown, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 blockMSG();
+                //keeps track of current cooldown
+                currentCooldown = millisUntilFinished;
                 timerTv.setText("seconds remaining: " + millisUntilFinished / 1000);
             }
 
