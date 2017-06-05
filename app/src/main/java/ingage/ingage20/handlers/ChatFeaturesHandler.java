@@ -70,7 +70,7 @@ public class ChatFeaturesHandler  extends AsyncTask<String, String, String> {
 
         else if (type.equals("use_coin")) {
             try {
-                String target_user = params[1];
+                String username = params[1];
                 URL url = new URL(use_coin_url);
                 HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
@@ -79,7 +79,7 @@ public class ChatFeaturesHandler  extends AsyncTask<String, String, String> {
                 OutputStream outputStream = httpURLConnection.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
                 String post_data =
-                        URLEncoder.encode("username","UTF-8")+"="+ URLEncoder.encode(target_user,"UTF-8");
+                        URLEncoder.encode("username","UTF-8")+"="+ URLEncoder.encode(username,"UTF-8");
                 bufferedWriter.write(post_data);
                 bufferedWriter.flush();
                 bufferedWriter.close();

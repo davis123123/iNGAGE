@@ -32,7 +32,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/cooldown"
+        android:id="@+id/cooldownButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="CD"

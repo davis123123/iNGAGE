@@ -10,6 +10,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -58,6 +59,7 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
     EditText textField;
     boolean haschar = false;
     CountDownTimer mCountDownTimer;
+    Button useCoinBt;
     boolean tagged = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +72,16 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
         recyclerView = (RecyclerView) findViewById(R.id.chatrecyclerView);
 
         timerTv = (TextView) findViewById(R.id.timertv);
+        useCoinBt = (Button) findViewById(R.id.cooldownButton);
+
+        useCoinBt.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Log.d("Click", "clicked");
+                useCoin();
+            }
+        });//click to use token
 
         //getuser details
         HashMap<String, String> chat = chatRoomManager.getUserDetails();
@@ -286,9 +298,11 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
     private void useCoin(){
         String type = "use_coin";
         String result = "";
+        HashMap<String, String> chat_user = session.getUserDetails();
+        String username = chat_user.get(SessionManager.KEY_NAME);
         ChatFeaturesHandler chatFeaturesHandler= new ChatFeaturesHandler(getApplicationContext());
         try {
-            result = chatFeaturesHandler.execute(type, targetUser).get();
+            result = chatFeaturesHandler.execute(type, username).get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
