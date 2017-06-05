@@ -21,6 +21,7 @@ import ingage.ingage20.adapters.RoomUserAdapter;
 import ingage.ingage20.handlers.ChatRoomHandler;
 import ingage.ingage20.helpers.ChatRoomUserHelper;
 import ingage.ingage20.managers.ChatRoomManager;
+import ingage.ingage20.managers.SessionManager;
 
 /**
  * Created by Davis on 5/29/2017.
@@ -34,6 +35,8 @@ public class RoomUsersActivity extends AppCompatActivity implements RoomUserAdap
     RecyclerView roomUserRecyclerView;
     RoomUserAdapter roomUserAdapter;
     ChatRoomManager chatRoomManager;
+    SessionManager sessionManager;
+    String ownUsername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -47,6 +50,9 @@ public class RoomUsersActivity extends AppCompatActivity implements RoomUserAdap
         String thread_id = chatroom.get(ChatRoomManager.THREAD_ID);
 
         chatRoomHandler = new ChatRoomHandler(getApplicationContext());
+        sessionManager = new SessionManager(getApplicationContext());
+        HashMap<String, String> user = sessionManager.getUserDetails();
+        ownUsername = user.get(SessionManager.KEY_NAME);
 
         roomUserRecyclerView = (RecyclerView) findViewById(R.id.rv_posts);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -65,12 +71,15 @@ public class RoomUsersActivity extends AppCompatActivity implements RoomUserAdap
             jsonArray = jsonObject.getJSONArray("users");
             int count= 0;
             String username, token;
+            username = "-";
             while(count < jsonArray.length()){
                 JSONObject JO = jsonArray.getJSONObject(count);
                 username = JO.getString("username");
                 token = JO.getString("token");
                 ChatRoomUserHelper chatRoomUserHelper = new ChatRoomUserHelper(username, token);
-                roomUserAdapter.add(chatRoomUserHelper);
+                if(!ownUsername.equals(chatRoomUserHelper.getUsername())) {
+                    roomUserAdapter.add(chatRoomUserHelper);
+                }
                 count++;
             }
 
