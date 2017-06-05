@@ -31,6 +31,17 @@
             android:layout_gravity="bottom" />
     </LinearLayout>
 
+    <Button
+        android:id="@+id/cooldown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CD"
+        android:layout_alignParentRight="true"
+        android:layout_above="@+id/timertv"
+        android:layout_toEndOf="@+id/msgField"
+        android:background="@layout/button"
+        android:layout_below="@+id/chatrecyclerView" />
+
     <TextView
         android:id="@+id/timertv"
         android:layout_width="wrap_content"

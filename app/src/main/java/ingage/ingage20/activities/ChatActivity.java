@@ -317,7 +317,7 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
                 blockMSG();
                 //keeps track of current cooldown
                 currentCooldown = millisUntilFinished;
-                timerTv.setText("seconds remaining: " + millisUntilFinished / 1000);
+                timerTv.setText(millisUntilFinished / 1000 + " s");
             }
 
             public void onFinish() {
