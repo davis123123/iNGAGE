@@ -28,7 +28,7 @@ import ingage.ingage20.adapters.ThreadListAdapter;
  * Created by Davis on 4/4/2017.
  */
 
-public class CategoriesPageFragment extends FragmentBase implements ThreadListAdapter.ListItemClickListener{
+public class CategoriesPageFragment extends FragmentBase implements ThreadListAdapter.ItemClickCallback{
     private static final String TAG = "FrontPageFragment";
 
     String JSON_STRING;
@@ -106,19 +106,6 @@ public class CategoriesPageFragment extends FragmentBase implements ThreadListAd
         startActivity(new Intent(getActivity(),PostThreadActivity.class));
     }
 
-
-    @Override
-    public void onListItemClick(int clickedItemIndex) {
-
-        if(mToast != null){
-            mToast.cancel();
-        }
-
-        String toastMessage = "Item #" + clickedItemIndex + "clicked.";
-        mToast = Toast.makeText(getActivity(), toastMessage, Toast.LENGTH_LONG);
-        mToast.show();
-    }
-
     public void getJSON(){
         queryThreadsHandler = new QueryThreadsHandler();
         try {
@@ -130,4 +117,13 @@ public class CategoriesPageFragment extends FragmentBase implements ThreadListAd
         }
     }
 
+    @Override
+    public void onContainerClick(int p) {
+
+    }
+
+    @Override
+    public void onSpectateBtnClick(int p) {
+
+    }
 }

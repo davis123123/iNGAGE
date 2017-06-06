@@ -5,9 +5,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,20 +28,25 @@ import ingage.ingage20.helpers.ThreadsHelper;
 public class ThreadListAdapter extends RecyclerView.Adapter<ThreadListAdapter.ThreadViewHolder> {
 
     private Context mContext;
-
     private static final String TAG = ThreadListAdapter.class.getSimpleName();
     List list = new ArrayList();
-    private static ListItemClickListener mOnClickListener;
+    private ItemClickCallback itemClickCallback;
 
 
 
 
-    public interface ListItemClickListener{
-        void onListItemClick(int clickedItemIndex);
+    public interface ItemClickCallback{
+        void onContainerClick(int p);
+        void onSpectateBtnClick(int p);
     }
 
-    public ThreadListAdapter( ListItemClickListener listener){
-        mOnClickListener = listener;
+    public void setItemClickCallback(final ItemClickCallback itemClickCallback){
+        this.itemClickCallback = itemClickCallback;
+    }
+
+
+    public ThreadListAdapter( ItemClickCallback listener){
+        itemClickCallback = listener;
     }//interface for thread-click
 
     @Override
@@ -78,6 +85,8 @@ public class ThreadListAdapter extends RecyclerView.Adapter<ThreadListAdapter.Th
 
         TextView threadTitleTextView, threadByTextView, threadCategoryTextView;
         ImageView threadImageView;
+        View container;
+        Button mSpectateBtn;
 
         /**
          * Constructor for our ViewHolder. Within this constructor, we get a reference to our
@@ -93,6 +102,12 @@ public class ThreadListAdapter extends RecyclerView.Adapter<ThreadListAdapter.Th
             threadCategoryTextView = (TextView) itemView.findViewById(R.id.thread_category_view);
             threadImageView = (ImageView) itemView.findViewById(R.id.img_post);
 
+            container = itemView.findViewById(R.id.thread_row_root);
+            container.setOnClickListener(this);
+
+            mSpectateBtn = (Button) itemView.findViewById(R.id.spectateBtn);
+            mSpectateBtn.setOnClickListener(this);
+
             //testing setting a drawable programatically
             /*if(threadImageView != null)
                 threadImageView.setImageResource(R.drawable.logo);
@@ -104,8 +119,15 @@ public class ThreadListAdapter extends RecyclerView.Adapter<ThreadListAdapter.Th
 
         @Override
         public void onClick(View view) {
-            int clickedPosition = getAdapterPosition();
-            mOnClickListener.onListItemClick(clickedPosition);
+            if (view.getId() == R.id.thread_row_root){
+                itemClickCallback.onContainerClick(getAdapterPosition());
+            }
+            if (view.getId() == R.id.spectateBtn){
+                Log.d("CLICKSTATE", "specatebtn");
+                itemClickCallback.onSpectateBtnClick(getAdapterPosition());
+            }
+            //int clickedPosition = getAdapterPosition();
+            //mOnClickListener.onListItemClick(clickedPosition);
         }
 
         private void bind(int listIndex){
@@ -121,10 +143,9 @@ public class ThreadListAdapter extends RecyclerView.Adapter<ThreadListAdapter.Th
             //Log.d("STATE", "thread helper img: "+ str + ",length: " + str.length());
             //if(!threadsHelper.getThread_img().equalsIgnoreCase("") && str.length() != 0) {
                 //Log.d("STATE", "call download...");
-                downloadImage(threadsHelper);
-            //}
-           // else
-             //   threadImageView.setImageBitmap(null);
+
+            downloadImage(threadsHelper);
+
         }
 
         //retrieve Base64 from FireBase and convert to image

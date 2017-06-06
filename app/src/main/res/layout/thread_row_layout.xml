@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
-    android:background="@layout/frame_item">
+    android:background="@layout/frame_item"
+    android:id="@+id/thread_row_root">
 
     <TextView
         android:id="@+id/thread_title_view"
@@ -72,7 +73,7 @@
         android:layout_height="wrap_content"
         android:text="Spectate"
         android:background="@layout/button"
-        android:id="@+id/spectate"
+        android:id="@+id/spectateBtn"
         android:layout_alignParentTop="true"
         android:layout_alignEnd="@+id/thread_title_view"
         android:layout_above="@+id/thread_by_view"

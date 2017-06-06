@@ -39,7 +39,7 @@ import ingage.ingage20.helpers.ThreadsHelper;
  * Created by Davis on 4/4/2017.
  */
 
-public class FrontPageFragment extends FragmentBase implements ThreadListAdapter.ListItemClickListener{
+public class FrontPageFragment extends FragmentBase implements ThreadListAdapter.ItemClickCallback{
     private static final String TAG = "FrontPageFragment";
 
     String JSON_STRING;
@@ -123,32 +123,6 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
         startActivity(new Intent(getActivity(),PostThreadActivity.class));
     }
 
-    @Override
-    public void onListItemClick(int clickedItemIndex) {
-
-        Context context = getActivity().getApplicationContext();
-
-
-        if(mToast != null){
-            mToast.cancel();
-        }
-        ThreadsHelper threadsHelper = (ThreadsHelper) threadListAdapter.getItem(clickedItemIndex);
-        String thread_id = threadsHelper.getThread_id();
-
-        //LEAVE UNTIL COMMENTS A RE FINISHED
-        String toastMessage = "Item #" + thread_id + "clicked.";
-        mToast = Toast.makeText(getActivity(), toastMessage, Toast.LENGTH_LONG);
-        mToast.show();
-
-        String type = "view";
-        chooseSideDialog(context, thread_id, type);
-
-        /**
-         Intent startChildActivityIntent = new Intent(getActivity(), ViewThreadActivity.class);
-         startChildActivityIntent.putExtra(Intent.EXTRA_TEXT, thread_id);
-         startActivity(startChildActivityIntent);**/
-    }
-
     private void chooseSideDialog(final Context context, final String thread_id, final String type){
 
 
@@ -203,18 +177,26 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
 
     private void goToChat(String result){
 
-        //Error checking for join status
-        if (result != null && !result.equals("Number of disagreeing users is at maximum")
-                && !result.equals("Number of agreeing users is at maximum")
-                && !result.equals("Room/Thread Doesn't Exist")){
+        HashMap<String, String> user = chatRoomManager.getUserDetails();
+        String spectate = user.get(ChatRoomManager.SPECTATOR);
+        if(spectate.equals("false")) {
+            //Error checking for join status
+            if (result != null && !result.equals("Number of disagreeing users is at maximum")
+                    && !result.equals("Number of agreeing users is at maximum")
+                    && !result.equals("Room/Thread Doesn't Exist")) {
 
+                Intent startChildActivityIntent = new Intent(getActivity(), ChatActivity.class);
+                startChildActivityIntent.putExtra(Intent.EXTRA_TEXT, result);
+                startActivity(startChildActivityIntent);
+
+            } else {
+                Toast.makeText(getActivity(), "Error", Toast.LENGTH_LONG).show();
+            }
+        }//for joining arguments
+        else {
             Intent startChildActivityIntent = new Intent(getActivity(), ChatActivity.class);
-            startChildActivityIntent.putExtra(Intent.EXTRA_TEXT, result);
             startActivity(startChildActivityIntent);
-
-        } else{
-            Toast.makeText(getActivity(), "Error", Toast.LENGTH_LONG).show();
-        }
+        }//for spectating
 
 
     }
@@ -238,7 +220,7 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
     }
 
     public String joinRoom(Context context, String type, String thread_id, String userJSON){
-
+        session = new SessionManager(getActivity().getApplicationContext());
         HashMap<String, String> user = session.getUserDetails();
         String username = user.get(SessionManager.KEY_NAME);
         String token = MainActivity.appToken;
@@ -253,7 +235,7 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
         }
 
         chatRoomManager = new ChatRoomManager(getActivity().getApplicationContext());
-        chatRoomManager.updateUserRoomSession(thread_id, side);
+        chatRoomManager.updateUserRoomSession(thread_id, side, "false");
         return result;
     }
 
@@ -266,6 +248,59 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onContainerClick(int p) {
+
+        Context context = getActivity().getApplicationContext();
+
+
+        if(mToast != null){
+            mToast.cancel();
+        }
+        ThreadsHelper threadsHelper = (ThreadsHelper) threadListAdapter.getItem(p);
+        String thread_id = threadsHelper.getThread_id();
+
+        //LEAVE UNTIL COMMENTS A RE FINISHED
+        String toastMessage = "Item #" + thread_id + "clicked.";
+        mToast = Toast.makeText(getActivity(), toastMessage, Toast.LENGTH_LONG);
+        mToast.show();
+
+        String type = "view";
+        chooseSideDialog(context, thread_id, type);
+
+        /**
+         Intent startChildActivityIntent = new Intent(getActivity(), ViewThreadActivity.class);
+         startChildActivityIntent.putExtra(Intent.EXTRA_TEXT, thread_id);
+         startActivity(startChildActivityIntent);**/
+    }
+
+    @Override
+    public void onSpectateBtnClick(int p) {
+        ThreadsHelper threadsHelper = (ThreadsHelper) threadListAdapter.getItem(p);
+        String thread_id = threadsHelper.getThread_id();
+        String type = "spectate";
+        session = new SessionManager(getActivity().getApplicationContext());
+        HashMap<String, String> user = session.getUserDetails();
+        String username = user.get(SessionManager.KEY_NAME);
+
+        ChatRoomHandler chatRoomHandler = new ChatRoomHandler(getActivity().getApplicationContext());
+
+        try {
+            result = chatRoomHandler.execute(type, thread_id, username).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        if (result.equals("Spectate room failed")){
+            Toast.makeText(getActivity(), "spectate room failed!", Toast.LENGTH_LONG).show();
+        }
+        else{
+            chatRoomManager = new ChatRoomManager(getActivity().getApplicationContext());
+            chatRoomManager.updateUserRoomSession(thread_id, null, "true");
+            goToChat(result);
         }
     }
 }

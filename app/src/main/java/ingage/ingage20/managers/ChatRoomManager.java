@@ -29,6 +29,7 @@ public class ChatRoomManager {
     //public static final String ROOM_USERS = "room_users";
 
     public static final String SIDE = "side";
+    public static final String SPECTATOR = "spectator";
 
     public static final String ROOM_USERS = "room_users";
     private static final String PREF_NAME = "ChatRoomPref";
@@ -41,9 +42,10 @@ public class ChatRoomManager {
     }
 
 
-    public void updateUserRoomSession(String thread_id, String side){
+    public void updateUserRoomSession(String thread_id, String side, String spectator){
         editor.putString(THREAD_ID, thread_id);
         editor.putString(SIDE, side);
+        editor.putString(SPECTATOR, spectator);
 
         // commit changes
         editor.commit();
@@ -59,6 +61,7 @@ public class ChatRoomManager {
         // thread_id
         user.put(THREAD_ID, pref.getString(THREAD_ID, null));
         user.put(SIDE, pref.getString(SIDE, null));
+        user.put(SPECTATOR, pref.getString(SPECTATOR, null));
         // return user
         return user;
     }
