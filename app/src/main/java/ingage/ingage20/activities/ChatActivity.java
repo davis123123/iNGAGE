@@ -36,6 +36,7 @@ import ingage.ingage20.R;
 import ingage.ingage20.adapters.ChatArrayAdapter;
 import ingage.ingage20.handlers.ChatFeaturesHandler;
 import ingage.ingage20.handlers.ChatRoomHandler;
+import ingage.ingage20.handlers.SpectateRoomHandler;
 import ingage.ingage20.helpers.ChatMessageHelper;
 import ingage.ingage20.managers.ChatRoomManager;
 import ingage.ingage20.managers.SessionManager;
@@ -198,18 +199,36 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
         HashMap<String, String> chat_user = chatRoomManager.getUserDetails();
         String side = chat_user.get(ChatRoomManager.SIDE);
         String thread_id = chat_user.get(ChatRoomManager.THREAD_ID);
+        String spectator = chat_user.get(ChatRoomManager.SPECTATOR);
+        if (spectator.equals("true")){
+            String type = "leave_spectate";
+            String result = null;
 
-        String type = "leave";
-        String result = null;
+            HashMap<String, String> user = session.getUserDetails();
+            String username = user.get(SessionManager.KEY_NAME);
 
-        HashMap<String, String> user = session.getUserDetails();
-        String username = user.get(SessionManager.KEY_NAME);
+            SpectateRoomHandler spectateRoomHandler = new SpectateRoomHandler(getApplicationContext());
+            try {
+                result = spectateRoomHandler.execute(type, thread_id, username, side).get();
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+            Log.d("SPECTATORSTATE", "text: " + result);
 
-        ChatRoomHandler chatRoomHandler = new ChatRoomHandler(getApplicationContext());
-        try {
-            result = chatRoomHandler.execute(type, thread_id, username, side).get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+        }
+        else {
+            String type = "leave";
+            String result = null;
+
+            HashMap<String, String> user = session.getUserDetails();
+            String username = user.get(SessionManager.KEY_NAME);
+
+            ChatRoomHandler chatRoomHandler = new ChatRoomHandler(getApplicationContext());
+            try {
+                result = chatRoomHandler.execute(type, thread_id, username, side).get();
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
         }
     }
 

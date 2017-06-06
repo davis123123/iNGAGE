@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 import ingage.ingage20.activities.ChatActivity;
+import ingage.ingage20.handlers.SpectateRoomHandler;
 import ingage.ingage20.managers.ChatRoomManager;
 import ingage.ingage20.activities.MainActivity;
 import ingage.ingage20.activities.PostThreadActivity;
@@ -286,10 +287,10 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
         HashMap<String, String> user = session.getUserDetails();
         String username = user.get(SessionManager.KEY_NAME);
 
-        ChatRoomHandler chatRoomHandler = new ChatRoomHandler(getActivity().getApplicationContext());
+        SpectateRoomHandler spectateRoomHandler = new SpectateRoomHandler(getActivity().getApplicationContext());
 
         try {
-            result = chatRoomHandler.execute(type, thread_id, username).get();
+            result = spectateRoomHandler.execute(type, thread_id, username).get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
