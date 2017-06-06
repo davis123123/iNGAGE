@@ -495,8 +495,20 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
         ChatMessageHelper chatMessageHelper = (ChatMessageHelper) chatAdapter.getItem(p);
         String chat_user = chatMessageHelper.getMessageUser();
         Log.d("insertvote", type+ chat_user+ vote+ prev_voted);
+        String chat_id = chatMessageHelper.getMessageID();
+        String chat_side = chatMessageHelper.getSide();
+        HashMap<String, String> chat = chatRoomManager.getUserDetails();
+        String thread_id = chat.get(ChatRoomManager.THREAD_ID);
 
-        chatFeaturesHandler.execute(type, chat_user, vote, prev_voted);
+        //insert vote into target user profile and own profile
+        String result = "";
+        try {
+            result = chatFeaturesHandler.execute(type, chat_user, thread_id, prev_voted, chat_id, vote, chat_side).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        Log.d("insertvote", result);
     }
 
 

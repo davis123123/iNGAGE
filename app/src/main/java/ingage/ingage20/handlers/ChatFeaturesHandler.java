@@ -104,8 +104,11 @@ public class ChatFeaturesHandler  extends AsyncTask<String, String, String> {
         else if (type.equals("insert_vote")) {
             try {
                 String username = params[1];
-                String vote = params[2];
+                String thread_id = params[2];
                 String prev_voted = params[3];
+                String chat_id = params[4];
+                String vote = params[5];
+                String chat_side = params[6];
                 URL url = new URL(insert_vote_url);
                 HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
@@ -115,8 +118,11 @@ public class ChatFeaturesHandler  extends AsyncTask<String, String, String> {
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
                 String post_data =
                         URLEncoder.encode("username","UTF-8")+"="+ URLEncoder.encode(username,"UTF-8")+"&"+
-                        URLEncoder.encode("vote","UTF-8")+"="+ URLEncoder.encode(vote,"UTF-8")+"&"+
-                        URLEncoder.encode("prev_voted","UTF-8")+"="+ URLEncoder.encode(prev_voted,"UTF-8");
+                                URLEncoder.encode("vote_type","UTF-8")+"="+ URLEncoder.encode(vote,"UTF-8")+"&"+
+                                URLEncoder.encode("thread_id","UTF-8")+"="+ URLEncoder.encode(thread_id,"UTF-8")+"&"+
+                                URLEncoder.encode("chat_id","UTF-8")+"="+ URLEncoder.encode(chat_id,"UTF-8")+"&"+
+                                URLEncoder.encode("chat_side","UTF-8")+"="+ URLEncoder.encode(chat_side,"UTF-8")+"&"+
+                                URLEncoder.encode("prev_voted","UTF-8")+"="+ URLEncoder.encode(prev_voted,"UTF-8");
                 bufferedWriter.write(post_data);
                 bufferedWriter.flush();
                 bufferedWriter.close();
