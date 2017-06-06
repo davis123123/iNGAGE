@@ -112,7 +112,7 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                 String ss =  textField.getText().toString();
-                Toast.makeText(getBaseContext(),"itemclick" + haschar,Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getBaseContext(),"itemclick" + haschar,Toast.LENGTH_SHORT).show();
                 if (ss.contains("@") && !haschar){
                     haschar = true;
                     //Start Tagging here
@@ -121,7 +121,7 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
                 else if (!(ss.contains("@"))){
                     haschar = false;
                     tagged = false;
-                    Log.d("STATE", "text: " + ss);
+                    //Log.d("STATE", "text: " + ss);
                 }
             }
 
