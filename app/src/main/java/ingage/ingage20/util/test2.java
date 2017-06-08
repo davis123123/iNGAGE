@@ -1,4 +1,4 @@
-package ingage.ingage20;
+package ingage.ingage20.util;
 
 import android.app.Activity;
 import android.os.AsyncTask;
@@ -15,6 +15,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
+import ingage.ingage20.R;
 import ingage.ingage20.handlers.MySQLDbHelper;
 import ingage.ingage20.handlers.QueryThreadsHandler;
 

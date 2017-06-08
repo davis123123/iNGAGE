@@ -1,4 +1,4 @@
-package ingage.ingage20;
+package ingage.ingage20.util;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import java.util.HashMap;
 
+import ingage.ingage20.R;
 import ingage.ingage20.fragments.FrontPageFragment;
 import ingage.ingage20.managers.SessionManager;
 

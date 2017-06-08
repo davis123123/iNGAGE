@@ -1,4 +1,4 @@
-package ingage.ingage20;
+package ingage.ingage20.util;
 
 /**
  * Created by Davis on 4/9/2017.

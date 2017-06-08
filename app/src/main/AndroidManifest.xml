@@ -53,11 +53,11 @@
         <activity android:name=".activities.LoginActivity"></activity>
         <activity android:name=".activities.PostThreadActivity" />
         <activity android:name=".activities.SignUpActivity" />
-        <activity android:name=".DisplayListView" />
+        <activity android:name=".util.DisplayListView" />
         <activity android:name=".activities.PostCommentActivity" />
         <activity android:name=".activities.RoomUsersActivity"/>
         <activity android:name=".activities.UserProfileActivity"/>
-        <activity android:name=".test2" />
+        <activity android:name=".util.test2" />
         <activity
             android:name=".activities.ChatActivity"
             android:label="@string/title_activity_chat"

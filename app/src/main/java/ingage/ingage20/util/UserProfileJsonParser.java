@@ -1,4 +1,4 @@
-package ingage.ingage20;
+package ingage.ingage20.util;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 import ingage.ingage20.FireBase.FirebaseSharedPrefManager;
-import ingage.ingage20.NavigationDrawer;
+import ingage.ingage20.util.NavigationDrawer;
 import ingage.ingage20.R;
 import ingage.ingage20.handlers.IdentityHandler;
 import ingage.ingage20.fragments.FrontPageFragment;

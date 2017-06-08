@@ -1,4 +1,4 @@
-package ingage.ingage20;
+package ingage.ingage20.util;
 
 import android.support.v4.app.Fragment;
 
