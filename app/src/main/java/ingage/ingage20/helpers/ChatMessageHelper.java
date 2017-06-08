@@ -1,8 +1,5 @@
 package ingage.ingage20.helpers;
 
-import java.text.DateFormat;
-import java.util.Date;
-
 /**
  * Created by Davis on 5/4/2017.
  */
@@ -15,9 +12,10 @@ public class ChatMessageHelper {
     private Long messageUpvote;
     private Long messageDownvote;
     private String messageID;
+    private String userVote;
 
     public ChatMessageHelper(String messageID, String side, String messageText, String messageUser,
-                             Long messageUpvote, Long messageDownvote, String messageTime){
+                             Long messageUpvote, Long messageDownvote, String messageTime, String userVote){
         this.messageID = messageID;
         this.side = side;
         this.messageText = messageText;
@@ -25,6 +23,7 @@ public class ChatMessageHelper {
         this.messageTime = messageTime;
         this.messageUpvote = messageUpvote;
         this.messageDownvote = messageDownvote;
+        this.userVote = userVote;
     }
 
 
@@ -82,5 +81,13 @@ public class ChatMessageHelper {
 
     public void setMessageID(String messageID) {
         this.messageID = messageID;
+    }
+
+    public String getUserVote() {
+        return userVote;
+    }
+
+    public void setUserVote(String userVote) {
+        this.userVote = userVote;
     }
 }

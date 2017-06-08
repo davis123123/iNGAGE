@@ -105,6 +105,11 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
         return list.get(position);
     }
 
+    public Object getItemFromID(String chat_id){
+        int position = chatHash.get(chat_id);
+        return list.get(position);
+    }
+
     @Override
     public void onBindViewHolder(ChatArrayAdapter.ChatViewHolder holder, int position) {
         ChatMessageHelper chatMessageHelper = (ChatMessageHelper) this.getItem(position);
@@ -140,12 +145,31 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
             messageDateView.setText(chatMessageHelper.getMessageTime());
             upVoteView.setText(chatMessageHelper.getMessageUpvote().toString());
             downVoteView.setText(chatMessageHelper.getMessageDownvote().toString());
+            String userVote = "";
+            userVote = chatMessageHelper.getUserVote();
+            Log.d("VOTESTATE", "text: " + userVote + chatMessageHelper.getMessageText() + " " + listIndex);
+            if (userVote != null) {
+                if (userVote.equals("up")) {
+                    Log.d("VOTED", "yes" + chatMessageHelper.getMessageText());
+                    bUpvote = (Button) itemView.findViewById(R.id.upvote);
+                    bUpvote.setEnabled(false);
+                }
+                else if (userVote.equals("down")) {
+                    bDownvote = (Button) itemView.findViewById(R.id.downvote);
+                    bDownvote.setEnabled(false);
+                }
+            }
+            else{
+                bDownvote.setEnabled(true);
+                bUpvote.setEnabled(true);
+            }
         }
 
         @Override
         public void onClick(View v) {
             if (v.getId() == R.id.upvote){
                 itemClickCallback.onUpvoteClick(getAdapterPosition());
+                Log.d("VOTECLICK", "yes" );
                 //MAKE boolean LOL
                 String prev_voted = "false", vote = "up";;
                 bUpvote.setEnabled(false);
@@ -158,7 +182,7 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
                 //insert into user profile
                 itemClickCallback.insertVote(getAdapterPosition(), prev_voted, vote);
             }
-            if (v.getId() == R.id.downvote){
+            else if (v.getId() == R.id.downvote){
                 itemClickCallback.onDownvoteClick(getAdapterPosition());
                 //MAKE boolean LOL
                 String prev_voted = "false", vote = "down";

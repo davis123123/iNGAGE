@@ -24,6 +24,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -37,6 +41,7 @@ import ingage.ingage20.adapters.ChatArrayAdapter;
 import ingage.ingage20.handlers.ChatFeaturesHandler;
 import ingage.ingage20.handlers.ChatRoomHandler;
 import ingage.ingage20.handlers.SpectateRoomHandler;
+import ingage.ingage20.handlers.VotesHandler;
 import ingage.ingage20.helpers.ChatMessageHelper;
 import ingage.ingage20.managers.ChatRoomManager;
 import ingage.ingage20.managers.SessionManager;
@@ -49,10 +54,10 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
     ChatRoomManager chatRoomManager;
     String JsonString;
     String temp_key;
-    String targetUser;
+    String targetUser, username;
     private static final int RESULT_TARGET_USER = 1;
     DatabaseReference root;
-    String chat_msg, chat_username, chat_side, chat_timestamp, chat_id;
+    String chat_msg, chat_username, chat_side, chat_timestamp, chat_id, chat_userVote, thread_id;
     Long chat_upvote, chat_downvote, currentCooldown;
     public static String user_side;
     TextView timerTv;
@@ -62,12 +67,15 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
     CountDownTimer mCountDownTimer;
     Button useCoinBt;
     boolean tagged = false;
+    HashMap<String, String> userVotes = new HashMap<String, String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
         session = new SessionManager(getApplicationContext());
+        HashMap <String, String> user = session.getUserDetails();
+        username = user.get(SessionManager.KEY_NAME);
         chatRoomManager = new ChatRoomManager(getApplicationContext());
 
         recyclerView = (RecyclerView) findViewById(R.id.chatrecyclerView);
@@ -86,10 +94,14 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
 
         //getuser details
         HashMap<String, String> chat = chatRoomManager.getUserDetails();
-        String thread_id = chat.get(ChatRoomManager.THREAD_ID);
+        thread_id = chat.get(ChatRoomManager.THREAD_ID);
         user_side = chat.get(ChatRoomManager.SIDE);
-        Log.d("STATE", "side: " + user_side);
 
+        //get user votes
+        insertUserVotesHashMap();
+
+
+        Log.d("STATE", "side: " + user_side);
 
         //start adapter
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -152,6 +164,39 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
 
             //calls event listener to update message in realtime
             eventListener(root);
+        }
+    }
+
+    private void insertUserVotesHashMap() {
+        VotesHandler votesHandler = new VotesHandler(getApplicationContext());
+        String type = "getUserVotes";
+        String result = "";
+
+        try {
+            result = votesHandler.execute(type, thread_id, username).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        Log.d("INSERTHASHSTATE", "text: "+result );
+        JSONObject jsonObject;
+        JSONArray jsonArray;
+        try {
+            jsonObject = new JSONObject(result);
+            jsonArray = jsonObject.getJSONArray("server_response");
+            int count= 0;
+            String chat_id = "", vote_type = "";
+            while(count < jsonArray.length()){
+                JSONObject JO = jsonArray.getJSONObject(count);
+                chat_id = JO.getString("chat_id");
+                vote_type = JO.getString("vote_type");
+                Log.d("JSONSTATE", "text: " + chat_id+ vote_type);
+                //put all votes into hashmap with chat_id as key
+                userVotes.put(chat_id, vote_type);
+                count++;
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
@@ -284,8 +329,13 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
             chat_username = (String) ((DataSnapshot)i.next()).getValue();
             chat_downvote = (Long)((DataSnapshot)i.next()).getValue();
             chat_upvote = (Long)((DataSnapshot)i.next()).getValue();
+            //gets previous msg of user's vote status
+            ChatMessageHelper msgId = (ChatMessageHelper) chatAdapter.getItemFromID(chat_id);
+
+            String chat_userVote = msgId.getUserVote();
+
             ChatMessageHelper msg = new ChatMessageHelper(chat_id, chat_side, chat_msg, chat_username, chat_upvote,
-                    chat_downvote, chat_timestamp);
+                    chat_downvote, chat_timestamp, chat_userVote);
             chatAdapter.update(msg, chat_id);
             chatAdapter.notifyDataSetChanged();
         }
@@ -306,8 +356,11 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
             chat_downvote = (Long)((DataSnapshot)i.next()).getValue();
             chat_upvote = (Long)((DataSnapshot)i.next()).getValue();
 
+            String chat_userVote;
+            chat_userVote = userVotes.get(chat_id);
+            Log.d("CHATVOTE" , "result : " + chat_userVote);
             ChatMessageHelper msg = new ChatMessageHelper(chat_id, chat_side, chat_msg, chat_username, chat_upvote,
-                    chat_downvote, chat_timestamp);
+                    chat_downvote, chat_timestamp, chat_userVote);
             chatAdapter.add(msg);
         }
         chatAdapter.notifyDataSetChanged();
@@ -493,22 +546,25 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
         String type = "insert_vote";
         ChatFeaturesHandler chatFeaturesHandler = new ChatFeaturesHandler(getApplicationContext());
         ChatMessageHelper chatMessageHelper = (ChatMessageHelper) chatAdapter.getItem(p);
-        String chat_user = chatMessageHelper.getMessageUser();
-        Log.d("insertvote", type+ chat_user+ vote+ prev_voted);
+        String username = chatMessageHelper.getMessageUser();
+        Log.d("insertvote", type + vote+ prev_voted);
         String chat_id = chatMessageHelper.getMessageID();
         String chat_side = chatMessageHelper.getSide();
         HashMap<String, String> chat = chatRoomManager.getUserDetails();
         String thread_id = chat.get(ChatRoomManager.THREAD_ID);
-
+        session = new SessionManager(getApplicationContext());
+        HashMap<String, String> user = session.getUserDetails();
+        String chat_user = user.get(SessionManager.KEY_NAME);
         //insert vote into target user profile and own profile
+        Log.d("insertvote", chat_user);
         String result = "";
         try {
-            result = chatFeaturesHandler.execute(type, chat_user, thread_id, prev_voted, chat_id, vote, chat_side).get();
+            result = chatFeaturesHandler.execute(type, username, thread_id, prev_voted, chat_id, vote, chat_side, chat_user).get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
 
-        Log.d("insertvote", result);
+        //Log.d("insertvote", result);
     }
 
 
