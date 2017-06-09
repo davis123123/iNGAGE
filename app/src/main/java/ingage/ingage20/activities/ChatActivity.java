@@ -169,14 +169,6 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
         root.updateChildren(map);
         String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
 
-        SubmitCommentsHandler submitCommentsHandler = new SubmitCommentsHandler(getApplicationContext());
-        String result;
-        try {
-            result = submitCommentsHandler.execute("submit", thread_id, messageText, messageBy, user_side).get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-
         DatabaseReference message_root = root.child(temp_key);
         Map<String, Object> map_message = new HashMap<String, Object>();
         map_message.put("Username", messageBy);
