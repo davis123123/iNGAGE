@@ -81,6 +81,17 @@
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"/>
 
+    <TextView
+        android:id="@+id/thread_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Content"
+        android:textColor="#000000"
+        android:layout_marginStart="36dp"
+        android:layout_alignBottom="@+id/thread_by_view"
+        android:layout_alignTop="@+id/thread_category_view"
+        android:layout_toEndOf="@+id/thread_category_view" />
+
     <!-- SHOULD OR SHOULDNOT DISPLAY CONTENT IN VIEW?
     <TextView
         android:id="@+id/thread_content_view"

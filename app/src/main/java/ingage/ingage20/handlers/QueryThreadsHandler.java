@@ -4,19 +4,23 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 
 /**
  * Created by Davis on 4/14/2017.
  */
 
-public class QueryThreadsHandler extends AsyncTask<Void, Void, String> {
-        String json_url;
+public class QueryThreadsHandler extends AsyncTask<String, String, String> {
+        //String json_url;
         String JSON_STRING;
         Context context;
         MySQLDbHelper mySQLDbHelper;
@@ -29,27 +33,75 @@ public class QueryThreadsHandler extends AsyncTask<Void, Void, String> {
     }**/
 
     @Override
-    protected String doInBackground(Void... voids) {
-            try{
-            URL url= new URL(json_url);
-            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-            InputStream inputStream = httpURLConnection.getInputStream();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-            StringBuilder stringBuilder = new StringBuilder();
+    protected String doInBackground(String... params) {
 
-            while ((JSON_STRING = bufferedReader.readLine()) != null){
-            stringBuilder.append(JSON_STRING+"\n");
+        String type = params[0];
+
+        String query_post_url = "http://10.0.0.199/query_post.php";
+        String query_category_url = "http://10.0.0.199/query_category.php";
+
+            if(type.equals("all")) {
+                try {
+
+
+                    URL url = new URL(query_post_url);
+                    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                    InputStream inputStream = httpURLConnection.getInputStream();
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                    StringBuilder stringBuilder = new StringBuilder();
+
+                    while ((JSON_STRING = bufferedReader.readLine()) != null) {
+                        stringBuilder.append(JSON_STRING + "\n");
+                    }
+
+                    bufferedReader.close();
+                    inputStream.close();
+                    httpURLConnection.disconnect();
+                    return stringBuilder.toString().trim();
+
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
-            bufferedReader.close();
-            inputStream.close();
-            httpURLConnection.disconnect();
-            return stringBuilder.toString().trim();
+            else if (type.equals("choose")){
 
-            } catch (MalformedURLException e) {
-            e.printStackTrace();
-            } catch (IOException e) {
-            e.printStackTrace();
+
+                try {
+                    String category = params[1];
+                    URL url = new URL(query_category_url);
+                    HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+                    httpURLConnection.setRequestMethod("POST");
+                    httpURLConnection.setDoOutput(true);
+                    httpURLConnection.setDoInput(true);
+                    OutputStream outputStream = httpURLConnection.getOutputStream();
+                    BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                    String post_data =
+                            URLEncoder.encode("category","UTF-8")+"="+ URLEncoder.encode(category,"UTF-8");
+                    bufferedWriter.write(post_data);
+                    bufferedWriter.flush();
+                    bufferedWriter.close();
+                    outputStream.close();
+                    InputStream inputStream = httpURLConnection.getInputStream();
+                    BufferedReader bufferedReader =
+                            new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                    String result = "";
+                    String line;
+                    while((line = bufferedReader.readLine()) != null){
+                        result += line;
+                    }
+                    bufferedReader.close();;
+                    inputStream.close();
+                    httpURLConnection.disconnect();
+                    return result;
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
             }
 
             return null;
@@ -57,12 +109,12 @@ public class QueryThreadsHandler extends AsyncTask<Void, Void, String> {
 
     @Override
     protected void onPreExecute(){
-            json_url = "http://10.0.0.199/query_post.php";
+            //json_url = "http://10.0.0.199/query_post.php";
             }
 
     @Override
-    protected void onProgressUpdate(Void... values){
-        super.onProgressUpdate();
+    protected void onProgressUpdate(String... values){
+        super.onProgressUpdate(values);
         }
 
     @Override

@@ -83,7 +83,7 @@ public class ThreadListAdapter extends RecyclerView.Adapter<ThreadListAdapter.Th
 
     class ThreadViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        TextView threadTitleTextView, threadByTextView, threadCategoryTextView;
+        TextView threadTitleTextView, threadByTextView, threadCategoryTextView, threadContentTextView ;
         ImageView threadImageView;
         View container;
         Button mSpectateBtn;
@@ -101,6 +101,7 @@ public class ThreadListAdapter extends RecyclerView.Adapter<ThreadListAdapter.Th
             threadByTextView = (TextView) itemView.findViewById(R.id.thread_by_view);
             threadCategoryTextView = (TextView) itemView.findViewById(R.id.thread_category_view);
             threadImageView = (ImageView) itemView.findViewById(R.id.img_post);
+            threadContentTextView = (TextView) itemView.findViewById(R.id.thread_content);
 
             container = itemView.findViewById(R.id.thread_row_root);
             container.setOnClickListener(this);
@@ -135,6 +136,9 @@ public class ThreadListAdapter extends RecyclerView.Adapter<ThreadListAdapter.Th
             threadTitleTextView.setText(threadsHelper.getThread_title());
             threadByTextView.setText(threadsHelper.getThread_by());
             threadCategoryTextView.setText(threadsHelper.getThread_category());
+            if(threadsHelper.getThread_content() != null)
+                //Log.d("STATE", "content: " + threadsHelper.getThread_content());
+                threadContentTextView.setText(threadsHelper.getThread_content());
 
             threadImageView = (ImageView) itemView.findViewById(R.id.img_post);
 

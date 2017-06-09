@@ -7,6 +7,7 @@ import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,6 +101,18 @@ public class CategoriesPageFragment extends FragmentBase implements ThreadListAd
                 }
             }
         });
+    }
+
+    public void getThreadsJSON(){
+        queryThreadsHandler = new QueryThreadsHandler();
+        try {
+            json_string = queryThreadsHandler.execute("choose", "Politics").get();
+            Log.d("STATE" , "query result : " + json_string);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
     public void goInsertThread(){
