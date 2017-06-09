@@ -89,10 +89,6 @@ public class SubmitCommentsHandler extends AsyncTask<String, String, String> {
 
         @Override
         protected void onPostExecute(String result) {
-            //TODO setup signin handler and new activity
-            alertDialog.setMessage(result);
-            alertDialog.show();
-
         }
 
 }

@@ -37,6 +37,7 @@ import ingage.ingage20.adapters.ChatArrayAdapter;
 import ingage.ingage20.handlers.ChatFeaturesHandler;
 import ingage.ingage20.handlers.ChatRoomHandler;
 import ingage.ingage20.handlers.SpectateRoomHandler;
+import ingage.ingage20.handlers.SubmitCommentsHandler;
 import ingage.ingage20.helpers.ChatMessageHelper;
 import ingage.ingage20.managers.ChatRoomManager;
 import ingage.ingage20.managers.SessionManager;
@@ -52,7 +53,7 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
     String targetUser;
     private static final int RESULT_TARGET_USER = 1;
     DatabaseReference root;
-    String chat_msg, chat_username, chat_side, chat_timestamp, chat_id;
+    String chat_msg, chat_username, chat_side, chat_timestamp, chat_id, thread_id;
     Long chat_upvote, chat_downvote, currentCooldown;
     public static String user_side;
     TextView timerTv;
@@ -86,7 +87,7 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
 
         //getuser details
         HashMap<String, String> chat = chatRoomManager.getUserDetails();
-        String thread_id = chat.get(ChatRoomManager.THREAD_ID);
+        thread_id = chat.get(ChatRoomManager.THREAD_ID);
         user_side = chat.get(ChatRoomManager.SIDE);
         Log.d("STATE", "side: " + user_side);
 
@@ -96,6 +97,7 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
         recyclerView.setLayoutManager(layoutManager);
         chatAdapter = new ChatArrayAdapter();
         recyclerView.setAdapter(chatAdapter);
+
 
         //set click for upvote and downvotes in each chatmessage
         chatAdapter.setItemClickCallback(this);
@@ -166,6 +168,14 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
         temp_key = root.push().getKey();
         root.updateChildren(map);
         String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+
+        SubmitCommentsHandler submitCommentsHandler = new SubmitCommentsHandler(getApplicationContext());
+        String result;
+        try {
+            result = submitCommentsHandler.execute("submit", thread_id, messageText, messageBy, user_side).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
 
         DatabaseReference message_root = root.child(temp_key);
         Map<String, Object> map_message = new HashMap<String, Object>();

@@ -110,6 +110,7 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
         ChatMessageHelper chatMessageHelper = (ChatMessageHelper) this.getItem(position);
         //side = chatMessageHelper.getSide();
         holder.bind(position);
+
     }
 
 

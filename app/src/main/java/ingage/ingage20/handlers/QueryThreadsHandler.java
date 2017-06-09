@@ -42,23 +42,32 @@ public class QueryThreadsHandler extends AsyncTask<String, String, String> {
 
             if(type.equals("all")) {
                 try {
-
-
+                    String rowCount = params[1];
                     URL url = new URL(query_post_url);
-                    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                    HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+                    httpURLConnection.setRequestMethod("POST");
+                    httpURLConnection.setDoOutput(true);
+                    httpURLConnection.setDoInput(true);
+                    OutputStream outputStream = httpURLConnection.getOutputStream();
+                    BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                    String post_data =
+                            URLEncoder.encode("rowCount","UTF-8")+"="+ URLEncoder.encode(rowCount,"UTF-8");
+                    bufferedWriter.write(post_data);
+                    bufferedWriter.flush();
+                    bufferedWriter.close();
+                    outputStream.close();
                     InputStream inputStream = httpURLConnection.getInputStream();
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                    StringBuilder stringBuilder = new StringBuilder();
-
-                    while ((JSON_STRING = bufferedReader.readLine()) != null) {
-                        stringBuilder.append(JSON_STRING + "\n");
+                    BufferedReader bufferedReader =
+                            new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                    String result = "";
+                    String line;
+                    while((line = bufferedReader.readLine()) != null){
+                        result += line;
                     }
-
-                    bufferedReader.close();
+                    bufferedReader.close();;
                     inputStream.close();
                     httpURLConnection.disconnect();
-                    return stringBuilder.toString().trim();
-
+                    return result;
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
