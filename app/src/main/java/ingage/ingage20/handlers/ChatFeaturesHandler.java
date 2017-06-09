@@ -109,6 +109,7 @@ public class ChatFeaturesHandler  extends AsyncTask<String, String, String> {
                 String chat_id = params[4];
                 String vote = params[5];
                 String chat_side = params[6];
+                String chat_user = params[7];
                 URL url = new URL(insert_vote_url);
                 HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
@@ -122,7 +123,8 @@ public class ChatFeaturesHandler  extends AsyncTask<String, String, String> {
                                 URLEncoder.encode("thread_id","UTF-8")+"="+ URLEncoder.encode(thread_id,"UTF-8")+"&"+
                                 URLEncoder.encode("chat_id","UTF-8")+"="+ URLEncoder.encode(chat_id,"UTF-8")+"&"+
                                 URLEncoder.encode("chat_side","UTF-8")+"="+ URLEncoder.encode(chat_side,"UTF-8")+"&"+
-                                URLEncoder.encode("prev_voted","UTF-8")+"="+ URLEncoder.encode(prev_voted,"UTF-8");
+                                URLEncoder.encode("prev_voted","UTF-8")+"="+ URLEncoder.encode(prev_voted,"UTF-8")+"&"+
+                                URLEncoder.encode("chat_user","UTF-8")+"="+ URLEncoder.encode(chat_user,"UTF-8");
                 bufferedWriter.write(post_data);
                 bufferedWriter.flush();
                 bufferedWriter.close();

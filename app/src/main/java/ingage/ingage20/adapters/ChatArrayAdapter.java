@@ -94,6 +94,7 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
         chatMessageHelper.setMessageDownvote(newObject.getMessageDownvote());
         chatMessageHelper.setMessageUpvote(newObject.getMessageUpvote());
         chatMessageHelper.setMessageText(newObject.getMessageText());
+
     }
 
     @Override
@@ -105,26 +106,115 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
         return list.get(position);
     }
 
-    @Override
-    public void onBindViewHolder(ChatArrayAdapter.ChatViewHolder holder, int position) {
-        ChatMessageHelper chatMessageHelper = (ChatMessageHelper) this.getItem(position);
-        //side = chatMessageHelper.getSide();
-        holder.bind(position);
+    public Object getItemFromID(String chat_id){
+        int position = chatHash.get(chat_id);
+        return list.get(position);
+    }
 
+    @Override
+    public void onBindViewHolder(final ChatArrayAdapter.ChatViewHolder holder, final int position) {
+        final ChatMessageHelper chatMessageHelper = (ChatMessageHelper) this.getItem(position);
+        holder.bind(position);
+        String userVote = "";
+        userVote= chatMessageHelper.getUserVote();
+        //side = chatMessageHelper.getSide();
+        if (userVote != null) {
+            if (userVote.equals("up")) {
+                holder.bUpvote.setEnabled(false);
+                holder.bDownvote.setEnabled(true);
+            } else if (userVote.equals("down")) {
+                holder.bDownvote.setEnabled(false);
+                holder.bUpvote.setEnabled(true);
+            }
+        }
+        else {
+            holder.bUpvote.setEnabled(true);
+            holder.bDownvote.setEnabled(true);
+        }
+
+        holder.bUpvote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                itemClickCallback.onUpvoteClick(position);
+                //MAKE boolean LOL
+                String prev_voted = "false", vote = "up";
+                //check if previously voted
+                if (chatMessageHelper.getUserVote() != null) {
+                    if (chatMessageHelper.getUserVote().equals("down")) {
+                        prev_voted = "true";
+                        itemClickCallback.removeDownvote(position);
+                    }//remove previous downvote
+                }
+
+                chatMessageHelper.setUserVote(vote); //set user vote to up
+                if(chatMessageHelper.getUserVote().equals(vote)){
+                    holder.bUpvote.setEnabled(false);
+                    holder.bDownvote.setEnabled(true);
+                }else {
+                    holder.bUpvote.setEnabled(true);
+                    holder.bDownvote.setEnabled(true);
+                }
+
+
+
+                /*if(!holder.bDownvote.isEnabled()) {
+                    holder.bDownvote.setEnabled(true);
+                    //itemClickCallback.removeDownvote(getAdapterPosition());
+                    prev_voted = "true";
+                }*/
+
+                //insert into user profile
+                itemClickCallback.insertVote(position, prev_voted, vote);
+            }
+        });
+        holder.bDownvote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                itemClickCallback.onDownvoteClick(position);
+                //MAKE boolean LOL
+                String prev_voted = "false", vote = "down";
+                //check if previously voted
+                if (chatMessageHelper.getUserVote() != null) {
+                    if (chatMessageHelper.getUserVote().equals("up")) {
+                        prev_voted = "true";
+                        itemClickCallback.removeUpvote(position);
+                    }//remove previous downvote
+                }
+
+                chatMessageHelper.setUserVote(vote);
+                if(chatMessageHelper.getUserVote().equals(vote)){
+                    holder.bDownvote.setEnabled(false);
+                    holder.bUpvote.setEnabled(true);
+                }else {
+                    holder.bUpvote.setEnabled(true);
+                    holder.bDownvote.setEnabled(true);
+                }
+                /**if(!holder.bUpvote.isEnabled()) {
+                 holder.bUpvote.setEnabled(true);
+                 //itemClickCallback.removeUpvote(getAdapterPosition());
+                 prev_voted = "true";
+                 }**/
+
+                //insert into user profile
+                itemClickCallback.insertVote(position, prev_voted, vote);
+            }
+        });
     }
 
 
 
-    class ChatViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    class ChatViewHolder extends RecyclerView.ViewHolder{
         TextView messageContentView, messageUserView, messageDateView, upVoteView, downVoteView;
         Button bUpvote, bDownvote;
 
         public ChatViewHolder(View itemView) {
             super(itemView);
             bUpvote = (Button) itemView.findViewById(R.id.upvote);
-            bUpvote.setOnClickListener(this);
+
             bDownvote = (Button) itemView.findViewById(R.id.downvote);
-            bDownvote.setOnClickListener(this);
+
             messageContentView = (TextView) itemView.findViewById(R.id.message_content_view);
             messageUserView = (TextView) itemView.findViewById(R.id.message_user_view);
             messageDateView = (TextView) itemView.findViewById(R.id.message_date_view);
@@ -141,12 +231,16 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
             messageDateView.setText(chatMessageHelper.getMessageTime());
             upVoteView.setText(chatMessageHelper.getMessageUpvote().toString());
             downVoteView.setText(chatMessageHelper.getMessageDownvote().toString());
+            String userVote = "";
+            userVote = chatMessageHelper.getUserVote();
+            Log.d("VOTESTATE", "text: " + userVote + chatMessageHelper.getMessageText() + " " + chatMessageHelper.getUserVote());
         }
-
+/*
         @Override
         public void onClick(View v) {
             if (v.getId() == R.id.upvote){
                 itemClickCallback.onUpvoteClick(getAdapterPosition());
+                Log.d("VOTECLICK", "yes" );
                 //MAKE boolean LOL
                 String prev_voted = "false", vote = "up";;
                 bUpvote.setEnabled(false);
@@ -159,7 +253,7 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
                 //insert into user profile
                 itemClickCallback.insertVote(getAdapterPosition(), prev_voted, vote);
             }
-            if (v.getId() == R.id.downvote){
+            else if (v.getId() == R.id.downvote){
                 itemClickCallback.onDownvoteClick(getAdapterPosition());
                 //MAKE boolean LOL
                 String prev_voted = "false", vote = "down";
@@ -173,7 +267,7 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
                 //insert into user profile
                 itemClickCallback.insertVote(getAdapterPosition(), prev_voted, vote);
             }
-        }
+        }*/
 
     }
 
