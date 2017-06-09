@@ -333,7 +333,7 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
             ChatMessageHelper msgId = (ChatMessageHelper) chatAdapter.getItemFromID(chat_id);
 
             String chat_userVote = msgId.getUserVote();
-
+            Log.d("USERVOTE" , "result : " + chat_userVote);
             ChatMessageHelper msg = new ChatMessageHelper(chat_id, chat_side, chat_msg, chat_username, chat_upvote,
                     chat_downvote, chat_timestamp, chat_userVote);
             chatAdapter.update(msg, chat_id);
@@ -546,7 +546,11 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
         String type = "insert_vote";
         ChatFeaturesHandler chatFeaturesHandler = new ChatFeaturesHandler(getApplicationContext());
         ChatMessageHelper chatMessageHelper = (ChatMessageHelper) chatAdapter.getItem(p);
-        String username = chatMessageHelper.getMessageUser();
+
+        //sets user's vote to memory
+        chatMessageHelper.setUserVote(vote);
+        //username is messageBy
+        String messageBy = chatMessageHelper.getMessageUser();
         Log.d("insertvote", type + vote+ prev_voted);
         String chat_id = chatMessageHelper.getMessageID();
         String chat_side = chatMessageHelper.getSide();
@@ -554,12 +558,14 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
         String thread_id = chat.get(ChatRoomManager.THREAD_ID);
         session = new SessionManager(getApplicationContext());
         HashMap<String, String> user = session.getUserDetails();
+        //chatuser is current user of app
         String chat_user = user.get(SessionManager.KEY_NAME);
         //insert vote into target user profile and own profile
         Log.d("insertvote", chat_user);
+
         String result = "";
         try {
-            result = chatFeaturesHandler.execute(type, username, thread_id, prev_voted, chat_id, vote, chat_side, chat_user).get();
+            result = chatFeaturesHandler.execute(type, messageBy, thread_id, prev_voted, chat_id, vote, chat_side, chat_user).get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
