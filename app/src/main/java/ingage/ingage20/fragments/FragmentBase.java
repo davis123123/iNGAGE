@@ -234,11 +234,11 @@ public class FragmentBase extends Fragment{
         SpectateRoomHandler spectateRoomHandler = new SpectateRoomHandler(getActivity().getApplicationContext());
 
         try {
+            //Log.d("JOINSPECTATE", "yes");
             result = spectateRoomHandler.execute(type, thread_id, username).get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-
         if (result.equals("Spectate room failed")){
             Toast.makeText(getActivity(), "spectate room failed!", Toast.LENGTH_LONG).show();
         }

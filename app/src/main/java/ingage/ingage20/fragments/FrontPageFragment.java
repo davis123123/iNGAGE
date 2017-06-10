@@ -116,11 +116,12 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
                     {
                         if ( (visibleItemCount + pastVisiblesItems) >= totalItemCount)
                         {
-                            loading = false;
+                            //loading = false;
                             Log.d("...", "Last Item Wow !");
                             rowCount += 10;
                             getThreadsJSON(rowCount);
                             inflateThreads();
+
                             //Do pagination.. i.e. fetch new data
                         }
                     }
@@ -131,6 +132,7 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
 
     public void getThreadsJSON(int rowCount){
         queryThreadsHandler = new QueryThreadsHandler();
+        Log.d("ROWCOUNT" , " result : " + rowCount);
         try {
             json_string = queryThreadsHandler.execute("all", String.valueOf(rowCount)).get();
             Log.d("STATE" , "query result : " + json_string);
@@ -155,6 +157,7 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
 
     @Override
     public void onSpectateBtnClick(int p) {
+        Log.d("SPECTATEBUTTON", "clicked");
         spectate(p);
     }
 

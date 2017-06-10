@@ -3,6 +3,7 @@ package ingage.ingage20.handlers;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -35,6 +36,7 @@ public class SpectateRoomHandler extends AsyncTask<String, String, String> {
         String type = params[0];
         String spectate_url = "http://10.0.0.199/spectate_room.php";
         String leave_spectate_url =  "http://10.0.0.199/leave_spectate.php";
+        Log.d("JOINSPECTATE", "yes");
          if (type.equals("spectate")) {
             try {
                 String thread_id = params[1];
