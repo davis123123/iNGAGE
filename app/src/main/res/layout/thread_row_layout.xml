@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -20,6 +21,17 @@
         android:textSize="30sp" />
 
     <TextView
+        android:id="@+id/thread_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/thread_title_view"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_toStartOf="@+id/spectateBtn"
+        android:text="Description goes here"
+        android:textColor="#000000" />
+
+    <TextView
         android:id="@+id/thread_category_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,29 +41,30 @@
         android:text="Category"
         android:gravity="left"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:textSize="15sp"
-        android:layout_below="@+id/thread_title_view" />
+        android:textSize="18dp"
+        android:layout_below="@+id/thread_content"
+        android:layout_alignStart="@+id/thread_title_view" />
 
     <TextView
         android:id="@+id/thread_by_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-condensed"
-        android:textStyle="italic|bold|normal"
-        android:text="user"
-        android:gravity="left"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textSize="15sp"
         android:layout_alignBaseline="@+id/thread_category_view"
         android:layout_alignBottom="@+id/thread_category_view"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="20dp" />
+        android:layout_marginEnd="20dp"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="left"
+        android:text="user"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="16dp"
+        android:textStyle="italic|bold|normal" />
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/thread_category_view">
+        android:layout_below="@+id/thread_content">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -60,6 +73,7 @@
             android:layout_alignEnd="@+id/thread_by_view"
             android:layout_alignParentTop="true"
             android:layout_alignStart="@+id/thread_by_view"
+            android:layout_marginTop="10dp"
             android:scaleType="fitXY"
             android:adjustViewBounds="true"
             android:maxHeight="200dp"
@@ -77,20 +91,10 @@
         android:textColor="#FFFFFF"
         android:layout_alignParentTop="true"
         android:layout_alignEnd="@+id/thread_title_view"
-        android:layout_above="@+id/thread_by_view"
+        android:layout_above="@+id/thread_content"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"/>
 
-    <TextView
-        android:id="@+id/thread_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Content"
-        android:textColor="#000000"
-        android:layout_marginStart="36dp"
-        android:layout_alignBottom="@+id/thread_by_view"
-        android:layout_alignTop="@+id/thread_category_view"
-        android:layout_toEndOf="@+id/thread_category_view" />
 
     <!-- SHOULD OR SHOULDNOT DISPLAY CONTENT IN VIEW?
     <TextView
