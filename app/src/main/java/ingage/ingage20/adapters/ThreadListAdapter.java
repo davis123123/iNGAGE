@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -172,6 +173,9 @@ public class ThreadListAdapter extends RecyclerView.Adapter<ThreadListAdapter.Th
                     byte[] decodedString = Base64.decode(code, Base64.DEFAULT);
                     Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                     threadImageView.setImageBitmap(decodedByte);
+                    LinearLayout.LayoutParams img_params = new LinearLayout.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, 1000);
+                    threadImageView.setLayoutParams(img_params);
+                    threadContentTextView.setText(" ");
                 }
                 else
                     threadImageView.setImageBitmap(null);

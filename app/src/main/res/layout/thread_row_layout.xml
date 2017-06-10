@@ -52,6 +52,7 @@
         android:layout_alignBaseline="@+id/thread_category_view"
         android:layout_alignBottom="@+id/thread_category_view"
         android:layout_alignParentEnd="true"
+        android:layout_below="@+id/spectateBtn"
         android:layout_marginEnd="20dp"
         android:fontFamily="sans-serif-condensed"
         android:gravity="left"
@@ -59,6 +60,19 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textSize="16dp"
         android:textStyle="italic|bold|normal" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Spectate"
+        android:background="@layout/button"
+        android:id="@+id/spectateBtn"
+        android:textColor="#FFFFFF"
+        android:layout_alignParentTop="true"
+        android:layout_alignEnd="@+id/thread_title_view"
+        android:layout_above="@+id/thread_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"/>
 
     <LinearLayout
         android:orientation="horizontal"
@@ -76,24 +90,10 @@
             android:layout_marginTop="10dp"
             android:scaleType="fitXY"
             android:adjustViewBounds="true"
-            android:maxHeight="200dp"
-            android:maxWidth="200dp"
             android:gravity="center_horizontal"/>
 
     </LinearLayout>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Spectate"
-        android:background="@layout/button"
-        android:id="@+id/spectateBtn"
-        android:textColor="#FFFFFF"
-        android:layout_alignParentTop="true"
-        android:layout_alignEnd="@+id/thread_title_view"
-        android:layout_above="@+id/thread_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"/>
 
 
     <!-- SHOULD OR SHOULDNOT DISPLAY CONTENT IN VIEW?
