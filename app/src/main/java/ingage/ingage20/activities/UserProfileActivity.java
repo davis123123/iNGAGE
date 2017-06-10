@@ -2,6 +2,7 @@ package ingage.ingage20.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.HashMap;

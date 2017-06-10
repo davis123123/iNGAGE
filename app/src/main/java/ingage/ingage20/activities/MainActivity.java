@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity
     private static ArrayAdapter<String> adapter = null;
 
     public static String appToken;
+    ListView lvItems;
 
     private void setupToolbar(final Bundle savedInstanceState) {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -106,9 +108,10 @@ public class MainActivity extends AppCompatActivity
     protected void setupNavigationDrawer(){
 
         //set up array adapter for subscribed categories
-        ListView lvItems = (ListView) findViewById(R.id.nav_drawer_items);
+        lvItems = (ListView) findViewById(R.id.nav_drawer_items);
         adapter=new ArrayAdapter<String>(this, R.layout.lv_item, subs);
         lvItems.setAdapter(adapter);
+        //setupListViewListener();
         adapter.notifyDataSetChanged();
 
         TextView userName = (TextView) findViewById(R.id.userName);
@@ -188,6 +191,7 @@ public class MainActivity extends AppCompatActivity
 
         setupNavigationMenu(savedInstanceState);
         /**RecyclerView (TEMPORARY, MOVE TO A FRAGMENT LATER)**/
+        ListView lvItems;
 
         parseJSON();
 
@@ -265,6 +269,21 @@ public class MainActivity extends AppCompatActivity
         return subs;
     }
 
+    // Attaches a long click listener and click listener to the listview
+    private void setupListViewListener() {
+
+                lvItems.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            final int pos = position;
+                            Log.d("STATE", "Nav item clicked: "+ lvItems.getItemAtPosition(pos));
+                    }
+                });
+
+
+    }
+
+
 
     @Override
     public void onBackPressed() {
@@ -291,7 +310,7 @@ public class MainActivity extends AppCompatActivity
         adapter.notifyDataSetChanged();
 
         parseJSON();
-        ListView lvItems = (ListView) findViewById(R.id.nav_drawer_items);
+        lvItems = (ListView) findViewById(R.id.nav_drawer_items);
         adapter=new ArrayAdapter<String>(this, R.layout.lv_item, subs);
         lvItems.setAdapter(adapter);
         adapter.notifyDataSetChanged();

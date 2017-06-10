@@ -219,6 +219,7 @@ public class FragmentBase extends Fragment{
         }//for joining arguments
         else {
             Intent startChildActivityIntent = new Intent(getActivity(), ChatActivity.class);
+            startChildActivityIntent.putExtra("isSpectate", "true");
             startActivity(startChildActivityIntent);
         }//for spectating
     }

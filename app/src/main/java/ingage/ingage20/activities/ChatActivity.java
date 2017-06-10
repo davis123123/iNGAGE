@@ -167,6 +167,11 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
             //calls event listener to update message in realtime
             eventListener(root);
         }
+        HashMap<String, String> chat_user = chatRoomManager.getUserDetails();
+        String spectator = chat_user.get(ChatRoomManager.SPECTATOR);
+        if (spectator.equals("true")){
+            setSpectateMode();
+        }
     }
     private void insertUserVotesHashMap() {
         VotesHandler votesHandler = new VotesHandler(getApplicationContext());
@@ -282,6 +287,7 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
 
             SpectateRoomHandler spectateRoomHandler = new SpectateRoomHandler(getApplicationContext());
             String result;
+            setSpectateMode();
             try {
                 result = spectateRoomHandler.execute(type, thread_id, username).get();
             } catch (InterruptedException | ExecutionException e) {
@@ -289,6 +295,13 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
             }
             paused = false;
         }
+    }
+
+    private void setSpectateMode(){
+        textField.setVisibility(View.GONE);
+        addButton.setVisibility(View.GONE);
+        timerTv.setVisibility(View.GONE);
+        useCoinBt.setVisibility(View.GONE);
     }
 
     private void leaveRoom() {
