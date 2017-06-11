@@ -65,6 +65,7 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
     TextView timerTv;
     ImageButton addButton;
     EditText textField;
+    View rect;
     boolean haschar = false;
     CountDownTimer mCountDownTimer;
     Button useCoinBt;
@@ -84,6 +85,7 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
 
         timerTv = (TextView) findViewById(R.id.timertv);
         useCoinBt = (Button) findViewById(R.id.cooldownButton);
+        rect = (View) findViewById(R.id.rect);
 
         useCoinBt.setOnClickListener(new View.OnClickListener() {
 
@@ -302,6 +304,7 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
         addButton.setVisibility(View.GONE);
         timerTv.setVisibility(View.GONE);
         useCoinBt.setVisibility(View.GONE);
+        rect.setVisibility(View.GONE);
     }
 
     private void leaveRoom() {
