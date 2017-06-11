@@ -3,6 +3,8 @@ package ingage.ingage20.adapters;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.util.Log;
@@ -32,7 +34,7 @@ public class ThreadListAdapter extends RecyclerView.Adapter<ThreadListAdapter.Th
     private static final String TAG = ThreadListAdapter.class.getSimpleName();
     List list = new ArrayList();
     private ItemClickCallback itemClickCallback;
-
+    ArrayList<Boolean> is_img_set= new ArrayList();
 
 
 
@@ -74,15 +76,55 @@ public class ThreadListAdapter extends RecyclerView.Adapter<ThreadListAdapter.Th
         return list.get(position);
     }
 
+    /*public void onClick(View view) {
+        if (view.getId() == R.id.thread_row_root){
+            itemClickCallback.onContainerClick(getAdapterPosition());
+        }
+        if (view.getId() == R.id.spectateBtn){
+            Log.d("CLICKSTATE", "specatebtn");
+            itemClickCallback.onSpectateBtnClick(getAdapterPosition());
+        }
+        //int clickedPosition = getAdapterPosition();
+        //mOnClickListener.onListItemClick(clickedPosition);
+    }*/
+
     @Override
     public void onBindViewHolder(ThreadListAdapter.ThreadViewHolder holder, int position) {
         ThreadsHelper threadsHelper = (ThreadsHelper) this.getItem(position);
         holder.bind(position);
+        final int pos = position;
+        holder.container.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                itemClickCallback.onContainerClick(pos);
+            }
+        });
+        holder.mSpectateBtn.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                itemClickCallback.onSpectateBtnClick(pos);
+            }
+        });
+        //holder.itemView.setOnClickListener();
+        holder.threadTitleTextView.setText(threadsHelper.getThread_title());
+        holder.threadByTextView.setText(threadsHelper.getThread_by());
+        holder.threadCategoryTextView.setText(threadsHelper.getThread_category());
+        if(threadsHelper.getThread_content() != null)
+            //Log.d("STATE", "content: " + threadsHelper.getThread_content());
+            holder.threadContentTextView.setText(threadsHelper.getThread_content());
+
+        //holder.threadImageView = (ImageView) itemView.findViewById(R.id.img_post);
+
+        //BitmapDrawable drawable = (BitmapDrawable)holder.threadImageView.getDrawable();
+        //Bitmap bitmap = drawable.getBitmap();
+
     }
 
 
 
-    class ThreadViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    class ThreadViewHolder extends RecyclerView.ViewHolder{
 
         TextView threadTitleTextView, threadByTextView, threadCategoryTextView, threadContentTextView ;
         ImageView threadImageView;
@@ -103,12 +145,12 @@ public class ThreadListAdapter extends RecyclerView.Adapter<ThreadListAdapter.Th
             threadCategoryTextView = (TextView) itemView.findViewById(R.id.thread_category_view);
             threadImageView = (ImageView) itemView.findViewById(R.id.img_post);
             threadContentTextView = (TextView) itemView.findViewById(R.id.thread_content);
+            threadImageView = (ImageView) itemView.findViewById(R.id.img_post);
 
             container = itemView.findViewById(R.id.thread_row_root);
-            container.setOnClickListener(this);
 
             mSpectateBtn = (Button) itemView.findViewById(R.id.spectateBtn);
-            mSpectateBtn.setOnClickListener(this);
+
 
             //testing setting a drawable programatically
             /*if(threadImageView != null)
@@ -116,45 +158,21 @@ public class ThreadListAdapter extends RecyclerView.Adapter<ThreadListAdapter.Th
             else
                 Log.d("STATE", "img is null");
 */
-            itemView.setOnClickListener(this);
+
         }
 
-        @Override
-        public void onClick(View view) {
-            if (view.getId() == R.id.thread_row_root){
-                itemClickCallback.onContainerClick(getAdapterPosition());
-            }
-            if (view.getId() == R.id.spectateBtn){
-                Log.d("CLICKSTATE", "specatebtn");
-                itemClickCallback.onSpectateBtnClick(getAdapterPosition());
-            }
-            //int clickedPosition = getAdapterPosition();
-            //mOnClickListener.onListItemClick(clickedPosition);
-        }
 
         private void bind(int listIndex){
-            ThreadsHelper threadsHelper = (ThreadsHelper) getItem(listIndex);
-            threadTitleTextView.setText(threadsHelper.getThread_title());
-            threadByTextView.setText(threadsHelper.getThread_by());
-            threadCategoryTextView.setText(threadsHelper.getThread_category());
-            if(threadsHelper.getThread_content() != null)
-                //Log.d("STATE", "content: " + threadsHelper.getThread_content());
-                threadContentTextView.setText(threadsHelper.getThread_content());
-
-            threadImageView = (ImageView) itemView.findViewById(R.id.img_post);
-
-            String str = threadsHelper.getThread_img();
             //Log.d("STATE", "room title: " + threadsHelper.getThread_title());
             //Log.d("STATE", "thread helper img: "+ str + ",length: " + str.length());
             //if(!threadsHelper.getThread_img().equalsIgnoreCase("") && str.length() != 0) {
                 //Log.d("STATE", "call download...");
 
-            downloadImage(threadsHelper);
 
         }
 
         //retrieve Base64 from FireBase and convert to image
-        private void downloadImage(ThreadsHelper threadsHelper){
+        private void downloadImage(ThreadsHelper threadsHelper, int pos){
             Context context = itemView.getContext();
             DownloadImageHandler dlHandler = new DownloadImageHandler(context);
             String type = "download";
@@ -163,22 +181,26 @@ public class ThreadListAdapter extends RecyclerView.Adapter<ThreadListAdapter.Th
 
             //do conversion
             try {
-                threadImageView = (ImageView) itemView.findViewById(R.id.img_post);
+                //threadImageView = (ImageView) itemView.findViewById(R.id.img_post);
                 String result = dlHandler.execute(type, thread_id).get();
-                //Log.d("STATE", "room title: " + threadsHelper.getThread_title());
-                //Log.d("STATE", "download result: " + result);
+
+
                 if(result.substring(0,4).equals("data")) {
-                    int index =result.indexOf(",") + 1;
+                    is_img_set.set(pos, true);
+
+                    /*int index =result.indexOf(",") + 1;
                     String code = result.substring(index, result.length());
                     byte[] decodedString = Base64.decode(code, Base64.DEFAULT);
                     Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                     threadImageView.setImageBitmap(decodedByte);
                     LinearLayout.LayoutParams img_params = new LinearLayout.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, 1000);
                     threadImageView.setLayoutParams(img_params);
-                    threadContentTextView.setText(" ");
+                    threadContentTextView.setText(" ");*/
                 }
-                else
-                    threadImageView.setImageBitmap(null);
+                else {
+                    is_img_set.set(pos, false);
+                    //threadImageView.setImageBitmap(null);
+                }
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
@@ -188,6 +210,36 @@ public class ThreadListAdapter extends RecyclerView.Adapter<ThreadListAdapter.Th
                 float density = context.getResources().getDisplayMetrics().density;
                 int padding = (int)(20 * density);
                 threadImageView.setPadding(padding, padding, padding, padding);
+            }
+
+            for(int i=0; i < is_img_set.size(); i++){
+                context = itemView.getContext();
+                dlHandler = new DownloadImageHandler(context);
+                type = "download";
+
+                thread_id = threadsHelper.getThread_id();
+                String result = null;
+                Log.d("STATE", "content: " + threadsHelper.getThread_title());
+                Log.d("STATE", "has img: " + is_img_set.get(i));
+                try {
+                    result = dlHandler.execute(type, thread_id).get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+                if(is_img_set.get(i)){
+                        int index = result.indexOf(",") + 1;
+                        String code = result.substring(index, result.length());
+                        byte[] decodedString = Base64.decode(code, Base64.DEFAULT);
+                        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                        threadImageView.setImageBitmap(decodedByte);
+                        LinearLayout.LayoutParams img_params = new LinearLayout.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, 1000);
+                        threadImageView.setLayoutParams(img_params);
+                        threadContentTextView.setText(" ");
+                }
+                else if (!is_img_set.get(i))
+                    threadImageView.setImageBitmap(null);
             }
         }
 
