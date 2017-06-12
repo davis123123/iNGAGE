@@ -1,4 +1,4 @@
-package ingage.ingage20.FireBase;
+package ingage.ingage20.firebase;
 
 import android.app.Notification;
 import android.app.NotificationManager;

@@ -1,4 +1,4 @@
-package ingage.ingage20.FireBase;
+package ingage.ingage20.firebase;
 
 import android.content.Intent;
 import android.util.Log;
