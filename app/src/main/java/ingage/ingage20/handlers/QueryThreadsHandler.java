@@ -37,8 +37,8 @@ public class QueryThreadsHandler extends AsyncTask<String, String, String> {
 
         String type = params[0];
 
-        String query_post_url = "http://24.7.128.143/query_post.php";
-        String query_category_url = "http://24.7.128.143/query_category.php";
+        String query_post_url = "http://10.0.0.199/query_post.php";
+        String query_category_url = "http://10.0.0.199/query_category.php";
 
             if(type.equals("all")) {
                 try {

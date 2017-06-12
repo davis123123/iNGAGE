@@ -335,6 +335,15 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.action_settings) {
             return true;
         }
+        else if (id == R.id.action_new) {
+            return true;
+        }
+        else if (id == R.id.action_trending) {
+            return true;
+        }
+        else if (id == R.id.action_search) {
+            return true;
+        }
 
         if(id == R.id.action_refresh){
 
