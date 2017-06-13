@@ -3,6 +3,7 @@ package ingage.ingage20.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -19,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,6 +68,7 @@ public class MainActivity extends AppCompatActivity
 
     public static String appToken;
     ListView lvItems;
+    android.support.v7.widget.SearchView searchView;
 
     //dont use enum cuz bad  performance in Android, uses more RAM and memory
     static String pageCategory = "none";
@@ -325,6 +328,9 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        MenuItem myActionMenuItem = menu.findItem(R.id.action_search);
+        searchView = (android.support.v7.widget.SearchView) myActionMenuItem.getActionView();
+
         return true;
     }
 
@@ -347,12 +353,31 @@ public class MainActivity extends AppCompatActivity
             onTrend();
             return true;
         }
-        else if (id == R.id.action_search) {
-            return true;
-        }
 
         if(id == R.id.action_refresh){
             onRefresh();
+            return true;
+        }
+
+        if (id == R.id.action_search) {
+
+
+                searchView.setOnSearchClickListener(this);
+                searchView.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String s) {
+
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String s) {
+
+
+                        return false;
+                    }
+                });
+
             return true;
         }
 

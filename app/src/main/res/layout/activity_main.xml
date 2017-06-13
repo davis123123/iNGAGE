@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.MainActivity"
-    android:background="#f2f2f2">
+    android:background="#e6e6e6">
 
     <LinearLayout
         android:id="@+id/main_content_layout"
@@ -22,7 +22,8 @@
             android:background="@color/colorPrimary"
             app:contentInsetEnd="0dp"
             app:contentInsetStart="0dp"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            />
 
         <FrameLayout
             android:id="@+id/main_fragment_container"

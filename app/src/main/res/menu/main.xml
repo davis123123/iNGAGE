@@ -2,10 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
+    <item
+        android:id="@+id/action_search"
+        android:icon="@android:drawable/ic_menu_search"
+        app:showAsAction="always"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        android:orderInCategory="1"
+        android:title="Search"/>
     <item
         android:title="@string/action_refresh"
         android:id="@+id/action_refresh"
-        android:orderInCategory="1"
+        android:orderInCategory="2"
         app:showAsAction="ifRoom"/>
 
     <item
@@ -26,11 +34,6 @@
         android:title="@string/action_trending"
         app:showAsAction="never" />
 
-    <item
-        android:id="@+id/action_search"
-        android:orderInCategory="100"
-        android:title="@string/action_search"
-        app:showAsAction="never" />
 
 
 </menu>
