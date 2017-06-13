@@ -44,6 +44,7 @@ public class SessionManager {
     // Subscriptions (make variable public to access from outside)
     public static final String KEY_SUBSCRIPTIONS = "subscriptions";
 
+    public static final String PAGE_TYPE = "page_type";
 
     // Constructor
     public SessionManager(Context context){
@@ -82,6 +83,13 @@ public class SessionManager {
         editor.commit();
     }
 
+    public void updatePage(String pageType){
+        editor.putString(PAGE_TYPE, pageType);
+
+        // commit changes
+        editor.commit();
+    }
+
     public void checkLogin(){
         // Check login status
         if(!this.isLoggedIn()){
@@ -113,6 +121,7 @@ public class SessionManager {
         user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
         user.put(KEY_SUBSCRIPTIONS, pref.getString(KEY_SUBSCRIPTIONS, null));
         user.put(KEY_TRIBUTE_POINTS, pref.getString(KEY_TRIBUTE_POINTS, null));
+        user.put(PAGE_TYPE, pref.getString(PAGE_TYPE, null));
 
         // return user
         return user;

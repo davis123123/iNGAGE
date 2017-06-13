@@ -133,8 +133,11 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
     public void getThreadsJSON(int rowCount){
         queryThreadsHandler = new QueryThreadsHandler();
         Log.d("ROWCOUNT" , " result : " + rowCount);
+        session = new SessionManager(getActivity().getApplicationContext());
+        HashMap<String, String> user = session.getUserDetails();
+        String type = user.get(SessionManager.PAGE_TYPE);
         try {
-            json_string = queryThreadsHandler.execute("all", String.valueOf(rowCount)).get();
+            json_string = queryThreadsHandler.execute(type, String.valueOf(rowCount)).get();
             Log.d("STATE" , "query result : " + json_string);
         } catch (InterruptedException e) {
             e.printStackTrace();

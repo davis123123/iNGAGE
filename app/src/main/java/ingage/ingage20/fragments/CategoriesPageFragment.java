@@ -17,6 +17,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 import ingage.ingage20.handlers.QueryThreadsHandler;
@@ -24,34 +25,35 @@ import ingage.ingage20.helpers.ThreadsHelper;
 import ingage.ingage20.activities.PostThreadActivity;
 import ingage.ingage20.R;
 import ingage.ingage20.adapters.ThreadListAdapter;
+import ingage.ingage20.managers.SessionManager;
 
 /**
  * Created by Davis on 4/4/2017.
  */
 
 public class CategoriesPageFragment extends FragmentBase implements ThreadListAdapter.ItemClickCallback{
-    private static final String TAG = "FrontPageFragment";
 
-    String JSON_STRING;
-    FloatingActionButton postThreadButton;
-    protected RecyclerView threadListRecyclerView;
-    ThreadListAdapter threadListAdapter;
     QueryThreadsHandler queryThreadsHandler;
-    View rootView;
 
-    String json_string;
-    JSONObject jsonObject;
-    JSONArray jsonArray;
+    private boolean loading = true;
+    int pastVisiblesItems, visibleItemCount, totalItemCount;
+    int rowCount = 0;
 
+    private static final String TAG = "CategoriesPageFragment";
 
-    Toast mToast;
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              final Bundle savedInstanceState) {
 
+        View v = create(inflater, container, savedInstanceState);
+        return v;
+    }
+
+    public View create(final LayoutInflater inflater, final ViewGroup container,
+                       final Bundle savedInstanceState){
         // Inflate the layout for this fragment
-        getJSON();
+        getThreadsJSON(rowCount);
         rootView = inflater.inflate(R.layout.fragment_front_page, container, false);
         rootView.setTag(TAG);
         return rootView;
@@ -61,36 +63,22 @@ public class CategoriesPageFragment extends FragmentBase implements ThreadListAd
     public void onViewCreated(final View view, final Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
 
+
+
         //TODO fix threadlistadapter for dynamic threads
         threadListRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv_posts);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+
+
+
         threadListRecyclerView.setLayoutManager(layoutManager);
+
+
         threadListAdapter = new ThreadListAdapter(this);
         threadListRecyclerView.setAdapter(threadListAdapter);
+        Log.d("STATE", "serverstring" + json_string);
 
-        try {
-            jsonObject = new JSONObject(json_string);
-            jsonArray = jsonObject.getJSONArray("server_response");
-            int count= 0;
-            String thread_id, thread_title, thread_content, thread_by, thread_date, thread_category;
-            String thread_img = null;
-            while(count < jsonArray.length()){
-                JSONObject JO = jsonArray.getJSONObject(count);
-                thread_id = JO.getString("thread_id");
-                thread_title = JO.getString("thread_title");
-                thread_content = JO.getString("thread_content");
-                thread_by = JO.getString("thread_by");
-                thread_date = JO.getString("thread_date");
-                thread_category = JO.getString("thread_category");
-                ThreadsHelper threadsHelper = new ThreadsHelper(thread_id, thread_title,
-                        thread_content,thread_by,thread_date, thread_category, thread_img);
-                threadListAdapter.add(threadsHelper);
-                count++;
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        inflateThreads();
 
         postThreadButton = (FloatingActionButton) rootView.findViewById(R.id.fab);
         postThreadButton.setOnClickListener(new View.OnClickListener() {
@@ -101,12 +89,46 @@ public class CategoriesPageFragment extends FragmentBase implements ThreadListAd
                 }
             }
         });
+
+
+        threadListRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
+        {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy)
+            {
+                //Log.d("...", "Lastnot Item Wow !");
+                if(dy > 0) //check for scroll down
+                {
+                    visibleItemCount = layoutManager.getChildCount();
+                    totalItemCount = layoutManager.getItemCount();
+                    pastVisiblesItems = layoutManager.findFirstVisibleItemPosition();
+
+                    if (loading)
+                    {
+                        if ( (visibleItemCount + pastVisiblesItems) >= totalItemCount)
+                        {
+                            //loading = false;
+                            Log.d("...", "Last Item Wow !");
+                            rowCount += 10;
+                            getThreadsJSON(rowCount);
+                            inflateThreads();
+
+                            //Do pagination.. i.e. fetch new data
+                        }
+                    }
+                }
+            }
+        });
     }
 
-    public void getThreadsJSON(){
+    public void getThreadsJSON(int rowCount){
         queryThreadsHandler = new QueryThreadsHandler();
+        Log.d("ROWCOUNT" , " result : " + rowCount);
+        session = new SessionManager(getActivity().getApplicationContext());
+        HashMap<String, String> user = session.getUserDetails();
+        String type = user.get(SessionManager.PAGE_TYPE);
         try {
-            json_string = queryThreadsHandler.execute("choose", "Politics").get();
+            json_string = queryThreadsHandler.execute(type, String.valueOf(rowCount)).get();
             Log.d("STATE" , "query result : " + json_string);
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -119,24 +141,47 @@ public class CategoriesPageFragment extends FragmentBase implements ThreadListAd
         startActivity(new Intent(getActivity(),PostThreadActivity.class));
     }
 
-    public void getJSON(){
-        queryThreadsHandler = new QueryThreadsHandler();
-        try {
-            json_string = queryThreadsHandler.execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public void onContainerClick(int p) {
-
+        itemClick(p);
     }
+
+
 
     @Override
     public void onSpectateBtnClick(int p) {
+        Log.d("SPECTATEBUTTON", "clicked");
+        spectate(p);
+    }
 
+
+    void inflateThreads() {
+        try {
+            jsonObject = new JSONObject(json_string);
+            jsonArray = jsonObject.getJSONArray("server_response");
+            int count = 0;
+            String thread_id, thread_title, thread_content, thread_by, thread_date, thread_category;
+            String thread_img = null;
+            while (count < jsonArray.length()) {
+                JSONObject JO = jsonArray.getJSONObject(count);
+                thread_id = JO.getString("thread_id");
+                thread_title = JO.getString("thread_title");
+                thread_content = JO.getString("thread_content");
+                thread_by = JO.getString("thread_by");
+                thread_date = JO.getString("thread_date");
+                thread_category = JO.getString("thread_category");
+                thread_img = JO.getString("thread_image_link");
+                ThreadsHelper threadsHelper = new ThreadsHelper(thread_id, thread_title,
+                        thread_content, thread_by, thread_date, thread_category, thread_img);
+                threadListAdapter.add(threadsHelper);
+                threadListAdapter.notifyDataSetChanged();
+                count++;
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }
+

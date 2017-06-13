@@ -20,17 +20,17 @@ import java.net.URLEncoder;
  */
 
 public class QueryThreadsHandler extends AsyncTask<String, String, String> {
-        //String json_url;
-        String JSON_STRING;
-        Context context;
-        MySQLDbHelper mySQLDbHelper;
-        //static public String mResult = "asda";
+    //String json_url;
+    String JSON_STRING;
+    Context context;
+    MySQLDbHelper mySQLDbHelper;
+    //static public String mResult = "asda";
 
     /**
-    public QueryThreadsHandler(Context mcontext) {
-        context = mcontext;
+     public QueryThreadsHandler(Context mcontext) {
+     context = mcontext;
 
-    }**/
+     }**/
 
     @Override
     protected String doInBackground(String... params) {
@@ -39,95 +39,164 @@ public class QueryThreadsHandler extends AsyncTask<String, String, String> {
 
         String query_post_url = "http://10.0.0.199/query_post.php";
         String query_category_url = "http://10.0.0.199/query_category.php";
-
-            if(type.equals("all")) {
-                try {
-                    String rowCount = params[1];
-                    URL url = new URL(query_post_url);
-                    HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
-                    httpURLConnection.setRequestMethod("POST");
-                    httpURLConnection.setDoOutput(true);
-                    httpURLConnection.setDoInput(true);
-                    OutputStream outputStream = httpURLConnection.getOutputStream();
-                    BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-                    String post_data =
-                            URLEncoder.encode("rowCount","UTF-8")+"="+ URLEncoder.encode(rowCount,"UTF-8");
-                    bufferedWriter.write(post_data);
-                    bufferedWriter.flush();
-                    bufferedWriter.close();
-                    outputStream.close();
-                    InputStream inputStream = httpURLConnection.getInputStream();
-                    BufferedReader bufferedReader =
-                            new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
-                    String result = "";
-                    String line;
-                    while((line = bufferedReader.readLine()) != null){
-                        result += line;
-                    }
-                    bufferedReader.close();;
-                    inputStream.close();
-                    httpURLConnection.disconnect();
-                    return result;
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
+        String query_trends_url = "http://10.0.0.199/query_trends.php";
+        String query_trends_by_category_url = "http://10.0.0.199/query_trends_by_category.php";
+        if(type.equals("date")) {
+            try {
+                String rowCount = params[1];
+                URL url = new URL(query_post_url);
+                HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                String post_data =
+                        URLEncoder.encode("rowCount","UTF-8")+"="+ URLEncoder.encode(rowCount,"UTF-8");
+                bufferedWriter.write(post_data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                outputStream.close();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader =
+                        new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                String result = "";
+                String line;
+                while((line = bufferedReader.readLine()) != null){
+                    result += line;
                 }
+                bufferedReader.close();;
+                inputStream.close();
+                httpURLConnection.disconnect();
+                return result;
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+        }
 
-            else if (type.equals("choose")){
+        else if (type.equals("categoryDate")){
 
 
-                try {
-                    String category = params[1];
-                    URL url = new URL(query_category_url);
-                    HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
-                    httpURLConnection.setRequestMethod("POST");
-                    httpURLConnection.setDoOutput(true);
-                    httpURLConnection.setDoInput(true);
-                    OutputStream outputStream = httpURLConnection.getOutputStream();
-                    BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-                    String post_data =
-                            URLEncoder.encode("category","UTF-8")+"="+ URLEncoder.encode(category,"UTF-8");
-                    bufferedWriter.write(post_data);
-                    bufferedWriter.flush();
-                    bufferedWriter.close();
-                    outputStream.close();
-                    InputStream inputStream = httpURLConnection.getInputStream();
-                    BufferedReader bufferedReader =
-                            new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
-                    String result = "";
-                    String line;
-                    while((line = bufferedReader.readLine()) != null){
-                        result += line;
-                    }
-                    bufferedReader.close();;
-                    inputStream.close();
-                    httpURLConnection.disconnect();
-                    return result;
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
+            try {
+                String category = params[1];
+                String rowCount = params[2];
+                URL url = new URL(query_category_url);
+                HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                String post_data =
+                        URLEncoder.encode("category","UTF-8")+"="+ URLEncoder.encode(category,"UTF-8")+"&"+
+                                URLEncoder.encode("rowCount","UTF-8")+"="+ URLEncoder.encode(rowCount,"UTF-8");;
+                bufferedWriter.write(post_data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                outputStream.close();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader =
+                        new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                String result = "";
+                String line;
+                while((line = bufferedReader.readLine()) != null){
+                    result += line;
                 }
-
+                bufferedReader.close();;
+                inputStream.close();
+                httpURLConnection.disconnect();
+                return result;
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
-            return null;
+        }
+
+        else if (type.equals("categoryTrend")){
+
+
+            try {
+                String category = params[1];
+                String rowCount = params[2];
+                URL url = new URL(query_trends_by_category_url);
+                HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                String post_data =
+                        URLEncoder.encode("category","UTF-8")+"="+ URLEncoder.encode(category,"UTF-8")+"&"+
+                                URLEncoder.encode("rowCount","UTF-8")+"="+ URLEncoder.encode(rowCount,"UTF-8");;
+                bufferedWriter.write(post_data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                outputStream.close();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader =
+                        new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                String result = "";
+                String line;
+                while((line = bufferedReader.readLine()) != null){
+                    result += line;
+                }
+                bufferedReader.close();;
+                inputStream.close();
+                httpURLConnection.disconnect();
+                return result;
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+
+        }
+
+        else if(type.equals("trend")) {
+            try {
+                String rowCount = params[1];
+                URL url = new URL(query_trends_url);
+                HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                String post_data =
+                        URLEncoder.encode("rowCount","UTF-8")+"="+ URLEncoder.encode(rowCount,"UTF-8");
+                bufferedWriter.write(post_data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                outputStream.close();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader =
+                        new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                String result = "";
+                String line;
+                while((line = bufferedReader.readLine()) != null){
+                    result += line;
+                }
+                bufferedReader.close();;
+                inputStream.close();
+                httpURLConnection.disconnect();
+                return result;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
+    }
 
     @Override
     protected void onPreExecute(){
-            //json_url = "http://10.0.0.199/query_post.php";
-            }
+    }
 
     @Override
     protected void onProgressUpdate(String... values){
         super.onProgressUpdate(values);
-        }
+    }
 
     @Override
     protected void onPostExecute(String result){
-        }
+    }
 
 }

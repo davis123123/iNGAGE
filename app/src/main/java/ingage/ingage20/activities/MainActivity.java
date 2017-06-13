@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 import ingage.ingage20.firebase.FirebaseSharedPrefManager;
+import ingage.ingage20.fragments.CategoriesPageFragment;
 import ingage.ingage20.util.NavigationDrawer;
 import ingage.ingage20.R;
 import ingage.ingage20.handlers.IdentityHandler;
@@ -66,6 +67,10 @@ public class MainActivity extends AppCompatActivity
     public static String appToken;
     ListView lvItems;
 
+    //dont use enum cuz bad  performance in Android, uses more RAM and memory
+    String pageCategory = "none";
+    String pageType = "date";
+
     private void setupToolbar(final Bundle savedInstanceState) {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         // Set up the activity to use this toolbar. As a side effect this sets the Toolbar's title
@@ -96,8 +101,8 @@ public class MainActivity extends AppCompatActivity
 
         //FOR DISPLAYING CATEGORIES
         /**for (Configurations.Feature feature : Configurations.getFeatureList()) {
-            navigationDrawer.addFeatureToMenu(feature);
-        }**/
+         navigationDrawer.addFeatureToMenu(feature);
+         }**/
 
         if (savedInstanceState == null) {
             // Add the home fragment to be displayed initially.
@@ -196,7 +201,7 @@ public class MainActivity extends AppCompatActivity
         parseJSON();
 
         setupNavigationDrawer();
-
+        session.updatePage(pageType);
         /* initilize FrontPage Fragment*/
         final FragmentManager fragmentManager = this.getSupportFragmentManager();
         final Class fragmentClass = FrontPageFragment.class;
@@ -272,13 +277,13 @@ public class MainActivity extends AppCompatActivity
     // Attaches a long click listener and click listener to the listview
     private void setupListViewListener() {
 
-                lvItems.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            final int pos = position;
-                            Log.d("STATE", "Nav item clicked: "+ lvItems.getItemAtPosition(pos));
-                    }
-                });
+        lvItems.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final int pos = position;
+                Log.d("STATE", "Nav item clicked: "+ lvItems.getItemAtPosition(pos));
+            }
+        });
 
 
     }
@@ -346,23 +351,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         if(id == R.id.action_refresh){
-
-            final FragmentManager fragmentManager = this.getSupportFragmentManager();
-            final Class fragmentClass = FrontPageFragment.class;
-            final Fragment fragment = Fragment.instantiate(this, fragmentClass.getName());
-
-            fragmentManager
-                    .beginTransaction()
-                    .replace(R.id.main_fragment_container, fragment, fragmentClass.getSimpleName())
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .commit();
-
-            // Set the title for the fragment.
-            final ActionBar actionBar = this.getSupportActionBar();
-            if (actionBar != null) {
-                actionBar.setTitle(getString(R.string.app_name));
-            }
-
+            onRefresh();
             return true;
         }
 
@@ -389,5 +378,47 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onClick(View view) {
 
+    }
+
+    public void onRefresh(){
+        final FragmentManager fragmentManager = this.getSupportFragmentManager();
+        Class fragmentClass = FrontPageFragment.class;;
+        switch (pageCategory){
+            case "categoryDate":
+                fragmentClass = CategoriesPageFragment.class;
+                pageType = "categoryDate";
+                session.updatePage(pageType);//LOOK AT THIS SHIT LMAOOOOOOOOOOOO
+                break;
+            case "categoryTrend":
+                fragmentClass = CategoriesPageFragment.class;
+                pageType = "categoryTrend";
+                session.updatePage(pageType);//fuck LAAAA
+                break;
+            case "noneDate":
+                fragmentClass = FrontPageFragment.class;
+                pageType = "date";
+                session.updatePage(pageType);//DIU HAI MAN
+                break;
+            case "noneTrend":
+                fragmentClass = FrontPageFragment.class;
+                pageType = "trend";
+                session.updatePage(pageType);
+                break;
+            case "search":
+                break;
+        }
+        final Fragment fragment = Fragment.instantiate(this, fragmentClass.getName());
+
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.main_fragment_container, fragment, fragmentClass.getSimpleName())
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit();
+
+        // Set the title for the fragment.
+        final ActionBar actionBar = this.getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(getString(R.string.app_name));
+        }
     }
 }
