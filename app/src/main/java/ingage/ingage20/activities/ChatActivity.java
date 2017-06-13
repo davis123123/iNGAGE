@@ -70,6 +70,7 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
     CountDownTimer mCountDownTimer;
     Button useCoinBt;
     boolean tagged = false, paused = false;
+    CountDownTimer kickTimer;
     HashMap<String, String> userVotes = new HashMap<String, String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +101,8 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
         HashMap<String, String> chat = chatRoomManager.getUserDetails();
         thread_id = chat.get(ChatRoomManager.THREAD_ID);
         user_side = chat.get(ChatRoomManager.SIDE);
+
+        kickTimer(900000); //fifteen minutes of inactivity will kick user out
 
         //get user votes
         insertUserVotesHashMap();
@@ -208,7 +211,11 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
         }
     }
     private void sendMsg(){
+        //start cooldown timer
         timer(180000);
+        //on send restart kicktimer
+        kickTimer.cancel();
+        kickTimer(900000);
         String messageText = textField.getText().toString();
         HashMap<String, String> user = session.getUserDetails();
         String messageBy = user.get(SessionManager.KEY_NAME);
@@ -479,7 +486,25 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
 
             }
         }.start();
-    }
+    }//timer for meesage cooldown
+
+    private void kickTimer(long inactiveTime){
+        kickTimer =
+                new CountDownTimer(inactiveTime, 1000) {
+
+                    public void onTick(long millisUntilFinished) {
+                        //blockMSG();
+                        //keeps track of current cooldown
+                        currentCooldown = millisUntilFinished;
+                        //timerTv.setText(millisUntilFinished / 1000 + " s");
+                    }
+
+                    public void onFinish() {
+                        leaveRoom();
+
+                    }
+                }.start();
+    }//timer for kicking user out for inactivity
 
     private void blockMSG(){
         addButton.setVisibility(View.INVISIBLE);
