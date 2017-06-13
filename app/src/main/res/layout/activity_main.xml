@@ -4,7 +4,8 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.MainActivity">
+    tools:context=".activities.MainActivity"
+    android:background="#f2f2f2">
 
     <LinearLayout
         android:id="@+id/main_content_layout"
@@ -44,8 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#6f6f70"
-            android:paddingBottom="10dp"
-            >
+            android:paddingBottom="10dp">
             <LinearLayout
                 android:id="@+id/user_info"
                 android:layout_width="wrap_content"

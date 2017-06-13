@@ -6,7 +6,9 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:background="@layout/frame_item"
-    android:id="@+id/thread_row_root">
+    android:id="@+id/thread_row_root"
+    android:layout_margin="8dp"
+    android:padding="10dp">
 
     <TextView
         android:id="@+id/thread_title_view"
