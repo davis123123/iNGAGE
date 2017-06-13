@@ -68,8 +68,8 @@ public class MainActivity extends AppCompatActivity
     ListView lvItems;
 
     //dont use enum cuz bad  performance in Android, uses more RAM and memory
-    String pageCategory = "none";
-    String pageType = "date";
+    static String pageCategory = "none";
+    static String pageType = "date";
 
     private void setupToolbar(final Bundle savedInstanceState) {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -344,6 +344,7 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
         else if (id == R.id.action_trending) {
+            onTrend();
             return true;
         }
         else if (id == R.id.action_search) {
@@ -356,6 +357,13 @@ public class MainActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void onTrend() {
+        final FragmentManager fragmentManager = this.getSupportFragmentManager();
+        Class fragmentClass = FrontPageFragment.class;
+
+
     }
 
 
@@ -382,7 +390,7 @@ public class MainActivity extends AppCompatActivity
 
     public void onRefresh(){
         final FragmentManager fragmentManager = this.getSupportFragmentManager();
-        Class fragmentClass = FrontPageFragment.class;;
+        Class fragmentClass = FrontPageFragment.class;
         switch (pageCategory){
             case "categoryDate":
                 fragmentClass = CategoriesPageFragment.class;
