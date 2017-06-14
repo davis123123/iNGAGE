@@ -34,6 +34,7 @@ import java.util.concurrent.ExecutionException;
 
 import ingage.ingage20.firebase.FirebaseSharedPrefManager;
 import ingage.ingage20.fragments.CategoriesPageFragment;
+import ingage.ingage20.handlers.SearchHandler;
 import ingage.ingage20.util.NavigationDrawer;
 import ingage.ingage20.R;
 import ingage.ingage20.handlers.IdentityHandler;
@@ -347,6 +348,7 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
         else if (id == R.id.action_new) {
+            onNew();
             return true;
         }
         else if (id == R.id.action_trending) {
@@ -366,7 +368,15 @@ public class MainActivity extends AppCompatActivity
                 searchView.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
                     @Override
                     public boolean onQueryTextSubmit(String s) {
-
+                        SearchHandler searchHandler = new SearchHandler();
+                        String result = "";
+                        try {
+                            result = searchHandler.execute("0", s).get();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        }
                         return false;
                     }
 
@@ -382,6 +392,11 @@ public class MainActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void onNew() {
+        final FragmentManager fragmentManager = this.getSupportFragmentManager();
+        Class fragmentClass = FrontPageFragment.class;
     }
 
     private void onTrend() {
