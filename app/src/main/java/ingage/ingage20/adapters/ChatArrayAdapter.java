@@ -14,7 +14,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import ingage.ingage20.R;
+import ingage.ingage20.activities.ChatActivity;
 import ingage.ingage20.helpers.ChatMessageHelper;
+import ingage.ingage20.managers.SessionManager;
 
 
 public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.ChatViewHolder>{
@@ -23,6 +25,8 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
     private static final String TAG = ThreadListAdapter.class.getSimpleName();
     List <ChatMessageHelper> list = new ArrayList<ChatMessageHelper>();
     HashMap<String, Integer> chatHash = new HashMap<String, Integer>();
+    SessionManager session;
+    String username;
 
 
     private ItemClickCallback itemClickCallback;
@@ -54,9 +58,18 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
         View view = inflater.inflate(R.layout.chat_layout, viewGroup, shouldAttachToParentImmediately);
         Log.d("STATE", "viewType: " + viewType);
 
+
+        session = new SessionManager(viewGroup.getContext());
+        HashMap<String, String> user = session.getUserDetails();
+        username = user.get(SessionManager.KEY_NAME);
+
         if(viewType == 0)
-            view = inflater.inflate(R.layout.chat_layout, viewGroup, shouldAttachToParentImmediately);
+            view = inflater.inflate(R.layout.chat_layout_own, viewGroup, shouldAttachToParentImmediately);
         else if(viewType == 1)
+            view = inflater.inflate(R.layout.chat_layout, viewGroup, shouldAttachToParentImmediately);
+        if(viewType == 2)
+            view = inflater.inflate(R.layout.chat_layout_own_right, viewGroup, shouldAttachToParentImmediately);
+        else if(viewType == 3)
             view = inflater.inflate(R.layout.chat_layout_right, viewGroup, shouldAttachToParentImmediately);
 
         ChatViewHolder viewHolder = new ChatViewHolder(view);
@@ -66,13 +79,21 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
     @Override
     public int getItemViewType(int position) {
         //final Object dataObj = list.get(position);
+        ChatMessageHelper chatMessageHelper = (ChatMessageHelper) getItem(position);
+        String name = chatMessageHelper.getMessageUser();
 
         if (list.get(position).getSide().equals("agree")) {
-            return 0;
+            if(name.equals(username))
+                return 0;
+            else
+                return 1;
         }
 
         else if (list.get(position).getSide().equals("disagree")) {
-            return 1;
+            if(name.equals(username))
+                return 2;
+            else
+                return 3;
         }
 
         return -1;
