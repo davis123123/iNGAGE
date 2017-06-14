@@ -34,6 +34,7 @@ import java.util.concurrent.ExecutionException;
 
 import ingage.ingage20.firebase.FirebaseSharedPrefManager;
 import ingage.ingage20.fragments.CategoriesPageFragment;
+import ingage.ingage20.fragments.SearchResultFragment;
 import ingage.ingage20.handlers.SearchHandler;
 import ingage.ingage20.util.NavigationDrawer;
 import ingage.ingage20.R;
@@ -205,7 +206,7 @@ public class MainActivity extends AppCompatActivity
         parseJSON();
 
         setupNavigationDrawer();
-        session.updatePage(pageType);
+        session.updatePage("none", pageType);
         /* initilize FrontPage Fragment*/
         final FragmentManager fragmentManager = this.getSupportFragmentManager();
         final Class fragmentClass = FrontPageFragment.class;
@@ -362,47 +363,60 @@ public class MainActivity extends AppCompatActivity
         }
 
         if (id == R.id.action_search) {
-
-
-                searchView.setOnSearchClickListener(this);
-                searchView.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
-                    @Override
-                    public boolean onQueryTextSubmit(String s) {
-                        SearchHandler searchHandler = new SearchHandler();
-                        String result = "";
-                        try {
-                            result = searchHandler.execute("0", s).get();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
-                        }
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onQueryTextChange(String s) {
-
-
-                        return false;
-                    }
-                });
-
+            Log.d("SEARCH","submit11");
+            onSearch();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    private void onSearch(){
+
+        final FragmentManager fragmentManager = this.getSupportFragmentManager();
+        final Class fragmentClass = SearchResultFragment.class;
+
+        searchView.setOnSearchClickListener(this);
+        searchView.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                Log.d("SEARCH","submit");
+                SearchHandler searchHandler = new SearchHandler();
+                String result = "";
+                try {
+                    result = searchHandler.execute("0", s).get();
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                }
+
+                final Fragment fragment = Fragment.instantiate(getApplicationContext(), fragmentClass.getName());
+
+                fragmentManager
+                        .beginTransaction()
+                        .replace(R.id.main_fragment_container, fragment, fragmentClass.getSimpleName())
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .commit();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                Log.d("SEARCH","yes");
+
+                return false;
+            }
+        });
+    }
+
     private void onNew() {
         final FragmentManager fragmentManager = this.getSupportFragmentManager();
         Class fragmentClass = FrontPageFragment.class;
+
     }
 
     private void onTrend() {
         final FragmentManager fragmentManager = this.getSupportFragmentManager();
         Class fragmentClass = FrontPageFragment.class;
-
 
     }
 
@@ -431,26 +445,29 @@ public class MainActivity extends AppCompatActivity
     public void onRefresh(){
         final FragmentManager fragmentManager = this.getSupportFragmentManager();
         Class fragmentClass = FrontPageFragment.class;
+        HashMap<String, String> user = session.getUserDetails();
+        String categoryType = user.get(SessionManager.CATEGORY_TYPE);
         switch (pageCategory){
             case "categoryDate":
                 fragmentClass = CategoriesPageFragment.class;
                 pageType = "categoryDate";
-                session.updatePage(pageType);//LOOK AT THIS SHIT LMAOOOOOOOOOOOO
+
+                session.updatePage(categoryType,pageType);//LOOK AT THIS SHIT LMAOOOOOOOOOOOO
                 break;
             case "categoryTrend":
                 fragmentClass = CategoriesPageFragment.class;
                 pageType = "categoryTrend";
-                session.updatePage(pageType);//fuck LAAAA
+                session.updatePage(categoryType,pageType);//fuck LAAAA
                 break;
             case "noneDate":
                 fragmentClass = FrontPageFragment.class;
                 pageType = "date";
-                session.updatePage(pageType);//DIU HAI MAN
+                session.updatePage(categoryType,pageType);//DIU HAI MAN
                 break;
             case "noneTrend":
                 fragmentClass = FrontPageFragment.class;
                 pageType = "trend";
-                session.updatePage(pageType);
+                session.updatePage(categoryType,pageType);
                 break;
             case "search":
                 break;

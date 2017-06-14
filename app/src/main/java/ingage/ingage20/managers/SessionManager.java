@@ -44,6 +44,8 @@ public class SessionManager {
     // Subscriptions (make variable public to access from outside)
     public static final String KEY_SUBSCRIPTIONS = "subscriptions";
 
+    public static final String CATEGORY_TYPE = "categories";
+
     public static final String PAGE_TYPE = "page_type";
 
     // Constructor
@@ -83,9 +85,9 @@ public class SessionManager {
         editor.commit();
     }
 
-    public void updatePage(String pageType){
+    public void updatePage(String pageType, String categoryType){
         editor.putString(PAGE_TYPE, pageType);
-
+        editor.putString(CATEGORY_TYPE, categoryType);
         // commit changes
         editor.commit();
     }
