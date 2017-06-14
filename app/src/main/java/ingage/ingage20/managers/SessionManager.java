@@ -85,9 +85,9 @@ public class SessionManager {
         editor.commit();
     }
 
-    public void updatePage(String pageType, String categoryType){
+    public void updatePage(String pageType){
         editor.putString(PAGE_TYPE, pageType);
-        editor.putString(CATEGORY_TYPE, categoryType);
+        //editor.putString(CATEGORY_TYPE, categoryType);
         // commit changes
         editor.commit();
     }

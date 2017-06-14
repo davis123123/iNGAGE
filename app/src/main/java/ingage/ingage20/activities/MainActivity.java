@@ -206,7 +206,7 @@ public class MainActivity extends AppCompatActivity
         parseJSON();
 
         setupNavigationDrawer();
-        session.updatePage("none", pageType);
+        session.updatePage(pageType);
         /* initilize FrontPage Fragment*/
         final FragmentManager fragmentManager = this.getSupportFragmentManager();
         final Class fragmentClass = FrontPageFragment.class;
@@ -363,7 +363,6 @@ public class MainActivity extends AppCompatActivity
         }
 
         if (id == R.id.action_search) {
-            Log.d("SEARCH","submit11");
             onSearch();
             return true;
         }
@@ -412,12 +411,12 @@ public class MainActivity extends AppCompatActivity
         final FragmentManager fragmentManager = this.getSupportFragmentManager();
         Class fragmentClass = FrontPageFragment.class;
 
+
     }
 
     private void onTrend() {
         final FragmentManager fragmentManager = this.getSupportFragmentManager();
         Class fragmentClass = FrontPageFragment.class;
-
     }
 
 
@@ -445,29 +444,26 @@ public class MainActivity extends AppCompatActivity
     public void onRefresh(){
         final FragmentManager fragmentManager = this.getSupportFragmentManager();
         Class fragmentClass = FrontPageFragment.class;
-        HashMap<String, String> user = session.getUserDetails();
-        String categoryType = user.get(SessionManager.CATEGORY_TYPE);
         switch (pageCategory){
             case "categoryDate":
                 fragmentClass = CategoriesPageFragment.class;
                 pageType = "categoryDate";
-
-                session.updatePage(categoryType,pageType);//LOOK AT THIS SHIT LMAOOOOOOOOOOOO
+                session.updatePage(pageType);//LOOK AT THIS SHIT LMAOOOOOOOOOOOO
                 break;
             case "categoryTrend":
                 fragmentClass = CategoriesPageFragment.class;
                 pageType = "categoryTrend";
-                session.updatePage(categoryType,pageType);//fuck LAAAA
+                session.updatePage(pageType);//fuck LAAAA
                 break;
             case "noneDate":
                 fragmentClass = FrontPageFragment.class;
                 pageType = "date";
-                session.updatePage(categoryType,pageType);//DIU HAI MAN
+                session.updatePage(pageType);//DIU HAI MAN
                 break;
             case "noneTrend":
                 fragmentClass = FrontPageFragment.class;
                 pageType = "trend";
-                session.updatePage(categoryType,pageType);
+                session.updatePage(pageType);
                 break;
             case "search":
                 break;
