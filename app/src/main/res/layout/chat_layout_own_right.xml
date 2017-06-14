@@ -40,41 +40,44 @@
             android:textColor="#FFFFFF"
             android:textSize="15sp"
             android:textStyle="italic" />
+
+        <TextView
+            android:id="@+id/message_date_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="italic|bold|normal"
+            android:text=" 5:10:11 PM"
+            android:gravity="left"
+            android:textSize="14sp"
+            android:textColor="#FFFFFF"
+            android:layout_gravity="right"
+            android:layout_marginLeft="30dp"
+            android:layout_below="@+id/linearLayout"
+            android:layout_alignParentEnd="true" />
     </LinearLayout>
 
 
-    <TextView
-        android:id="@+id/message_date_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textStyle="italic|bold|normal"
-        android:text=" 5:10:11 PM"
-        android:gravity="left"
-        android:textSize="14sp"
-        android:textColor="#FFFFFF"
-        android:layout_gravity="right"
-        android:layout_marginLeft="30dp"
-        android:layout_below="@+id/linearLayout"
-        android:layout_alignParentEnd="true" />
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Up"
         android:id="@+id/upvote"
-        android:layout_alignBottom="@+id/message_date_view"
-        android:layout_alignParentStart="true" />
+        android:src="@drawable/up_arrow"
+        android:background="@null"
+        android:layout_below="@+id/linearLayout"
+        android:layout_toStartOf="@+id/downvote" />
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Down"
         android:id="@+id/downvote"
-        android:layout_alignBaseline="@+id/upvote"
-        android:layout_alignBottom="@+id/upvote"
-        android:layout_toEndOf="@+id/upvote" />
+        android:src="@drawable/down_arrow"
+        android:background="@null"
+        android:layout_below="@+id/linearLayout"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="31dp" />
 
     <TextView
         android:layout_width="wrap_content"

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -228,13 +229,13 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
 
     class ChatViewHolder extends RecyclerView.ViewHolder{
         TextView messageContentView, messageUserView, messageDateView, upVoteView, downVoteView;
-        Button bUpvote, bDownvote;
+        ImageButton bUpvote, bDownvote;
 
         public ChatViewHolder(View itemView) {
             super(itemView);
-            bUpvote = (Button) itemView.findViewById(R.id.upvote);
+            bUpvote = (ImageButton) itemView.findViewById(R.id.upvote);
 
-            bDownvote = (Button) itemView.findViewById(R.id.downvote);
+            bDownvote = (ImageButton) itemView.findViewById(R.id.downvote);
 
             messageContentView = (TextView) itemView.findViewById(R.id.message_content_view);
             messageUserView = (TextView) itemView.findViewById(R.id.message_user_view);
