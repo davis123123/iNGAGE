@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/user_profile">
 
     <ImageView
-        android:id="@+id/userImage"
+        android:id="@+id/profile_img"
         android:scaleType="fitCenter"
         android:src="@mipmap/user"
         android:layout_width="48dp"
@@ -40,5 +41,20 @@
         android:layout_height="wrap_content"
         android:text="Large Text"
         android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <ImageView
+        android:id="@+id/prof_img_preview"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center_horizontal"
+        app:srcCompat="@drawable/background_splash" />
+
+    <Button
+        android:id="@+id/upload_profile_img"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@layout/button"
+        android:text="Upload Avatar"
+        android:layout_margin="15dp"/>
 
 </LinearLayout>
