@@ -119,10 +119,80 @@ public class ThreadListAdapter extends RecyclerView.Adapter<ThreadListAdapter.Th
 
         //BitmapDrawable drawable = (BitmapDrawable)holder.threadImageView.getDrawable();
         //Bitmap bitmap = drawable.getBitmap();
-
+        downloadImage(threadsHelper, pos, holder);
     }
 
+    //retrieve Base64 from FireBase and convert to image
+    private void downloadImage(ThreadsHelper threadsHelper, int pos, ThreadListAdapter.ThreadViewHolder holder){
+        Context context = holder.itemView.getContext();
+        DownloadImageHandler dlHandler = new DownloadImageHandler(context);
+        String type = "download";
 
+        String thread_id = threadsHelper.getThread_id();
+
+        //do conversion
+        try {
+            //threadImageView = (ImageView) itemView.findViewById(R.id.img_post);
+            String result = dlHandler.execute(type, thread_id).get();
+
+
+            if(result.substring(0,4).equals("data")) {
+                is_img_set.set(pos, true);
+
+                    /*int index =result.indexOf(",") + 1;
+                    String code = result.substring(index, result.length());
+                    byte[] decodedString = Base64.decode(code, Base64.DEFAULT);
+                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                    threadImageView.setImageBitmap(decodedByte);
+                    LinearLayout.LayoutParams img_params = new LinearLayout.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, 1000);
+                    threadImageView.setLayoutParams(img_params);
+                    threadContentTextView.setText(" ");*/
+            }
+            else {
+                is_img_set.set(pos, false);
+                //threadImageView.setImageBitmap(null);
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        //set padding programmatically
+        if(holder.threadImageView.getDrawable() != null) {
+            float density = context.getResources().getDisplayMetrics().density;
+            int padding = (int)(20 * density);
+            holder.threadImageView.setPadding(padding, padding, padding, padding);
+        }
+
+        for(int i=0; i < is_img_set.size(); i++){
+            context = holder.itemView.getContext();
+            dlHandler = new DownloadImageHandler(context);
+            type = "download";
+
+            thread_id = threadsHelper.getThread_id();
+            String result = null;
+            Log.d("STATE", "content: " + threadsHelper.getThread_title());
+            Log.d("STATE", "has img: " + is_img_set.get(i));
+            try {
+                result = dlHandler.execute(type, thread_id).get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+            if(is_img_set.get(i)){
+                int index = result.indexOf(",") + 1;
+                String code = result.substring(index, result.length());
+                byte[] decodedString = Base64.decode(code, Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                holder.threadImageView.setImageBitmap(decodedByte);
+                LinearLayout.LayoutParams img_params = new LinearLayout.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, 1000);
+                holder.threadImageView.setLayoutParams(img_params);
+                holder.threadContentTextView.setText(" ");
+            }
+            else if (!is_img_set.get(i))
+                holder.threadImageView.setImageBitmap(null);
+        }
+    }
 
     class ThreadViewHolder extends RecyclerView.ViewHolder{
 
@@ -170,78 +240,5 @@ public class ThreadListAdapter extends RecyclerView.Adapter<ThreadListAdapter.Th
 
 
         }
-
-        //retrieve Base64 from FireBase and convert to image
-        private void downloadImage(ThreadsHelper threadsHelper, int pos){
-            Context context = itemView.getContext();
-            DownloadImageHandler dlHandler = new DownloadImageHandler(context);
-            String type = "download";
-
-            String thread_id = threadsHelper.getThread_id();
-
-            //do conversion
-            try {
-                //threadImageView = (ImageView) itemView.findViewById(R.id.img_post);
-                String result = dlHandler.execute(type, thread_id).get();
-
-
-                if(result.substring(0,4).equals("data")) {
-                    is_img_set.set(pos, true);
-
-                    /*int index =result.indexOf(",") + 1;
-                    String code = result.substring(index, result.length());
-                    byte[] decodedString = Base64.decode(code, Base64.DEFAULT);
-                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                    threadImageView.setImageBitmap(decodedByte);
-                    LinearLayout.LayoutParams img_params = new LinearLayout.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, 1000);
-                    threadImageView.setLayoutParams(img_params);
-                    threadContentTextView.setText(" ");*/
-                }
-                else {
-                    is_img_set.set(pos, false);
-                    //threadImageView.setImageBitmap(null);
-                }
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            }
-
-            //set padding programmatically
-            if(threadImageView.getDrawable() != null) {
-                float density = context.getResources().getDisplayMetrics().density;
-                int padding = (int)(20 * density);
-                threadImageView.setPadding(padding, padding, padding, padding);
-            }
-
-            for(int i=0; i < is_img_set.size(); i++){
-                context = itemView.getContext();
-                dlHandler = new DownloadImageHandler(context);
-                type = "download";
-
-                thread_id = threadsHelper.getThread_id();
-                String result = null;
-                Log.d("STATE", "content: " + threadsHelper.getThread_title());
-                Log.d("STATE", "has img: " + is_img_set.get(i));
-                try {
-                    result = dlHandler.execute(type, thread_id).get();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                }
-                if(is_img_set.get(i)){
-                        int index = result.indexOf(",") + 1;
-                        String code = result.substring(index, result.length());
-                        byte[] decodedString = Base64.decode(code, Base64.DEFAULT);
-                        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                        threadImageView.setImageBitmap(decodedByte);
-                        LinearLayout.LayoutParams img_params = new LinearLayout.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, 1000);
-                        threadImageView.setLayoutParams(img_params);
-                        threadContentTextView.setText(" ");
-                }
-                else if (!is_img_set.get(i))
-                    threadImageView.setImageBitmap(null);
-            }
-        }
-
     }
 }
