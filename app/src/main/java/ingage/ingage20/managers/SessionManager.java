@@ -92,6 +92,12 @@ public class SessionManager {
         editor.commit();
     }
 
+    public void updateCategory(String categoryType){
+        editor.putString(CATEGORY_TYPE, categoryType);
+
+        editor.commit();
+    }
+
     public void checkLogin(){
         // Check login status
         if(!this.isLoggedIn()){
@@ -124,7 +130,7 @@ public class SessionManager {
         user.put(KEY_SUBSCRIPTIONS, pref.getString(KEY_SUBSCRIPTIONS, null));
         user.put(KEY_TRIBUTE_POINTS, pref.getString(KEY_TRIBUTE_POINTS, null));
         user.put(PAGE_TYPE, pref.getString(PAGE_TYPE, null));
-
+        user.put(CATEGORY_TYPE, pref.getString(CATEGORY_TYPE, null));
         // return user
         return user;
     }

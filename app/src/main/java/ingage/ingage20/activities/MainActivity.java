@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity
         lvItems = (ListView) findViewById(R.id.nav_drawer_items);
         adapter=new ArrayAdapter<String>(this, R.layout.lv_item, subs);
         lvItems.setAdapter(adapter);
-        //setupListViewListener();
+        setupListViewListener();
         adapter.notifyDataSetChanged();
 
         TextView userName = (TextView) findViewById(R.id.userName);
@@ -281,12 +281,24 @@ public class MainActivity extends AppCompatActivity
 
     // Attaches a long click listener and click listener to the listview
     private void setupListViewListener() {
-
+        final FragmentManager fragmentManager = this.getSupportFragmentManager();
         lvItems.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final int pos = position;
+            final int pos = position;
+                session.updateCategory((String) lvItems.getItemAtPosition(pos));
+                session.updatePage("categoryTrend");
                 Log.d("STATE", "Nav item clicked: "+ lvItems.getItemAtPosition(pos));
+                final Class fragmentClass = CategoriesPageFragment.class;
+                final Fragment fragment = Fragment.instantiate(getApplicationContext(), fragmentClass.getName());
+                fragmentManager
+                        .beginTransaction()
+                        .replace(R.id.main_fragment_container, fragment, fragmentClass.getSimpleName())
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .commit();
+
+                //close nav drawer after click
+                navigationDrawer.closeDrawer();
             }
         });
 
@@ -298,6 +310,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         final FragmentManager fragmentManager = this.getSupportFragmentManager();
+        final Class fragmentClass = SearchResultFragment.class;
 
         if (navigationDrawer.isDrawerOpen()) {
             navigationDrawer.closeDrawer();

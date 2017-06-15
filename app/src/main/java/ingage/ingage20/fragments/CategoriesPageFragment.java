@@ -127,8 +127,9 @@ public class CategoriesPageFragment extends FragmentBase implements ThreadListAd
         session = new SessionManager(getActivity().getApplicationContext());
         HashMap<String, String> user = session.getUserDetails();
         String type = user.get(SessionManager.PAGE_TYPE);
+        String categoryType = user.get(SessionManager.CATEGORY_TYPE);
         try {
-            json_string = queryThreadsHandler.execute(type, String.valueOf(rowCount)).get();
+            json_string = queryThreadsHandler.execute(type, categoryType, String.valueOf(rowCount)).get();
             Log.d("STATE" , "query result : " + json_string);
         } catch (InterruptedException e) {
             e.printStackTrace();
