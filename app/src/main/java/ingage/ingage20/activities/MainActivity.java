@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity
     android.support.v7.widget.SearchView searchView;
 
     //dont use enum cuz bad  performance in Android, uses more RAM and memory
-    static String pageCategory = "none";
+    static String pageCategory = "noneDate";
     static String pageType = "date";
 
     private void setupToolbar(final Bundle savedInstanceState) {
@@ -457,6 +457,8 @@ public class MainActivity extends AppCompatActivity
     public void onRefresh(){
         final FragmentManager fragmentManager = this.getSupportFragmentManager();
         Class fragmentClass = FrontPageFragment.class;
+        HashMap<String, String> user = session.getUserDetails();
+        pageCategory = user.get(SessionManager.PAGE_TYPE);
         switch (pageCategory){
             case "categoryDate":
                 fragmentClass = CategoriesPageFragment.class;
