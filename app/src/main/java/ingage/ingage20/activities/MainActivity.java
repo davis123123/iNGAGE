@@ -289,6 +289,7 @@ public class MainActivity extends AppCompatActivity
                 session.updateCategory((String) lvItems.getItemAtPosition(pos));
                 session.updatePage("categoryTrend");
                 Log.d("STATE", "Nav item clicked: "+ lvItems.getItemAtPosition(pos));
+                navigationDrawer.closeDrawer();
                 final Class fragmentClass = CategoriesPageFragment.class;
                 final Fragment fragment = Fragment.instantiate(getApplicationContext(), fragmentClass.getName());
                 fragmentManager
@@ -423,13 +424,57 @@ public class MainActivity extends AppCompatActivity
     private void onNew() {
         final FragmentManager fragmentManager = this.getSupportFragmentManager();
         Class fragmentClass = FrontPageFragment.class;
+        HashMap<String, String> user = session.getUserDetails();
+        final Fragment fragment;
+        if(user.get(SessionManager.CATEGORY_TYPE) != null){
+            fragmentClass = CategoriesPageFragment.class;
+            session.updatePage("categoryDate");
+            fragment = Fragment.instantiate(this, fragmentClass.getName());
+        }//category
+        else{
+            session.updatePage("noneDate");
+            fragment = Fragment.instantiate(this, fragmentClass.getName());
+        }//frontpage
 
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.main_fragment_container, fragment, fragmentClass.getSimpleName())
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit();
 
+        // Set the title for the fragment.
+        final ActionBar actionBar = this.getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(getString(R.string.app_name));
+        }
     }
 
     private void onTrend() {
         final FragmentManager fragmentManager = this.getSupportFragmentManager();
         Class fragmentClass = FrontPageFragment.class;
+        HashMap<String, String> user = session.getUserDetails();
+        final Fragment fragment;
+        if(user.get(SessionManager.CATEGORY_TYPE) != null){
+            fragmentClass = CategoriesPageFragment.class;
+            session.updatePage("categoryTrend");
+            fragment = Fragment.instantiate(this, fragmentClass.getName());
+        }//category
+        else{
+            session.updatePage("noneTrend");
+            fragment = Fragment.instantiate(this, fragmentClass.getName());
+        }//frontpage
+
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.main_fragment_container, fragment, fragmentClass.getSimpleName())
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit();
+
+        // Set the title for the fragment.
+        final ActionBar actionBar = this.getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(getString(R.string.app_name));
+        }
     }
 
 
