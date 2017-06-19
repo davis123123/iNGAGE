@@ -34,7 +34,7 @@ public class DownloadImageHandler extends AsyncTask<String, String, String>{
     protected String doInBackground(String... params) {
         String type = params[0];
         //TODO need change for server change
-        String post_thread_url ="http://10.0.0.199/download_image.php";  //10.0.2.2 CHANGE FOR OTHER SERVER
+        String post_thread_url ="http://138.68.243.19/download_image.php";  //10.0.2.2 CHANGE FOR OTHER SERVER
 
         if (type.equals("download")) {
             try {
