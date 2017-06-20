@@ -46,8 +46,7 @@
         android:id="@+id/prof_img_preview"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_gravity="center_horizontal"
-        app:srcCompat="@drawable/background_splash" />
+        android:layout_gravity="center_horizontal" />
 
     <Button
         android:id="@+id/upload_profile_img"
@@ -55,6 +54,14 @@
         android:layout_height="wrap_content"
         android:background="@layout/button"
         android:text="Upload Avatar"
+        android:layout_margin="15dp"/>
+
+    <Button
+        android:id="@+id/change_avatar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@layout/button"
+        android:text="Change profile picture"
         android:layout_margin="15dp"/>
 
 </LinearLayout>

@@ -16,16 +16,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-/**
- * Created by Davis on 5/1/2017.
- */
 
-public class DownloadImageHandler extends AsyncTask<String, String, String>{
+public class DownloadAvatarHandler extends AsyncTask<String, String, String>{
 
     Context context;
     AlertDialog alertDialog;
 
-    public DownloadImageHandler(Context mcontext){
+    public DownloadAvatarHandler(Context mcontext){
         context = mcontext;
     }
 
@@ -34,11 +31,11 @@ public class DownloadImageHandler extends AsyncTask<String, String, String>{
     protected String doInBackground(String... params) {
         String type = params[0];
         //TODO need change for server change
-        String post_thread_url ="http://24.7.128.143/download_image.php";  //10.0.2.2 CHANGE FOR OTHER SERVER
+        String post_thread_url ="http://24.7.128.143/download_avatar.php";  //10.0.2.2 CHANGE FOR OTHER SERVER
 
         if (type.equals("download")) {
             try {
-                String thread_id = params[1];
+                String user_name = params[1];
                 URL url = new URL(post_thread_url);
                 HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
@@ -47,7 +44,7 @@ public class DownloadImageHandler extends AsyncTask<String, String, String>{
                 OutputStream outputStream = httpURLConnection.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
                 String post_data =
-                        URLEncoder.encode("thread_id","UTF-8")+"="+ URLEncoder.encode(thread_id,"UTF-8");
+                        URLEncoder.encode("user_name","UTF-8")+"="+ URLEncoder.encode(user_name,"UTF-8");
                 bufferedWriter.write(post_data);
                 bufferedWriter.flush();
                 bufferedWriter.close();

@@ -33,7 +33,7 @@ public class SubmitThreadsHandler extends AsyncTask<String, String, String> {
     protected String doInBackground(String... params) {
         String type = params[0];
         //TODO need change for server change
-        String post_thread_url ="http://138.68.243.19/insert_thread.php";  //10.0.2.2 CHANGE FOR OTHER SERVER
+        String post_thread_url ="http://24.7.128.143/insert_thread.php";  //10.0.2.2 CHANGE FOR OTHER SERVER
 
         if (type.equals("submit")) {
             try {

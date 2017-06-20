@@ -40,6 +40,7 @@ public class SplashActivity extends Activity{
 //                  IdentityHandler identityHandler = new IdentityHandler(mcontext);
 //                  identityHandler.execute(type, username, password);
                     goMain();
+                    //goSignIn();
                 } else {
                     // Asyncronously go to the sign-in page (after the splash delay has expired).
                     goSignIn();

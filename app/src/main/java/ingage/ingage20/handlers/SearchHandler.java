@@ -28,7 +28,7 @@ public class SearchHandler extends AsyncTask<String, String, String> {
 
         String type = params[0];
 
-        String search_title_url = "http://138.68.243.19/search_title_url.php";
+        String search_title_url = "http://24.7.128.143/search_title_url.php";
         if(type.equals("search")) {
         try {
         String rowCount = params[1];

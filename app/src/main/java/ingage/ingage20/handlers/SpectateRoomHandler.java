@@ -34,8 +34,8 @@ public class SpectateRoomHandler extends AsyncTask<String, String, String> {
     @Override
     protected String doInBackground(String... params) {
         String type = params[0];
-        String spectate_url = "http://138.68.243.19/spectate_room.php";
-        String leave_spectate_url =  "http://138.68.243.19/leave_spectate.php";
+        String spectate_url = "http://24.7.128.143/spectate_room.php";
+        String leave_spectate_url =  "http://24.7.128.143/leave_spectate.php";
         Log.d("JOINSPECTATE", "yes");
          if (type.equals("spectate")) {
             try {

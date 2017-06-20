@@ -4,32 +4,37 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
 
 import ingage.ingage20.R;
+import ingage.ingage20.handlers.DownloadImageHandler;
+import ingage.ingage20.helpers.ThreadsHelper;
 import ingage.ingage20.managers.SessionManager;
 
-/**
- * Created by Davis on 4/27/2017.
- */
 
 public class UserProfileActivity extends AppCompatActivity {
 
     String username, email, tribute_pts, subs;
-    Button upload;
+    Button upload, change;
     ImageView avatar;
     private static final int RESULT_LOAD_IMAGE = 1;
 
@@ -60,6 +65,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
         upload = (Button) findViewById(R.id.upload_profile_img);
         avatar = (ImageView) findViewById(R.id.prof_img_preview);
+        change = (Button) findViewById(R.id.change_avatar);
 
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,7 +74,13 @@ public class UserProfileActivity extends AppCompatActivity {
             }
         });
 
+        change.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //download image na update profile
 
+            }
+        });
     }
 
     @Override

@@ -31,9 +31,9 @@ public class IdentityHandler extends AsyncTask<String, String, String> {
     protected String doInBackground(String... params) {
         String type = params[0];
         //TODO need change for server change
-        String login_url = "http://138.68.243.19/login.php";  //10.0.2.2 CHANGE FOR OTHER SERVER
-        String registration_url = "http://138.68.243.19/registration.php";
-        String sign_out_url = "http://138.68.243.19/sign_out.php";
+        String login_url = "http://24.7.128.143/login.php";  //10.0.2.2 CHANGE FOR OTHER SERVER
+        String registration_url = "http://24.7.128.143/registration.php";
+        String sign_out_url = "http://24.7.128.143/sign_out.php";
         if (type.equals("sign_out")) {
 
             try {
