@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,8 +27,8 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 import ingage.ingage20.R;
-import ingage.ingage20.handlers.DownloadImageHandler;
-import ingage.ingage20.helpers.ThreadsHelper;
+import ingage.ingage20.handlers.DownloadAvatarHandler;
+import ingage.ingage20.handlers.UploadAvatarHandler;
 import ingage.ingage20.managers.SessionManager;
 
 
@@ -35,8 +36,9 @@ public class UserProfileActivity extends AppCompatActivity {
 
     String username, email, tribute_pts, subs;
     Button upload, change;
-    ImageView avatar;
+    ImageView new_avatar_preview, curr_avatar;
     private static final int RESULT_LOAD_IMAGE = 1;
+    boolean verified_image = false;
 
 
     @Override
@@ -63,9 +65,12 @@ public class UserProfileActivity extends AppCompatActivity {
         pts_info.setText(tribute_pts);
         subs_info.setText(subs);
 
+        new_avatar_preview = (ImageView) findViewById(R.id.prof_img_preview);
+        curr_avatar = (ImageView) findViewById(R.id.profile_img);
         upload = (Button) findViewById(R.id.upload_profile_img);
-        avatar = (ImageView) findViewById(R.id.prof_img_preview);
         change = (Button) findViewById(R.id.change_avatar);
+
+        downloadImage();
 
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,10 +82,65 @@ public class UserProfileActivity extends AppCompatActivity {
         change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //download image na update profile
-
+                //download image and update profile
+                if(new_avatar_preview.getDrawable() != null) {
+                    Bitmap image = ((BitmapDrawable) new_avatar_preview.getDrawable()).getBitmap();
+                    UploadAvatarHandler uploadAvatarHandler = new UploadAvatarHandler(image);
+                    Log.d("STATE", "upload avatar clicked" );
+                    try {
+                        if(verified_image) {
+                            String success = uploadAvatarHandler.execute(username).get();
+                            Log.d("STATE", "upload avatar " + success);
+                            String avatar_link = "http://107.170.232.60/images/" + username + ".JPG";
+                            downloadImage();
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else
+                    Toast.makeText(getApplication(), "No image selected/uploaded!", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    //retrieve Base64 from FireBase and convert to image
+    private void downloadImage(){
+        Context context = getApplicationContext();
+        DownloadAvatarHandler avatarHandler = new DownloadAvatarHandler(context);
+        String type = "download";
+
+
+        //do conversion
+        try {
+            String result = avatarHandler.execute(type, username).get();
+            //Log.d("STATE", "room title: " + threadsHelper.getThread_title());
+            Log.d("STATE", "download avatar result: " + result);
+            if(result.length() > 0) {
+                if (result.substring(0, 4).equals("data")) {
+                    int index = result.indexOf(",") + 1;
+                    String code = result.substring(index, result.length());
+                    byte[] decodedString = Base64.decode(code, Base64.DEFAULT);
+                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                    curr_avatar.setImageBitmap(decodedByte);
+                    LinearLayout.LayoutParams img_params = new LinearLayout.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, 1000);
+                    curr_avatar.setLayoutParams(img_params);
+                }
+            }
+            else
+                curr_avatar.setImageResource(R.mipmap.user);
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        //set padding programmatically
+        if(curr_avatar.getDrawable() != null) {
+            float density = context.getResources().getDisplayMetrics().density;
+            int padding = (int)(20 * density);
+            curr_avatar.setPadding(padding, padding, padding, padding);
+        }
     }
 
     @Override
@@ -142,8 +202,9 @@ public class UserProfileActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && data != null) {
             Uri selectedImage = data.getData();
-            String filename = getContentResolver().getType(selectedImage);
-            avatar.setImageURI(selectedImage);
+            //String filename = getContentResolver().getType(selectedImage);
+            new_avatar_preview.setImageURI(selectedImage);
+            verified_image = true;
         }
     }
 

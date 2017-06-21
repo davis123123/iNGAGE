@@ -148,7 +148,7 @@ public class  PostThreadActivity extends AppCompatActivity {
             Bitmap image = ((BitmapDrawable) imageToUpload.getDrawable()).getBitmap();
             uploadImageHandler = new UploadImageHandler(image);
             uploadImageHandler.execute(threadTitle);
-            image_link = "http://10.0.0.199/images/"+threadTitle+".JPG";
+            image_link = "http://107.170.232.60/images/"+threadTitle+".JPG";
         }
 
         //categorySpinner = (Spinner) findViewById(R.id.spinner);
