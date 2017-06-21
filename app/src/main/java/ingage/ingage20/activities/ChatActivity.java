@@ -152,6 +152,8 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
 
         //thread id for root of comments tree
         root = FirebaseDatabase.getInstance().getReference().child(thread_id);
+        //CHECK IF ANY COMMENTS ALREADY MADE IN THE ROOM
+        checkPageExist();
 
         Intent intentThatStartedThisActivity = getIntent();
         if(intentThatStartedThisActivity.hasExtra(Intent.EXTRA_TEXT)){
@@ -212,7 +214,6 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
     }
     private void sendMsg(){
         //start cooldown timer
-        Log.d("CHECKPAGE", "yes");
         timer(180000);
         //on send restart kicktimer
         kickTimer.cancel();
@@ -220,13 +221,14 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
         String messageText = textField.getText().toString();
         HashMap<String, String> user = session.getUserDetails();
         String messageBy = user.get(SessionManager.KEY_NAME);
-        Log.d("CHECKPAGE", "yes2");
-        checkPageExist();//CHECK IF FIRST COMMENT
+        checkCommentNum();
+
         //firebase area to send msg
         Map<String, Object> map = new HashMap<String, Object>();
+
         DatabaseReference page_root = root.child("1");
         temp_key = page_root.push().getKey();
-        root.updateChildren(map);//check if this does anything lol
+
         String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
 
         DatabaseReference message_root = page_root.child(temp_key);
@@ -249,6 +251,34 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
         RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
         int pos = chatAdapter.getItemCount()-1;
         manager.scrollToPosition(pos);**/
+    }
+
+    private void checkCommentNum() {
+        DatabaseReference page_root = root.child("1");
+        final String key = page_root.getKey();
+        page_root.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData currentData) {
+                if(currentData.getChildrenCount() > 2){
+                    Log.d("PAGELIMIT","yes");
+                    //create new page
+                    int keyNo = Integer.parseInt(key) + 1;
+                    String newKey = String.valueOf(keyNo);
+                    Log.d("PAGENO",key);
+                    Map<String, Object> map_page = new HashMap<String, Object>();
+                    map_page.put(newKey, "");
+                    root.updateChildren(map_page);
+
+                }
+                return Transaction.success(currentData); //we can also abort by calling Transaction.abort()
+            }
+
+            //TODO:Error handle here
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+
+            }
+        });
     }
 
 
