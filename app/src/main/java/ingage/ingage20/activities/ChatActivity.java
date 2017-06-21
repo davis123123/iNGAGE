@@ -70,6 +70,7 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
     CountDownTimer mCountDownTimer;
     Button useCoinBt;
     boolean tagged = false, paused = false;
+    int noPages;
     CountDownTimer kickTimer;
     HashMap<String, String> userVotes = new HashMap<String, String>();
     @Override
@@ -152,8 +153,9 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
 
         //thread id for root of comments tree
         root = FirebaseDatabase.getInstance().getReference().child(thread_id);
-        //CHECK IF ANY COMMENTS ALREADY MADE IN THE ROOM
-        checkPageExist();
+
+        //GET ALL PAGES IN ROOM
+        pageEventListener(root);
 
         Intent intentThatStartedThisActivity = getIntent();
         if(intentThatStartedThisActivity.hasExtra(Intent.EXTRA_TEXT)){
@@ -172,7 +174,7 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
             });//click to send message
 
             //calls event listener to update message in realtime
-            eventListener(root);
+            //eventListener(root);
         }
         HashMap<String, String> chat_user = chatRoomManager.getUserDetails();
         String spectator = chat_user.get(ChatRoomManager.SPECTATOR);
@@ -180,6 +182,44 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
             setSpectateMode();
         }
     }
+
+    private void pageEventListener(DatabaseReference root) {
+        root.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                appendPage(dataSnapshot);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void appendPage(DataSnapshot dataSnapshot) {
+        Iterator i = dataSnapshot.getChildren().iterator();
+        while(i.hasNext()){
+            noPages ++;
+        }
+        Log.d("NOPAGES" , "result : " + noPages);
+    }
+
     private void insertUserVotesHashMap() {
         VotesHandler votesHandler = new VotesHandler(getApplicationContext());
         String type = "getUserVotes";
@@ -280,33 +320,6 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
             }
         });
     }
-
-
-    public void checkPageExist(){
-        Log.d("CHECKPAGE", "yes3");
-        root.runTransaction(new Transaction.Handler() {
-
-            @Override
-            public Transaction.Result doTransaction(MutableData mutableData) {
-                Log.d("ROOT", String.valueOf(mutableData));
-                if (mutableData.hasChildren()) {
-                    Log.d("ROOTCHILDREN", "yes");
-                } else {
-                    Log.d("ROOTCHILDREN", "no");
-                    Map<String, Object> map_page = new HashMap<String, Object>();
-                    map_page.put("1","");
-                    String fPage = "1";
-                    root.updateChildren(map_page);
-                }
-                return Transaction.success(mutableData);
-            }
-
-            @Override
-            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
-
-            }
-        });
-    } //used only for first comment
 
     @Override
     public void onBackPressed() {
