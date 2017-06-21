@@ -150,7 +150,7 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
             }
         });
 
-
+        //thread id for root of comments tree
         root = FirebaseDatabase.getInstance().getReference().child(thread_id);
 
         Intent intentThatStartedThisActivity = getIntent();
@@ -212,6 +212,7 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
     }
     private void sendMsg(){
         //start cooldown timer
+        Log.d("CHECKPAGE", "yes");
         timer(180000);
         //on send restart kicktimer
         kickTimer.cancel();
@@ -219,14 +220,16 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
         String messageText = textField.getText().toString();
         HashMap<String, String> user = session.getUserDetails();
         String messageBy = user.get(SessionManager.KEY_NAME);
-
+        Log.d("CHECKPAGE", "yes2");
+        checkPageExist();//CHECK IF FIRST COMMENT
         //firebase area to send msg
         Map<String, Object> map = new HashMap<String, Object>();
-        temp_key = root.push().getKey();
-        root.updateChildren(map);
+        DatabaseReference page_root = root.child("1");
+        temp_key = page_root.push().getKey();
+        root.updateChildren(map);//check if this does anything lol
         String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
 
-        DatabaseReference message_root = root.child(temp_key);
+        DatabaseReference message_root = page_root.child(temp_key);
         Map<String, Object> map_message = new HashMap<String, Object>();
         map_message.put("Username", messageBy);
         map_message.put("Msg", messageText);
@@ -235,7 +238,7 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
         map_message.put("downvotes", 0);
         map_message.put("TimeStamp", currentDateTimeString);
         message_root.updateChildren(map_message);
-
+/**
         //send token
         if (tagged) {
             tagged = false;
@@ -245,8 +248,35 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
 
         RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
         int pos = chatAdapter.getItemCount()-1;
-        manager.scrollToPosition(pos);
+        manager.scrollToPosition(pos);**/
     }
+
+
+    public void checkPageExist(){
+        Log.d("CHECKPAGE", "yes3");
+        root.runTransaction(new Transaction.Handler() {
+
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                Log.d("ROOT", String.valueOf(mutableData));
+                if (mutableData.hasChildren()) {
+                    Log.d("ROOTCHILDREN", "yes");
+                } else {
+                    Log.d("ROOTCHILDREN", "no");
+                    Map<String, Object> map_page = new HashMap<String, Object>();
+                    map_page.put("1","");
+                    String fPage = "1";
+                    root.updateChildren(map_page);
+                }
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+
+            }
+        });
+    } //used only for first comment
 
     @Override
     public void onBackPressed() {
@@ -367,12 +397,12 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
         root.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                appendChatConversation(dataSnapshot);
+                //appendChatConversation(dataSnapshot);
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                updateChatConversation(dataSnapshot);
+                //updateChatConversation(dataSnapshot);
 
             }
 
