@@ -73,6 +73,7 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
     int noPages;
     CountDownTimer kickTimer;
     HashMap<String, String> userVotes = new HashMap<String, String>();
+    DatabaseReference page_root;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -155,7 +156,8 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
         root = FirebaseDatabase.getInstance().getReference().child(thread_id);
 
         //GET ALL PAGES IN ROOM
-        pageEventListener(root);
+        //pageEventListener(root);
+        pageCount(root); //TAKES TIME TO TRANSACT
 
         Intent intentThatStartedThisActivity = getIntent();
         if(intentThatStartedThisActivity.hasExtra(Intent.EXTRA_TEXT)){
@@ -175,12 +177,30 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
 
             //calls event listener to update message in realtime
             //eventListener(root);
+
         }
         HashMap<String, String> chat_user = chatRoomManager.getUserDetails();
         String spectator = chat_user.get(ChatRoomManager.SPECTATOR);
         if (spectator.equals("true")){
             setSpectateMode();
         }
+    }
+
+    private void pageCount(DatabaseReference root) {
+        final String key = root.getKey();
+        root.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData currentData) {
+                noPages = (int) currentData.getChildrenCount();
+                return Transaction.success(currentData); //we can also abort by calling Transaction.abort()
+            }
+
+            //TODO:Error handle here
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+            //inflate NUMBER OF PAGES HERE!!!!!!!!!!!
+            }
+        });
     }
 
     private void pageEventListener(DatabaseReference root) {
@@ -214,10 +234,8 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
 
     private void appendPage(DataSnapshot dataSnapshot) {
         Iterator i = dataSnapshot.getChildren().iterator();
-        while(i.hasNext()){
-            noPages ++;
-        }
-        Log.d("NOPAGES" , "result : " + noPages);
+        Iterable<DataSnapshot> t = dataSnapshot.getChildren();
+        Log.d("NEWPAGE", "has been made");
     }
 
     private void insertUserVotesHashMap() {
@@ -261,25 +279,13 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
         String messageText = textField.getText().toString();
         HashMap<String, String> user = session.getUserDetails();
         String messageBy = user.get(SessionManager.KEY_NAME);
-        checkCommentNum();
+        //checkCommentNum();
 
         //firebase area to send msg
         Map<String, Object> map = new HashMap<String, Object>();
 
-        DatabaseReference page_root = root.child("1");
-        temp_key = page_root.push().getKey();
-
-        String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
-
-        DatabaseReference message_root = page_root.child(temp_key);
-        Map<String, Object> map_message = new HashMap<String, Object>();
-        map_message.put("Username", messageBy);
-        map_message.put("Msg", messageText);
-        map_message.put("Side", user_side);
-        map_message.put("upvotes", 0);
-        map_message.put("downvotes", 0);
-        map_message.put("TimeStamp", currentDateTimeString);
-        message_root.updateChildren(map_message);
+        page_root = root.child("1");
+        checkCommentNum(messageBy, messageText);
 /**
         //send token
         if (tagged) {
@@ -293,33 +299,74 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
         manager.scrollToPosition(pos);**/
     }
 
-    private void checkCommentNum() {
-        DatabaseReference page_root = root.child("1");
+    private void checkCommentNum(final String messageBy, final String messageText) {
+        Log.d("CHECKCOMMENTNUM"," " + page_root);
+        //final DatabaseReference page_root = root.child("test");
         final String key = page_root.getKey();
-        page_root.runTransaction(new Transaction.Handler() {
+
+        root.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData currentData) {
-                if(currentData.getChildrenCount() > 2){
-                    Log.d("PAGELIMIT","yes");
-                    //create new page
-                    int keyNo = Integer.parseInt(key) + 1;
-                    String newKey = String.valueOf(keyNo);
-                    Log.d("PAGENO",key);
-                    Map<String, Object> map_page = new HashMap<String, Object>();
-                    map_page.put(newKey, "");
-                    root.updateChildren(map_page);
 
+                Log.d("CHECKCOMMENTNUM", String.valueOf(currentData) + " " + currentData.getChildrenCount());
+                MutableData page = currentData.child(page_root.getKey());//get page
+                int keyNo = Integer.parseInt(key) + 1;
+                String newKey = String.valueOf(keyNo);
+                Log.d("NEWKEY", " "+ newKey + " " + page);
+                if(page.getChildrenCount() == 1){
+                    Log.d("here", " "+ newKey);
+                    if(!page.hasChild(newKey)) {//no one else created new page
+                        Log.d("here", "if " + newKey);
+                        crossPageLimit(key);
+                    }
+                    else{
+                        Log.d("here", "else "+ newKey);
+                        page_root =  root.child(newKey);//newkey is incrmental of old page
+                        Log.d("NEWROOT", " "+ page_root);
+                    } //new page already created
                 }
+
                 return Transaction.success(currentData); //we can also abort by calling Transaction.abort()
             }
 
             //TODO:Error handle here
             @Override
             public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
-
+                Log.d("TRANSCOMPLETE", " "+ dataSnapshot);
+                insertComment(messageBy, messageText);
             }
         });
+
+
     }
+
+    private void insertComment(final String messageBy, final String messageText){
+        Log.d("PAGELIMIT", " " + page_root);
+        temp_key = page_root.push().getKey();
+
+        DatabaseReference message_root = page_root.child(temp_key);
+        String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+        Map<String, Object> map_message = new HashMap<String, Object>();
+        map_message.put("Username", messageBy);
+        map_message.put("Msg", messageText);
+        map_message.put("Side", user_side);
+        map_message.put("upvotes", 0);
+        map_message.put("downvotes", 0);
+        map_message.put("TimeStamp", currentDateTimeString);
+        message_root.updateChildren(map_message);
+    }
+
+    private void crossPageLimit(String key){
+        Log.d("PAGELIMIT","yes");
+        //create new page
+        int keyNo = Integer.parseInt(key) + 1;
+        String newKey = String.valueOf(keyNo);
+        Log.d("PAGENO",key);
+        Map<String, Object> map_page = new HashMap<String, Object>();
+        map_page.put(newKey, "");
+        root.updateChildren(map_page);
+        DatabaseReference new_page_root = root.child(newKey);
+    }//used ing checkPageNum
 
     @Override
     public void onBackPressed() {
