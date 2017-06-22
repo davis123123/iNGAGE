@@ -313,11 +313,13 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
                 int keyNo = Integer.parseInt(key) + 1;
                 String newKey = String.valueOf(keyNo);
                 Log.d("NEWKEY", " "+ newKey + " " + page);
-                if(page.getChildrenCount() == 1){
+                if(page.getChildrenCount() == 5){
                     Log.d("here", " "+ newKey);
-                    if(!page.hasChild(newKey)) {//no one else created new page
+                    if(!currentData.hasChild(newKey)) {//no one else created new page
                         Log.d("here", "if " + newKey);
                         crossPageLimit(key);
+                        page_root =  root.child(newKey);
+                        Log.d("NEWROOTIF", " "+ page_root);
                     }
                     else{
                         Log.d("here", "else "+ newKey);
