@@ -197,6 +197,7 @@ public class ChatActivity extends AppCompatActivity{
 
     private void goChatFragment(){
                                 /* initilize Chat Fragment*/
+        Log.d("CHATFRAG" , "initialize ChatFragment : ");
         final FragmentManager fragmentManager = this.getSupportFragmentManager();
         final Class fragmentClass = ChatFragment.class;
         final Fragment fragment = Fragment.instantiate(getApplicationContext(), fragmentClass.getName());

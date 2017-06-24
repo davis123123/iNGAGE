@@ -73,6 +73,7 @@ public class ChatFragment extends Fragment implements ChatArrayAdapter.ItemClick
     public View create(final LayoutInflater inflater, final ViewGroup container,
                        final Bundle savedInstanceState){
         // Inflate the layout for this fragment
+        Log.d("INFLATECHATFRAG" , "here" );
         rootView = inflater.inflate(R.layout.fragment_chat, container, false);
 
         return rootView;
@@ -84,9 +85,9 @@ public class ChatFragment extends Fragment implements ChatArrayAdapter.ItemClick
         super.onViewCreated(view, savedInstanceState);
         //start adapter
         recyclerView = (RecyclerView) rootView.findViewById(R.id.chatrecyclerView);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        chatAdapter = new ChatArrayAdapter();
+        chatAdapter = new ChatArrayAdapter(this);
         recyclerView.setAdapter(chatAdapter);
         //get user votes
         insertUserVotesHashMap();

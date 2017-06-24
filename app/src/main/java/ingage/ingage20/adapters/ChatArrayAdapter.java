@@ -47,7 +47,8 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
     }
 
 
-    public ChatArrayAdapter( ){
+    public ChatArrayAdapter(ItemClickCallback listener){
+        itemClickCallback = listener;
     }
 
     @Override
@@ -229,6 +230,7 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
 
         public ChatViewHolder(View itemView) {
             super(itemView);
+
             bUpvote = (ImageButton) itemView.findViewById(R.id.upvote);
 
             bDownvote = (ImageButton) itemView.findViewById(R.id.downvote);
