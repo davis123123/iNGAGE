@@ -34,6 +34,8 @@ public class ChatRoomManager {
     public static final String ROOM_USERS = "room_users";
     private static final String PREF_NAME = "ChatRoomPref";
     public static final Set<String> none = null;
+    public static final String TOTAL_PAGES = "total_pages";
+    public static final String CUR_PAGE = "current_page";
 
     public ChatRoomManager(Context context){
         this._context = context;
@@ -51,6 +53,16 @@ public class ChatRoomManager {
         editor.commit();
     }
 
+    public void updateLatestPage(String totalPages){
+        editor.putString(TOTAL_PAGES, totalPages);
+        editor.commit();
+    }
+
+    public void updateCurrentPage(String curPage){
+        editor.putString(CUR_PAGE, curPage);
+        editor.commit();
+    }
+
     public void updateRoomUsers(Set<String> roomUsers){
         editor.putStringSet(ROOM_USERS, roomUsers);
         editor.commit();
@@ -62,6 +74,8 @@ public class ChatRoomManager {
         user.put(THREAD_ID, pref.getString(THREAD_ID, null));
         user.put(SIDE, pref.getString(SIDE, null));
         user.put(SPECTATOR, pref.getString(SPECTATOR, null));
+        user.put(TOTAL_PAGES, pref.getString(TOTAL_PAGES, null));
+        user.put(CUR_PAGE, pref.getString(CUR_PAGE, null));
         // return user
         return user;
     }

@@ -121,7 +121,6 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
                             rowCount += 10;
                             getThreadsJSON(rowCount);
                             inflateThreads();
-
                             //Do pagination.. i.e. fetch new data
                         }
                     }
@@ -155,8 +154,6 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
     public void onContainerClick(int p) {
         itemClick(p);
     }
-
-
 
     @Override
     public void onSpectateBtnClick(int p) {
