@@ -23,7 +23,7 @@ import ingage.ingage20.managers.SessionManager;
 public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.ChatViewHolder>{
 
     private Context mContext;
-    private static final String TAG = ThreadListAdapter.class.getSimpleName();
+    private static final String TAG = ChatArrayAdapter.class.getSimpleName();
     List <ChatMessageHelper> list = new ArrayList<ChatMessageHelper>();
     HashMap<String, Integer> chatHash = new HashMap<String, Integer>();
     SessionManager session;
@@ -104,6 +104,8 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
 
     public void add(ChatMessageHelper object){
         list.add(object);
+
+        //hash msgs
         String chat_id = object.getMessageID();
         chatHash.put(chat_id, getItemCount() - 1);
     }
