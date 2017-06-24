@@ -259,17 +259,17 @@ public class ChatActivity extends AppCompatActivity{
         Map<String, Object> map = new HashMap<String, Object>();
 
         checkCommentNum(messageBy, messageText);
-/**
+
         //send token
         if (tagged) {
             tagged = false;
             sendCoin();
         }
         textField.setText("");
-
+/*
         RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
         int pos = chatAdapter.getItemCount()-1;
-        manager.scrollToPosition(pos);**/
+        manager.scrollToPosition(pos);*/
     }
 
     private void checkCommentNum(final String messageBy, final String messageText) {
@@ -457,37 +457,8 @@ public class ChatActivity extends AppCompatActivity{
         }
     }
 
-    private void eventListener(DatabaseReference root){
-        root.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                //appendChatConversation(dataSnapshot);
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                //updateChatConversation(dataSnapshot);
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
     private void useCoin(){
+        /**
         String type = "use_coin";
         String result = "";
         HashMap<String, String> chat_user = session.getUserDetails();
@@ -508,7 +479,7 @@ public class ChatActivity extends AppCompatActivity{
         }
         else{
             //tell user no coins left
-        }
+        }**/
     }
 
     private void timer(long initialCooldown) {
@@ -588,4 +559,10 @@ public class ChatActivity extends AppCompatActivity{
             tagged = true;
         }
     }
+
+    private void changePage(){
+        chatRoomManager.updateCurrentPage("3");
+        goChatFragment();
+
+    }//moves across pages
 }

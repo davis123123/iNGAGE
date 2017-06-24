@@ -46,6 +46,7 @@ public class ChatFragment extends Fragment implements ChatArrayAdapter.ItemClick
     DatabaseReference root;
     View rootView;
     Long chat_upvote, chat_downvote;
+    DatabaseReference currPageData;
     public static String user_side;
     String chat_msg, chat_username, chat_side, chat_timestamp, chat_id, thread_id, username;
     HashMap<String, String> userVotes = new HashMap<String, String>();
@@ -97,7 +98,7 @@ public class ChatFragment extends Fragment implements ChatArrayAdapter.ItemClick
         //dataSnapshot == root, need child of pages
         HashMap<String, String> chat = chatRoomManager.getUserDetails();
 
-        DatabaseReference currPageData = root.child(String.valueOf(
+        currPageData = root.child(String.valueOf(
                 chat.get(ChatRoomManager.CUR_PAGE)));//get current page from cache
 
         eventListener(currPageData);
@@ -142,7 +143,7 @@ public class ChatFragment extends Fragment implements ChatArrayAdapter.ItemClick
         //get correct chat msg with ith key from chatmessage helper
         ChatMessageHelper chatMessageHelper = (ChatMessageHelper) chatAdapter.getItem(p);
         String chat_key = chatMessageHelper.getMessageID();
-        DatabaseReference message_root = root.child(chat_key);
+        DatabaseReference message_root = currPageData.child(chat_key);
         //get upvote data
         DatabaseReference upvote_count = message_root.child("upvotes");
 
@@ -173,7 +174,7 @@ public class ChatFragment extends Fragment implements ChatArrayAdapter.ItemClick
         //Log.d("vote" , "down : ");
         ChatMessageHelper chatMessageHelper = (ChatMessageHelper) chatAdapter.getItem(p);
         String chat_key = chatMessageHelper.getMessageID();
-        DatabaseReference message_root = root.child(chat_key);
+        DatabaseReference message_root = currPageData.child(chat_key);
         //get upvote data
         DatabaseReference downvote_count = message_root.child("downvotes");
 
@@ -201,7 +202,7 @@ public class ChatFragment extends Fragment implements ChatArrayAdapter.ItemClick
     public void removeUpvote(int p) {
         ChatMessageHelper chatMessageHelper = (ChatMessageHelper) chatAdapter.getItem(p);
         String chat_key = chatMessageHelper.getMessageID();
-        DatabaseReference message_root = root.child(chat_key);
+        DatabaseReference message_root = currPageData.child(chat_key);
         //get upvote data
         DatabaseReference upvote_count = message_root.child("upvotes");
 
@@ -231,7 +232,7 @@ public class ChatFragment extends Fragment implements ChatArrayAdapter.ItemClick
     public void removeDownvote(int p) {
         ChatMessageHelper chatMessageHelper = (ChatMessageHelper) chatAdapter.getItem(p);
         String chat_key = chatMessageHelper.getMessageID();
-        DatabaseReference message_root = root.child(chat_key);
+        DatabaseReference message_root = currPageData.child(chat_key);
         //get upvote data
         DatabaseReference downvote_count = message_root.child("downvotes");
 
