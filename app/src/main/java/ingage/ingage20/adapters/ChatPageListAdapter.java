@@ -25,14 +25,26 @@ public class ChatPageListAdapter extends RecyclerView.Adapter<ChatPageListAdapte
     HashMap<String, Integer> chatHash = new HashMap<String, Integer>();
     SessionManager session;
     String username;
+    private ItemClickCallback itemClickCallback;
 
+    public interface ItemClickCallback{
+        void onPgeBtnClick(int p);
+    }
+
+    public void setItemClickCallback(final ItemClickCallback itemClickCallback){
+        this.itemClickCallback = itemClickCallback;
+    }
+
+    public ChatPageListAdapter(final ItemClickCallback itemClickCallback){
+        this.itemClickCallback = itemClickCallback;
+    }
 
     @Override
     public ChatViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         boolean shouldAttachToParentImmediately = false;
-        View view = inflater.inflate(R.layout.chat_layout, parent, shouldAttachToParentImmediately);
+        View view = inflater.inflate(R.layout.page_list_layout, parent, shouldAttachToParentImmediately);
         return null;
     }
 

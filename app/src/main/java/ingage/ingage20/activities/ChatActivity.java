@@ -142,6 +142,8 @@ public class ChatActivity extends AppCompatActivity{
         if (spectator.equals("true")){
             setSpectateMode();
         }
+
+        goPageFragment();
     }
 
     private void textChangeListener(){
@@ -193,6 +195,19 @@ public class ChatActivity extends AppCompatActivity{
                 goChatFragment();
             }
         });
+    }
+
+    private void goPageFragment(){
+        Log.d("PAGEFRAG" , "initialize PAGEFragment : ");
+        final FragmentManager fragmentManager = this.getSupportFragmentManager();
+        final Class fragmentClass = ChatFragment.class;
+        final Fragment fragment = Fragment.instantiate(getApplicationContext(), fragmentClass.getName());
+
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.chat_pages_container, fragment, fragmentClass.getSimpleName())
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit();
     }
 
     private void goChatFragment(){
