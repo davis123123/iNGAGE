@@ -44,20 +44,21 @@ public class ChatPageListFragment extends Fragment implements ChatPageListAdapte
     @Override
     public void onViewCreated(final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         recyclerView = (RecyclerView) rootView.findViewById(R.id.pagerecyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager
                 (getActivity(),LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManager);
         chatPageListAdapter = new ChatPageListAdapter(this);
+        Log.d("PAGEFRAG", "STARTED");
         recyclerView.setAdapter(chatPageListAdapter);
 
         chatPageListAdapter.setItemClickCallback(this);
         HashMap<String, String> chat = chatRoomManager.getUserDetails();
         totalPageNo = chat.get(ChatRoomManager.TOTAL_PAGES);
         int nTotalPage = Integer.parseInt(totalPageNo);
-        for(int i = 0; i < nTotalPage; i++){
+        for(int i = 1; i <= nTotalPage; i++){
             chatPageListAdapter.add(String.valueOf(i));
+            Log.d("NOPAGES", " "+  i);
         }
 
     }

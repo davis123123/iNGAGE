@@ -2,6 +2,7 @@ package ingage.ingage20.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +20,9 @@ import ingage.ingage20.managers.SessionManager;
  * Created by Davis on 6/24/2017.
  */
 
-public class ChatPageListAdapter extends RecyclerView.Adapter<ChatPageListAdapter.ChatViewHolder> {
+public class ChatPageListAdapter extends RecyclerView.Adapter<ChatPageListAdapter.ChatPageViewHolder> {
 
     List<String> list = new ArrayList<String>();
-    HashMap<String, Integer> chatHash = new HashMap<String, Integer>();
-    SessionManager session;
-    String username;
     private ItemClickCallback itemClickCallback;
 
     public interface ItemClickCallback{
@@ -40,12 +38,14 @@ public class ChatPageListAdapter extends RecyclerView.Adapter<ChatPageListAdapte
     }
 
     @Override
-    public ChatViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ChatPageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         boolean shouldAttachToParentImmediately = false;
         View view = inflater.inflate(R.layout.page_list_layout, parent, shouldAttachToParentImmediately);
-        return null;
+        ChatPageViewHolder viewHolder = new ChatPageViewHolder(view);
+        Log.d("PAGEFRAG", "BINDVIEW");
+        return viewHolder;
     }
 
     public String getItem(int position){
@@ -53,9 +53,15 @@ public class ChatPageListAdapter extends RecyclerView.Adapter<ChatPageListAdapte
     }
 
     @Override
-    public void onBindViewHolder(ChatViewHolder holder, int position) {
+    public void onBindViewHolder(ChatPageViewHolder holder, final int position) {
         String pageNo = this.getItem(position);
         holder.bind(position);
+        holder.pageNoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemClickCallback.onPgeBtnClick(position);
+            }
+        });
     }
 
     public void add(String pageNo){
@@ -67,9 +73,9 @@ public class ChatPageListAdapter extends RecyclerView.Adapter<ChatPageListAdapte
         return list.size();
     }
 
-    public class ChatViewHolder extends RecyclerView.ViewHolder {
+    public class ChatPageViewHolder extends RecyclerView.ViewHolder {
         Button pageNoBtn;
-        public ChatViewHolder(View itemView) {
+        public ChatPageViewHolder(View itemView) {
             super(itemView);
             pageNoBtn = (Button) itemView.findViewById(R.id.pageBtn);
         }

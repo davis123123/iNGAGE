@@ -42,6 +42,7 @@ import java.util.concurrent.ExecutionException;
 import ingage.ingage20.R;
 import ingage.ingage20.adapters.ChatArrayAdapter;
 import ingage.ingage20.fragments.ChatFragment;
+import ingage.ingage20.fragments.ChatPageListFragment;
 import ingage.ingage20.fragments.FrontPageFragment;
 import ingage.ingage20.handlers.ChatFeaturesHandler;
 import ingage.ingage20.handlers.ChatRoomHandler;
@@ -200,7 +201,7 @@ public class ChatActivity extends AppCompatActivity{
     private void goPageFragment(){
         Log.d("PAGEFRAG" , "initialize PAGEFragment : ");
         final FragmentManager fragmentManager = this.getSupportFragmentManager();
-        final Class fragmentClass = ChatFragment.class;
+        final Class fragmentClass = ChatPageListFragment.class;
         final Fragment fragment = Fragment.instantiate(getApplicationContext(), fragmentClass.getName());
 
         fragmentManager
