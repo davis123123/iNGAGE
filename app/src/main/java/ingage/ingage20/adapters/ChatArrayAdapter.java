@@ -23,7 +23,7 @@ import ingage.ingage20.managers.SessionManager;
 public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.ChatViewHolder>{
 
     private Context mContext;
-    private static final String TAG = ThreadListAdapter.class.getSimpleName();
+    private static final String TAG = ChatArrayAdapter.class.getSimpleName();
     List <ChatMessageHelper> list = new ArrayList<ChatMessageHelper>();
     HashMap<String, Integer> chatHash = new HashMap<String, Integer>();
     SessionManager session;
@@ -47,7 +47,8 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
     }
 
 
-    public ChatArrayAdapter( ){
+    public ChatArrayAdapter(ItemClickCallback listener){
+        itemClickCallback = listener;
     }
 
     @Override
@@ -103,6 +104,8 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
 
     public void add(ChatMessageHelper object){
         list.add(object);
+
+        //hash msgs
         String chat_id = object.getMessageID();
         chatHash.put(chat_id, getItemCount() - 1);
     }
@@ -178,8 +181,6 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
                     holder.bDownvote.setEnabled(true);
                 }
 
-
-
                 /*if(!holder.bDownvote.isEnabled()) {
                     holder.bDownvote.setEnabled(true);
                     //itemClickCallback.removeDownvote(getAdapterPosition());
@@ -225,14 +226,13 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
         });
     }
 
-
-
     class ChatViewHolder extends RecyclerView.ViewHolder{
         TextView messageContentView, messageUserView, messageDateView, upVoteView, downVoteView;
         ImageButton bUpvote, bDownvote;
 
         public ChatViewHolder(View itemView) {
             super(itemView);
+
             bUpvote = (ImageButton) itemView.findViewById(R.id.upvote);
 
             bDownvote = (ImageButton) itemView.findViewById(R.id.downvote);
@@ -242,9 +242,7 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
             messageDateView = (TextView) itemView.findViewById(R.id.message_date_view);
             upVoteView = (TextView) itemView.findViewById(R.id.up_label);
             downVoteView = (TextView) itemView.findViewById(R.id.down_label);
-
         }
-
 
         private void bind(int listIndex){
             final ChatMessageHelper chatMessageHelper = (ChatMessageHelper) getItem(listIndex);
@@ -257,40 +255,5 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
             userVote = chatMessageHelper.getUserVote();
             Log.d("VOTESTATE", "text: " + userVote + chatMessageHelper.getMessageText() + " " + chatMessageHelper.getUserVote());
         }
-/*
-        @Override
-        public void onClick(View v) {
-            if (v.getId() == R.id.upvote){
-                itemClickCallback.onUpvoteClick(getAdapterPosition());
-                Log.d("VOTECLICK", "yes" );
-                //MAKE boolean LOL
-                String prev_voted = "false", vote = "up";;
-                bUpvote.setEnabled(false);
-                if(!bDownvote.isEnabled()) {
-                    bDownvote.setEnabled(true);
-                    itemClickCallback.removeDownvote(getAdapterPosition());
-                    prev_voted = "true";
-                }
-
-                //insert into user profile
-                itemClickCallback.insertVote(getAdapterPosition(), prev_voted, vote);
-            }
-            else if (v.getId() == R.id.downvote){
-                itemClickCallback.onDownvoteClick(getAdapterPosition());
-                //MAKE boolean LOL
-                String prev_voted = "false", vote = "down";
-                bDownvote.setEnabled(false);
-                if(!bUpvote.isEnabled()) {
-                    bUpvote.setEnabled(true);
-                    itemClickCallback.removeUpvote(getAdapterPosition());
-                    prev_voted = "true";
-                }
-
-                //insert into user profile
-                itemClickCallback.insertVote(getAdapterPosition(), prev_voted, vote);
-            }
-        }*/
-
     }
-
 }

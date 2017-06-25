@@ -24,8 +24,12 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 
 import java.io.File;
 import java.util.HashMap;
@@ -148,7 +152,7 @@ public class  PostThreadActivity extends AppCompatActivity {
             Bitmap image = ((BitmapDrawable) imageToUpload.getDrawable()).getBitmap();
             uploadImageHandler = new UploadImageHandler(image);
             uploadImageHandler.execute(threadTitle);
-            image_link = "http://107.170.232.60/images/"+threadTitle+".JPG";
+            image_link = "http://10.0.0.199/images/"+threadTitle+".JPG";
         }
 
         //categorySpinner = (Spinner) findViewById(R.id.spinner);
@@ -173,10 +177,9 @@ public class  PostThreadActivity extends AppCompatActivity {
         if (submission_status.equals("Submission Failed")){
             message = "Submission Failed";
         }
-
-
-        addDataToFirebase(threadTitle);
-
+        else {
+            addDataToFirebase(submission_status);
+        }
 
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, MainActivity.class);
@@ -187,7 +190,35 @@ public class  PostThreadActivity extends AppCompatActivity {
         Map<String,Object> map = new HashMap<String, Object>();
         map.put(threadTitle,"");
         root.updateChildren(map);
+        checkPageExist(threadTitle);
     }
+
+    public void checkPageExist(String threadTitle){
+        Log.d("CHECKPAGE", "yes3");
+        final DatabaseReference post_root = FirebaseDatabase.getInstance().getReference().child(threadTitle);
+        post_root.runTransaction(new Transaction.Handler() {
+
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                Log.d("ROOT", String.valueOf(mutableData));
+                if (mutableData.hasChildren()) {
+                    Log.d("ROOTCHILDREN", "yes");
+                } else {
+                    Log.d("ROOTCHILDREN", "no");
+                    Map<String, Object> map_page = new HashMap<String, Object>();
+                    map_page.put("1","");
+                    String fPage = "1";
+                    post_root.updateChildren(map_page);
+                }
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+
+            }
+        });
+    } //used only for first comment
 
     private void goUploadImage(){
 

@@ -72,13 +72,8 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
     public void onViewCreated(final View view, final Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
 
-
-
-        //TODO fix threadlistadapter for dynamic threads
         threadListRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv_posts);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-
-
 
         threadListRecyclerView.setLayoutManager(layoutManager);
 
@@ -121,7 +116,6 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
                             rowCount += 10;
                             getThreadsJSON(rowCount);
                             inflateThreads();
-
                             //Do pagination.. i.e. fetch new data
                         }
                     }
@@ -155,8 +149,6 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
     public void onContainerClick(int p) {
         itemClick(p);
     }
-
-
 
     @Override
     public void onSpectateBtnClick(int p) {

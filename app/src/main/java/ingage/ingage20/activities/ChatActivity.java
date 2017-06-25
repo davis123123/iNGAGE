@@ -3,6 +3,9 @@ package ingage.ingage20.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -38,6 +41,8 @@ import java.util.concurrent.ExecutionException;
 
 import ingage.ingage20.R;
 import ingage.ingage20.adapters.ChatArrayAdapter;
+import ingage.ingage20.fragments.ChatFragment;
+import ingage.ingage20.fragments.FrontPageFragment;
 import ingage.ingage20.handlers.ChatFeaturesHandler;
 import ingage.ingage20.handlers.ChatRoomHandler;
 import ingage.ingage20.handlers.SpectateRoomHandler;
@@ -48,10 +53,8 @@ import ingage.ingage20.helpers.ThreadsHelper;
 import ingage.ingage20.managers.ChatRoomManager;
 import ingage.ingage20.managers.SessionManager;
 
-public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.ItemClickCallback{
+public class ChatActivity extends AppCompatActivity{
 
-    RecyclerView recyclerView;
-    ChatArrayAdapter chatAdapter;
     SessionManager session;
     ChatRoomManager chatRoomManager;
     String JsonString;
@@ -70,8 +73,10 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
     CountDownTimer mCountDownTimer;
     Button useCoinBt;
     boolean tagged = false, paused = false;
+    int noPages;
     CountDownTimer kickTimer;
     HashMap<String, String> userVotes = new HashMap<String, String>();
+    DatabaseReference page_root;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,8 +86,6 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
         HashMap <String, String> user = session.getUserDetails();
         username = user.get(SessionManager.KEY_NAME);
         chatRoomManager = new ChatRoomManager(getApplicationContext());
-
-        recyclerView = (RecyclerView) findViewById(R.id.chatrecyclerView);
 
         timerTv = (TextView) findViewById(R.id.timertv);
         useCoinBt = (Button) findViewById(R.id.cooldownButton);
@@ -103,28 +106,48 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
         user_side = chat.get(ChatRoomManager.SIDE);
 
         kickTimer(900000); //fifteen minutes of inactivity will kick user out
-
-        //get user votes
-        insertUserVotesHashMap();
-
         Log.d("STATE", "side: " + user_side);
-
-        //start adapter
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        chatAdapter = new ChatArrayAdapter();
-        recyclerView.setAdapter(chatAdapter);
-
-
-        //set click for upvote and downvotes in each chatmessage
-        chatAdapter.setItemClickCallback(this);
 
         //ENTER MESSAGES WITH @TAGS
         textField = (EditText) findViewById(R.id.msgField);
+        textChangeListener();
+
+        //thread id for root of comments tree
+        root = FirebaseDatabase.getInstance().getReference().child(thread_id);
+
+        //GET ALL PAGES IN ROOM
+        //pageEventListener(root);
+        pageCount(root); //TAKES TIME TO TRANSACT
+/**
+        Intent intentThatStartedThisActivity = getIntent();
+        if(intentThatStartedThisActivity.hasExtra(Intent.EXTRA_TEXT)){
+            JsonString = intentThatStartedThisActivity.getStringExtra(Intent.EXTRA_TEXT);
+        }**/ //check if this is needed
+
+        //add messages to recycler view by clicking send
+        addButton = (ImageButton) findViewById(R.id.sendMessageButton);
+        if (addButton != null) {
+            addButton.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    sendMsg();
+                }
+            });//click to send message
+            //calls event listener to update message in realtime
+            //eventListener(root);
+        }
+        HashMap<String, String> chat_user = chatRoomManager.getUserDetails();
+        String spectator = chat_user.get(ChatRoomManager.SPECTATOR);
+        if (spectator.equals("true")){
+            setSpectateMode();
+        }
+    }
+
+    private void textChangeListener(){
         textField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
@@ -149,70 +172,80 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
 
             }
         });
-
-        //thread id for root of comments tree
-        root = FirebaseDatabase.getInstance().getReference().child(thread_id);
-
-        Intent intentThatStartedThisActivity = getIntent();
-        if(intentThatStartedThisActivity.hasExtra(Intent.EXTRA_TEXT)){
-            JsonString = intentThatStartedThisActivity.getStringExtra(Intent.EXTRA_TEXT);
-        }
-
-        //add messages to recycler view by clicking send
-        addButton = (ImageButton) findViewById(R.id.sendMessageButton);
-        if (addButton != null) {
-            addButton.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    sendMsg();
-                }
-            });//click to send message
-
-            //calls event listener to update message in realtime
-            eventListener(root);
-        }
-        HashMap<String, String> chat_user = chatRoomManager.getUserDetails();
-        String spectator = chat_user.get(ChatRoomManager.SPECTATOR);
-        if (spectator.equals("true")){
-            setSpectateMode();
-        }
     }
-    private void insertUserVotesHashMap() {
-        VotesHandler votesHandler = new VotesHandler(getApplicationContext());
-        String type = "getUserVotes";
-        String result = "";
 
-        try {
-            result = votesHandler.execute(type, thread_id, username).get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-        Log.d("INSERTHASHSTATE", "text: "+result );
-        JSONObject jsonObject;
-        JSONArray jsonArray;
-        try {
-            jsonObject = new JSONObject(result);
-            jsonArray = jsonObject.getJSONArray("server_response");
-            int count= 0;
-            String chat_id = "", vote_type = "";
-            while(count < jsonArray.length()){
-                JSONObject JO = jsonArray.getJSONObject(count);
-                chat_id = JO.getString("chat_id");
-                vote_type = JO.getString("vote_type");
-                Log.d("JSONSTATE", "text: " + chat_id+ vote_type);
-                //put all votes into hashmap with chat_id as key
-                userVotes.put(chat_id, vote_type);
-                count++;
+    private void pageCount(final DatabaseReference root) {
+        final String key = root.getKey();
+        root.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData currentData) {
+                noPages = (int) currentData.getChildrenCount();
+                page_root = root.child(String.valueOf(noPages));
+                return Transaction.success(currentData); //we can also abort by calling Transaction.abort()
             }
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+            //TODO:Error handle here
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+            //inflate NUMBER OF PAGES HERE!!!!!!!!!!!
+                chatRoomManager.updateLatestPage(String.valueOf(noPages));
+                chatRoomManager.updateCurrentPage(String.valueOf(noPages));
+                goChatFragment();
+            }
+        });
     }
+
+    private void goChatFragment(){
+                                /* initilize Chat Fragment*/
+        Log.d("CHATFRAG" , "initialize ChatFragment : ");
+        final FragmentManager fragmentManager = this.getSupportFragmentManager();
+        final Class fragmentClass = ChatFragment.class;
+        final Fragment fragment = Fragment.instantiate(getApplicationContext(), fragmentClass.getName());
+
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.chat_fragment_container, fragment, fragmentClass.getSimpleName())
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit();
+    }
+
+    private void pageEventListener(DatabaseReference root) {
+        root.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                appendPage(dataSnapshot);
+            }
+            @Override
+
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void appendPage(DataSnapshot dataSnapshot) {
+        Iterator i = dataSnapshot.getChildren().iterator();
+        Iterable<DataSnapshot> t = dataSnapshot.getChildren();
+        Log.d("NEWPAGE", "has been made");
+    }
+
     private void sendMsg(){
         //start cooldown timer
-        Log.d("CHECKPAGE", "yes");
         timer(180000);
         //on send restart kicktimer
         kickTimer.cancel();
@@ -220,16 +253,73 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
         String messageText = textField.getText().toString();
         HashMap<String, String> user = session.getUserDetails();
         String messageBy = user.get(SessionManager.KEY_NAME);
-        Log.d("CHECKPAGE", "yes2");
-        checkPageExist();//CHECK IF FIRST COMMENT
+        //checkCommentNum();
+
         //firebase area to send msg
         Map<String, Object> map = new HashMap<String, Object>();
-        DatabaseReference page_root = root.child("1");
+
+        checkCommentNum(messageBy, messageText);
+
+        //send token
+        if (tagged) {
+            tagged = false;
+            sendCoin();
+        }
+        textField.setText("");
+/*
+        RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
+        int pos = chatAdapter.getItemCount()-1;
+        manager.scrollToPosition(pos);*/
+    }
+
+    private void checkCommentNum(final String messageBy, final String messageText) {
+        Log.d("CHECKCOMMENTNUM"," " + page_root);
+        //final DatabaseReference page_root = root.child("test");
+        final String key = page_root.getKey();
+
+        root.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData currentData) {
+                Log.d("CHECKCOMMENTNUM", String.valueOf(currentData) + " " + currentData.getChildrenCount());
+                MutableData page = currentData.child(page_root.getKey());//get page
+                int keyNo = Integer.parseInt(key) + 1;
+                String newKey = String.valueOf(keyNo);
+                Log.d("NEWKEY", " "+ newKey + " " + page);
+                if(page.getChildrenCount() == 5){
+                    Log.d("here", " "+ newKey);
+                    if(!currentData.hasChild(newKey)) {//no one else created new page
+                        Log.d("here", "if " + newKey);
+                        crossPageLimit(key);
+                        page_root =  root.child(newKey);
+                        Log.d("NEWROOTIF", " "+ page_root);
+                    }
+                    else{
+                        Log.d("here", "else "+ newKey);
+                        page_root =  root.child(newKey);//newkey is incrmental of old page
+                        Log.d("NEWROOT", " "+ page_root);
+                    } //new page already created
+                }
+
+                return Transaction.success(currentData); //we can also abort by calling Transaction.abort()
+            }
+
+            //TODO:Error handle here
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+                Log.d("TRANSCOMPLETE", " "+ dataSnapshot);
+                insertComment(messageBy, messageText);//NEED TEST
+            }
+        });
+
+
+    }
+
+    private void insertComment(final String messageBy, final String messageText){
+        Log.d("PAGELIMIT", " " + page_root);
         temp_key = page_root.push().getKey();
-        root.updateChildren(map);//check if this does anything lol
-        String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
 
         DatabaseReference message_root = page_root.child(temp_key);
+        String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
         Map<String, Object> map_message = new HashMap<String, Object>();
         map_message.put("Username", messageBy);
         map_message.put("Msg", messageText);
@@ -238,45 +328,19 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
         map_message.put("downvotes", 0);
         map_message.put("TimeStamp", currentDateTimeString);
         message_root.updateChildren(map_message);
-/**
-        //send token
-        if (tagged) {
-            tagged = false;
-            sendCoin();
-        }
-        textField.setText("");
-
-        RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
-        int pos = chatAdapter.getItemCount()-1;
-        manager.scrollToPosition(pos);**/
     }
 
-
-    public void checkPageExist(){
-        Log.d("CHECKPAGE", "yes3");
-        root.runTransaction(new Transaction.Handler() {
-
-            @Override
-            public Transaction.Result doTransaction(MutableData mutableData) {
-                Log.d("ROOT", String.valueOf(mutableData));
-                if (mutableData.hasChildren()) {
-                    Log.d("ROOTCHILDREN", "yes");
-                } else {
-                    Log.d("ROOTCHILDREN", "no");
-                    Map<String, Object> map_page = new HashMap<String, Object>();
-                    map_page.put("1","");
-                    String fPage = "1";
-                    root.updateChildren(map_page);
-                }
-                return Transaction.success(mutableData);
-            }
-
-            @Override
-            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
-
-            }
-        });
-    } //used only for first comment
+    private void crossPageLimit(String key){
+        Log.d("PAGELIMIT","yes");
+        //create new page
+        int keyNo = Integer.parseInt(key) + 1;
+        String newKey = String.valueOf(keyNo);
+        Log.d("PAGENO",key);
+        Map<String, Object> map_page = new HashMap<String, Object>();
+        map_page.put(newKey, "");
+        root.updateChildren(map_page);
+        DatabaseReference new_page_root = root.child(newKey);
+    }//used ing checkPageNum
 
     @Override
     public void onBackPressed() {
@@ -393,86 +457,8 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
         }
     }
 
-    private void eventListener(DatabaseReference root){
-        root.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                //appendChatConversation(dataSnapshot);
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                //updateChatConversation(dataSnapshot);
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private void updateChatConversation(DataSnapshot dataSnapshot) {
-        Iterator i = dataSnapshot.getChildren().iterator();
-        while (i.hasNext()){
-            chat_id = dataSnapshot.getKey();
-            Log.d("STATE" , "result : " + chat_id);
-            chat_msg = (String) ((DataSnapshot)i.next()).getValue();
-            chat_side = (String) ((DataSnapshot)i.next()).getValue();
-            chat_timestamp = (String) ((DataSnapshot)i.next()).getValue();
-            chat_username = (String) ((DataSnapshot)i.next()).getValue();
-            chat_downvote = (Long)((DataSnapshot)i.next()).getValue();
-            chat_upvote = (Long)((DataSnapshot)i.next()).getValue();
-            //gets previous msg of user's vote status
-            ChatMessageHelper msgId = (ChatMessageHelper) chatAdapter.getItemFromID(chat_id);
-
-            String chat_userVote = msgId.getUserVote();
-            Log.d("USERVOTE" , "result : " + chat_userVote);
-            ChatMessageHelper msg = new ChatMessageHelper(chat_id, chat_side, chat_msg, chat_username, chat_upvote,
-                    chat_downvote, chat_timestamp, chat_userVote);
-            chatAdapter.update(msg, chat_id);
-            chatAdapter.notifyDataSetChanged();
-        }
-
-
-    }
-
-    private void appendChatConversation(DataSnapshot dataSnapshot) {
-        Iterator i = dataSnapshot.getChildren().iterator();
-
-        while (i.hasNext()){
-            chat_id = dataSnapshot.getKey();
-            Log.d("STATE" , "result : " + chat_id);
-            chat_msg = (String) ((DataSnapshot)i.next()).getValue();
-            chat_side = (String) ((DataSnapshot)i.next()).getValue();
-            chat_timestamp = (String) ((DataSnapshot)i.next()).getValue();
-            chat_username = (String) ((DataSnapshot)i.next()).getValue();
-            chat_downvote = (Long)((DataSnapshot)i.next()).getValue();
-            chat_upvote = (Long)((DataSnapshot)i.next()).getValue();
-
-            String chat_userVote;
-            chat_userVote = userVotes.get(chat_id);
-            Log.d("CHATVOTE" , "result : " + chat_userVote);
-            ChatMessageHelper msg = new ChatMessageHelper(chat_id, chat_side, chat_msg, chat_username, chat_upvote,
-                    chat_downvote, chat_timestamp, chat_userVote);
-            chatAdapter.add(msg);
-        }
-        chatAdapter.notifyDataSetChanged();
-        recyclerView.scrollToPosition(chatAdapter.getItemCount() - 1);
-    } //iterates through all comments under the thread_id to get information
-
     private void useCoin(){
+        /**
         String type = "use_coin";
         String result = "";
         HashMap<String, String> chat_user = session.getUserDetails();
@@ -493,7 +479,7 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
         }
         else{
             //tell user no coins left
-        }
+        }**/
     }
 
     private void timer(long initialCooldown) {
@@ -546,158 +532,6 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
     }//modify unblock functions here
 
     @Override
-    public void onUpvoteClick(int p) {
-        //Log.d("vote" , "up : ");
-        //get correct chat msg with ith key from chatmessage helper
-        ChatMessageHelper chatMessageHelper = (ChatMessageHelper) chatAdapter.getItem(p);
-        String chat_key = chatMessageHelper.getMessageID();
-        DatabaseReference message_root = root.child(chat_key);
-        //get upvote data
-        DatabaseReference upvote_count = message_root.child("upvotes");
-
-
-        upvote_count.runTransaction(new Transaction.Handler() {
-            @Override
-            public Transaction.Result doTransaction(MutableData currentData) {
-                Log.d("Data", String.valueOf(currentData));
-
-                if(currentData.getValue() == null) {
-                    currentData.setValue(1);
-                } else {
-                    currentData.setValue((Long) currentData.getValue() + 1);
-                }
-                return Transaction.success(currentData); //we can also abort by calling Transaction.abort()
-            }
-
-            //TODO:Error handle here
-            @Override
-            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
-
-            }
-        });
-    }
-
-    @Override
-    public void onDownvoteClick(int p) {
-        //Log.d("vote" , "down : ");
-        ChatMessageHelper chatMessageHelper = (ChatMessageHelper) chatAdapter.getItem(p);
-        String chat_key = chatMessageHelper.getMessageID();
-        DatabaseReference message_root = root.child(chat_key);
-        //get upvote data
-        DatabaseReference downvote_count = message_root.child("downvotes");
-
-        downvote_count.runTransaction(new Transaction.Handler() {
-            @Override
-            public Transaction.Result doTransaction(MutableData currentData) {
-                Log.d("Data", String.valueOf(currentData));
-
-                if(currentData.getValue() == null) {
-                    currentData.setValue(1);
-                } else {
-                    currentData.setValue((Long) currentData.getValue() + 1);
-                }
-                return Transaction.success(currentData); //we can also abort by calling Transaction.abort()
-            }
-
-            //TODO:Error handle here
-            @Override
-            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
-            }
-        });
-    }
-
-    @Override
-    public void removeUpvote(int p) {
-        ChatMessageHelper chatMessageHelper = (ChatMessageHelper) chatAdapter.getItem(p);
-        String chat_key = chatMessageHelper.getMessageID();
-        DatabaseReference message_root = root.child(chat_key);
-        //get upvote data
-        DatabaseReference upvote_count = message_root.child("upvotes");
-
-
-        upvote_count.runTransaction(new Transaction.Handler() {
-            @Override
-            public Transaction.Result doTransaction(MutableData currentData) {
-                Log.d("Data", String.valueOf(currentData));
-
-                if(currentData.getValue() == null) {
-                    currentData.setValue(0);
-                } else {
-                    currentData.setValue((Long) currentData.getValue() - 1);
-                }
-                return Transaction.success(currentData); //we can also abort by calling Transaction.abort()
-            }
-
-            //TODO:Error handle here
-            @Override
-            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
-
-            }
-        });
-    }
-
-    @Override
-    public void removeDownvote(int p) {
-        ChatMessageHelper chatMessageHelper = (ChatMessageHelper) chatAdapter.getItem(p);
-        String chat_key = chatMessageHelper.getMessageID();
-        DatabaseReference message_root = root.child(chat_key);
-        //get upvote data
-        DatabaseReference downvote_count = message_root.child("downvotes");
-
-        downvote_count.runTransaction(new Transaction.Handler() {
-            @Override
-            public Transaction.Result doTransaction(MutableData currentData) {
-                Log.d("Data", String.valueOf(currentData));
-
-                if(currentData.getValue() == null) {
-                    currentData.setValue(0);
-                } else {
-                    currentData.setValue((Long) currentData.getValue() - 1);
-                }
-                return Transaction.success(currentData); //we can also abort by calling Transaction.abort()
-            }
-
-            //TODO:Error handle here
-            @Override
-            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
-            }
-        });
-    }
-
-    @Override
-    public void insertVote(int p, String prev_voted, String vote) {
-        String type = "insert_vote";
-        ChatFeaturesHandler chatFeaturesHandler = new ChatFeaturesHandler(getApplicationContext());
-        ChatMessageHelper chatMessageHelper = (ChatMessageHelper) chatAdapter.getItem(p);
-
-        //sets user's vote to memory
-        chatMessageHelper.setUserVote(vote);
-        //username is messageBy
-        String messageBy = chatMessageHelper.getMessageUser();
-        Log.d("insertvote", type + vote+ prev_voted);
-        String chat_id = chatMessageHelper.getMessageID();
-        String chat_side = chatMessageHelper.getSide();
-        HashMap<String, String> chat = chatRoomManager.getUserDetails();
-        String thread_id = chat.get(ChatRoomManager.THREAD_ID);
-        session = new SessionManager(getApplicationContext());
-        HashMap<String, String> user = session.getUserDetails();
-        //chatuser is current user of app
-        String chat_user = user.get(SessionManager.KEY_NAME);
-        //insert vote into target user profile and own profile
-        Log.d("insertvote", chat_user);
-
-        String result = "";
-        try {
-            result = chatFeaturesHandler.execute(type, messageBy, thread_id, prev_voted, chat_id, vote, chat_side, chat_user).get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-
-        //Log.d("insertvote", result);
-    }//inserts vote in mysql database
-
-
-    @Override
     public void  onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putString("savedTitle", textField.getText().toString());
@@ -725,4 +559,10 @@ public class ChatActivity extends AppCompatActivity implements ChatArrayAdapter.
             tagged = true;
         }
     }
+
+    private void changePage(){
+        chatRoomManager.updateCurrentPage("3");
+        goChatFragment();
+
+    }//moves across pages
 }

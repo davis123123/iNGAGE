@@ -302,11 +302,7 @@ public class MainActivity extends AppCompatActivity
                 navigationDrawer.closeDrawer();
             }
         });
-
-
     }
-
-
 
     @Override
     public void onBackPressed() {
