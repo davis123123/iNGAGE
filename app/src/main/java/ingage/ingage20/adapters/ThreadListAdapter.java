@@ -33,7 +33,8 @@ public class ThreadListAdapter extends RecyclerView.Adapter<ThreadListAdapter.Th
     List list = new ArrayList();
     private ItemClickCallback itemClickCallback;
 
-
+    //Result returned from backend if no image exists
+    String default_path = "data:image/JPG;base64,";
 
 
     public interface ItemClickCallback{
@@ -165,9 +166,9 @@ public class ThreadListAdapter extends RecyclerView.Adapter<ThreadListAdapter.Th
             try {
                 threadImageView = (ImageView) itemView.findViewById(R.id.img_post);
                 String result = dlHandler.execute(type, thread_id).get();
-                //Log.d("STATE", "room title: " + threadsHelper.getThread_title());
-                //Log.d("STATE", "download result: " + result);
-                if(result.substring(0,4).equals("data")) {
+                Log.d("STATE", "room title: " + threadsHelper.getThread_title());
+                Log.d("STATE", "download result: " + result);
+                if(result.length() > default_path.length()) {
                     int index =result.indexOf(",") + 1;
                     String code = result.substring(index, result.length());
                     byte[] decodedString = Base64.decode(code, Base64.DEFAULT);
