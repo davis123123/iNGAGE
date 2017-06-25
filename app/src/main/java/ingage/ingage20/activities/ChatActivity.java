@@ -42,6 +42,10 @@ import java.util.concurrent.ExecutionException;
 import ingage.ingage20.R;
 import ingage.ingage20.adapters.ChatArrayAdapter;
 import ingage.ingage20.fragments.ChatFragment;
+<<<<<<< HEAD
+=======
+import ingage.ingage20.fragments.ChatPageListFragment;
+>>>>>>> newchat
 import ingage.ingage20.fragments.FrontPageFragment;
 import ingage.ingage20.handlers.ChatFeaturesHandler;
 import ingage.ingage20.handlers.ChatRoomHandler;
@@ -142,8 +146,15 @@ public class ChatActivity extends AppCompatActivity{
         if (spectator.equals("true")){
             setSpectateMode();
         }
+<<<<<<< HEAD
     }
 
+=======
+
+        goPageFragment();
+    }
+
+>>>>>>> newchat
     private void textChangeListener(){
         textField.addTextChangedListener(new TextWatcher() {
             @Override
@@ -183,6 +194,7 @@ public class ChatActivity extends AppCompatActivity{
                 page_root = root.child(String.valueOf(noPages));
                 return Transaction.success(currentData); //we can also abort by calling Transaction.abort()
             }
+<<<<<<< HEAD
 
             //TODO:Error handle here
             @Override
@@ -219,8 +231,62 @@ public class ChatActivity extends AppCompatActivity{
 
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
+=======
+
+            //TODO:Error handle here
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+            //inflate NUMBER OF PAGES HERE!!!!!!!!!!!
+                chatRoomManager.updateLatestPage(String.valueOf(noPages));
+                chatRoomManager.updateCurrentPage(String.valueOf(noPages));
+                goChatFragment();
+            }
+        });
+    }
+
+    private void goPageFragment(){
+        Log.d("PAGEFRAG" , "initialize PAGEFragment : ");
+        final FragmentManager fragmentManager = this.getSupportFragmentManager();
+        final Class fragmentClass = ChatPageListFragment.class;
+        final Fragment fragment = Fragment.instantiate(getApplicationContext(), fragmentClass.getName());
+
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.chat_pages_container, fragment, fragmentClass.getSimpleName())
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit();
+    }
+
+    private void goChatFragment(){
+                                /* initilize Chat Fragment*/
+        Log.d("CHATFRAG" , "initialize ChatFragment : ");
+        final FragmentManager fragmentManager = this.getSupportFragmentManager();
+        final Class fragmentClass = ChatFragment.class;
+        final Fragment fragment = Fragment.instantiate(getApplicationContext(), fragmentClass.getName());
+
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.chat_fragment_container, fragment, fragmentClass.getSimpleName())
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit();
+    }
+
+    private void pageEventListener(DatabaseReference root) {
+        root.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                appendPage(dataSnapshot);
+>>>>>>> newchat
+            }
+            @Override
+
+<<<<<<< HEAD
+=======
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
             }
 
+>>>>>>> newchat
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
 

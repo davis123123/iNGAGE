@@ -119,7 +119,6 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
         chatMessageHelper.setMessageDownvote(newObject.getMessageDownvote());
         chatMessageHelper.setMessageUpvote(newObject.getMessageUpvote());
         chatMessageHelper.setMessageText(newObject.getMessageText());
-
     }
 
     @Override
