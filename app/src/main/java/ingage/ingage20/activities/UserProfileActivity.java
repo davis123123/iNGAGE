@@ -65,9 +65,13 @@ public class UserProfileActivity extends AppCompatActivity {
         TextView subs_info = (TextView) findViewById(R.id.subscriptions);
 
         user_info.setText(username);
-        email_info.setText("Email:" + email);
+        if(email.length() == 0 || email == null)
+            email_info.setText("Email: N/A" );
+        else
+            email_info.setText("Email:" + email);
         pts_info.setText("Tribute points: " + tribute_pts);
-        subs_info.setText(subs);
+        setSubscriptions(subs_info);
+        //subs_info.setText(subs);
 
         new_avatar_preview = (ImageView) findViewById(R.id.prof_img_preview);
         curr_avatar = (ImageView) findViewById(R.id.profile_img);
@@ -75,39 +79,7 @@ public class UserProfileActivity extends AppCompatActivity {
         change = (Button) findViewById(R.id.change_avatar);
 
         downloadImage();
-
-        upload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goUploadImage();
-            }
-        });
-
-        change.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //download image and update profile
-                if(new_avatar_preview.getDrawable() != null) {
-                    Bitmap image = ((BitmapDrawable) new_avatar_preview.getDrawable()).getBitmap();
-                    UploadAvatarHandler uploadAvatarHandler = new UploadAvatarHandler(image);
-                    Log.d("STATE", "upload avatar clicked" );
-                    try {
-                        if(verified_image) {
-                            String success = uploadAvatarHandler.execute(username).get();
-                            Log.d("STATE", "upload avatar " + success);
-                            String avatar_link = "http://107.170.232.60/images/" + username + ".JPG";
-                            downloadImage();
-                        }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    }
-                }
-                else
-                    Toast.makeText(getApplication(), "No image selected/uploaded!", Toast.LENGTH_LONG).show();
-            }
-        });
+        setListeners();
     }
 
     //Parse the thread subscriptions JSON string
@@ -124,6 +96,18 @@ public class UserProfileActivity extends AppCompatActivity {
         }
 
         return sub_arr;
+    }
+
+    protected void setSubscriptions(TextView subs_info){
+        parseSubs(subs);
+
+        for(int i=0; i < sub_arr.size(); i++){
+            if(i == 0)
+                result = result + sub_arr.get(i);
+            else
+                result = result + ", " + sub_arr.get(i);
+        }
+        subs_info.setText(result);
     }
 
     //retrieve Base64 from FireBase and convert to image
@@ -226,6 +210,44 @@ public class UserProfileActivity extends AppCompatActivity {
             new_avatar_preview.setImageURI(selectedImage);
             verified_image = true;
         }
+    }
+
+    protected void setListeners(){
+
+        //upload avatar
+        upload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goUploadImage();
+            }
+        });
+
+        //change avatar
+        change.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //download image and update profile
+                if(new_avatar_preview.getDrawable() != null) {
+                    Bitmap image = ((BitmapDrawable) new_avatar_preview.getDrawable()).getBitmap();
+                    UploadAvatarHandler uploadAvatarHandler = new UploadAvatarHandler(image);
+                    Log.d("STATE", "upload avatar clicked" );
+                    try {
+                        if(verified_image) {
+                            String success = uploadAvatarHandler.execute(username).get();
+                            Log.d("STATE", "upload avatar " + success);
+                            String avatar_link = "http://107.170.232.60/images/" + username + ".JPG";
+                            downloadImage();
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else
+                    Toast.makeText(getApplication(), "No image selected/uploaded!", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
 
