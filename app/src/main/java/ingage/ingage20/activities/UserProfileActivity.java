@@ -23,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
@@ -39,7 +40,9 @@ public class UserProfileActivity extends AppCompatActivity {
     ImageView new_avatar_preview, curr_avatar;
     private static final int RESULT_LOAD_IMAGE = 1;
     boolean verified_image = false;
+    protected static ArrayList<String> sub_arr = new ArrayList<>();
     String default_path = "data:image/JPG;base64,";
+    String result = "Subscriptions: ";
 
 
     @Override
@@ -62,8 +65,8 @@ public class UserProfileActivity extends AppCompatActivity {
         TextView subs_info = (TextView) findViewById(R.id.subscriptions);
 
         user_info.setText(username);
-        email_info.setText(email);
-        pts_info.setText(tribute_pts);
+        email_info.setText("Email:" + email);
+        pts_info.setText("Tribute points: " + tribute_pts);
         subs_info.setText(subs);
 
         new_avatar_preview = (ImageView) findViewById(R.id.prof_img_preview);
@@ -105,6 +108,22 @@ public class UserProfileActivity extends AppCompatActivity {
                     Toast.makeText(getApplication(), "No image selected/uploaded!", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    //Parse the thread subscriptions JSON string
+    protected ArrayList parseSubs(String thread_subscriptions){
+        thread_subscriptions = thread_subscriptions.replace("["," ");
+        thread_subscriptions = thread_subscriptions.replace("]"," ");
+
+        String arr[] = thread_subscriptions.split(",");
+        for(int i = 0; i < arr.length; i++) {
+            arr[i] = arr[i].substring(arr[i].lastIndexOf(":") + 1);
+            arr[i] = arr[i].replace("\"","");
+            arr[i] = arr[i].replace("}","");
+            sub_arr.add(arr[i]);
+        }
+
+        return sub_arr;
     }
 
     //retrieve Base64 from FireBase and convert to image
