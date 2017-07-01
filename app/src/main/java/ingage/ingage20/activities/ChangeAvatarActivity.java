@@ -118,6 +118,15 @@ public class ChangeAvatarActivity extends AppCompatActivity {
         }
     }
 
+
+    @Override
+    public void onBackPressed()
+    {
+        Intent intent = new Intent(getApplicationContext(), UserProfileActivity.class);
+        finish();
+        startActivity(intent);
+    }
+
     protected void setListeners(){
 
         //upload avatar
@@ -142,6 +151,9 @@ public class ChangeAvatarActivity extends AppCompatActivity {
                             String success = uploadAvatarHandler.execute(username).get();
                             Log.d("STATE", "upload avatar " + success);
                             String avatar_link = "http://107.170.232.60/images/" + username + ".JPG";
+                            Intent intent = new Intent(getApplicationContext(), UserProfileActivity.class);
+                            finish();
+                            startActivity(intent);
                             //downloadImage();
                         }
                     } catch (InterruptedException e) {

@@ -78,8 +78,9 @@ public class UserProfileActivity extends AppCompatActivity {
         curr_avatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(getApplicationContext(), ChangeAvatarActivity.class);
-                startActivity(myIntent);
+                Intent intent = new Intent(getApplicationContext(), ChangeAvatarActivity.class);
+                finish();
+                startActivity(intent);
             }
         });
 
