@@ -13,6 +13,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -42,6 +43,7 @@ public class ChangeAvatarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_change_avatar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         upload = (Button) findViewById(R.id.upload_profile_img);
         change = (Button) findViewById(R.id.change_avatar);
         new_avatar_preview = (ImageView) findViewById(R.id.prof_img_preview);
@@ -125,6 +127,16 @@ public class ChangeAvatarActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), UserProfileActivity.class);
         finish();
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        if (menuItem.getItemId() == android.R.id.home) {
+            Intent intent = new Intent(getApplicationContext(), UserProfileActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        return super.onOptionsItemSelected(menuItem);
     }
 
     protected void setListeners(){
