@@ -17,10 +17,12 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -93,6 +95,7 @@ public class UserProfileActivity extends AppCompatActivity {
     protected ArrayList parseSubs(String thread_subscriptions){
         thread_subscriptions = thread_subscriptions.replace("["," ");
         thread_subscriptions = thread_subscriptions.replace("]"," ");
+        sub_arr.clear();
 
         String arr[] = thread_subscriptions.split(",");
         for(int i = 0; i < arr.length; i++) {
