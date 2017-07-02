@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.util.Log;
@@ -19,6 +20,7 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 import ingage.ingage20.R;
+import ingage.ingage20.adapters.UserProfileInfoAdapter;
 import ingage.ingage20.handlers.DownloadAvatarHandler;
 import ingage.ingage20.managers.SessionManager;
 
@@ -31,6 +33,8 @@ public class UserProfileActivity extends AppCompatActivity {
     protected static ArrayList<String> sub_arr = new ArrayList<>();
     String default_path = "data:image/JPG;base64,";
     String result = "Subscriptions: ";
+    RecyclerView recycler;
+    UserProfileInfoAdapter adapter = new UserProfileInfoAdapter();
 
 
     @Override
@@ -48,21 +52,6 @@ public class UserProfileActivity extends AppCompatActivity {
         tribute_pts = info.get(SessionManager.KEY_TRIBUTE_POINTS);
         subs = info.get(SessionManager.KEY_SUBSCRIPTIONS);
 
-        TextView user_info = (TextView) findViewById(R.id.user_name);
-        TextView email_info = (TextView) findViewById(R.id.email);
-        TextView pts_info = (TextView) findViewById(R.id.tribute_points);
-        TextView subs_info = (TextView) findViewById(R.id.subscriptions);
-
-        user_info.setText(username);
-        if(email.length() == 0 || email == null)
-            email_info.setText("Email: N/A" );
-        else
-            email_info.setText("Email:" + email);
-        pts_info.setText("Tribute points: " + tribute_pts);
-        setSubscriptions(subs_info);
-        //subs_info.setText(subs);
-
-
         curr_avatar = (ImageButton) findViewById(R.id.profile_img);
         curr_avatar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,8 +63,23 @@ public class UserProfileActivity extends AppCompatActivity {
         });
 
 
+        recycler = (RecyclerView) findViewById(R.id.info);
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recycler.setLayoutManager(layoutManager);
+
+        adapter = new UserProfileInfoAdapter();
+        recycler.setAdapter(adapter);
+
+
+        if(email.length() == 0 || email == null)
+            adapter.add("Email: N/A" );
+        else
+            adapter.add("Email: " + email);
+        adapter.add("Tribute points: " + tribute_pts);
+        setSubscriptions();
+        adapter.notifyDataSetChanged();
+
         downloadImage();
-        //setListeners();
     }
 
     //Parse the thread subscriptions JSON string
@@ -95,7 +99,7 @@ public class UserProfileActivity extends AppCompatActivity {
         return sub_arr;
     }
 
-    protected void setSubscriptions(TextView subs_info){
+    protected void setSubscriptions(){
         parseSubs(subs);
 
         for(int i=0; i < sub_arr.size(); i++){
@@ -104,7 +108,7 @@ public class UserProfileActivity extends AppCompatActivity {
             else
                 result = result + ", " + sub_arr.get(i);
         }
-        subs_info.setText(result);
+        adapter.add(result);
     }
 
     //retrieve Base64 from FireBase and convert to image

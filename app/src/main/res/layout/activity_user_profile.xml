@@ -33,33 +33,14 @@
 
     </LinearLayout>
 
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/info"
+        android:layout_alignParentBottom="true" />
 
-    <TextView
-        android:id="@+id/email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="email"
-        android:textColor="#aeaeae"
-        android:textSize="24dp"
-        android:layout_margin="5dp" />
 
-    <TextView
-        android:id="@+id/tribute_points"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="tribute points"
-        android:textColor="#aeaeae"
-        android:textSize="24dp"
-        android:layout_margin="5dp" />
 
-    <TextView
-        android:id="@+id/subscriptions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Subscriptions"
-        android:textColor="#aeaeae"
-        android:textSize="24dp"
-        android:layout_margin="5dp" />
 
 
 </LinearLayout>
