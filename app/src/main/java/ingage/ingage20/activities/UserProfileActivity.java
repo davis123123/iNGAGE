@@ -15,6 +15,8 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
@@ -30,6 +32,7 @@ public class UserProfileActivity extends AppCompatActivity {
     String username, email, tribute_pts, subs;
     //Button upload, change;
     ImageButton curr_avatar;
+    TextView display_username;
     protected static ArrayList<String> sub_arr = new ArrayList<>();
     String default_path = "data:image/JPG;base64,";
     String result = "Subscriptions: ";
@@ -62,6 +65,8 @@ public class UserProfileActivity extends AppCompatActivity {
             }
         });
 
+        display_username = (TextView) findViewById(R.id.user_name);
+        display_username.setText(username);
 
         recycler = (RecyclerView) findViewById(R.id.info);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
