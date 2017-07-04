@@ -15,8 +15,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
@@ -125,20 +123,20 @@ public class UserProfileActivity extends AppCompatActivity {
 
         //do conversion
         try {
+            curr_avatar = (ImageButton) findViewById(R.id.profile_img);
             String result = avatarHandler.execute(type, username).get();
             //Log.d("STATE", "room title: " + threadsHelper.getThread_title());
             Log.d("STATE", "download avatar result: " + result);
-            if(result.length() > 0) {
-                if(result.length() > default_path.length()) {
-                    int index = result.indexOf(",") + 1;
-                    String code = result.substring(index, result.length());
-                    byte[] decodedString = Base64.decode(code, Base64.DEFAULT);
-                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                    curr_avatar.setImageBitmap(decodedByte);
-                    LinearLayout.LayoutParams img_params = new LinearLayout.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, 1000);
-                    curr_avatar.setLayoutParams(img_params);
-                }
+            if(result.length() > default_path.length()) {
+                int index = result.indexOf(",") + 1;
+                String code = result.substring(index, result.length());
+                byte[] decodedString = Base64.decode(code, Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                curr_avatar.setImageBitmap(decodedByte);
+                LinearLayout.LayoutParams img_params = new LinearLayout.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, 1000);
+                curr_avatar.setLayoutParams(img_params);
             }
+
             else
                 curr_avatar.setImageResource(R.mipmap.user);
         } catch (InterruptedException | ExecutionException e) {

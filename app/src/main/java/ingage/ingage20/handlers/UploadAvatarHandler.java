@@ -43,6 +43,7 @@ public class UploadAvatarHandler extends AsyncTask<String, String, String>{
              dataToSend.put("name", name);
              dataToSend.put("image", encodedImage);**/
             String user_name = params[0];
+            String avatar_link = params[1];
 
             URL url = new URL(post_image_url);
             HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
@@ -53,6 +54,7 @@ public class UploadAvatarHandler extends AsyncTask<String, String, String>{
             BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
             String post_data =
                     URLEncoder.encode("user_name", "UTF-8") + "=" + URLEncoder.encode(user_name, "UTF-8") + "&" +
+                            URLEncoder.encode("avatar_link", "UTF-8") + "=" + URLEncoder.encode(avatar_link, "UTF-8") + "&" +
                             URLEncoder.encode("image", "UTF-8") + "=" + URLEncoder.encode(encodedImage, "UTF-8");
 
 

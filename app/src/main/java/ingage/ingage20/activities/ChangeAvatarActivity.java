@@ -160,9 +160,9 @@ public class ChangeAvatarActivity extends AppCompatActivity {
                     Log.d("STATE", "upload avatar clicked" );
                     try {
                         if(verified_image) {
-                            String success = uploadAvatarHandler.execute(username).get();
-                            Log.d("STATE", "upload avatar " + success);
                             String avatar_link = "http://107.170.232.60/images/" + username + ".JPG";
+                            String success = uploadAvatarHandler.execute(username, avatar_link).get();
+                            Log.d("STATE", "upload avatar " + success);
                             Intent intent = new Intent(getApplicationContext(), UserProfileActivity.class);
                             finish();
                             startActivity(intent);

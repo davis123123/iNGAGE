@@ -167,7 +167,7 @@ public class ThreadListAdapter extends RecyclerView.Adapter<ThreadListAdapter.Th
                 threadImageView = (ImageView) itemView.findViewById(R.id.img_post);
                 String result = dlHandler.execute(type, thread_id).get();
                 //Log.d("STATE", "room title: " + threadsHelper.getThread_title());
-                //Log.d("STATE", "download result: " + result);
+                Log.d("STATE", "download thread img result: " + result);
                 if(result.length() > default_path.length()) {
                     int index =result.indexOf(",") + 1;
                     String code = result.substring(index, result.length());
