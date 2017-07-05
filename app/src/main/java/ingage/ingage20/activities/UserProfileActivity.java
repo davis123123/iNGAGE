@@ -133,7 +133,7 @@ public class UserProfileActivity extends AppCompatActivity {
                 byte[] decodedString = Base64.decode(code, Base64.DEFAULT);
                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                 curr_avatar.setImageBitmap(decodedByte);
-                LinearLayout.LayoutParams img_params = new LinearLayout.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, 1000);
+                LinearLayout.LayoutParams img_params = new LinearLayout.LayoutParams(700, 700);
                 curr_avatar.setLayoutParams(img_params);
             }
 
