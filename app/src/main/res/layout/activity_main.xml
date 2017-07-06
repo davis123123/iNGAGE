@@ -51,25 +51,23 @@
                 android:id="@+id/user_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:layout_alignParentTop="true"
-                android:layout_marginTop="12dp"
-                android:layout_marginLeft="12dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
                 android:gravity="left">
                 <ImageView
                     android:id="@+id/userImage"
                     android:scaleType="fitCenter"
                     android:src="@mipmap/user"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="500px"
+                    android:layout_height="500px"
                     />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
                     android:layout_marginLeft="12dp"
                     android:layout_marginRight="12dp"
-                    android:padding="4dp"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="@string/main_nav_menu_default_user_text"
                     android:id="@+id/userName" />

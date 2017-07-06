@@ -2,6 +2,8 @@ package ingage.ingage20.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +22,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -35,6 +41,7 @@ import java.util.concurrent.ExecutionException;
 import ingage.ingage20.firebase.FirebaseSharedPrefManager;
 import ingage.ingage20.fragments.CategoriesPageFragment;
 import ingage.ingage20.fragments.SearchResultFragment;
+import ingage.ingage20.handlers.DownloadAvatarHandler;
 import ingage.ingage20.handlers.SearchHandler;
 import ingage.ingage20.util.NavigationDrawer;
 import ingage.ingage20.R;
@@ -65,6 +72,9 @@ public class MainActivity extends AppCompatActivity
     protected static ArrayList<String> subs = new ArrayList<>();
 
     private Button   signOutButton;
+    protected ImageView avatar;
+    protected TextView userName;
+    String default_path = "data:image/JPG;base64,";
 
     private static ArrayAdapter<String> adapter = null;
 
@@ -124,8 +134,11 @@ public class MainActivity extends AppCompatActivity
         setupListViewListener();
         adapter.notifyDataSetChanged();
 
-        TextView userName = (TextView) findViewById(R.id.userName);
+        userName = (TextView) findViewById(R.id.userName);
         userName.setTextColor(Color.parseColor("#FFFFFF"));
+
+        avatar = (ImageView) findViewById(R.id.userImage);
+        downloadAvatar();
 
         //set up sign out and user profile listener
         Button signOut = (Button) findViewById(R.id.button_signout);
@@ -184,6 +197,42 @@ public class MainActivity extends AppCompatActivity
 
         else{
             alert.showAlertDialog(MainActivity.this, "Sign out Failed", "Please Check Connection", false);
+        }
+    }
+
+    private void downloadAvatar(){
+        Context context = getApplicationContext();
+        DownloadAvatarHandler avatarHandler = new DownloadAvatarHandler(context);
+        String type = "download";
+
+
+        //do conversion
+        try {
+            String username = (String) userName.getText();
+            String result = avatarHandler.execute(type, username).get();
+            //Log.d("STATE", "room title: " + threadsHelper.getThread_title());
+            Log.d("STATE", "download avatar result: " + result);
+            if(result.length() > default_path.length()) {
+                int index = result.indexOf(",") + 1;
+                String code = result.substring(index, result.length());
+                byte[] decodedString = Base64.decode(code, Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                avatar.setImageBitmap(decodedByte);
+                LinearLayout.LayoutParams img_params = new LinearLayout.LayoutParams(500, 500);
+                avatar.setLayoutParams(img_params);
+            }
+
+            else
+                avatar.setImageResource(R.mipmap.user);
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        //set padding programmatically
+        if(avatar.getDrawable() != null) {
+            float density = context.getResources().getDisplayMetrics().density;
+            int padding = (int)(20 * density);
+            avatar.setPadding(padding, padding, padding, padding);
         }
     }
 

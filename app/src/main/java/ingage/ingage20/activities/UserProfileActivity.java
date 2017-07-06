@@ -82,7 +82,7 @@ public class UserProfileActivity extends AppCompatActivity {
         setSubscriptions();
         adapter.notifyDataSetChanged();
 
-        downloadImage();
+        downloadAvatar();
     }
 
     //Parse the thread subscriptions JSON string
@@ -114,12 +114,10 @@ public class UserProfileActivity extends AppCompatActivity {
         adapter.add(result);
     }
 
-    //retrieve Base64 from FireBase and convert to image
-    private void downloadImage(){
+    private void downloadAvatar(){
         Context context = getApplicationContext();
         DownloadAvatarHandler avatarHandler = new DownloadAvatarHandler(context);
         String type = "download";
-
 
         //do conversion
         try {
