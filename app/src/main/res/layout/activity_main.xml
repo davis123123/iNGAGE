@@ -46,31 +46,32 @@
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#6f6f70"
-            android:paddingBottom="10dp">
+            android:background="#6f6f70">
             <LinearLayout
                 android:id="@+id/user_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_alignParentTop="true"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="10dp"
                 android:gravity="left">
                 <ImageView
                     android:id="@+id/userImage"
                     android:scaleType="fitCenter"
                     android:src="@mipmap/user"
-                    android:layout_width="500px"
-                    android:layout_height="500px"
+                    android:layout_width="700px"
+                    android:layout_height="700px"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginBottom="3dp"
                     />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
+                    android:layout_marginLeft="20dp"
                     android:layout_marginRight="12dp"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="@string/main_nav_menu_default_user_text"
+                    android:textSize="28dp"
+                    android:text="Username"
+                    android:textColor="#FFFFFF"
                     android:id="@+id/userName" />
             </LinearLayout>
 

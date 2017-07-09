@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity
                 byte[] decodedString = Base64.decode(code, Base64.DEFAULT);
                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                 avatar.setImageBitmap(decodedByte);
-                LinearLayout.LayoutParams img_params = new LinearLayout.LayoutParams(500, 500);
+                LinearLayout.LayoutParams img_params = new LinearLayout.LayoutParams(700, 700);
                 avatar.setLayoutParams(img_params);
             }
 
