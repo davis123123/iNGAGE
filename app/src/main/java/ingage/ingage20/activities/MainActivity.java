@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity
     protected TextView userName;
     String default_path = "data:image/JPG;base64,";
 
-    private static ArrayAdapter<String> adapter = null;
+    public static ArrayAdapter<String> adapter = null;
 
     public static String appToken;
     ListView lvItems;
@@ -157,36 +157,6 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public void goSignOut(){
-        String type = "sign_out";
-        HashMap<String, String> user = session.getUserDetails();
-        String username = user.get(SessionManager.KEY_NAME);
-        String password = user.get(SessionManager.KEY_PASSWORD);
-        IdentityHandler identityHandler = new IdentityHandler(this);
-        String loginStatus = "";
-
-        try {
-            loginStatus = identityHandler.execute(type, username, password).get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-
-        if(loginStatus.equals("sign out success")) {
-            //must logout user in phone AFTER successfully logged out in server
-            session.logoutUser();
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            adapter.clear();
-            adapter.notifyDataSetChanged();
-            startActivity(intent);
-
-            Toast.makeText(getBaseContext(), "Successfully signed out!", Toast.LENGTH_SHORT).show();
-        }//only sign out if proper connection to server is made
-
-        else{
-            alert.showAlertDialog(MainActivity.this, "Sign out Failed", "Please Check Connection", false);
-        }
-    }
 
     private void downloadAvatar(){
         Context context = getApplicationContext();

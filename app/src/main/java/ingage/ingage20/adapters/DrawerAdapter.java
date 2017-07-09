@@ -9,13 +9,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import ingage.ingage20.R;
+import ingage.ingage20.activities.LoginActivity;
 import ingage.ingage20.activities.MainActivity;
 import ingage.ingage20.activities.UserProfileActivity;
+import ingage.ingage20.handlers.IdentityHandler;
+import ingage.ingage20.managers.SessionManager;
 
 
 /**
@@ -81,7 +87,7 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerHold
                         context.startActivity(intent);
                     }
                     else if (list.get(pos).equals("Sign Out")){
-                        //get interface and call sign out method..
+                        goSignOut();
                     }
 
                     Log.d("STATE", "drawer item clicked! " + list.get(pos));
@@ -93,6 +99,39 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerHold
         public void onClick(View v) {
 
         }
+
+        public void goSignOut(){
+            String type = "sign_out";
+            SessionManager session = new SessionManager(context);
+            HashMap<String, String> user = session.getUserDetails();
+            String username = user.get(SessionManager.KEY_NAME);
+            String password = user.get(SessionManager.KEY_PASSWORD);
+            IdentityHandler identityHandler = new IdentityHandler(context);
+            String loginStatus = "";
+
+            try {
+                loginStatus = identityHandler.execute(type, username, password).get();
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+
+            if(loginStatus.equals("sign out success")) {
+                //must logout user in phone AFTER successfully logged out in server
+                session.logoutUser();
+                Intent intent = new Intent(context, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                MainActivity.adapter.clear();
+                MainActivity.adapter.notifyDataSetChanged();
+                context.startActivity(intent);
+
+                Toast.makeText(context, "Successfully signed out!", Toast.LENGTH_SHORT).show();
+            }//only sign out if proper connection to server is made
+
+            else{
+                Toast.makeText(context, "Sign out Failed, please Check Connection", Toast.LENGTH_SHORT).show();
+            }
+        }
+
     }
 }
 
