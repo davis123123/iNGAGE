@@ -144,7 +144,6 @@ public class ChatActivity extends AppCompatActivity{
             setSpectateMode();
         }
 
-        goPageFragment();
     }
 
     private void textChangeListener(){
@@ -182,6 +181,7 @@ public class ChatActivity extends AppCompatActivity{
         root.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData currentData) {
+                Log.d("STATE", "pageCOUNT() transaction called");
                 noPages = (int) currentData.getChildrenCount();
                 page_root = root.child(String.valueOf(noPages));
                 return Transaction.success(currentData); //we can also abort by calling Transaction.abort()
@@ -191,9 +191,11 @@ public class ChatActivity extends AppCompatActivity{
             @Override
             public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
                 //inflate NUMBER OF PAGES HERE!!!!!!!!!!!
+                Log.d("STATE", "pageCOUNT() oncomplete called");
                 chatRoomManager.updateLatestPage(String.valueOf(noPages));
                 chatRoomManager.updateCurrentPage(String.valueOf(noPages));
                 goChatFragment();
+                goPageFragment();
             }
         });
     }

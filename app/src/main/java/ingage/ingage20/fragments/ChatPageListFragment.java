@@ -55,6 +55,7 @@ public class ChatPageListFragment extends Fragment implements ChatPageListAdapte
         chatPageListAdapter.setItemClickCallback(this);
         HashMap<String, String> chat = chatRoomManager.getUserDetails();
         totalPageNo = chat.get(ChatRoomManager.TOTAL_PAGES);
+        Log.d("STATE", "totalpageno: " + chat.get(ChatRoomManager.TOTAL_PAGES));
         int nTotalPage = Integer.parseInt(totalPageNo);
         for(int i = 1; i <= nTotalPage; i++){
             chatPageListAdapter.add(String.valueOf(i));

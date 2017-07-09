@@ -73,6 +73,7 @@
                     android:id="@+id/userName" />
             </LinearLayout>
 
+            <!--
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -99,6 +100,7 @@
                 android:textColor="#FFFFFF"
                 android:textStyle="italic"
                 />
+                -->
         </RelativeLayout>
 
         <View
@@ -106,6 +108,13 @@
             android:layout_height="1dp"
             android:layout_alignParentTop="true"
             android:background="#FFFFFF" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/options"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:divider="#FFFFFF"
+            android:dividerHeight="1dp"
+            android:background="#aeaeae"/>
         <ListView
             android:id="@+id/nav_drawer_items"
             android:layout_width="wrap_content"

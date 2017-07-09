@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,6 +12,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
@@ -22,11 +23,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +37,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
+import ingage.ingage20.adapters.DrawerAdapter;
 import ingage.ingage20.firebase.FirebaseSharedPrefManager;
 import ingage.ingage20.fragments.CategoriesPageFragment;
 import ingage.ingage20.fragments.SearchResultFragment;
@@ -80,6 +80,7 @@ public class MainActivity extends AppCompatActivity
 
     public static String appToken;
     ListView lvItems;
+    RecyclerView options;
     android.support.v7.widget.SearchView searchView;
 
     //dont use enum cuz bad  performance in Android, uses more RAM and memory
@@ -131,8 +132,22 @@ public class MainActivity extends AppCompatActivity
         lvItems = (ListView) findViewById(R.id.nav_drawer_items);
         adapter=new ArrayAdapter<String>(this, R.layout.lv_item, subs);
         lvItems.setAdapter(adapter);
-        setupListViewListener();
+        setupSubscriptionsListener();
         adapter.notifyDataSetChanged();
+
+        //set up recycler view adapter for drawer options
+        options = (RecyclerView) findViewById(R.id.options);
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        options.setLayoutManager(layoutManager);
+        ArrayList arr = new ArrayList();
+
+        DrawerAdapter options_adapter = new DrawerAdapter(getApplicationContext());
+
+        options.setAdapter(options_adapter);
+        options_adapter.add("View Profile");
+        options_adapter.add("Sign Out");
+        options_adapter.notifyDataSetChanged();
+
 
         userName = (TextView) findViewById(R.id.userName);
         userName.setTextColor(Color.parseColor("#FFFFFF"));
@@ -140,36 +155,9 @@ public class MainActivity extends AppCompatActivity
         avatar = (ImageView) findViewById(R.id.userImage);
         downloadAvatar();
 
-        //set up sign out and user profile listener
-        Button signOut = (Button) findViewById(R.id.button_signout);
-        if ( signOut != null) {
-            signOut.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    goSignOut();
-                }
-
-            });
-        }
-
-        Button viewProfile = (Button) findViewById(R.id.button_profile);
-        if ( viewProfile != null) {
-            viewProfile.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-
-                    Intent intent = new Intent(MainActivity.this, UserProfileActivity.class);
-                    startActivity(intent);
-
-                }
-
-            });
-        }
     }
 
-    private void goSignOut(){
+    public void goSignOut(){
         String type = "sign_out";
         HashMap<String, String> user = session.getUserDetails();
         String username = user.get(SessionManager.KEY_NAME);
@@ -328,8 +316,7 @@ public class MainActivity extends AppCompatActivity
         return subs;
     }
 
-    // Attaches a long click listener and click listener to the listview
-    private void setupListViewListener() {
+    private void setupSubscriptionsListener() {
         final FragmentManager fragmentManager = this.getSupportFragmentManager();
         lvItems.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
             @Override
