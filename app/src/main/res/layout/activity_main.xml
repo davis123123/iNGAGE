@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.MainActivity"
+    tools:openDrawer="left"
     android:background="#e6e6e6">
 
     <LinearLayout
@@ -49,7 +50,7 @@
             android:paddingBottom="10dp">
             <LinearLayout
                 android:id="@+id/user_info"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_alignParentTop="true"
@@ -73,34 +74,6 @@
                     android:id="@+id/userName" />
             </LinearLayout>
 
-            <!--
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/button_text_sign_out"
-                android:id="@+id/button_signout"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_below="@id/user_info"
-                android:layout_centerHorizontal="true"
-                android:background="@layout/button"
-                android:textColor="#FFFFFF"
-                android:textStyle="italic"
-                />
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="View Profile"
-                android:id="@+id/button_profile"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_below="@id/button_signout"
-                android:layout_centerHorizontal="true"
-                android:background="@layout/button"
-                android:textColor="#FFFFFF"
-                android:textStyle="italic"
-                />
-                -->
         </RelativeLayout>
 
         <View
@@ -108,6 +81,16 @@
             android:layout_height="1dp"
             android:layout_alignParentTop="true"
             android:background="#FFFFFF" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:textStyle="italic"
+            android:textSize="24dp"
+            android:text="Options"
+            android:id="@+id/options_label"
+            android:layout_above="@+id/options"
+            android:background="#959595"/>
         <android.support.v7.widget.RecyclerView
             android:id="@+id/options"
             android:layout_width="wrap_content"
@@ -115,6 +98,16 @@
             android:divider="#FFFFFF"
             android:dividerHeight="1dp"
             android:background="#aeaeae"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:textStyle="italic"
+            android:textSize="24dp"
+            android:text="Subscriptions"
+            android:id="@+id/subs_label"
+            android:layout_above="@+id/nav_drawer_items"
+            android:background="#f72d2d"/>
         <ListView
             android:id="@+id/nav_drawer_items"
             android:layout_width="wrap_content"
