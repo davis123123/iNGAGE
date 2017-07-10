@@ -1,41 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/app_bar_chat"
     android:background="#000000">
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/my_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/chat_pages_container">
 
         <View
-            android:id="@+id/rect"
+            android:id="@+id/page_bar"
             android:layout_width="wrap_content"
-            android:layout_height="88dp"
-            android:background="#e0e0db"
+            android:layout_height="48dp"
+            android:background="#f95e5e"
             android:layout_gravity="bottom" />
     </LinearLayout>
     <FrameLayout
         android:id="@+id/chat_fragment_container"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chat_pages_container"
+        android:layout_above="@+id/cooldownButton" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/text_area"
         android:layout_alignParentTop="true"
-        android:layout_above="@+id/msgField"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true">
+
+        <View
+            android:id="@+id/rect"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:background="#e0e0db"
+            android:layout_gravity="bottom" />
+    </LinearLayout>
     <Button
         android:id="@+id/cooldownButton"
         android:layout_width="wrap_content"
