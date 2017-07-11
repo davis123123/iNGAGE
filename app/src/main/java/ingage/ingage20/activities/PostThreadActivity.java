@@ -146,13 +146,14 @@ public class  PostThreadActivity extends AppCompatActivity {
         String message = "Post Submitted";
         String threadContent = mInsertThreadContent.getText().toString();
         String threadTitle = mInsertThreadTitle.getText().toString();
+        String imageTitle = threadTitle.replaceAll("\\s+", "");
 
         //submit image
         if(usedImage) {
             Bitmap image = ((BitmapDrawable) imageToUpload.getDrawable()).getBitmap();
             uploadImageHandler = new UploadImageHandler(image);
-            uploadImageHandler.execute(threadTitle);
-            image_link = "http://10.0.0.199/images/"+threadTitle+".JPG";
+            uploadImageHandler.execute(imageTitle);
+            image_link = "http://107.170.232.60/images/"+imageTitle+".JPG";
         }
 
         //categorySpinner = (Spinner) findViewById(R.id.spinner);

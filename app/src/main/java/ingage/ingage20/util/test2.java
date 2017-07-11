@@ -86,7 +86,7 @@ public class test2 extends Activity {
 
         @Override
         protected void onPreExecute(){
-            json_url = "http://10.0.0.199/query_post.php";
+            json_url = "http://107.170.232.60/query_post.php";
 
         }
 
