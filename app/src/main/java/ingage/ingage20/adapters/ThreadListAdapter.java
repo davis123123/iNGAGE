@@ -138,9 +138,12 @@ public class ThreadListAdapter extends RecyclerView.Adapter<ThreadListAdapter.Th
             threadTitleTextView.setText(threadsHelper.getThread_title());
             threadByTextView.setText(threadsHelper.getThread_by());
             threadCategoryTextView.setText(threadsHelper.getThread_category());
-            if(threadsHelper.getThread_content() != null)
+            threadContentTextView.setVisibility(View.GONE);
+            if(threadsHelper.getThread_content() != null) {
                 //Log.d("STATE", "content: " + threadsHelper.getThread_content());
+                threadContentTextView.setVisibility(View.VISIBLE);
                 threadContentTextView.setText(threadsHelper.getThread_content());
+            }
 
             threadImageView = (ImageView) itemView.findViewById(R.id.img_post);
 
