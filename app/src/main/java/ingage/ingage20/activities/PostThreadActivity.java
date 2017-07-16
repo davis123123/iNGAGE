@@ -147,12 +147,13 @@ public class  PostThreadActivity extends AppCompatActivity {
         String threadContent = mInsertThreadContent.getText().toString();
         String threadTitle = mInsertThreadTitle.getText().toString();
         String imageTitle = threadTitle.replaceAll("\\s+", "");
+        Bitmap image = null;
 
         //submit image
         if(usedImage) {
-            Bitmap image = ((BitmapDrawable) imageToUpload.getDrawable()).getBitmap();
-            uploadImageHandler = new UploadImageHandler(image);
-            uploadImageHandler.execute(imageTitle);
+            image = ((BitmapDrawable) imageToUpload.getDrawable()).getBitmap();
+            //uploadImageHandler = new UploadImageHandler(image);
+            //uploadImageHandler.execute(imageTitle);
             image_link = "http://107.170.232.60/images/"+imageTitle+".JPG";
         }
 
@@ -164,22 +165,22 @@ public class  PostThreadActivity extends AppCompatActivity {
         String threadBy = user.get(SessionManager.KEY_NAME);
         String type = "submit";
         String submission_status = " ";
-        SubmitThreadsHandler submitThreadsHandler = new SubmitThreadsHandler(context);
+        SubmitThreadsHandler submitThreadsHandler = new SubmitThreadsHandler(image);
 
         //CREATE NEW THREAD
         try {
-            submission_status = submitThreadsHandler.execute(type, threadTitle, threadContent, threadBy, cSpinner, image_link).get();
+            submission_status = submitThreadsHandler.execute(type, threadTitle, threadContent, threadBy, cSpinner, image_link, String.valueOf(usedImage)).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-
+        Log.d("INSERTTRHEAD", "THIS " + submission_status + usedImage);
         if (submission_status.equals("Submission Failed")){
             message = "Submission Failed";
         }
         else {
-            addDataToFirebase(submission_status);
+            addDataToFirebase(threadTitle);
         }
 
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();

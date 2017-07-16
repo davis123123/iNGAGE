@@ -2,10 +2,13 @@ package ingage.ingage20.handlers;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.util.Base64;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -23,10 +26,12 @@ import java.net.URLEncoder;
 public class SubmitThreadsHandler extends AsyncTask<String, String, String> {
     Context context;
     AlertDialog alertDialog;
+    Bitmap image;
+    public SubmitThreadsHandler(Bitmap image) {
+        this.image = image;
 
-    public SubmitThreadsHandler(Context mcontext){
-        context = mcontext;
     }
+
 
 
     @Override
@@ -42,6 +47,15 @@ public class SubmitThreadsHandler extends AsyncTask<String, String, String> {
                 String thread_by = params[3];
                 String thread_category = params[4];
                 String thread_image_link = params[5];
+                String used_image = params[6];
+                String encodedImage = null;
+                if(image != null) {
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    image.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+                    encodedImage = Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
+                } else{
+                    encodedImage = " ";
+                }
                 URL url = new URL(post_thread_url);
                 HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
@@ -54,7 +68,9 @@ public class SubmitThreadsHandler extends AsyncTask<String, String, String> {
                                 URLEncoder.encode("thread_content", "UTF-8")+"="+URLEncoder.encode(thread_content,"UTF-8")+"&"+
                                 URLEncoder.encode("thread_by","UTF-8")+"="+ URLEncoder.encode(thread_by,"UTF-8")+"&"+
                                 URLEncoder.encode("thread_category","UTF-8")+"="+ URLEncoder.encode(thread_category,"UTF-8")+"&"+
-                                URLEncoder.encode("thread_image_link","UTF-8")+"="+ URLEncoder.encode(thread_image_link,"UTF-8");
+                                URLEncoder.encode("thread_image_link","UTF-8")+"="+ URLEncoder.encode(thread_image_link,"UTF-8")+"&"+
+                                URLEncoder.encode("used_image","UTF-8")+"="+ URLEncoder.encode(used_image,"UTF-8")+"&"+
+                                URLEncoder.encode("image","UTF-8")+"="+ URLEncoder.encode(encodedImage,"UTF-8");
                 bufferedWriter.write(post_data);
                 bufferedWriter.flush();
                 bufferedWriter.close();
@@ -82,8 +98,6 @@ public class SubmitThreadsHandler extends AsyncTask<String, String, String> {
 
     @Override
     protected void onPreExecute() {
-        alertDialog = new AlertDialog.Builder(context).create();
-        alertDialog.setTitle("Submission status");
     }
 
     @Override
