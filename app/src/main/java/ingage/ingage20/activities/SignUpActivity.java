@@ -100,6 +100,9 @@ public class SignUpActivity extends AppCompatActivity {
             categoryJSON = new JSONObject();
             categoryJSON.put("category_name","Philosophy");
             initialSubscriptionArray.put(categoryJSON);
+            categoryJSON = new JSONObject();
+            categoryJSON.put("category_name","Technology");
+            initialSubscriptionArray.put(categoryJSON);
         } catch (JSONException e) {
             e.printStackTrace();
         }

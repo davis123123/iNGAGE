@@ -61,6 +61,7 @@
         <item>Sports</item>
         <item>Games</item>
         <item>Philosophy</item>
+        <item>Technology</item>
     </string-array>
 
     <string name="c_politics">Politics</string>
@@ -70,6 +71,7 @@
     <string name="c_sports">Sports</string>
     <string name="c_games">Games</string>
     <string name="c_philosophy">Philosophy</string>
+    <string name="c_technology">Technology</string>
     <string name="title_activity_chat">ChatActivity</string>
 
 </resources>

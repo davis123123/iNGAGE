@@ -24,6 +24,7 @@ public class Configurations {
         addFeature("Sports");
         addFeature("Games");
         addFeature("Philosophy");
+        addFeature("Technology");
 
     }
 
