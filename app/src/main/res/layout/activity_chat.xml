@@ -12,12 +12,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/chat_pages_container">
 
-        <View
-            android:id="@+id/page_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:background="#f95e5e"
-            android:layout_gravity="bottom" />
     </LinearLayout>
     <FrameLayout
         android:id="@+id/chat_fragment_container"

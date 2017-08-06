@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/chat_pages_container">
+
+        <View
+            android:id="@+id/page_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="55dp"
+            android:background="#f95e5e"
+            android:layout_gravity="bottom" />
+    </LinearLayout>
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="55dp"
         android:id="@+id/pagerecyclerView" />
 
 </FrameLayout>
