@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:showIn="@layout/app_bar_chat"
-    android:background="#000000">
+    android:background="#b6b6b6">
 
     <LinearLayout
         android:orientation="vertical"
@@ -19,6 +20,17 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/chat_pages_container"
         android:layout_above="@+id/cooldownButton" />
+
+    <ImageView
+        android:id="@+id/chat_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chat_pages_container"
+        android:layout_marginTop="50dp"
+        android:layout_centerInParent="true"
+        android:layout_weight="1"
+        app:srcCompat="@drawable/chat_logo" />
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -30,7 +42,7 @@
         <View
             android:id="@+id/rect"
             android:layout_width="wrap_content"
-            android:layout_height="100dp"
+            android:layout_height="110dp"
             android:background="#e0e0db"
             android:layout_gravity="bottom" />
     </LinearLayout>
