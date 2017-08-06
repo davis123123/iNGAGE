@@ -76,7 +76,7 @@ public class ChatFragment extends Fragment implements ChatArrayAdapter.ItemClick
         // Inflate the layout for this fragment
         Log.d("INFLATECHATFRAG" , "here" );
         rootView = inflater.inflate(R.layout.fragment_chat, container, false);
-
+        rootView.bringToFront();
         return rootView;
     }
 

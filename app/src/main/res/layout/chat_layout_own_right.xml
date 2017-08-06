@@ -1,105 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:background="@drawable/chat_post"
+    android:layout_margin="10dp"
     >
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/own_chat_right"
-        android:id="@+id/linearLayout"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true">
 
         <TextView
             android:id="@+id/message_content_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:text="Hello world"
-            android:layout_marginTop="0dp"
             android:layout_marginLeft="10dp"
-            android:gravity="right"
-            android:textSize="22sp"
-            android:textColor="#FFFFFF"/>
+            android:layout_marginTop="0dp"
+            android:fontFamily="sans-serif"
+            android:text="Hello, world! This is a test. Please ignore this message"
+            android:textSize="22sp" />
+
 
         <TextView
             android:id="@+id/message_user_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/message_content_view"
-            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
+            android:layout_alignParentRight="true"
             android:fontFamily="sans-serif"
             android:gravity="right"
             android:text="Username"
-            android:textColor="#FFFFFF"
-            android:textSize="15sp"
-            android:textStyle="italic" />
+            android:textSize="22dp"
+            android:textStyle="italic"
+            android:textColor="#339900"/>
 
-        <TextView
-            android:id="@+id/message_date_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="italic|bold|normal"
-            android:text=" 5:10:11 PM"
-            android:gravity="left"
-            android:textSize="14sp"
-            android:textColor="#FFFFFF"
-            android:layout_gravity="right"
-            android:layout_marginLeft="30dp"
-            android:layout_below="@+id/linearLayout"
-            android:layout_alignParentEnd="true" />
-    </LinearLayout>
-
-
-
-    <ImageButton
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Up"
-        android:id="@+id/upvote"
-        android:src="@drawable/up_arrow"
-        android:background="@null"
-        android:layout_below="@+id/linearLayout"
-        android:layout_toStartOf="@+id/downvote" />
-
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Down"
-        android:id="@+id/downvote"
-        android:src="@drawable/down_arrow"
-        android:background="@null"
-        android:layout_below="@+id/linearLayout"
+        android:id="@+id/linearLayout"
+        android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="31dp" />
+        android:layout_below="@+id/message_content_view">
+
+
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="  Up"
-        android:textColor="#FFFFFF"
         android:id="@+id/up_label"
+        android:textAlignment="center"
         android:layout_below="@+id/upvote"
         android:layout_alignStart="@+id/upvote"
         android:layout_alignEnd="@+id/upvote" />
 
     <TextView
+        android:id="@+id/down_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#FFFFFF"
+        android:textAlignment="center"
         android:text="Down"
-        android:id="@+id/down_label"
         android:layout_below="@+id/downvote"
-        android:layout_alignEnd="@+id/downvote" />
+        android:layout_alignStart="@+id/downvote" />
 
+    <ImageButton
+        android:id="@+id/upvote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/message_content_view"
+        android:background="@null"
+        android:src="@drawable/up_arrow"
+        android:text="Up" />
+
+    <ImageButton
+        android:id="@+id/downvote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/message_content_view"
+        android:layout_toEndOf="@+id/up_label"
+        android:background="@null"
+        android:src="@drawable/down_arrow"
+        android:text="Down" />
 
 
 </RelativeLayout>
