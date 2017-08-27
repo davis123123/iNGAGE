@@ -185,7 +185,7 @@ public class ChatActivity extends AppCompatActivity{
             @Override
             public Transaction.Result doTransaction(MutableData currentData) {
                 Log.d("STATE", "pageCOUNT() transaction called");
-                noPages = (int) currentData.getChildrenCount() - 1;
+                noPages = (int) currentData.getChildrenCount();
                 Log.d("STATE:nopage", String.valueOf(noPages));
                 page_root = root.child(String.valueOf(noPages));
                 return Transaction.success(currentData); //we can also abort by calling Transaction.abort()

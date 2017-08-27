@@ -180,7 +180,7 @@ public class  PostThreadActivity extends AppCompatActivity {
             message = "Submission Failed";
         }
         else {
-            addDataToFirebase(threadTitle);
+            addDataToFirebase(submission_status);
         }
 
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();
@@ -188,11 +188,11 @@ public class  PostThreadActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void addDataToFirebase(String threadTitle){
+    private void addDataToFirebase(String threadId){
         Map<String,Object> map = new HashMap<String, Object>();
-        map.put(threadTitle,"");
+        map.put(threadId,"");
         root.updateChildren(map);
-        checkPageExist(threadTitle);
+        checkPageExist(threadId);
     }
 
     public void checkPageExist(String threadTitle){
