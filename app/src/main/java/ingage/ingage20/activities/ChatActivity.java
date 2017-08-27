@@ -121,6 +121,7 @@ public class ChatActivity extends AppCompatActivity{
         //GET ALL PAGES IN ROOM
         //pageEventListener(root);
         pageCount(root); //TAKES TIME TO TRANSACT
+
 /**
  Intent intentThatStartedThisActivity = getIntent();
  if(intentThatStartedThisActivity.hasExtra(Intent.EXTRA_TEXT)){
@@ -184,7 +185,8 @@ public class ChatActivity extends AppCompatActivity{
             @Override
             public Transaction.Result doTransaction(MutableData currentData) {
                 Log.d("STATE", "pageCOUNT() transaction called");
-                noPages = (int) currentData.getChildrenCount();
+                noPages = (int) currentData.getChildrenCount() - 1;
+                Log.d("STATE:nopage", String.valueOf(noPages));
                 page_root = root.child(String.valueOf(noPages));
                 return Transaction.success(currentData); //we can also abort by calling Transaction.abort()
             }

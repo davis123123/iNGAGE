@@ -29,7 +29,6 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
     SessionManager session;
     String username;
 
-
     private ItemClickCallback itemClickCallback;
     String side;
 
@@ -59,7 +58,6 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
         boolean shouldAttachToParentImmediately = false;
         View view = inflater.inflate(R.layout.chat_layout, viewGroup, shouldAttachToParentImmediately);
         Log.d("STATE", "viewType: " + viewType);
-
 
         session = new SessionManager(viewGroup.getContext());
         HashMap<String, String> user = session.getUserDetails();
