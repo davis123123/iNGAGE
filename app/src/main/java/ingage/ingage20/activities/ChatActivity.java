@@ -120,7 +120,7 @@ public class ChatActivity extends AppCompatActivity{
         root = FirebaseDatabase.getInstance().getReference().child(thread_id);
 
         //GET ALL PAGES IN ROOM
-        //pageEventListener(root);
+        pageEventListener(root);
         pageCount(root); //TAKES TIME TO TRANSACT
 
 /**
