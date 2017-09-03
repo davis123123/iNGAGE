@@ -2,6 +2,8 @@ package ingage.ingage20.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,6 +14,7 @@ import android.view.ViewGroup;
 import java.util.HashMap;
 
 import ingage.ingage20.R;
+import ingage.ingage20.activities.ChatActivity;
 import ingage.ingage20.adapters.ChatArrayAdapter;
 import ingage.ingage20.adapters.ChatPageListAdapter;
 import ingage.ingage20.managers.ChatRoomManager;
@@ -26,6 +29,7 @@ public class ChatPageListFragment extends Fragment implements ChatPageListAdapte
     ChatPageListAdapter chatPageListAdapter;
     String totalPageNo;
     ChatRoomManager chatRoomManager;
+    ChatActivity chatActivity;
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              final Bundle savedInstanceState) {
@@ -44,6 +48,7 @@ public class ChatPageListFragment extends Fragment implements ChatPageListAdapte
     @Override
     public void onViewCreated(final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        chatActivity = (ChatActivity) getActivity();
         recyclerView = (RecyclerView) rootView.findViewById(R.id.pagerecyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager
                 (getActivity(),LinearLayoutManager.HORIZONTAL, false);
@@ -68,5 +73,7 @@ public class ChatPageListFragment extends Fragment implements ChatPageListAdapte
     public void onPgeBtnClick(int p) {
         String pageNo = chatPageListAdapter.getItem(p);
         Log.d("PAGENO", String.valueOf(pageNo));
+        chatRoomManager.updateCurrentPage(pageNo);
+        chatActivity.refreshPage();
     }
 }

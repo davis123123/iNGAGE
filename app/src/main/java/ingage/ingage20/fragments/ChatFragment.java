@@ -27,6 +27,7 @@ import java.util.concurrent.ExecutionException;
 
 import ingage.ingage20.R;
 import ingage.ingage20.adapters.ChatArrayAdapter;
+import ingage.ingage20.adapters.ChatPageListAdapter;
 import ingage.ingage20.handlers.ChatFeaturesHandler;
 import ingage.ingage20.handlers.VotesHandler;
 import ingage.ingage20.helpers.ChatMessageHelper;
@@ -50,6 +51,8 @@ public class ChatFragment extends Fragment implements ChatArrayAdapter.ItemClick
     public static String user_side;
     String chat_msg, chat_username, chat_side, chat_timestamp, chat_id, thread_id, username;
     HashMap<String, String> userVotes = new HashMap<String, String>();
+
+
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              final Bundle savedInstanceState) {

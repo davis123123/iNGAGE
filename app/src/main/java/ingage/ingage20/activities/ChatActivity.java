@@ -43,6 +43,7 @@ import java.util.concurrent.ExecutionException;
 
 import ingage.ingage20.R;
 import ingage.ingage20.adapters.ChatArrayAdapter;
+import ingage.ingage20.adapters.ChatPageListAdapter;
 import ingage.ingage20.fragments.ChatFragment;
 import ingage.ingage20.fragments.ChatPageListFragment;
 import ingage.ingage20.fragments.FrontPageFragment;
@@ -90,7 +91,6 @@ public class ChatActivity extends AppCompatActivity{
         HashMap <String, String> user = session.getUserDetails();
         username = user.get(SessionManager.KEY_NAME);
         chatRoomManager = new ChatRoomManager(getApplicationContext());
-
         timerTv = (TextView) findViewById(R.id.timertv);
         useCoinBt = (Button) findViewById(R.id.cooldownButton);
         rect = (View) findViewById(R.id.rect);
@@ -603,4 +603,16 @@ public class ChatActivity extends AppCompatActivity{
         goChatFragment();
 
     }//moves across pages
+
+    public void refreshPage(){
+        final FragmentManager fragmentManager = this.getSupportFragmentManager();
+        Class fragmentClass = ChatFragment.class;
+        final Fragment fragment = Fragment.instantiate(this, fragmentClass.getName());
+
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.chat_fragment_container, fragment, fragmentClass.getSimpleName())
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit();
+    }
 }
