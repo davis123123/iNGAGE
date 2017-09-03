@@ -3,9 +3,16 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <Button
+        android:id="@+id/pageBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/pageBtn"
-        android:text="s??d"/>
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@layout/page_list_button"
+        android:text="1"
+        android:textColor="#FFFFFF"/>
 </LinearLayout>

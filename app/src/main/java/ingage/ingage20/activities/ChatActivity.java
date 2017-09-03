@@ -429,7 +429,7 @@ public class ChatActivity extends AppCompatActivity{
 
             //toolbar back button listener
             case android.R.id.home:
-                
+
                 super.onBackPressed();
                 return true;
 

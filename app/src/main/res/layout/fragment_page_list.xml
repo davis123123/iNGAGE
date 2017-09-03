@@ -12,7 +12,7 @@
             android:id="@+id/page_bar"
             android:layout_width="wrap_content"
             android:layout_height="55dp"
-            android:background="#f95e5e"
+            android:background="#939090"
             android:layout_gravity="bottom" />
     </LinearLayout>
     <android.support.v7.widget.RecyclerView
