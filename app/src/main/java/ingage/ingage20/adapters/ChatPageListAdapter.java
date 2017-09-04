@@ -26,7 +26,7 @@ public class ChatPageListAdapter extends RecyclerView.Adapter<ChatPageListAdapte
     private ItemClickCallback itemClickCallback;
 
     public interface ItemClickCallback{
-        void onPgeBtnClick(int p);
+        void onPgeBtnClick(ChatPageViewHolder h, int p);
     }
 
     public void setItemClickCallback(final ItemClickCallback itemClickCallback){
@@ -53,13 +53,13 @@ public class ChatPageListAdapter extends RecyclerView.Adapter<ChatPageListAdapte
     }
 
     @Override
-    public void onBindViewHolder(ChatPageViewHolder holder, final int position) {
+    public void onBindViewHolder(final ChatPageViewHolder holder, final int position) {
         String pageNo = this.getItem(position);
         holder.bind(position);
         holder.pageNoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                itemClickCallback.onPgeBtnClick(position);
+                itemClickCallback.onPgeBtnClick(holder, position);
             }
         });
     }
@@ -74,7 +74,7 @@ public class ChatPageListAdapter extends RecyclerView.Adapter<ChatPageListAdapte
     }
 
     public class ChatPageViewHolder extends RecyclerView.ViewHolder {
-        Button pageNoBtn;
+        public Button pageNoBtn;
         public ChatPageViewHolder(View itemView) {
             super(itemView);
             pageNoBtn = (Button) itemView.findViewById(R.id.pageBtn);

@@ -51,7 +51,7 @@
             android:layout_marginRight="16dp"
             android:layout_below="@id/user_info"
             android:layout_centerHorizontal="true"
-            android:background="@layout/button"
+            android:background="@layout/selected_page_button"
             android:textColor="#FFFFFF"
             android:textStyle="italic"
             />
@@ -65,7 +65,7 @@
             android:layout_marginRight="16dp"
             android:layout_below="@id/button_signout"
             android:layout_centerHorizontal="true"
-            android:background="@layout/button"
+            android:background="@layout/selected_page_button"
             android:textColor="#FFFFFF"
             android:textStyle="italic"
             />

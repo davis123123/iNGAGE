@@ -2,8 +2,6 @@ package ingage.ingage20.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,7 +13,6 @@ import java.util.HashMap;
 
 import ingage.ingage20.R;
 import ingage.ingage20.activities.ChatActivity;
-import ingage.ingage20.adapters.ChatArrayAdapter;
 import ingage.ingage20.adapters.ChatPageListAdapter;
 import ingage.ingage20.managers.ChatRoomManager;
 
@@ -30,6 +27,8 @@ public class ChatPageListFragment extends Fragment implements ChatPageListAdapte
     String totalPageNo;
     ChatRoomManager chatRoomManager;
     ChatActivity chatActivity;
+    int currentPage = 1;
+
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              final Bundle savedInstanceState) {
@@ -67,13 +66,23 @@ public class ChatPageListFragment extends Fragment implements ChatPageListAdapte
             Log.d("NOPAGES", " "+  i);
         }
 
+        currentPage = nTotalPage;
+
     }
 
     @Override
-    public void onPgeBtnClick(int p) {
+    public void onPgeBtnClick(ChatPageListAdapter.ChatPageViewHolder h , int p) {
         String pageNo = chatPageListAdapter.getItem(p);
         Log.d("PAGENO", String.valueOf(pageNo));
         chatRoomManager.updateCurrentPage(pageNo);
         chatActivity.refreshPage();
+
+        ChatPageListAdapter.ChatPageViewHolder prev =
+                (ChatPageListAdapter.ChatPageViewHolder) recyclerView.findViewHolderForAdapterPosition(currentPage);
+        if(prev != null)
+            prev.pageNoBtn.setBackgroundResource(R.drawable.page_list_button);
+
+        h.pageNoBtn.setBackgroundResource(R.drawable.selected_page_button);
+        currentPage = p;
     }
 }

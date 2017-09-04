@@ -147,12 +147,12 @@ public class NavigationDrawer {
         // Set the listener to allow a swipe from the screen edge to bring up the navigation drawer.
         drawerLayout.setDrawerListener(drawerToggle);
 
-        // Display the home button on the toolbar that will open the navigation drawer.
+        // Display the home selected_page_button on the toolbar that will open the navigation drawer.
         final ActionBar supportActionBar = containingActivity.getSupportActionBar();
         supportActionBar.setDisplayHomeAsUpEnabled(true);
         supportActionBar.setHomeButtonEnabled(true);
 
-        // Switch to display the hamburger icon for the home button.
+        // Switch to display the hamburger icon for the home selected_page_button.
         drawerToggle.syncState();
     }
 

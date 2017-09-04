@@ -427,7 +427,7 @@ public class ChatActivity extends AppCompatActivity{
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
 
-            //toolbar back button listener
+            //toolbar back selected_page_button listener
             case android.R.id.home:
 
                 onBackPressed();
