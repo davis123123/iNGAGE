@@ -1,6 +1,8 @@
 package ingage.ingage20.fragments;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -60,13 +62,31 @@ public class ChatPageListFragment extends Fragment implements ChatPageListAdapte
         HashMap<String, String> chat = chatRoomManager.getUserDetails();
         totalPageNo = chat.get(ChatRoomManager.TOTAL_PAGES);
         Log.d("STATE", "totalpageno: " + chat.get(ChatRoomManager.TOTAL_PAGES));
-        int nTotalPage = Integer.parseInt(totalPageNo);
-        for(int i = 1; i <= nTotalPage; i++){
+        final int totalPages = Integer.parseInt(totalPageNo);
+        for(int i = 1; i <= totalPages; i++){
             chatPageListAdapter.add(String.valueOf(i));
             Log.d("NOPAGES", " "+  i);
         }
 
-        currentPage = nTotalPage;
+        //initialize page indicator to last page
+        autoClick(totalPages - 1);
+
+    }
+
+    public void autoClick(final int pos){
+
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                ChatPageListAdapter.ChatPageViewHolder lastHolder =
+                        (ChatPageListAdapter.ChatPageViewHolder) recyclerView.findViewHolderForAdapterPosition(pos);
+                if (lastHolder != null)
+                    onPgeBtnClick(lastHolder, pos);
+                recyclerView.scrollToPosition(pos);
+
+            }
+        }, 500);
 
     }
 
