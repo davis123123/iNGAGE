@@ -441,7 +441,7 @@ public class MainActivity extends AppCompatActivity
             fragment = Fragment.instantiate(this, fragmentClass.getName());
         }//category
         else{
-            session.updatePage("noneDate");
+            session.updatePage("date");
             fragment = Fragment.instantiate(this, fragmentClass.getName());
         }//frontpage
 
@@ -469,7 +469,7 @@ public class MainActivity extends AppCompatActivity
             fragment = Fragment.instantiate(this, fragmentClass.getName());
         }//category
         else{
-            session.updatePage("noneTrend");
+            session.updatePage("trend");
             fragment = Fragment.instantiate(this, fragmentClass.getName());
         }//frontpage
 
