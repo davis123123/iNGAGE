@@ -32,7 +32,7 @@ import ingage.ingage20.managers.SessionManager;
 public class SearchResultFragment extends FragmentBase implements ThreadListAdapter.ItemClickCallback{
 
     SearchHandler searchHandler;
-
+    SessionManager sessionManager;
     private boolean loading = true;
     int pastVisiblesItems, visibleItemCount, totalItemCount;
     int rowCount = 0;
@@ -45,19 +45,23 @@ public class SearchResultFragment extends FragmentBase implements ThreadListAdap
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              final Bundle savedInstanceState) {
 
-            View v = create(inflater, container, savedInstanceState);
-            return v;
-            }
+        View v = create(inflater, container, savedInstanceState);
+        return v;
+        }
 
     public View create(final LayoutInflater inflater, final ViewGroup container,
     final Bundle savedInstanceState){
             // Inflate the layout for this fragment
-
-            getThreadsJSON(rowCount, searchString);
-            rootView = inflater.inflate(R.layout.fragment_front_page, container, false);
-            rootView.setTag(TAG);
-            return rootView;
-            }
+        session = new SessionManager(getContext());
+        HashMap<String, String> user = session.getUserDetails();
+        searchString = user.get(SessionManager.SEARCH_STRING);
+        Log.d("STATE", "searchstring " + searchString);
+        threadListAdapter = new ThreadListAdapter(this);
+        getThreadsJSON(rowCount, searchString);
+        rootView = inflater.inflate(R.layout.fragment_front_page, container, false);
+        rootView.setTag(TAG);
+        return rootView;
+        }
 
     @Override
     public void onViewCreated(final View view, final Bundle savedInstanceState){
@@ -71,12 +75,8 @@ public class SearchResultFragment extends FragmentBase implements ThreadListAdap
 
         threadListRecyclerView.setLayoutManager(layoutManager);
 
-
-        threadListAdapter = new ThreadListAdapter(this);
         threadListRecyclerView.setAdapter(threadListAdapter);
         Log.d("STATE", "serverstring" + json_string);
-
-        inflateThreads();
 
         postThreadButton = (FloatingActionButton) rootView.findViewById(R.id.fab);
         postThreadButton.setOnClickListener(new View.OnClickListener() {
@@ -104,7 +104,6 @@ public class SearchResultFragment extends FragmentBase implements ThreadListAdap
                         Log.d("...", "Last Item Wow !");
                         rowCount += 10;
                         getThreadsJSON(rowCount, searchString);
-                        inflateThreads();
 
                         //Do pagination.. i.e. fetch new data
                         }
@@ -121,13 +120,15 @@ public class SearchResultFragment extends FragmentBase implements ThreadListAdap
         HashMap<String, String> user = session.getUserDetails();
         String type = user.get(SessionManager.PAGE_TYPE);
         try {
-        json_string = searchHandler.execute(type, String.valueOf(rowCount), searchString).get();
+        json_string = searchHandler.execute(String.valueOf(rowCount), searchString).get();
         Log.d("STATE" , "query result : " + json_string);
+        inflateThreads();
         } catch (InterruptedException e) {
         e.printStackTrace();
         } catch (ExecutionException e) {
         e.printStackTrace();
         }
+
     }
 
     public void goInsertThread(){

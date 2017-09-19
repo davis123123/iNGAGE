@@ -2,6 +2,7 @@ package ingage.ingage20.handlers;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -19,52 +20,49 @@ import java.net.URLEncoder;
  */
 
 public class SearchHandler extends AsyncTask<String, String, String> {
-        //String json_url;
-        String JSON_STRING;
-        Context context;
-        MySQLDbHelper mySQLDbHelper;
+    //String json_url;
+    String JSON_STRING;
+    Context context;
+    MySQLDbHelper mySQLDbHelper;
     @Override
     protected String doInBackground(String... params) {
 
-        String type = params[0];
-
-        String search_title_url = "http://107.170.232.60/search_title_url.php";
-        if(type.equals("search")) {
+        String search_title_url = "http://107.170.232.60/search_title.php";
         try {
-        String rowCount = params[1];
-        String searchString = params[2];
-        URL url = new URL(search_title_url);
-        HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
-        httpURLConnection.setRequestMethod("POST");
-        httpURLConnection.setDoOutput(true);
-        httpURLConnection.setDoInput(true);
-        OutputStream outputStream = httpURLConnection.getOutputStream();
-        BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-        String post_data =
-        URLEncoder.encode("rowCount","UTF-8")+"="+ URLEncoder.encode(rowCount,"UTF-8") + "&" +
-            URLEncoder.encode("rowCount","UTF-8")+"="+ URLEncoder.encode(rowCount,"UTF-8");
-        bufferedWriter.write(post_data);
-        bufferedWriter.flush();
-        bufferedWriter.close();
-        outputStream.close();
-        InputStream inputStream = httpURLConnection.getInputStream();
-        BufferedReader bufferedReader =
-        new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
-        String result = "";
-        String line;
-        while((line = bufferedReader.readLine()) != null){
-        result += line;
-        }
-        bufferedReader.close();;
-        inputStream.close();
-        httpURLConnection.disconnect();
-        return result;
+            String rowCount = params[0];
+            String search_string = params[1];
+            URL url = new URL(search_title_url);
+            HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+            httpURLConnection.setRequestMethod("POST");
+            httpURLConnection.setDoOutput(true);
+            httpURLConnection.setDoInput(true);
+            OutputStream outputStream = httpURLConnection.getOutputStream();
+            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+            String post_data =
+                    URLEncoder.encode("search_string","UTF-8")+"="+ URLEncoder.encode(search_string,"UTF-8")+"&"+
+                            URLEncoder.encode("rowCount","UTF-8")+"="+ URLEncoder.encode(rowCount,"UTF-8");
+            bufferedWriter.write(post_data);
+            bufferedWriter.flush();
+            bufferedWriter.close();
+            outputStream.close();
+            InputStream inputStream = httpURLConnection.getInputStream();
+            BufferedReader bufferedReader =
+                    new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+            String result = "";
+            String line;
+            while((line = bufferedReader.readLine()) != null){
+                result += line;
+            }
+            bufferedReader.close();;
+            inputStream.close();
+            httpURLConnection.disconnect();
+            return result;
         } catch (IOException e) {
-        e.printStackTrace();
-        }
+            e.printStackTrace();
         }
 
-    return null;
+
+        return null;
     }
 
     @Override
@@ -78,6 +76,7 @@ public class SearchHandler extends AsyncTask<String, String, String> {
 
     @Override
     protected void onPostExecute(String result){
+        Log.d("SEARCHR",result);
     }
 
 }

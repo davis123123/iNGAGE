@@ -47,7 +47,7 @@ public class SessionManager {
     public static final String CATEGORY_TYPE = "categories";
 
     public static final String PAGE_TYPE = "page_type";
-
+    public static final String SEARCH_STRING = "search_string";
     // Constructor
     public SessionManager(Context context){
         this._context = context;
@@ -98,6 +98,11 @@ public class SessionManager {
         editor.commit();
     }
 
+    public void updateSearch(String searchString){
+        editor.putString(SEARCH_STRING, searchString);
+        editor.commit();
+    }
+
     public void checkLogin(){
         // Check login status
         if(!this.isLoggedIn()){
@@ -131,6 +136,7 @@ public class SessionManager {
         user.put(KEY_TRIBUTE_POINTS, pref.getString(KEY_TRIBUTE_POINTS, null));
         user.put(PAGE_TYPE, pref.getString(PAGE_TYPE, null));
         user.put(CATEGORY_TYPE, pref.getString(CATEGORY_TYPE, null));
+        user.put(SEARCH_STRING, pref.getString(SEARCH_STRING, null));
         // return user
         return user;
     }

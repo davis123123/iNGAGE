@@ -355,7 +355,34 @@ public class MainActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.main, menu);
         MenuItem myActionMenuItem = menu.findItem(R.id.action_search);
         searchView = (android.support.v7.widget.SearchView) myActionMenuItem.getActionView();
+        final FragmentManager fragmentManager = this.getSupportFragmentManager();
+        final Class fragmentClass = SearchResultFragment.class;
+        searchView.setOnSearchClickListener(this);
+        searchView.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                Log.d("SEARCH",s);
+                SearchHandler searchHandler = new SearchHandler();
+                String result = "";
+                session.updateSearch(s);
 
+                final Fragment fragment = Fragment.instantiate(getApplicationContext(), fragmentClass.getName());
+
+                fragmentManager
+                        .beginTransaction()
+                        .replace(R.id.main_fragment_container, fragment, fragmentClass.getSimpleName())
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .commit();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                Log.d("SEARCH","yes");
+
+                return false;
+            }
+        });
         return true;
     }
 
@@ -533,8 +560,6 @@ public class MainActivity extends AppCompatActivity
                 fragmentClass = FrontPageFragment.class;
                 pageType = "trend";
                 session.updatePage(pageType);
-                break;
-            case "search":
                 break;
         }
         final Fragment fragment = Fragment.instantiate(this, fragmentClass.getName());
