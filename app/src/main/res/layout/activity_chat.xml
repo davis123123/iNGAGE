@@ -42,7 +42,7 @@
         <View
             android:id="@+id/rect"
             android:layout_width="wrap_content"
-            android:layout_height="110dp"
+            android:layout_height="100dp"
             android:background="#e0e0db"
             android:layout_gravity="bottom" />
     </LinearLayout>
