@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -157,6 +158,7 @@ public class  PostThreadActivity extends AppCompatActivity {
             image_link = "http://107.170.232.60/images/"+imageTitle+".JPG";
         }
 
+        loadingDialog();
         //categorySpinner = (Spinner) findViewById(R.id.spinner);
         String cSpinner = String.valueOf(categorySpinner.getSelectedItem());
 
@@ -187,6 +189,15 @@ public class  PostThreadActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+
+    private void loadingDialog(){
+        new AlertDialog.Builder(this)
+                .setTitle("Submitting")
+                .setMessage("Please Wait")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
 
     private void addDataToFirebase(String threadId){
         Map<String,Object> map = new HashMap<String, Object>();
