@@ -153,12 +153,12 @@ public class ThreadListAdapter extends RecyclerView.Adapter<ThreadListAdapter.Th
             //if(!threadsHelper.getThread_img().equalsIgnoreCase("") && str.length() != 0) {
                 //Log.d("STATE", "call download...");
 
-            downloadImage(threadsHelper);
+            getImage(threadsHelper);
 
         }
 
         //retrieve Base64 from FireBase and convert to image
-        private void downloadImage(ThreadsHelper threadsHelper){
+        private void getImage(ThreadsHelper threadsHelper){
             Context context = itemView.getContext();
             DownloadImageHandler dlHandler = new DownloadImageHandler(context);
             String type = "download";
@@ -166,26 +166,24 @@ public class ThreadListAdapter extends RecyclerView.Adapter<ThreadListAdapter.Th
             String thread_id = threadsHelper.getThread_id();
 
             //do conversion
-            try {
-                threadImageView = (ImageView) itemView.findViewById(R.id.img_post);
-                String result = dlHandler.execute(type, thread_id).get();
-                //Log.d("STATE", "room title: " + threadsHelper.getThread_title());
-                Log.d("STATE", "download thread img result: " + result);
-                if(result.length() > default_path.length()) {
-                    int index =result.indexOf(",") + 1;
-                    String code = result.substring(index, result.length());
-                    byte[] decodedString = Base64.decode(code, Base64.DEFAULT);
-                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                    threadImageView.setImageBitmap(decodedByte);
-                    LinearLayout.LayoutParams img_params = new LinearLayout.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, 1000);
-                    threadImageView.setLayoutParams(img_params);
-                    threadContentTextView.setText(" ");
-                }
-                else
-                    threadImageView.setImageBitmap(null);
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
+
+            threadImageView = (ImageView) itemView.findViewById(R.id.img_post);
+            String result = threadsHelper.getThread_img_bitmap();
+            //Log.d("STATE", "room title: " + threadsHelper.getThread_title());
+            Log.d("STATE", "download thread img result: " + result);
+            if(result != null && result.length() > default_path.length()) {
+                int index =result.indexOf(",") + 1;
+                String code = result.substring(index, result.length());
+                byte[] decodedString = Base64.decode(code, Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                threadImageView.setImageBitmap(decodedByte);
+                LinearLayout.LayoutParams img_params = new LinearLayout.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, 1000);
+                threadImageView.setLayoutParams(img_params);
+                threadContentTextView.setText(" ");
             }
+            else
+                threadImageView.setImageBitmap(null);
+
 
             //set padding programmatically
             if(threadImageView.getDrawable() != null) {

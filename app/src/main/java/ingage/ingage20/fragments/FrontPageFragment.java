@@ -3,6 +3,8 @@ package ingage.ingage20.fragments;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -10,10 +12,13 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -24,6 +29,7 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 import ingage.ingage20.activities.ChatActivity;
+import ingage.ingage20.handlers.DownloadImageHandler;
 import ingage.ingage20.handlers.SpectateRoomHandler;
 import ingage.ingage20.managers.ChatRoomManager;
 import ingage.ingage20.activities.MainActivity;
@@ -47,6 +53,7 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
     private boolean loading = true;
     int pastVisiblesItems, visibleItemCount, totalItemCount;
     int rowCount = 0;
+    String default_path = "data:image/JPG;base64,";
 
     private static final String TAG = "FrontPageFragment";
 
@@ -63,6 +70,7 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
                        final Bundle savedInstanceState){
         // Inflate the layout for this fragment
         getThreadsJSON(rowCount);
+
         rootView = inflater.inflate(R.layout.fragment_front_page, container, false);
         rootView.setTag(TAG);
         return rootView;
@@ -163,6 +171,7 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
             jsonArray = jsonObject.getJSONArray("server_response");
             int count = 0;
             String thread_id, thread_title, thread_content, thread_by, thread_date, thread_category;
+            String thread_img_bitmap = null;
             String thread_img = null;
             while (count < jsonArray.length()) {
                 JSONObject JO = jsonArray.getJSONObject(count);
@@ -173,8 +182,22 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
                 thread_date = JO.getString("thread_date");
                 thread_category = JO.getString("thread_category");
                 thread_img = JO.getString("thread_image_link");
+                DownloadImageHandler dlHandler = new DownloadImageHandler(getContext());
+                String type = "download";
+
+                //String thread_id = threadsHelper.getThread_id();
+
+                //do conversion
+                try {
+                    thread_img_bitmap = dlHandler.execute(type, thread_id).get();
+                    //Log.d("STATE", "room title: " + threadsHelper.getThread_title());
+                    Log.d("STATE", "download thread img result: " + result);
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                }
+                Log.d("THREAD_BITMAP","result" + thread_img_bitmap);
                 ThreadsHelper threadsHelper = new ThreadsHelper(thread_id, thread_title,
-                        thread_content, thread_by, thread_date, thread_category, thread_img);
+                        thread_content, thread_by, thread_date, thread_category, thread_img, thread_img_bitmap);
                 threadListAdapter.add(threadsHelper);
                 threadListAdapter.notifyDataSetChanged();
                 count++;
@@ -184,4 +207,21 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
             e.printStackTrace();
         }
     }
+    /*private String downloadImage(String thread_id){
+        Bitmap thread_img_bitmap = null;
+        DownloadImageHandler dlHandler = new DownloadImageHandler(getContext());
+        String type = "download";
+
+        //String thread_id = threadsHelper.getThread_id();
+
+        //do conversion
+        try {
+            String result = dlHandler.execute(type, thread_id).get();
+            //Log.d("STATE", "room title: " + threadsHelper.getThread_title());
+            Log.d("STATE", "download thread img result: " + result);
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }*/
 }

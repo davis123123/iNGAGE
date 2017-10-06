@@ -1,12 +1,15 @@
 package ingage.ingage20.fragments;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +24,7 @@ import java.util.concurrent.ExecutionException;
 import ingage.ingage20.R;
 import ingage.ingage20.activities.PostThreadActivity;
 import ingage.ingage20.adapters.ThreadListAdapter;
+import ingage.ingage20.handlers.DownloadImageHandler;
 import ingage.ingage20.handlers.SearchHandler;
 import ingage.ingage20.helpers.ThreadsHelper;
 import ingage.ingage20.managers.SessionManager;
@@ -39,6 +43,7 @@ public class SearchResultFragment extends FragmentBase implements ThreadListAdap
     String searchString = "";
 
     private static final String TAG = "FrontPageFragment";
+    String default_path = "data:image/JPG;base64,";
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -151,30 +156,45 @@ public class SearchResultFragment extends FragmentBase implements ThreadListAdap
 
 
     void inflateThreads() {
-    try {
+        try {
+            jsonObject = new JSONObject(json_string);
+            jsonArray = jsonObject.getJSONArray("server_response");
+            int count = 0;
+            String thread_id, thread_title, thread_content, thread_by, thread_date, thread_category;
+            String thread_img_bitmap = null;
+            String thread_img = null;
+            while (count < jsonArray.length()) {
+                JSONObject JO = jsonArray.getJSONObject(count);
+                thread_id = JO.getString("thread_id");
+                thread_title = JO.getString("thread_title");
+                thread_content = JO.getString("thread_content");
+                thread_by = JO.getString("thread_by");
+                thread_date = JO.getString("thread_date");
+                thread_category = JO.getString("thread_category");
+                thread_img = JO.getString("thread_image_link");
+                DownloadImageHandler dlHandler = new DownloadImageHandler(getContext());
+                String type = "download";
 
-        jsonObject = new JSONObject(json_string);
-        jsonArray = jsonObject.getJSONArray("server_response");
-        int count = 0;
-        String thread_id, thread_title, thread_content, thread_by, thread_date, thread_category;
-        String thread_img = null;
-        while (count < jsonArray.length()) {
-            JSONObject JO = jsonArray.getJSONObject(count);
-            thread_id = JO.getString("thread_id");
-            thread_title = JO.getString("thread_title");
-            thread_content = JO.getString("thread_content");
-            thread_by = JO.getString("thread_by");
-            thread_date = JO.getString("thread_date");
-            thread_category = JO.getString("thread_category");
-            thread_img = JO.getString("thread_image_link");
-            ThreadsHelper threadsHelper = new ThreadsHelper(thread_id, thread_title,
-                    thread_content, thread_by, thread_date, thread_category, thread_img);
-            threadListAdapter.add(threadsHelper);
-            threadListAdapter.notifyDataSetChanged();
-            count++;
-        }
-    } catch (JSONException e) {
-        e.printStackTrace();
+                //String thread_id = threadsHelper.getThread_id();
+
+                //do conversion
+                try {
+                    thread_img_bitmap = dlHandler.execute(type, thread_id).get();
+                    //Log.d("STATE", "room title: " + threadsHelper.getThread_title());
+                    Log.d("STATE", "download thread img result: " + result);
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                }
+                Log.d("THREAD_BITMAP","result" + thread_img_bitmap);
+                ThreadsHelper threadsHelper = new ThreadsHelper(thread_id, thread_title,
+                        thread_content, thread_by, thread_date, thread_category, thread_img, thread_img_bitmap);
+                threadListAdapter.add(threadsHelper);
+                threadListAdapter.notifyDataSetChanged();
+                count++;
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 }
