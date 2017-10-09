@@ -12,11 +12,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import ingage.ingage20.R;
 import ingage.ingage20.handlers.DownloadImageHandler;
@@ -26,41 +26,80 @@ import ingage.ingage20.helpers.ThreadsHelper;
  * Created by Davis on 4/4/2017.
  */
 
-public class ThreadListAdapter extends RecyclerView.Adapter<ThreadListAdapter.ThreadViewHolder> {
+public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    
     private Context mContext;
     private static final String TAG = ThreadListAdapter.class.getSimpleName();
-    List list = new ArrayList();
+    public List list = new ArrayList();
+    public static boolean isLoading = false;
     private ItemClickCallback itemClickCallback;
 
     //Result returned from backend if no image exists
     String default_path = "data:image/JPG;base64,";
 
+    private final int VIEW_TYPE_ITEM = 0;
+    private final int VIEW_TYPE_LOADING = 1;
+
+    public OnLoadMoreListener mOnLoadMoreListener;
 
     public interface ItemClickCallback{
         void onContainerClick(int p);
         void onSpectateBtnClick(int p);
+
+    }
+
+    public interface OnLoadMoreListener {
+        void onLoadMore();
     }
 
     public void setItemClickCallback(final ItemClickCallback itemClickCallback){
         this.itemClickCallback = itemClickCallback;
     }
 
+    public void setOnLoadMoreListener(OnLoadMoreListener mOnLoadMoreListener) {
+        this.mOnLoadMoreListener = mOnLoadMoreListener;
+    }
 
     public ThreadListAdapter( ItemClickCallback listener){
         itemClickCallback = listener;
     }//interface for thread-click
 
     @Override
-    public ThreadViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Get the RecyclerView item layout
         Context context = viewGroup.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
+        Log.d("VIEWTYPE",":"+viewType);
         boolean shouldAttachToParentImmediately = false;
-        View view = inflater.inflate(R.layout.thread_row_layout, viewGroup, shouldAttachToParentImmediately);
-        ThreadViewHolder viewHolder = new ThreadViewHolder(view);
-        return viewHolder;
+        if (viewType == VIEW_TYPE_ITEM) {
+            View view = inflater.inflate(R.layout.thread_row_layout, viewGroup, shouldAttachToParentImmediately);
+            ThreadViewHolder viewHolder = new ThreadViewHolder(view);
+            return viewHolder;
+        } else if (viewType == VIEW_TYPE_LOADING) {
+            Log.d("LOAD","Layout");
+            View view = inflater.inflate(R.layout.layout_loading_item, viewGroup, shouldAttachToParentImmediately);
+            //ThreadViewHolder viewHolder = new ThreadViewHolder(view);
+            return new LoadingViewHolder(view);
+        }
+        return null;
     }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if(holder instanceof ThreadViewHolder) {
+            ThreadsHelper threadsHelper = (ThreadsHelper) this.getItem(position);
+            //holder.bind(position);
+            ThreadViewHolder threadViewHolder = (ThreadViewHolder) holder;
+            threadViewHolder.bind(position);
+        }
+        else if(holder instanceof LoadingViewHolder){
+            LoadingViewHolder loadingViewHolder = (LoadingViewHolder) holder;
+            loadingViewHolder.progressBar.setIndeterminate(true);
+        }
+
+    }
+
 
     public void add(ThreadsHelper object){
         list.add(object);
@@ -75,13 +114,21 @@ public class ThreadListAdapter extends RecyclerView.Adapter<ThreadListAdapter.Th
         return list.get(position);
     }
 
-    @Override
-    public void onBindViewHolder(ThreadListAdapter.ThreadViewHolder holder, int position) {
-        ThreadsHelper threadsHelper = (ThreadsHelper) this.getItem(position);
-        holder.bind(position);
+    public void setLoaded() {
+        isLoading = false;
     }
 
+    @Override public int getItemViewType(int position) {
+        return list.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
+    }
 
+    static class LoadingViewHolder extends RecyclerView.ViewHolder {
+        public ProgressBar progressBar;
+        public LoadingViewHolder(View itemView) {
+            super(itemView);
+            progressBar = (ProgressBar) itemView.findViewById(R.id.progressBar1);
+        }
+    }
 
     class ThreadViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
@@ -90,13 +137,6 @@ public class ThreadListAdapter extends RecyclerView.Adapter<ThreadListAdapter.Th
         View container;
         Button mSpectateBtn;
 
-        /**
-         * Constructor for our ViewHolder. Within this constructor, we get a reference to our
-         * TextViews
-         *
-         * @param itemView The View that you inflated in
-         *
-         */
         public ThreadViewHolder(View itemView) {
             super(itemView);
             threadTitleTextView = (TextView) itemView.findViewById(R.id.thread_title_view);
@@ -152,9 +192,9 @@ public class ThreadListAdapter extends RecyclerView.Adapter<ThreadListAdapter.Th
             //Log.d("STATE", "thread helper img: "+ str + ",length: " + str.length());
             //if(!threadsHelper.getThread_img().equalsIgnoreCase("") && str.length() != 0) {
                 //Log.d("STATE", "call download...");
-
-            getImage(threadsHelper);
-
+            if(str != null) {
+                getImage(threadsHelper);
+            }
         }
 
         //retrieve Base64 from FireBase and convert to image

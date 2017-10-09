@@ -1,44 +1,29 @@
 package ingage.ingage20.fragments;
 
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
-import ingage.ingage20.activities.ChatActivity;
 import ingage.ingage20.handlers.DownloadImageHandler;
-import ingage.ingage20.handlers.SpectateRoomHandler;
-import ingage.ingage20.managers.ChatRoomManager;
-import ingage.ingage20.activities.MainActivity;
 import ingage.ingage20.activities.PostThreadActivity;
 import ingage.ingage20.R;
 import ingage.ingage20.managers.SessionManager;
 import ingage.ingage20.adapters.ThreadListAdapter;
-import ingage.ingage20.handlers.ChatRoomHandler;
-import ingage.ingage20.handlers.MySQLDbHelper;
 import ingage.ingage20.handlers.QueryThreadsHandler;
 import ingage.ingage20.helpers.ThreadsHelper;
 
@@ -50,7 +35,6 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
 
     QueryThreadsHandler queryThreadsHandler;
 
-    private boolean loading = true;
     int pastVisiblesItems, visibleItemCount, totalItemCount;
     int rowCount = 0;
     String default_path = "data:image/JPG;base64,";
@@ -73,6 +57,7 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
 
         rootView = inflater.inflate(R.layout.fragment_front_page, container, false);
         rootView.setTag(TAG);
+
         return rootView;
     }
 
@@ -102,30 +87,51 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
             }
         });
 
+        threadListAdapter.setOnLoadMoreListener(new ThreadListAdapter.OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                Log.d("haint", "Load More");
+                threadListAdapter.list.add(null);
+                threadListAdapter.notifyItemInserted(threadListAdapter.list.size() - 1);
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.e("haint", "Load More 2");
+                        threadListAdapter.list.remove(threadListAdapter.list.size() - 1);
+                        threadListAdapter.notifyItemRemoved(threadListAdapter.list.size());
+                        rowCount += 10;
+                        getThreadsJSON(rowCount);
+                        inflateThreads();
+                        threadListAdapter.setLoaded();
+                    }
+                }, 4000);
+            }
+        });
 
         threadListRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
         {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy)
             {
-                //Log.d("...", "Lastnot Item Wow !");
+                Log.d("...", "Lastnot Item Wow !");
                 if(dy > 0) //check for scroll down
                 {
                     visibleItemCount = layoutManager.getChildCount();
                     totalItemCount = layoutManager.getItemCount();
                     pastVisiblesItems = layoutManager.findFirstVisibleItemPosition();
+                    if ( !threadListAdapter.isLoading && (visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                        //if(mOnLoadMoreListener != null){
 
-                    if (loading)
-                    {
-                        if ( (visibleItemCount + pastVisiblesItems) >= totalItemCount)
-                        {
-                            //loading = false;
-                            Log.d("...", "Last Item Wow !");
-                            rowCount += 10;
-                            getThreadsJSON(rowCount);
-                            inflateThreads();
-                            //Do pagination.. i.e. fetch new data
-                        }
+                        threadListAdapter.mOnLoadMoreListener.onLoadMore();
+                        //}
+                        threadListAdapter.isLoading = true;
+                        //loading = false;
+                        //Log.d("...", "Last Item Wow !");
+                        //rowCount += 10;
+                        //getThreadsJSON(rowCount);
+                        //inflateThreads();
+                        //Do pagination.. i.e. fetch new data
                     }
                 }
             }
@@ -163,7 +169,6 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
         Log.d("SPECTATEBUTTON", "clicked");
         spectate(p);
     }
-
 
     void inflateThreads() {
         try {
@@ -207,6 +212,8 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
             e.printStackTrace();
         }
     }
+
+
     /*private String downloadImage(String thread_id){
         Bitmap thread_img_bitmap = null;
         DownloadImageHandler dlHandler = new DownloadImageHandler(getContext());

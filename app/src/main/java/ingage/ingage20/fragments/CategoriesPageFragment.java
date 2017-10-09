@@ -67,16 +67,11 @@ public class CategoriesPageFragment extends FragmentBase implements ThreadListAd
     public void onViewCreated(final View view, final Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
 
-
-
         //TODO fix threadlistadapter for dynamic threads
         threadListRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv_posts);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
 
-
-
         threadListRecyclerView.setLayoutManager(layoutManager);
-
 
         threadListAdapter = new ThreadListAdapter(this);
         threadListRecyclerView.setAdapter(threadListAdapter);
@@ -93,7 +88,6 @@ public class CategoriesPageFragment extends FragmentBase implements ThreadListAd
                 }
             }
         });
-
 
         threadListRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
         {
@@ -152,14 +146,11 @@ public class CategoriesPageFragment extends FragmentBase implements ThreadListAd
         itemClick(p);
     }
 
-
-
     @Override
     public void onSpectateBtnClick(int p) {
         Log.d("SPECTATEBUTTON", "clicked");
         spectate(p);
     }
-
 
     void inflateThreads() {
         try {
