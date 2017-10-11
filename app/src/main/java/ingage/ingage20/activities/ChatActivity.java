@@ -70,7 +70,7 @@ public class ChatActivity extends AppCompatActivity{
     Long chat_upvote, chat_downvote, currentCooldown;
     public static String user_side;
     TextView timerTv;
-    ImageButton addButton;
+    Button addButton;
     EditText textField;
     View rect;
     boolean haschar = false;
@@ -94,6 +94,8 @@ public class ChatActivity extends AppCompatActivity{
         timerTv = (TextView) findViewById(R.id.timertv);
         useCoinBt = (Button) findViewById(R.id.cooldownButton);
         rect = (View) findViewById(R.id.rect);
+
+        timerTv.setVisibility(View.GONE);
 
         useCoinBt.setOnClickListener(new View.OnClickListener() {
 
@@ -130,7 +132,7 @@ public class ChatActivity extends AppCompatActivity{
  }**/ //check if this is needed
 
         //add messages to recycler view by clicking send
-        addButton = (ImageButton) findViewById(R.id.sendMessageButton);
+        addButton = (Button) findViewById(R.id.sendMessageButton);
         if (addButton != null) {
             addButton.setOnClickListener(new View.OnClickListener() {
 
@@ -561,12 +563,13 @@ public class ChatActivity extends AppCompatActivity{
     }//timer for kicking user out for inactivity
 
     private void blockMSG(){
-        addButton.setVisibility(View.INVISIBLE);
+        addButton.setVisibility(View.GONE);
+        timerTv.setVisibility(View.VISIBLE);
     }//modify block functions here
 
     private void unblockMSG(){
         addButton.setVisibility(View.VISIBLE);
-        timerTv.setVisibility(View.INVISIBLE);
+        timerTv.setVisibility(View.GONE);
     }//modify unblock functions here
 
     @Override
