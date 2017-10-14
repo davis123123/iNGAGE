@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:background="@layout/frame_item"
+    android:id="@+id/thread_row_root"
+    android:layout_marginRight="10dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/thread_title_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:fontFamily="sans-serif"
+        android:textColor="#f96868"
+        android:text="Title"
+        android:gravity="left"
+        android:textSize="30sp" />
+
+
+    <TextView
+        android:id="@+id/thread_category_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:fontFamily="sans-serif"
+        android:textStyle="italic"
+        android:text="Category"
+        android:gravity="left"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textSize="18dp"
+        android:layout_below="@+id/img"
+        android:layout_alignStart="@+id/thread_title_view" />
+
+    <TextView
+        android:id="@+id/thread_by_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="left"
+        android:text="user"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="20dp"
+        android:textStyle="italic|bold|normal"
+        android:layout_toRightOf="@+id/thread_category_view"
+        android:layout_below="@+id/img"
+        android:layout_marginLeft="40dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Spectate"
+        android:background="@layout/button"
+        android:id="@+id/spectateBtn"
+        android:textColor="#FFFFFF"
+        android:layout_alignEnd="@+id/thread_content"
+        android:layout_alignBottom="@+id/thread_category_view"
+        android:layout_below="@+id/img" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/thread_title_view"
+        android:id="@+id/img">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="250dp"
+            android:id="@+id/img_post"
+            android:scaleType="fitXY"
+            android:gravity="center_horizontal"
+            android:src="@drawable/logo"/>
+
+    </LinearLayout>
+
+
+
+    <!-- SHOULD OR SHOULDNOT DISPLAY CONTENT IN VIEW?
+    <TextView
+        android:id="@+id/thread_content_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:textSize="16sp"/>
+        -->
+
+</RelativeLayout>
