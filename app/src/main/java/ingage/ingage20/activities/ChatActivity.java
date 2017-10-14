@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -81,6 +82,10 @@ public class ChatActivity extends AppCompatActivity{
     CountDownTimer kickTimer;
     HashMap<String, String> userVotes = new HashMap<String, String>();
     DatabaseReference page_root;
+
+    LinearLayout textArea;
+    LinearLayout textButtons;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,6 +99,9 @@ public class ChatActivity extends AppCompatActivity{
         timerTv = (TextView) findViewById(R.id.timertv);
         useCoinBt = (Button) findViewById(R.id.cooldownButton);
         rect = (View) findViewById(R.id.rect);
+
+        textArea = (LinearLayout) findViewById(R.id.text_area);
+        textButtons = (LinearLayout) findViewById(R.id.text_right);
 
         timerTv.setVisibility(View.GONE);
 
@@ -446,6 +454,9 @@ public class ChatActivity extends AppCompatActivity{
         timerTv.setVisibility(View.GONE);
         useCoinBt.setVisibility(View.GONE);
         rect.setVisibility(View.GONE);
+
+        textArea.setVisibility(View.GONE);
+        textButtons.setVisibility(View.GONE);
     }
 
     private void leaveRoom() {
