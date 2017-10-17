@@ -177,13 +177,6 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
                     holder.bUpvote.setEnabled(true);
                     holder.bDownvote.setEnabled(true);
                 }
-
-                /*if(!holder.bDownvote.isEnabled()) {
-                    holder.bDownvote.setEnabled(true);
-                    //itemClickCallback.removeDownvote(getAdapterPosition());
-                    prev_voted = "true";
-                }*/
-
                 //insert into user profile
                 itemClickCallback.insertVote(position, prev_voted, vote);
             }

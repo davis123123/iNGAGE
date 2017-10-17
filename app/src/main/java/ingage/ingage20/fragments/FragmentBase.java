@@ -38,7 +38,6 @@ import ingage.ingage20.managers.SessionManager;
 
 public class FragmentBase extends Fragment{
 
-    String JSON_STRING;
     FloatingActionButton postThreadButton;
     protected RecyclerView threadListRecyclerView;
     ThreadListAdapter threadListAdapter;
@@ -46,7 +45,6 @@ public class FragmentBase extends Fragment{
     SessionManager session;
     ChatRoomManager chatRoomManager;
 
-    MySQLDbHelper mySQLDbHelper;
     String json_string;
     JSONObject jsonObject;
     JSONArray jsonArray;
@@ -102,11 +100,6 @@ public class FragmentBase extends Fragment{
 
         String type = "view";
         chooseSideDialog(context, thread_id, type);
-
-        /**
-         Intent startChildActivityIntent = new Intent(getActivity(), ViewThreadActivity.class);
-         startChildActivityIntent.putExtra(Intent.EXTRA_TEXT, thread_id);
-         startActivity(startChildActivityIntent);**/
     }
 
     private void chooseSideDialog(final Context context, final String thread_id, final String type){
@@ -128,11 +121,7 @@ public class FragmentBase extends Fragment{
                 .setNegativeButton("disagree", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         side= "disagree";
-
-                        //result = joinRoom(context, type, thread_id);
-
                         verify(context, type, thread_id);
-
                         //goToChat(result);
                     }
                 })

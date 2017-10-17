@@ -103,6 +103,7 @@ public class ChatFragment extends Fragment implements ChatArrayAdapter.ItemClick
 
         currPageData = root.child(String.valueOf(
                 chat.get(ChatRoomManager.CUR_PAGE)));//get current page from cache
+        Log.d("CURPAGE", "pageNo: "+ chat.get(ChatRoomManager.CUR_PAGE) );
 
         eventListener(currPageData);
     }

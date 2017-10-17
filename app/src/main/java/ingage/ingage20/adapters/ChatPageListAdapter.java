@@ -14,6 +14,7 @@ import java.util.List;
 
 import ingage.ingage20.R;
 import ingage.ingage20.helpers.ChatMessageHelper;
+import ingage.ingage20.managers.ChatRoomManager;
 import ingage.ingage20.managers.SessionManager;
 
 /**
@@ -24,7 +25,8 @@ public class ChatPageListAdapter extends RecyclerView.Adapter<ChatPageListAdapte
 
     List<String> list = new ArrayList<String>();
     private ItemClickCallback itemClickCallback;
-
+    ChatRoomManager chatRoomManager;
+    String curPage;
     public interface ItemClickCallback{
         void onPgeBtnClick(ChatPageViewHolder h, int p);
     }
@@ -33,8 +35,12 @@ public class ChatPageListAdapter extends RecyclerView.Adapter<ChatPageListAdapte
         this.itemClickCallback = itemClickCallback;
     }
 
-    public ChatPageListAdapter(final ItemClickCallback itemClickCallback){
+    public ChatPageListAdapter(final ItemClickCallback itemClickCallback, Context mContext){
         this.itemClickCallback = itemClickCallback;
+        chatRoomManager = new ChatRoomManager(mContext);
+        HashMap<String, String> chatUser = chatRoomManager.getUserDetails();
+        curPage = chatUser.get(ChatRoomManager.CUR_PAGE);
+        Log.d("CURPAGEadapter", "pageNo: "+ curPage);
     }
 
     @Override
@@ -55,8 +61,12 @@ public class ChatPageListAdapter extends RecyclerView.Adapter<ChatPageListAdapte
     @Override
     public void onBindViewHolder(final ChatPageViewHolder holder, final int position) {
         String pageNo = this.getItem(position);
-        holder.bind(position);
-        //pageNoBtn.setText(getItem(listIndex));
+
+        holder.pageNoBtn.setText(getItem(position));
+        if(pageNo == curPage)
+            holder.pageNoBtn.setBackgroundResource(R.drawable.selected_page_button);
+        else if (pageNo != curPage)
+            holder.pageNoBtn.setBackgroundResource(R.drawable.page_list_button);
         holder.pageNoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,10 +89,6 @@ public class ChatPageListAdapter extends RecyclerView.Adapter<ChatPageListAdapte
         public ChatPageViewHolder(View itemView) {
             super(itemView);
             pageNoBtn = (Button) itemView.findViewById(R.id.pageBtn);
-        }
-
-        private void bind(int listIndex){
-            pageNoBtn.setText(getItem(listIndex));//gives page Number
         }
     }
 }

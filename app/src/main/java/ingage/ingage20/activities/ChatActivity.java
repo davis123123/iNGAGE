@@ -7,9 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -17,10 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -29,10 +24,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -43,18 +34,11 @@ import java.util.Timer;
 import java.util.concurrent.ExecutionException;
 
 import ingage.ingage20.R;
-import ingage.ingage20.adapters.ChatArrayAdapter;
-import ingage.ingage20.adapters.ChatPageListAdapter;
 import ingage.ingage20.fragments.ChatFragment;
 import ingage.ingage20.fragments.ChatPageListFragment;
-import ingage.ingage20.fragments.FrontPageFragment;
 import ingage.ingage20.handlers.ChatFeaturesHandler;
 import ingage.ingage20.handlers.ChatRoomHandler;
 import ingage.ingage20.handlers.SpectateRoomHandler;
-import ingage.ingage20.handlers.SubmitCommentsHandler;
-import ingage.ingage20.handlers.VotesHandler;
-import ingage.ingage20.helpers.ChatMessageHelper;
-import ingage.ingage20.helpers.ThreadsHelper;
 import ingage.ingage20.managers.ChatRoomManager;
 import ingage.ingage20.managers.SessionManager;
 
@@ -623,9 +607,16 @@ public class ChatActivity extends AppCompatActivity{
         Class fragmentClass = ChatFragment.class;
         final Fragment fragment = Fragment.instantiate(this, fragmentClass.getName());
 
+        Class pageFragmentClass = ChatPageListFragment.class;
+        final Fragment pageFragment = Fragment.instantiate(this, pageFragmentClass.getName());
         fragmentManager
                 .beginTransaction()
                 .replace(R.id.chat_fragment_container, fragment, fragmentClass.getSimpleName())
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit();
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.chat_pages_container, pageFragment, pageFragmentClass.getSimpleName())
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();
     }

@@ -20,12 +20,8 @@ import java.net.URLEncoder;
  */
 
 public class QueryThreadsHandler extends AsyncTask<String, String, String> {
-    //String json_url;
-    String JSON_STRING;
     Context context;
-    MySQLDbHelper mySQLDbHelper;
     //static public String mResult = "asda";
-
     /**
      public QueryThreadsHandler(Context mcontext) {
      context = mcontext;

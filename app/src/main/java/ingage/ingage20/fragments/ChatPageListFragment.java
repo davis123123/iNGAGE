@@ -54,7 +54,7 @@ public class ChatPageListFragment extends Fragment implements ChatPageListAdapte
         LinearLayoutManager layoutManager = new LinearLayoutManager
                 (getActivity(),LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        chatPageListAdapter = new ChatPageListAdapter(this);
+        chatPageListAdapter = new ChatPageListAdapter(this,getContext());
         Log.d("PAGEFRAG", "STARTED");
         recyclerView.setAdapter(chatPageListAdapter);
 
@@ -97,11 +97,12 @@ public class ChatPageListFragment extends Fragment implements ChatPageListAdapte
         chatRoomManager.updateCurrentPage(pageNo);
         chatActivity.refreshPage();
 
-        ChatPageListAdapter.ChatPageViewHolder prev =
+        /*ChatPageListAdapter.ChatPageViewHolder prev =
                 (ChatPageListAdapter.ChatPageViewHolder) recyclerView.findViewHolderForAdapterPosition(currentPage);
         if(prev != null)
             prev.pageNoBtn.setBackgroundResource(R.drawable.page_list_button);
-        h.pageNoBtn.setBackgroundResource(R.drawable.selected_page_button);
+
+        h.pageNoBtn.setBackgroundResource(R.drawable.selected_page_button);*/
         currentPage = p;
     }
 }

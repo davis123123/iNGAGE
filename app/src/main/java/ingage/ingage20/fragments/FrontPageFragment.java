@@ -212,23 +212,4 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
             e.printStackTrace();
         }
     }
-
-
-    /*private String downloadImage(String thread_id){
-        Bitmap thread_img_bitmap = null;
-        DownloadImageHandler dlHandler = new DownloadImageHandler(getContext());
-        String type = "download";
-
-        //String thread_id = threadsHelper.getThread_id();
-
-        //do conversion
-        try {
-            String result = dlHandler.execute(type, thread_id).get();
-            //Log.d("STATE", "room title: " + threadsHelper.getThread_title());
-            Log.d("STATE", "download thread img result: " + result);
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }*/
 }

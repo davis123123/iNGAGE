@@ -44,6 +44,8 @@ public class ChatRoomManager {
     }
 
 
+
+
     public void updateUserRoomSession(String thread_id, String side, String spectator){
         editor.putString(THREAD_ID, thread_id);
         editor.putString(SIDE, side);
