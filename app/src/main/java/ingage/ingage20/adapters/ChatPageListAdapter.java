@@ -56,6 +56,7 @@ public class ChatPageListAdapter extends RecyclerView.Adapter<ChatPageListAdapte
     public void onBindViewHolder(final ChatPageViewHolder holder, final int position) {
         String pageNo = this.getItem(position);
         holder.bind(position);
+        //pageNoBtn.setText(getItem(listIndex));
         holder.pageNoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -101,7 +101,6 @@ public class ChatPageListFragment extends Fragment implements ChatPageListAdapte
                 (ChatPageListAdapter.ChatPageViewHolder) recyclerView.findViewHolderForAdapterPosition(currentPage);
         if(prev != null)
             prev.pageNoBtn.setBackgroundResource(R.drawable.page_list_button);
-
         h.pageNoBtn.setBackgroundResource(R.drawable.selected_page_button);
         currentPage = p;
     }

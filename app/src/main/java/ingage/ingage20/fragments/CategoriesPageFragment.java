@@ -57,6 +57,7 @@ public class CategoriesPageFragment extends FragmentBase implements ThreadListAd
     public View create(final LayoutInflater inflater, final ViewGroup container,
                        final Bundle savedInstanceState){
         // Inflate the layout for this fragment
+        Log.d("ROWCOUNT","num"+rowCount);
         getThreadsJSON(rowCount);
         rootView = inflater.inflate(R.layout.fragment_front_page, container, false);
         rootView.setTag(TAG);
@@ -121,11 +122,12 @@ public class CategoriesPageFragment extends FragmentBase implements ThreadListAd
 
     public void getThreadsJSON(int rowCount){
         queryThreadsHandler = new QueryThreadsHandler();
-        Log.d("ROWCOUNT" , " result : " + rowCount);
         session = new SessionManager(getActivity().getApplicationContext());
         HashMap<String, String> user = session.getUserDetails();
         String type = user.get(SessionManager.PAGE_TYPE);
         String categoryType = user.get(SessionManager.CATEGORY_TYPE);
+        Log.d("CategoryType" , " result : " + categoryType);
+        Log.d("PageType" , " result : " + rowCount);
         try {
             json_string = queryThreadsHandler.execute(type, categoryType, String.valueOf(rowCount)).get();
             Log.d("STATE" , "query result : " + json_string);

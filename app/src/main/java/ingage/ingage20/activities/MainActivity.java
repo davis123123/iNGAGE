@@ -293,7 +293,7 @@ public class MainActivity extends AppCompatActivity
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             final int pos = position;
                 session.updateCategory((String) lvItems.getItemAtPosition(pos));
-                session.updatePage("categoryTrend");
+                session.updatePage("categoryDate");
                 Log.d("STATE", "Nav item clicked: "+ lvItems.getItemAtPosition(pos));
                 navigationDrawer.closeDrawer();
                 final Class fragmentClass = CategoriesPageFragment.class;
