@@ -40,7 +40,7 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private final int VIEW_TYPE_ITEM = 0;
     private final int VIEW_TYPE_LOADING = 1;
-
+    private final int VIEW_TYPE_IMG = 2;
     public OnLoadMoreListener mOnLoadMoreListener;
 
     public interface ItemClickCallback{
@@ -76,7 +76,13 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             View view = inflater.inflate(R.layout.thread_row_layout, viewGroup, shouldAttachToParentImmediately);
             ThreadViewHolder viewHolder = new ThreadViewHolder(view);
             return viewHolder;
-        } else if (viewType == VIEW_TYPE_LOADING) {
+        }
+        else if(viewType == VIEW_TYPE_IMG){
+            View view = inflater.inflate(R.layout.thread_image_row_layout, viewGroup, shouldAttachToParentImmediately);
+            ThreadViewHolder viewHolder = new ThreadViewHolder(view);
+            return viewHolder;
+        }
+        else if (viewType == VIEW_TYPE_LOADING) {
             Log.d("LOAD","Layout");
             View view = inflater.inflate(R.layout.layout_loading_item, viewGroup, shouldAttachToParentImmediately);
             //ThreadViewHolder viewHolder = new ThreadViewHolder(view);
@@ -91,7 +97,34 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             ThreadsHelper threadsHelper = (ThreadsHelper) this.getItem(position);
             //holder.bind(position);
             ThreadViewHolder threadViewHolder = (ThreadViewHolder) holder;
-            threadViewHolder.bind(position);
+            //threadViewHolder.bind(position);
+            //ThreadsHelper threadsHelper = (ThreadsHelper) getItem(listIndex);
+            ((ThreadViewHolder) holder).threadTitleTextView.setText(threadsHelper.getThread_title());
+            ((ThreadViewHolder) holder).threadByTextView.setText(threadsHelper.getThread_by());
+            ((ThreadViewHolder) holder).threadCategoryTextView.setText(threadsHelper.getThread_category());
+            ((ThreadViewHolder) holder).threadContentTextView.setVisibility(View.GONE);
+            if(threadsHelper.getThread_content() != null) {
+                //Log.d("STATE", "content: " + threadsHelper.getThread_content());
+                ((ThreadViewHolder) holder).threadContentTextView.setVisibility(View.VISIBLE);
+                ((ThreadViewHolder) holder).threadContentTextView.setText(threadsHelper.getThread_content());
+            }
+
+            ((ThreadViewHolder) holder).threadImageView = (ImageView)
+                    ((ThreadViewHolder) holder).itemView.findViewById(R.id.img_post);
+
+            String str = threadsHelper.getThread_img();
+            //Log.d("STATE", "room title: " + threadsHelper.getThread_title());
+            //Log.d("STATE", "thread helper img: "+ str + ",length: " + str.length());
+            //if(!threadsHelper.getThread_img().equalsIgnoreCase("") && str.length() != 0) {
+            //Log.d("STATE", "call download...");
+            if(str != null) {
+                ((ThreadViewHolder) holder).getImage(threadsHelper);
+                ((ThreadViewHolder) holder).threadImageView.setVisibility(View.INVISIBLE);
+            }
+            else {
+                ((ThreadViewHolder) holder).threadImageView.setVisibility(View.INVISIBLE);
+            }
+
         }
         else if(holder instanceof LoadingViewHolder){
             LoadingViewHolder loadingViewHolder = (LoadingViewHolder) holder;
@@ -119,7 +152,19 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     @Override public int getItemViewType(int position) {
-        return list.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
+        if(list.get(position) == null) {
+            return VIEW_TYPE_LOADING;
+        }
+        else {
+            ThreadsHelper threadsHelper = (ThreadsHelper) this.getItem(position);
+            String str = threadsHelper.getThread_img();
+            if(str == null) {
+                return VIEW_TYPE_ITEM;
+            }
+            else {
+                return VIEW_TYPE_IMG;
+            }
+        }
     }
 
     static class LoadingViewHolder extends RecyclerView.ViewHolder {
@@ -145,7 +190,8 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             threadImageView = (ImageView) itemView.findViewById(R.id.img_post);
             threadContentTextView = (TextView) itemView.findViewById(R.id.thread_content);
 
-            container = itemView.findViewById(R.id.thread_row_root);
+            container = itemView.findViewById(R.id.thread__img_row_root);
+
             container.setOnClickListener(this);
 
             mSpectateBtn = (Button) itemView.findViewById(R.id.spectateBtn);
@@ -174,27 +220,6 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
 
         private void bind(int listIndex){
-            ThreadsHelper threadsHelper = (ThreadsHelper) getItem(listIndex);
-            threadTitleTextView.setText(threadsHelper.getThread_title());
-            threadByTextView.setText(threadsHelper.getThread_by());
-            threadCategoryTextView.setText(threadsHelper.getThread_category());
-            threadContentTextView.setVisibility(View.GONE);
-            if(threadsHelper.getThread_content() != null) {
-                //Log.d("STATE", "content: " + threadsHelper.getThread_content());
-                threadContentTextView.setVisibility(View.VISIBLE);
-                threadContentTextView.setText(threadsHelper.getThread_content());
-            }
-
-            threadImageView = (ImageView) itemView.findViewById(R.id.img_post);
-
-            String str = threadsHelper.getThread_img();
-            //Log.d("STATE", "room title: " + threadsHelper.getThread_title());
-            //Log.d("STATE", "thread helper img: "+ str + ",length: " + str.length());
-            //if(!threadsHelper.getThread_img().equalsIgnoreCase("") && str.length() != 0) {
-                //Log.d("STATE", "call download...");
-            if(str != null) {
-                getImage(threadsHelper);
-            }
         }
 
         //retrieve Base64 from FireBase and convert to image
@@ -226,11 +251,11 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 
             //set padding programmatically
-            if(threadImageView.getDrawable() != null) {
+            /*f(threadImageView.getDrawable() != null) {
                 float density = context.getResources().getDisplayMetrics().density;
                 int padding = (int)(20 * density);
                 threadImageView.setPadding(padding, padding, padding, padding);
-            }
+            }*/
         }
 
     }

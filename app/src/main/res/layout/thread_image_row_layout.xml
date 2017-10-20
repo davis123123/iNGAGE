@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:background="@layout/frame_item"
-    android:id="@+id/thread_row_root"
+    android:id="@+id/thread__img_row_root"
     android:layout_marginRight="10dp"
     android:layout_marginLeft="10dp"
     android:layout_marginTop="8dp"

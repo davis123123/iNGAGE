@@ -117,12 +117,6 @@ public class ChatActivity extends AppCompatActivity{
         pageEventListener(root);
         pageCount(root); //TAKES TIME TO TRANSACT
 
-/**
- Intent intentThatStartedThisActivity = getIntent();
- if(intentThatStartedThisActivity.hasExtra(Intent.EXTRA_TEXT)){
- JsonString = intentThatStartedThisActivity.getStringExtra(Intent.EXTRA_TEXT);
- }**/ //check if this is needed
-
         //add messages to recycler view by clicking send
         addButton = (Button) findViewById(R.id.sendMessageButton);
         if (addButton != null) {
