@@ -13,14 +13,17 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <ImageButton
+        <com.pkmmte.view.CircularImageView
             android:id="@+id/profile_img"
             android:layout_width="700px"
             android:layout_height="700px"
             android:layout_marginTop="5dp"
-            android:background="@layout/avatar_border"
             android:scaleType="fitXY"
-            android:src="@mipmap/user" />
+            android:src="@mipmap/user"
+            app:border="true"
+            app:border_color="#FFFFFF"
+            app:border_width="8dp"
+            app:shadow="true"/>
 
         <TextView
             android:id="@+id/user_name"

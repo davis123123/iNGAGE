@@ -15,6 +15,8 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.pkmmte.view.CircularImageView;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
@@ -29,7 +31,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
     String username, email, tribute_pts, subs;
     //Button upload, change;
-    ImageButton curr_avatar;
+    CircularImageView curr_avatar;
     TextView display_username;
     protected static ArrayList<String> sub_arr = new ArrayList<>();
     String default_path = "data:image/JPG;base64,";
@@ -53,7 +55,7 @@ public class UserProfileActivity extends AppCompatActivity {
         tribute_pts = info.get(SessionManager.KEY_TRIBUTE_POINTS);
         subs = info.get(SessionManager.KEY_SUBSCRIPTIONS);
 
-        curr_avatar = (ImageButton) findViewById(R.id.profile_img);
+        curr_avatar = (CircularImageView) findViewById(R.id.profile_img);
         curr_avatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,7 +123,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
         //do conversion
         try {
-            curr_avatar = (ImageButton) findViewById(R.id.profile_img);
+            curr_avatar = (CircularImageView) findViewById(R.id.profile_img);
             String result = avatarHandler.execute(type, username).get();
             //Log.d("STATE", "room title: " + threadsHelper.getThread_title());
             Log.d("STATE", "download avatar result: " + result);

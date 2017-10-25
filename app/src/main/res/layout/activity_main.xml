@@ -65,7 +65,7 @@
                     android:layout_marginLeft="80dp"
                     android:layout_marginBottom="30dp"
                     app:border="true"
-                    app:border_color="#EEEEEE"
+                    app:border_color="#FFFFFF"
                     app:border_width="8dp"
                     app:shadow="true"
                     />
