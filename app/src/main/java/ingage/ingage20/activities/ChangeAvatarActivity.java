@@ -19,6 +19,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.pkmmte.view.CircularImageView;
+
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
@@ -34,7 +36,7 @@ public class ChangeAvatarActivity extends AppCompatActivity {
 
     private static final int RESULT_LOAD_IMAGE = 1;
     Button upload, change;
-    ImageView new_avatar_preview;
+    CircularImageView new_avatar_preview;
     boolean verified_image = false;
     String username;
 
@@ -46,7 +48,8 @@ public class ChangeAvatarActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         upload = (Button) findViewById(R.id.upload_profile_img);
         change = (Button) findViewById(R.id.change_avatar);
-        new_avatar_preview = (ImageView) findViewById(R.id.prof_img_preview);
+        new_avatar_preview = (CircularImageView) findViewById(R.id.prof_img_preview);
+        new_avatar_preview.setVisibility(View.INVISIBLE);
 
         SessionManager session = new SessionManager(getApplicationContext());
         HashMap<String, String> info = session.getUserDetails();
@@ -115,6 +118,7 @@ public class ChangeAvatarActivity extends AppCompatActivity {
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && data != null) {
             Uri selectedImage = data.getData();
             //String filename = getContentResolver().getType(selectedImage);
+            new_avatar_preview.setVisibility(View.VISIBLE);
             new_avatar_preview.setImageURI(selectedImage);
             verified_image = true;
         }

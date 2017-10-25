@@ -5,11 +5,16 @@
     android:layout_height="match_parent"
     android:id="@+id/user_profile">
 
-    <ImageView
+    <com.pkmmte.view.CircularImageView
         android:id="@+id/prof_img_preview"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_gravity="center_horizontal" />
+        android:layout_width="350dp"
+        android:layout_height="350dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="30dp"
+        app:border="true"
+        app:border_color="#EEEEEE"
+        app:border_width="8dp"
+        app:shadow="true"/>
 
     <Button
         android:id="@+id/upload_profile_img"
@@ -19,7 +24,7 @@
         android:text="Upload Avatar"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:layout_marginTop="5dp"/>
+        android:layout_marginTop="25dp"/>
 
     <Button
         android:id="@+id/change_avatar"
