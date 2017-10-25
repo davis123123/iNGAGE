@@ -5,10 +5,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +31,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.pkmmte.view.CircularImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -72,7 +77,7 @@ public class MainActivity extends AppCompatActivity
     protected static ArrayList<String> subs = new ArrayList<>();
 
     private Button   signOutButton;
-    protected ImageView avatar;
+    protected CircularImageView avatar;
     protected TextView userName;
     String default_path = "data:image/JPG;base64,";
 
@@ -152,7 +157,7 @@ public class MainActivity extends AppCompatActivity
         userName = (TextView) findViewById(R.id.userName);
         userName.setTextColor(Color.parseColor("#FFFFFF"));
 
-        avatar = (ImageView) findViewById(R.id.userImage);
+        avatar = (CircularImageView) findViewById(R.id.userImage);
         downloadAvatar();
 
     }
@@ -178,6 +183,7 @@ public class MainActivity extends AppCompatActivity
                 avatar.setImageBitmap(decodedByte);
                 LinearLayout.LayoutParams img_params = new LinearLayout.LayoutParams(700, 700);
                 avatar.setLayoutParams(img_params);
+
             }
 
             else
