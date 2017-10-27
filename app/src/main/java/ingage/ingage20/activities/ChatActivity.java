@@ -6,6 +6,7 @@ import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -116,12 +117,6 @@ public class ChatActivity extends AppCompatActivity{
         //GET ALL PAGES IN ROOM
         pageEventListener(root);
         pageCount(root); //TAKES TIME TO TRANSACT
-
-/**
- Intent intentThatStartedThisActivity = getIntent();
- if(intentThatStartedThisActivity.hasExtra(Intent.EXTRA_TEXT)){
- JsonString = intentThatStartedThisActivity.getStringExtra(Intent.EXTRA_TEXT);
- }**/ //check if this is needed
 
         //add messages to recycler view by clicking send
         addButton = (Button) findViewById(R.id.sendMessageButton);
@@ -493,7 +488,7 @@ public class ChatActivity extends AppCompatActivity{
     }
 
     private void useCoin(){
-        /**
+
          String type = "use_coin";
          String result = "";
          HashMap<String, String> chat_user = session.getUserDetails();
@@ -514,7 +509,12 @@ public class ChatActivity extends AppCompatActivity{
          }
          else{
          //tell user no coins left
-         }**/
+             new AlertDialog.Builder(this)
+                     .setTitle("Sorry you are out of coins!")
+                     .setMessage("Try again when you get tagged!")
+                     .setIcon(android.R.drawable.ic_dialog_alert)
+                     .show();
+         }
     }
 
     private void timer(long initialCooldown) {
