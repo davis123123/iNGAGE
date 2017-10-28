@@ -13,7 +13,7 @@
         android:id="@+id/option_text"
         android:text="Content"
         android:drawablePadding="8dp"
-        android:padding="15dp"
+        android:padding="8dp"
         android:textSize="18dp"
         android:gravity="center|left"
         android:layout_toEndOf="@+id/option_icon" />
@@ -22,7 +22,6 @@
         android:id="@+id/option_icon"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginTop="5dp"
         android:padding="5dp"
         android:scaleType="fitXY"
         android:src="@android:drawable/ic_menu_manage"

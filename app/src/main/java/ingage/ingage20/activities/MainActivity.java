@@ -150,6 +150,7 @@ public class MainActivity extends AppCompatActivity
 
         options.setAdapter(options_adapter);
         options_adapter.add("View Profile");
+        options_adapter.add("Create Thread");
         options_adapter.add("Sign Out");
         options_adapter.notifyDataSetChanged();
 

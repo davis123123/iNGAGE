@@ -19,6 +19,7 @@ import java.util.concurrent.ExecutionException;
 import ingage.ingage20.R;
 import ingage.ingage20.activities.LoginActivity;
 import ingage.ingage20.activities.MainActivity;
+import ingage.ingage20.activities.PostThreadActivity;
 import ingage.ingage20.activities.UserProfileActivity;
 import ingage.ingage20.handlers.IdentityHandler;
 import ingage.ingage20.managers.SessionManager;
@@ -54,10 +55,14 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerHold
     public void onBindViewHolder(DrawerHolder holder, int position) {
         String field = (String) list.get(position);
         holder.content.setText(field);
+        if(position == 0)
+            holder.icon.setImageResource(android.R.drawable.ic_menu_myplaces);
         if(position == 1)
-            holder.icon.setImageResource(R.drawable.ic_menu_send);
+            holder.icon.setImageResource(android.R.drawable.ic_menu_manage);
+            //holder.icon.setImageResource(R.drawable.ic_menu_manage);
         if (position == 2)
-            holder.icon.setImageResource(R.drawable.ic_menu_slideshow);
+            holder.icon.setImageResource(android.R.drawable.ic_menu_send);
+            //holder.icon.setImageResource(R.drawable.ic_menu_send);
     }
 
     @Override
@@ -83,6 +88,11 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerHold
 
                     if(list.get(pos).equals("View Profile")){
                         Intent intent = new Intent(context, UserProfileActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+                    }
+                    else if (list.get(pos).equals("Create Thread")){
+                        Intent intent = new Intent(context, PostThreadActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                     }
