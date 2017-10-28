@@ -285,7 +285,7 @@ public class MainActivity extends AppCompatActivity
             arr[i] = arr[i].substring(arr[i].lastIndexOf(":") + 1);
             arr[i] = arr[i].replace("\"","");
             arr[i] = arr[i].replace("}","");
-            subs.add(arr[i]);
+            subs.add(arr[i].trim());
             Log.d("STATE", "Subs: " + subs.get(i));
         }
 
