@@ -90,6 +90,18 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if(holder instanceof ThreadViewHolder) {
             ThreadsHelper threadsHelper = (ThreadsHelper) this.getItem(position);
+            String containImg = threadsHelper.getThread_img();
+            Log.i("STATE","onbindviewholder str: " + containImg);
+
+            //Check if view holder contains an image
+            if(containImg.trim().length() == 0) {
+                ((ThreadViewHolder) holder).threadImageView.setVisibility(View.GONE);
+            }
+            else{
+                ((ThreadViewHolder) holder).threadImageView.setVisibility(View.VISIBLE);
+                ((ThreadViewHolder) holder).threadContentTextView.setVisibility(View.GONE);
+            }
+
             //holder.bind(position);
             ThreadViewHolder threadViewHolder = (ThreadViewHolder) holder;
             threadViewHolder.bind(position);
