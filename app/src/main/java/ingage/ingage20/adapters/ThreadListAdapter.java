@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -217,7 +218,13 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 byte[] decodedString = Base64.decode(code, Base64.DEFAULT);
                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                 threadImageView.setImageBitmap(decodedByte);
-                LinearLayout.LayoutParams img_params = new LinearLayout.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, 1000);
+
+                DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+                int screenHeight = metrics.heightPixels;
+                int imgHeight = (int) (screenHeight * 0.4);
+                Log.v("STATE", "Screenheight: " + screenHeight + ", imgHeight: " + imgHeight);
+
+                LinearLayout.LayoutParams img_params = new LinearLayout.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, imgHeight);
                 threadImageView.setLayoutParams(img_params);
                 threadContentTextView.setText(" ");
             }
