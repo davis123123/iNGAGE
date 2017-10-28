@@ -7,6 +7,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
@@ -85,7 +88,20 @@ public class CategoriesPageFragment extends FragmentBase implements ThreadListAd
             @Override
             public void onClick(View v) {
                 if (v == postThreadButton){
-                    goInsertThread();
+                    //goInsertThread();
+                    session.updatePage("date");
+        /* initilize FrontPage Fragment*/
+                    final FragmentManager fragmentManager = getFragmentManager();
+                    final Class fragmentClass = FrontPageFragment.class;
+                    final Fragment fragment = Fragment.instantiate(getContext(), fragmentClass.getName());
+
+                    fragmentManager
+                            .beginTransaction()
+                            .replace(R.id.main_fragment_container, fragment, fragmentClass.getSimpleName())
+                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                            .commit();
+
+                    Toast.makeText(getActivity(), "Filters have been removed, returned to lobby!", Toast.LENGTH_LONG).show();
                 }
             }
         });
