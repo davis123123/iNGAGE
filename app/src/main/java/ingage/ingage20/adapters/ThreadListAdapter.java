@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ import ingage.ingage20.helpers.ThreadsHelper;
 
 public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    
+
     private Context mContext;
     private static final String TAG = ThreadListAdapter.class.getSimpleName();
     public List list = new ArrayList();
@@ -91,7 +92,7 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         if(holder instanceof ThreadViewHolder) {
             ThreadsHelper threadsHelper = (ThreadsHelper) this.getItem(position);
             String containImg = threadsHelper.getThread_img();
-            Log.i("STATE","onbindviewholder str: " + containImg);
+            //Log.i("STATE","onbindviewholder str: " + containImg);
 
             //Check if view holder contains an image
             if(containImg.trim().length() == 0) {
@@ -99,7 +100,11 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             }
             else{
                 ((ThreadViewHolder) holder).threadImageView.setVisibility(View.VISIBLE);
-                ((ThreadViewHolder) holder).threadContentTextView.setVisibility(View.GONE);
+                //((ThreadViewHolder) holder).threadContentTextView.setVisibility(View.GONE);
+                RelativeLayout.LayoutParams params= new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+                params.addRule(RelativeLayout.BELOW, R.id.thread_title_view);
+                params.setMargins(0, 0, 0, 0);
+                ((ThreadViewHolder) holder).threadImageView.setLayoutParams(params);
             }
 
             //holder.bind(position);
@@ -191,23 +196,39 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             threadTitleTextView.setText(threadsHelper.getThread_title());
             threadByTextView.setText(threadsHelper.getThread_by());
             threadCategoryTextView.setText(threadsHelper.getThread_category());
-            threadContentTextView.setVisibility(View.GONE);
-            if(threadsHelper.getThread_content() != null) {
-                //Log.d("STATE", "content: " + threadsHelper.getThread_content());
-                threadContentTextView.setVisibility(View.VISIBLE);
-                threadContentTextView.setText(threadsHelper.getThread_content());
-            }
+            threadContentTextView.setVisibility(View.INVISIBLE);
 
             threadImageView = (ImageView) itemView.findViewById(R.id.img_post);
 
             String str = threadsHelper.getThread_img();
-            //Log.d("STATE", "room title: " + threadsHelper.getThread_title());
-            //Log.d("STATE", "thread helper img: "+ str + ",length: " + str.length());
-            //if(!threadsHelper.getThread_img().equalsIgnoreCase("") && str.length() != 0) {
-                //Log.d("STATE", "call download...");
             if(str != null) {
                 getImage(threadsHelper);
             }
+
+
+            //If there's no image
+            if(str.trim().length() == 0) {
+                //Log.d("STATE", "content: " + threadsHelper.getThread_content());
+                RelativeLayout.LayoutParams params= new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                params.addRule(RelativeLayout.BELOW, R.id.thread_title_view);
+                int margin = convertToDP(itemView.getContext(), 20);
+                params.setMargins(margin, 0, margin, margin);
+                threadContentTextView.setLayoutParams(params);
+                threadContentTextView.setVisibility(View.VISIBLE);
+                threadContentTextView.setText(threadsHelper.getThread_content());
+            }
+            //If contains image
+            else{
+                threadContentTextView.setVisibility(View.INVISIBLE);
+
+                RelativeLayout.LayoutParams params= new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 10);
+                params.addRule(RelativeLayout.BELOW, R.id.thread_title_view);
+                int margin = convertToDP(itemView.getContext(), 20);
+                params.setMargins(margin, 0, margin, 0);
+                threadContentTextView.setLayoutParams(params);
+            }
+
+
         }
 
         //retrieve Base64 from FireBase and convert to image
@@ -246,10 +267,17 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
             //set padding programmatically
             if(threadImageView.getDrawable() != null) {
-                float density = context.getResources().getDisplayMetrics().density;
-                int padding = (int)(20 * density);
+                //float density = context.getResources().getDisplayMetrics().density;
+                //int padding = (int)(20 * density);
+                int padding = convertToDP(context, 20);
                 threadImageView.setPadding(padding, padding, padding, padding);
             }
+        }
+
+        public int convertToDP(Context context, int dip){
+            float density = context.getResources().getDisplayMetrics().density;
+            int result = (int)(dip * density);
+            return result;
         }
 
     }

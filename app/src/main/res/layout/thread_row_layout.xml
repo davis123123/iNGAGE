@@ -47,7 +47,8 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textSize="18dp"
         android:layout_below="@+id/img"
-        android:layout_alignStart="@+id/thread_title_view" />
+        android:layout_alignStart="@+id/thread_title_view"
+        android:layout_alignParentLeft="true"/>
 
     <TextView
         android:id="@+id/thread_by_view"
