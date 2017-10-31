@@ -69,7 +69,7 @@ public class ChatPageListFragment extends Fragment implements ChatPageListAdapte
         }
 
         //initialize page indicator to last page
-        autoClick(totalPages - 1);
+        //autoClick(totalPages - 1);
 
     }
 
@@ -95,7 +95,10 @@ public class ChatPageListFragment extends Fragment implements ChatPageListAdapte
         String pageNo = chatPageListAdapter.getItem(p);
         Log.d("PAGENO", String.valueOf(pageNo));
         chatRoomManager.updateCurrentPage(pageNo);
-        chatActivity.refreshPage();
+
+        //No need to refresh/update if there's only 1 page
+        if(chatPageListAdapter.getItemCount() > 1)
+            chatActivity.refreshPage();
 
         /*ChatPageListAdapter.ChatPageViewHolder prev =
                 (ChatPageListAdapter.ChatPageViewHolder) recyclerView.findViewHolderForAdapterPosition(currentPage);
