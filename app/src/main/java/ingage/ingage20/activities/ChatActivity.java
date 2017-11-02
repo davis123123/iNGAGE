@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -64,7 +65,7 @@ public class ChatActivity extends AppCompatActivity{
     Button useCoinBt;
     boolean tagged = false, paused = false;
     int noPages;
-    CountDownTimer kickTimer;
+    public CountDownTimer mKickTimer;
     HashMap<String, String> userVotes = new HashMap<String, String>();
     DatabaseReference page_root;
 
@@ -103,10 +104,10 @@ public class ChatActivity extends AppCompatActivity{
         HashMap<String, String> chat = chatRoomManager.getUserDetails();
         thread_id = chat.get(ChatRoomManager.THREAD_ID);
         user_side = chat.get(ChatRoomManager.SIDE);
-
-        kickTimer(900000); //fifteen minutes of inactivity will kick user out
-        Log.d("STATE", "side: " + user_side);
-
+        if(user_side != null) {
+            kickTimer(900000); //fifteen minutes of inactivity will kick user out
+            Log.d("STATE", "side: " + user_side);
+        }//Does not kick out spectator with timer
         //ENTER MESSAGES WITH @TAGS
         textField = (EditText) findViewById(R.id.msgField);
         textChangeListener();
@@ -260,7 +261,7 @@ public class ChatActivity extends AppCompatActivity{
         //start cooldown timer
         timer(180000);
         //on send restart kicktimer
-        kickTimer.cancel();
+        mKickTimer.cancel();
         kickTimer(900000);
         String messageText = textField.getText().toString();
         HashMap<String, String> user = session.getUserDetails();
@@ -474,6 +475,7 @@ public class ChatActivity extends AppCompatActivity{
         }
         //leave user's session on cache
         chatRoomManager.updateUserRoomSession("", "", "");
+
     }
 
     private void sendCoin(){
@@ -539,8 +541,8 @@ public class ChatActivity extends AppCompatActivity{
                 }.start();
     }//timer for meesage cooldown
 
-    private void kickTimer(long inactiveTime){
-        kickTimer =
+    public void kickTimer(long inactiveTime){
+        mKickTimer =
                 new CountDownTimer(inactiveTime, 1000) {
 
                     public void onTick(long millisUntilFinished) {
@@ -551,7 +553,8 @@ public class ChatActivity extends AppCompatActivity{
                     }
 
                     public void onFinish() {
-                        leaveRoom();
+                        Toast.makeText(getApplicationContext(), "You have been kicked out due to inactivity!", Toast.LENGTH_LONG).show();
+                        onBackPressed();
 
                     }
                 }.start();
@@ -614,10 +617,10 @@ public class ChatActivity extends AppCompatActivity{
                 .replace(R.id.chat_fragment_container, fragment, fragmentClass.getSimpleName())
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();
-        fragmentManager
+        /*fragmentManager
                 .beginTransaction()
                 .replace(R.id.chat_pages_container, pageFragment, pageFragmentClass.getSimpleName())
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .commit();
+                .commit();*/
     }
 }

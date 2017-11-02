@@ -145,7 +145,13 @@ public class FragmentBase extends Fragment{
             result = joinRoom(context, join, thread_id, result);
             goToChat(result);
 
-        } else {
+        } else if(result.equals("Number of disagreeing users is at maximum")){
+            Toast.makeText(getActivity(), "Number of disagreeing users is at maximum!", Toast.LENGTH_LONG).show();
+        }
+        else if(result.equals("Number of agreeing users is at maximum")){
+            Toast.makeText(getActivity(), "Number of agreeing users is at maximum!", Toast.LENGTH_LONG).show();
+        }
+        else {
             Toast.makeText(getActivity(), "Error", Toast.LENGTH_LONG).show();
         }
     }

@@ -100,12 +100,14 @@ public class ChatPageListFragment extends Fragment implements ChatPageListAdapte
         if(chatPageListAdapter.getItemCount() > 1)
             chatActivity.refreshPage();
 
-        /*ChatPageListAdapter.ChatPageViewHolder prev =
+        ChatPageListAdapter.ChatPageViewHolder prev =
                 (ChatPageListAdapter.ChatPageViewHolder) recyclerView.findViewHolderForAdapterPosition(currentPage);
-        if(prev != null)
+        if(prev != null) {
+            Log.d("PAGENO","this "+prev);
             prev.pageNoBtn.setBackgroundResource(R.drawable.page_list_button);
-
-        h.pageNoBtn.setBackgroundResource(R.drawable.selected_page_button);*/
+            chatPageListAdapter.notifyDataSetChanged();
+        }
+        h.pageNoBtn.setBackgroundResource(R.drawable.selected_page_button);
         currentPage = p;
     }
 }
