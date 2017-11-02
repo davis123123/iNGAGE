@@ -3,6 +3,7 @@ package ingage.ingage20.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -121,16 +122,20 @@ public class SignUpActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        /**mToast = Toast.makeText(this, registration_result, Toast.LENGTH_SHORT);
-         mToast.show();**/
+        Log.d("REGISTER",registration_result);
 
         if(registration_result.equals("registration successful")){
             mToast = Toast.makeText(this, "Registration Success", Toast.LENGTH_SHORT);
             mToast.show();
             goLogin();
         }
+        else if(registration_result.equals("userTaken")){
+            alert.showAlertDialog(SignUpActivity.this, "Username Taken", "Please try again with another Username.", false);
+        }
+        else if(registration_result.equals("passwordShort")){
+            alert.showAlertDialog(SignUpActivity.this, "Password too short", "Password must contain 7 or more characters.", false);
+        }
         else{
-            //TODO add multiple conditions for registraion failure
             alert.showAlertDialog(SignUpActivity.this, "Registration Failed", "Please try again.", false);
         }
     }//send data for registration
