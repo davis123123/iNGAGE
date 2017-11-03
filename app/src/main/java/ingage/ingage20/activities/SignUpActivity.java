@@ -129,8 +129,8 @@ public class SignUpActivity extends AppCompatActivity {
             mToast.show();
             goLogin();
         }
-        else if(registration_result.equals("usernameLengthError")){
-            alert.showAlertDialog(SignUpActivity.this, "Invalid username", "Username needs to be between 4-12 characters long", false);
+        else if(registration_result.equals("usernameError")){
+            alert.showAlertDialog(SignUpActivity.this, "Invalid username", "Username needs to be between 4-12 characters long, and contain no special characters", false);
         }
         else if(registration_result.equals("userTaken")){
             alert.showAlertDialog(SignUpActivity.this, "Username Taken", "Please try again with another Username.", false);
