@@ -62,7 +62,8 @@
         android:textAlignment="center"
         android:text="Down"
         android:layout_below="@+id/downvote"
-        android:layout_alignStart="@+id/downvote" />
+        android:layout_alignStart="@+id/downvote"
+        android:layout_alignEnd="@+id/downvote" />
 
     <ImageButton
         android:id="@+id/upvote"

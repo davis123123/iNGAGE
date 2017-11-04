@@ -48,7 +48,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="  Up"
+        android:text="Up"
         android:id="@+id/up_label"
         android:textAlignment="center"
         android:layout_below="@+id/upvote"
@@ -62,7 +62,8 @@
         android:textAlignment="center"
         android:text="Down"
         android:layout_below="@+id/downvote"
-        android:layout_alignStart="@+id/downvote" />
+        android:layout_alignStart="@+id/downvote"
+        android:layout_alignParentEnd="true" />
 
     <ImageButton
         android:id="@+id/upvote"
