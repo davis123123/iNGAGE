@@ -75,6 +75,41 @@ public class SignUpActivity extends AppCompatActivity {
         return password.equals(rePassword);
     }//checks is password == repassword
 
+    public void showDialog(String title, String msg){
+        alert.showAlertDialog(SignUpActivity.this, title, msg, false);
+    }
+
+    public void checkFields(String registration_result){
+        switch (registration_result){
+            case "registration successful":
+                mToast = Toast.makeText(this, "Registration Success", Toast.LENGTH_SHORT);
+                mToast.show();
+                goLogin();
+                break;
+            case "usernameError":
+                showDialog("Invalid username", "Username needs to be between 4-12 characters long, and contain no special characters");
+                break;
+            case "userTaken":
+                showDialog("Username Taken", "Please enter a different username.");
+                break;
+            case "passwordShort":
+                showDialog("Password too short", "Password must contain 7 or more characters.");
+                break;
+            case "emailError":
+                showDialog("Invalid Email", "Please enter a valid email address.");
+                break;
+            case "domainError":
+                showDialog("Invalid Email Domain", "Please enter a valid email domain.");
+                break;
+            case "emailExists":
+                showDialog("Email Exists", "Email is already used. Please enter a different email.");
+                break;
+            default:
+                showDialog("Registration Failed", "Please check that all fields are correct and try again.");
+                break;
+        }
+    }
+
     public void sendData(String username, String password, String email){
         String type = "registration";
         //TODO FIX jsonArray(HARADCODED RN)
@@ -124,22 +159,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         Log.d("REGISTER",registration_result);
 
-        if(registration_result.equals("registration successful")){
-            mToast = Toast.makeText(this, "Registration Success", Toast.LENGTH_SHORT);
-            mToast.show();
-            goLogin();
-        }
-        else if(registration_result.equals("usernameError")){
-            alert.showAlertDialog(SignUpActivity.this, "Invalid username", "Username needs to be between 4-12 characters long, and contain no special characters", false);
-        }
-        else if(registration_result.equals("userTaken")){
-            alert.showAlertDialog(SignUpActivity.this, "Username Taken", "Please try again with another Username.", false);
-        }
-        else if(registration_result.equals("passwordShort")){
-            alert.showAlertDialog(SignUpActivity.this, "Password too short", "Password must contain 7 or more characters.", false);
-        }
-        else{
-            alert.showAlertDialog(SignUpActivity.this, "Registration Failed", "Please try again.", false);
-        }
+        checkFields(registration_result);
+
     }//send data for registration
 }

@@ -16,7 +16,7 @@
     <string name="prompt_username">Username</string>
     <string name="prompt_password">Password</string>
     <string name="prompt_retype_password">Retype Password</string>
-    <string name="prompt_email">Email (Optional)</string>
+    <string name="prompt_email">Email</string>
     <string name="action_sign_in_short">Sign In</string>
     <string name="action_sign_up">Sign Up</string>
     <string name="sign_up_new_account">New member? Click here to create an account!</string>
