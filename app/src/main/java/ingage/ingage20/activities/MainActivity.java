@@ -7,11 +7,14 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -40,6 +43,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import ingage.ingage20.adapters.DrawerAdapter;
@@ -54,6 +58,7 @@ import ingage.ingage20.handlers.IdentityHandler;
 import ingage.ingage20.fragments.FrontPageFragment;
 import ingage.ingage20.managers.AlertDiaLogManager;
 import ingage.ingage20.managers.SessionManager;
+import ingage.ingage20.adapters.ViewPagerAdapter;
 
 public class MainActivity extends AppCompatActivity
         implements View.OnClickListener {
@@ -91,6 +96,9 @@ public class MainActivity extends AppCompatActivity
     //dont use enum cuz bad  performance in Android, uses more RAM and memory
     static String pageCategory = "noneDate";
     static String pageType = "date";
+
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
 
     private void setupToolbar(final Bundle savedInstanceState) {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -222,7 +230,7 @@ public class MainActivity extends AppCompatActivity
         setupNavigationDrawer();
         session.updatePage(pageType);
         /* initilize FrontPage Fragment*/
-        final FragmentManager fragmentManager = this.getSupportFragmentManager();
+        /*final FragmentManager fragmentManager = this.getSupportFragmentManager();
         final Class fragmentClass = FrontPageFragment.class;
         final Fragment fragment = Fragment.instantiate(this, fragmentClass.getName());
 
@@ -236,8 +244,58 @@ public class MainActivity extends AppCompatActivity
         final ActionBar actionBar = this.getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(getString(R.string.app_name));
-        }
+        }*/
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        setupViewPager(viewPager);
+
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
+
+    }
+
+    private void setupViewPager(ViewPager viewPager) {
+        final Class fragmentClass = FrontPageFragment.class;
+        final Fragment mainFragment = Fragment.instantiate(this, fragmentClass.getName());
+        final Fragment trendingFragment = Fragment.instantiate(this, fragmentClass.getName());
+        final Fragment newFragment = Fragment.instantiate(this, fragmentClass.getName());
+        final ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(mainFragment, "Home");
+        adapter.addFragment(trendingFragment, "Trending");
+        adapter.addFragment(newFragment, "New");
+        viewPager.setAdapter(adapter);
+
+        ViewPager.OnPageChangeListener pagechangelistener =new ViewPager.OnPageChangeListener() {
+
+            @Override
+            public void onPageSelected(int pos) {
+
+                adapter.notifyDataSetChanged();
+                Log.i("STATE", "Pg selected: " + pos);
+               /* if(pos == 1)
+                    onTrend();
+                else if (pos == 2)
+                    onNew();*/
+                //indicator.setCurrentItem(arg0);
+            }
+
+            @Override
+            public void onPageScrolled(int arg0, float arg1, int arg2) {
+
+                //Logger.logMessage("Called second");
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int arg0) {
+
+                //Logger.logMessage("Called third");
+
+            }
+        };
+        viewPager.setOnPageChangeListener(pagechangelistener);
     }
 
     //get JSON object containing user info
@@ -464,7 +522,7 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    private void onNew() {
+    private Fragment onNew() {
         final FragmentManager fragmentManager = this.getSupportFragmentManager();
         Class fragmentClass = FrontPageFragment.class;
         HashMap<String, String> user = session.getUserDetails();
@@ -490,9 +548,10 @@ public class MainActivity extends AppCompatActivity
         if (actionBar != null) {
             actionBar.setTitle(getString(R.string.app_name));
         }
+        return fragment;
     }
 
-    private void onTrend() {
+    private Fragment onTrend() {
         final FragmentManager fragmentManager = this.getSupportFragmentManager();
         Class fragmentClass = FrontPageFragment.class;
         HashMap<String, String> user = session.getUserDetails();
@@ -518,6 +577,7 @@ public class MainActivity extends AppCompatActivity
         if (actionBar != null) {
             actionBar.setTitle(getString(R.string.app_name));
         }
+        return fragment;
     }
 
 
