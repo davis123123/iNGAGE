@@ -129,10 +129,11 @@ public class IdentityHandler extends AsyncTask<String, String, String> {
 
         else if (type.equals("registration")){
             try {
-                String user_name = params[1];
-                String password = params[2];
-                String email = params[3];
-                String initialSubscription = params[4];
+                String full_name = params[1];
+                String user_name = params[2];
+                String password = params[3];
+                String email = params[4];
+                String initialSubscription = params[5];
 
                 URL url = new URL(registration_url);
                 HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
@@ -142,6 +143,7 @@ public class IdentityHandler extends AsyncTask<String, String, String> {
                 OutputStream outputStream = httpURLConnection.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
                 String post_data =
+                        URLEncoder.encode("full_name","UTF-8")+"="+ URLEncoder.encode(full_name,"UTF-8")+"&"+
                         URLEncoder.encode("user_name","UTF-8")+"="+ URLEncoder.encode(user_name,"UTF-8")+"&"+
                         URLEncoder.encode("password", "UTF-8")+"="+URLEncoder.encode(password,"UTF-8")+"&"+
                         URLEncoder.encode("email","UTF-8")+"="+ URLEncoder.encode(email,"UTF-8")+"&"+

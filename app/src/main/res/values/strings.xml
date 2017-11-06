@@ -13,6 +13,7 @@
 
 
     <!-- Strings related to login -->
+    <string name="prompt_full_name">Full Name</string>
     <string name="prompt_username">Username</string>
     <string name="prompt_password">Password</string>
     <string name="prompt_retype_password">Retype Password</string>

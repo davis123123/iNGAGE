@@ -39,6 +39,20 @@
             android:layout_marginBottom="30dp"/>
 
         <EditText
+            android:id="@+id/sign_up_full_name"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:drawableLeft="@android:drawable/ic_input_get"
+            android:hint="@string/prompt_full_name"
+            android:maxLines="1"
+            android:background="@layout/textfield"
+            android:paddingLeft="10dp"
+            />
+
+        <EditText
             android:id="@+id/sign_up_username"
             android:layout_width="fill_parent"
             android:layout_height="40dp"

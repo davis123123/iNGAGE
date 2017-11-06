@@ -20,7 +20,7 @@ import ingage.ingage20.handlers.IdentityHandler;
 import ingage.ingage20.managers.AlertDiaLogManager;
 
 public class SignUpActivity extends AppCompatActivity {
-    EditText mUserName, mPassword, mEmail, mRePassword;
+    EditText mFullName, mUserName, mPassword, mEmail, mRePassword;
     Button mSignUp;
     AlertDiaLogManager alert = new AlertDiaLogManager();
     Toast mToast;
@@ -29,6 +29,7 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+        mFullName = (EditText) findViewById(R.id.sign_up_full_name);
         mUserName = (EditText) findViewById(R.id.sign_up_username);
         mPassword = (EditText) findViewById(R.id.sign_up_password);
         mRePassword = (EditText) findViewById(R.id.retype_password);
@@ -46,7 +47,8 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     public void onRegister(){
-        String username = mUserName.getText().toString();
+        String fullName = mFullName.getText().toString();
+        String userName = mUserName.getText().toString();
         String password = mPassword.getText().toString();
         String email = mEmail.getText().toString();
         String rePassword = mRePassword.getText().toString();
@@ -54,7 +56,7 @@ public class SignUpActivity extends AppCompatActivity {
         //CHECK PASSWORD AND RE-PASSWORD MATCH
         boolean passMatch = passwordCheck(password, rePassword);
         if (passMatch){
-            sendData(username, password, email);
+            sendData(fullName, userName, password, email);
         }
         else{
             mToast = Toast.makeText(this, "Password does not match", Toast.LENGTH_SHORT);
@@ -86,6 +88,9 @@ public class SignUpActivity extends AppCompatActivity {
                 mToast.show();
                 goLogin();
                 break;
+            case "fullNameError":
+                showDialog("Please enter your full name:", "Enter your first and last name separated by a space. Middle name optional");
+                break;
             case "usernameError":
                 showDialog("Invalid username", "Username needs to be between 4-12 characters long, and contain no special characters");
                 break;
@@ -110,7 +115,7 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
-    public void sendData(String username, String password, String email){
+    public void sendData(String fullName, String username, String password, String email){
         String type = "registration";
         //TODO FIX jsonArray(HARADCODED RN)
         JSONObject categoryJSON = new JSONObject();
@@ -149,7 +154,7 @@ public class SignUpActivity extends AppCompatActivity {
         String registration_result = null;
 
         try {
-            registration_result = identityHandler.execute(type, username, password,
+            registration_result = identityHandler.execute(type, fullName, username, password,
                     email, initialSubscriptionArray.toString()).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
