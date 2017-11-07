@@ -133,7 +133,8 @@ public class IdentityHandler extends AsyncTask<String, String, String> {
                 String user_name = params[2];
                 String password = params[3];
                 String email = params[4];
-                String initialSubscription = params[5];
+                String date_joined = params[5];
+                String initialSubscription = params[6];
 
                 URL url = new URL(registration_url);
                 HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
@@ -147,6 +148,7 @@ public class IdentityHandler extends AsyncTask<String, String, String> {
                         URLEncoder.encode("user_name","UTF-8")+"="+ URLEncoder.encode(user_name,"UTF-8")+"&"+
                         URLEncoder.encode("password", "UTF-8")+"="+URLEncoder.encode(password,"UTF-8")+"&"+
                         URLEncoder.encode("email","UTF-8")+"="+ URLEncoder.encode(email,"UTF-8")+"&"+
+                        URLEncoder.encode("date_joined","UTF-8")+"="+ URLEncoder.encode(date_joined,"UTF-8")+"&"+
                         URLEncoder.encode("thread_subscriptions","UTF-8")+"="+ URLEncoder.encode(initialSubscription,"UTF-8");
                 bufferedWriter.write(post_data);
                 bufferedWriter.flush();

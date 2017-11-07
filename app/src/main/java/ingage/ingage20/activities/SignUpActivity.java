@@ -13,6 +13,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 import ingage.ingage20.R;
@@ -153,9 +155,13 @@ public class SignUpActivity extends AppCompatActivity {
 
         String registration_result = null;
 
+        //get timestamp for when user registers, format: "yyyy-MM-dd-hh-mm-ss"
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssz");
+        String timestamp = simpleDateFormat.format(new Date());
+
         try {
             registration_result = identityHandler.execute(type, fullName, username, password,
-                    email, initialSubscriptionArray.toString()).get();
+                    email, timestamp, initialSubscriptionArray.toString()).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
