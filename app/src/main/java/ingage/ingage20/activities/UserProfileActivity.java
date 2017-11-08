@@ -29,7 +29,7 @@ import ingage.ingage20.managers.SessionManager;
 
 public class UserProfileActivity extends AppCompatActivity {
 
-    String username, email, tribute_pts, subs;
+    String username, email, tribute_pts, subs, date_joined;
     //Button upload, change;
     CircularImageView curr_avatar;
     TextView display_username;
@@ -54,6 +54,7 @@ public class UserProfileActivity extends AppCompatActivity {
         email = info.get(SessionManager.KEY_EMAIL);
         tribute_pts = info.get(SessionManager.KEY_TRIBUTE_POINTS);
         subs = info.get(SessionManager.KEY_SUBSCRIPTIONS);
+        date_joined = info.get(SessionManager.KEY_DATE_JOINED);
 
         curr_avatar = (CircularImageView) findViewById(R.id.profile_img);
         curr_avatar.setOnClickListener(new View.OnClickListener() {
@@ -76,12 +77,13 @@ public class UserProfileActivity extends AppCompatActivity {
         recycler.setAdapter(adapter);
 
 
-        if(email.length() == 0 || email == null)
-            adapter.add("Email: N/A" );
-        else
+        if(email != null && email.length() > 0)
             adapter.add("Email: " + email);
+        else
+            adapter.add("Email: N/A" );
         adapter.add("Tribute points: " + tribute_pts);
         setSubscriptions();
+        adapter.add("Date joined: " + date_joined);
         adapter.notifyDataSetChanged();
 
         downloadAvatar();

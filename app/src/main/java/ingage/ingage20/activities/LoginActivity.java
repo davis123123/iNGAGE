@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -116,19 +117,21 @@ public class LoginActivity extends AppCompatActivity implements SharedPreference
     protected void parseProfileJSON(String json_string){
         JSONObject jsonObject;
         JSONArray jsonArray;
+        //Log.i("STATE", "json string: " + json_string);
 
         try {
             jsonObject = new JSONObject(json_string);
             jsonArray = jsonObject.getJSONArray("user_profile");
             int count= 0;
-            String email, tribute_points, thread_subscriptions;
+            String email, tribute_points, thread_subscriptions, date_joined;
             while(count < jsonArray.length()){
                 JSONObject JO = jsonArray.getJSONObject(count);
                 email = JO.getString("email");
                 tribute_points = JO.getString("tribute_points");
                 thread_subscriptions = JO.getString("thread_subscriptions");
+                date_joined = JO.getString("date_joined");
                 //thread_subs = thread_subscriptions;
-                session.updateProfile(email, tribute_points, thread_subscriptions);
+                session.updateProfile(email, tribute_points, thread_subscriptions, date_joined);
                 count++;
             }
 

@@ -44,6 +44,8 @@ public class SessionManager {
     // Subscriptions (make variable public to access from outside)
     public static final String KEY_SUBSCRIPTIONS = "subscriptions";
 
+    public static final String KEY_DATE_JOINED = "date_joined";
+
     public static final String CATEGORY_TYPE = "categories";
 
     public static final String PAGE_TYPE = "page_type";
@@ -73,13 +75,15 @@ public class SessionManager {
     }
 
     public void updateProfile(String email, String tribute_points,
-                              String subscriptions){
+                              String subscriptions, String date_joined){
 
         editor.putString(KEY_EMAIL, email);
 
         editor.putString(KEY_TRIBUTE_POINTS, tribute_points);
 
         editor.putString(KEY_SUBSCRIPTIONS, subscriptions);
+
+        editor.putString(KEY_DATE_JOINED, date_joined);
 
         // commit changes
         editor.commit();
@@ -134,6 +138,7 @@ public class SessionManager {
         user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
         user.put(KEY_SUBSCRIPTIONS, pref.getString(KEY_SUBSCRIPTIONS, null));
         user.put(KEY_TRIBUTE_POINTS, pref.getString(KEY_TRIBUTE_POINTS, null));
+        user.put(KEY_DATE_JOINED, pref.getString(KEY_DATE_JOINED, null));
         user.put(PAGE_TYPE, pref.getString(PAGE_TYPE, null));
         user.put(CATEGORY_TYPE, pref.getString(CATEGORY_TYPE, null));
         user.put(SEARCH_STRING, pref.getString(SEARCH_STRING, null));
