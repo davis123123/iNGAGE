@@ -1,8 +1,10 @@
 package ingage.ingage20.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -34,6 +36,7 @@ public class LoginActivity extends AppCompatActivity implements SharedPreference
     private SignInProvider signInProvider;
     SessionManager session;
     AlertDiaLogManager alert = new AlertDiaLogManager();
+    ProgressDialog pd;
     //String thread_subs;
 
     @Override
@@ -78,6 +81,15 @@ public class LoginActivity extends AppCompatActivity implements SharedPreference
         finish();
     }
 
+    private void loadingDialog(){
+        pd = new ProgressDialog(this);
+        pd.setTitle("Login Successful!");
+        pd.setMessage("Signing in...");
+        pd.setCancelable(false);
+        pd.setProgressStyle(android.R.style.Widget_ProgressBar_Large);
+        pd.show();
+    }
+
     public void OnLogin(){
         String username = usernameEt.getText().toString();
         String password = passwordEt.getText().toString();
@@ -85,6 +97,7 @@ public class LoginActivity extends AppCompatActivity implements SharedPreference
         String type = "login";
         IdentityHandler identityHandler = new IdentityHandler(this);
         String loginStatus = null;
+        loadingDialog();
         if(appToken != null) {
             try {
                 loginStatus = identityHandler.execute(type, username, password, appToken).get();
@@ -95,10 +108,12 @@ public class LoginActivity extends AppCompatActivity implements SharedPreference
             /**toast = Toast.makeText(this, loginStatus, Toast.LENGTH_LONG);
              toast.show();**/
             if (loginStatus.equals("login failed")) {
+                pd.dismiss();
                 alert.showAlertDialog(LoginActivity.this, "Login failed..", "Username/Password is incorrect", false);
                 usernameEt.getText().clear();
                 passwordEt.getText().clear();
             } else if (loginStatus.equals("error getting token")) {
+                pd.dismiss();
                 alert.showAlertDialog(LoginActivity.this, "Login failed..", "Token not Registered", false);
                 usernameEt.getText().clear();
                 passwordEt.getText().clear();
