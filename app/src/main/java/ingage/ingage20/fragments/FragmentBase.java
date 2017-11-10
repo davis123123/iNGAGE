@@ -51,6 +51,7 @@ public class FragmentBase extends Fragment{
     String side = "agree";      //set to agree by default
 
     String result = null;
+    String threadTitle = "";
 
     Toast mToast;
 
@@ -92,6 +93,8 @@ public class FragmentBase extends Fragment{
         }
         ThreadsHelper threadsHelper = (ThreadsHelper) threadListAdapter.getItem(p);
         String thread_id = threadsHelper.getThread_id();
+        threadTitle= threadsHelper.getThread_title();
+        Log.i("clicked: " , threadTitle);
 
         //LEAVE UNTIL COMMENTS A RE FINISHED
         String toastMessage = "Item #" + thread_id + "clicked.";
@@ -205,6 +208,7 @@ public class FragmentBase extends Fragment{
                     && !result.equals("Room/Thread Doesn't Exist")) {
 
                 Intent startChildActivityIntent = new Intent(getActivity(), ChatActivity.class);
+                startChildActivityIntent.putExtra("title", threadTitle);
                 startChildActivityIntent.putExtra(Intent.EXTRA_TEXT, result);
                 startActivity(startChildActivityIntent);
 
@@ -214,6 +218,7 @@ public class FragmentBase extends Fragment{
         }//for joining arguments
         else {
             Intent startChildActivityIntent = new Intent(getActivity(), ChatActivity.class);
+            startChildActivityIntent.putExtra("title", threadTitle);
             startChildActivityIntent.putExtra("isSpectate", "true");
             startActivity(startChildActivityIntent);
         }//for spectating

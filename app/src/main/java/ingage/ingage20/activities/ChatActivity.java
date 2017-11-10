@@ -6,8 +6,10 @@ import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -90,6 +92,15 @@ public class ChatActivity extends AppCompatActivity{
         textButtons = (LinearLayout) findViewById(R.id.text_right);
 
         timerTv.setVisibility(View.GONE);
+
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            String title = extras.getString("title");
+            Log.i("clicked title: " , title);
+            ActionBar mActionBarToolbar = getSupportActionBar();
+            mActionBarToolbar.setTitle(title);
+        }
+
 
         useCoinBt.setOnClickListener(new View.OnClickListener() {
 
