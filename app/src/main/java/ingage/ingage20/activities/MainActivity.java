@@ -254,6 +254,9 @@ public class MainActivity extends AppCompatActivity
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
+        TextView announcement =(TextView)findViewById(R.id.announcement);
+        announcement.setSelected(true);
+
     }
 
     private void setupViewPager(ViewPager viewPager) {

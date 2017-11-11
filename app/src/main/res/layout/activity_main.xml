@@ -38,6 +38,31 @@
             app:tabIndicatorColor="#FFFFFF"
             app:tabSelectedTextColor="#FFFFFF"/>
 
+        <TextView
+            android:id="@+id/announcement"
+
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:singleLine="true"
+            android:scrollHorizontally="true"
+            android:paddingLeft="15dip"
+            android:paddingRight="15dip"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:freezesText="true"
+
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="Get ready for open beta launch this comming fall!  Check for new updates on our official website!"
+            android:textColor="#FFFFFF"
+            android:textSize="20dp"
+            android:textStyle="italic"
+            android:alpha="0.6"
+            android:background="#000000"/>
+
         <android.support.v4.view.ViewPager
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
