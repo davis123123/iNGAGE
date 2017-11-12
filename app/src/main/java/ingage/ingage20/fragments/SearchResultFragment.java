@@ -65,7 +65,7 @@ public class SearchResultFragment extends FragmentBase implements ThreadListAdap
         HashMap<String, String> user = session.getUserDetails();
         searchString = user.get(SessionManager.SEARCH_STRING);
         Log.d("STATE", "searchstring " + searchString);
-        threadListAdapter = new ThreadListAdapter(this);
+        threadListAdapter = new ThreadListAdapter(this, getActivity());
         getThreadsJSON(rowCount, searchString);
         rootView = inflater.inflate(R.layout.fragment_front_page, container, false);
         rootView.setTag(TAG);

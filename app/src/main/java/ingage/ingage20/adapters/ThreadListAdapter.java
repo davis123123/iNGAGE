@@ -1,5 +1,6 @@
 package ingage.ingage20.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,6 +18,10 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +37,7 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 
     private Context mContext;
+    private Activity mActivity;
     private static final String TAG = ThreadListAdapter.class.getSimpleName();
     public List list = new ArrayList();
     public static boolean isLoading = false;
@@ -63,8 +69,9 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         this.mOnLoadMoreListener = mOnLoadMoreListener;
     }
 
-    public ThreadListAdapter( ItemClickCallback listener){
+    public ThreadListAdapter( ItemClickCallback listener, Activity activity){
         itemClickCallback = listener;
+        mActivity= activity;
     }//interface for thread-click
 
     @Override
@@ -191,6 +198,57 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             //mOnClickListener.onListItemClick(clickedPosition);
         }
 
+        private void getImage(ThreadsHelper helper){
+            final String url = "http://107.170.232.60/images/" + helper.getThread_id() + ".JPG";
+            threadImageView = (ImageView) itemView.findViewById(R.id.img_post);
+
+            Context context = itemView.getContext();
+
+            DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+            int screenHeight = metrics.heightPixels;
+            int screenWidth = metrics.widthPixels;
+            final int imgHeight = (int) (screenHeight * 0.4);
+            final int imgWidth = (int) (screenWidth* 1);
+
+            LinearLayout.LayoutParams img_params = new LinearLayout.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, imgHeight);
+            img_params.setMargins(0,0,0, 20);
+            threadImageView.setLayoutParams(img_params);
+            threadContentTextView.setText(" ");
+
+            Picasso.with(mActivity)
+                    .load(url)
+                    .networkPolicy(NetworkPolicy.OFFLINE)
+                    .resize(imgWidth, imgHeight)
+                    .onlyScaleDown()
+                    .into(threadImageView, new Callback() {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+
+                        @Override
+                        public void onError() {
+                            //If cache fails, try to fetch from url
+                            Picasso.with(mActivity)
+                                    .load(url)
+                                    .resize(imgWidth, imgHeight)
+                                    .onlyScaleDown()
+                                    //.error(R.drawable.header)
+                                    .into(threadImageView, new Callback() {
+                                        @Override
+                                        public void onSuccess() {
+
+                                        }
+
+                                        @Override
+                                        public void onError() {
+                                            Log.e("Picasso","Could not get image");
+                                        }
+                                    });
+                        }
+                    });
+        }
+
         private void bind(int listIndex){
             ThreadsHelper threadsHelper = (ThreadsHelper) getItem(listIndex);
             threadTitleTextView.setText(threadsHelper.getThread_title());
@@ -232,7 +290,7 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
 
         //retrieve Base64 from FireBase and convert to image
-        private void getImage(ThreadsHelper threadsHelper){
+  /*      private void getImage(ThreadsHelper threadsHelper){
             Context context = itemView.getContext();
             DownloadImageHandler dlHandler = new DownloadImageHandler(context);
             String type = "download";
@@ -272,7 +330,7 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 int padding = convertToDP(context, 20);
                 threadImageView.setPadding(padding, padding, padding, padding);
             }
-        }
+        }   */
 
         public int convertToDP(Context context, int dip){
             float density = context.getResources().getDisplayMetrics().density;

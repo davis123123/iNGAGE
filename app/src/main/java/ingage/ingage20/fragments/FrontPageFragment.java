@@ -75,7 +75,7 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
         threadListRecyclerView.setLayoutManager(layoutManager);
 
 
-        threadListAdapter = new ThreadListAdapter(this);
+        threadListAdapter = new ThreadListAdapter(this, getActivity());
         threadListRecyclerView.setAdapter(threadListAdapter);
         Log.d("STATE", "serverstring" + json_string);
 
