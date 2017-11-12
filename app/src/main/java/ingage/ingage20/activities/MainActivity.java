@@ -50,6 +50,7 @@ import ingage.ingage20.adapters.DrawerAdapter;
 import ingage.ingage20.firebase.FirebaseSharedPrefManager;
 import ingage.ingage20.fragments.CategoriesPageFragment;
 import ingage.ingage20.fragments.SearchResultFragment;
+import ingage.ingage20.handlers.AnnouncementHandler;
 import ingage.ingage20.handlers.DownloadAvatarHandler;
 import ingage.ingage20.handlers.SearchHandler;
 import ingage.ingage20.util.NavigationDrawer;
@@ -254,7 +255,18 @@ public class MainActivity extends AppCompatActivity
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
+        AnnouncementHandler announcementHandler = new AnnouncementHandler();
+        String msg = null;
+        try {
+            msg= announcementHandler.execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
         TextView announcement =(TextView)findViewById(R.id.announcement);
+        announcement.setText(msg);
         announcement.setSelected(true);
 
     }
