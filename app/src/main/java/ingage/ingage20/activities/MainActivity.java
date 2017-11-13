@@ -22,6 +22,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,6 +37,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pkmmte.view.CircularImageView;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,6 +57,7 @@ import ingage.ingage20.fragments.SearchResultFragment;
 import ingage.ingage20.handlers.AnnouncementHandler;
 import ingage.ingage20.handlers.DownloadAvatarHandler;
 import ingage.ingage20.handlers.SearchHandler;
+import ingage.ingage20.helpers.ThreadsHelper;
 import ingage.ingage20.util.NavigationDrawer;
 import ingage.ingage20.R;
 import ingage.ingage20.handlers.IdentityHandler;
@@ -172,8 +177,57 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-
     private void downloadAvatar(){
+        final String url = "http://107.170.232.60/avatars/" + userName.getText() + ".JPG";
+
+        Context context = getBaseContext();
+
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        int screenHeight = metrics.heightPixels;
+        int screenWidth = metrics.widthPixels;
+        final int imgHeight = (int) (screenHeight * 0.25);
+        final int imgWidth = (int) (screenWidth* 0.25);
+
+        LinearLayout.LayoutParams img_params = new LinearLayout.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, imgHeight);
+        img_params.setMargins(40,0,0, 20);
+        avatar.setLayoutParams(img_params);
+
+        Picasso.with(this)
+                .load(url)
+                .networkPolicy(NetworkPolicy.OFFLINE)
+                .resize(imgWidth, imgHeight)
+                .onlyScaleDown()
+                .into(avatar, new Callback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onError() {
+                        //If cache fails, try to fetch from url
+                        Picasso.with(getBaseContext())
+                                .load(url)
+                                .resize(imgWidth, imgHeight)
+                                .onlyScaleDown()
+                                //.error(R.drawable.header)
+                                .into(avatar, new Callback() {
+                                    @Override
+                                    public void onSuccess() {
+
+                                    }
+
+                                    @Override
+                                    public void onError() {
+                                        Log.e("Picasso","Could not get image");
+                                    }
+                                });
+                    }
+                });
+    }
+
+
+    /*private void downloadAvatar(){
         Context context = getApplicationContext();
         DownloadAvatarHandler avatarHandler = new DownloadAvatarHandler(context);
         String type = "download";
@@ -208,7 +262,7 @@ public class MainActivity extends AppCompatActivity
             int padding = (int)(20 * density);
             avatar.setPadding(padding, padding, padding, padding);
         }
-    }
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

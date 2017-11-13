@@ -9,13 +9,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pkmmte.view.CircularImageView;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -119,38 +124,48 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     private void downloadAvatar(){
-        Context context = getApplicationContext();
-        DownloadAvatarHandler avatarHandler = new DownloadAvatarHandler(context);
-        String type = "download";
+        final String url = "http://107.170.232.60/avatars/" + username + ".JPG";
 
-        //do conversion
-        try {
-            curr_avatar = (CircularImageView) findViewById(R.id.profile_img);
-            String result = avatarHandler.execute(type, username).get();
-            //Log.d("STATE", "room title: " + threadsHelper.getThread_title());
-            Log.d("STATE", "download avatar result: " + result);
-            if(result.length() > default_path.length()) {
-                int index = result.indexOf(",") + 1;
-                String code = result.substring(index, result.length());
-                byte[] decodedString = Base64.decode(code, Base64.DEFAULT);
-                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                curr_avatar.setImageBitmap(decodedByte);
-                LinearLayout.LayoutParams img_params = new LinearLayout.LayoutParams(700, 700);
-                curr_avatar.setLayoutParams(img_params);
-            }
+        Context context = getBaseContext();
 
-            else
-                curr_avatar.setImageResource(R.mipmap.user);
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        int screenHeight = metrics.heightPixels;
+        int screenWidth = metrics.widthPixels;
+        final int imgHeight = (int) (screenHeight * 0.3);
+        final int imgWidth = (int) (screenWidth* 0.3);
 
-        //set padding programmatically
-        if(curr_avatar.getDrawable() != null) {
-            float density = context.getResources().getDisplayMetrics().density;
-            int padding = (int)(20 * density);
-            curr_avatar.setPadding(padding, padding, padding, padding);
-        }
+        Picasso.with(this)
+                .load(url)
+                .networkPolicy(NetworkPolicy.OFFLINE)
+                .resize(imgWidth, imgHeight)
+                .onlyScaleDown()
+                .into(curr_avatar, new Callback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onError() {
+                        //If cache fails, try to fetch from url
+                        Picasso.with(getBaseContext())
+                                .load(url)
+                                .resize(imgWidth, imgHeight)
+                                .onlyScaleDown()
+                                //.error(R.drawable.header)
+                                .into(curr_avatar, new Callback() {
+                                    @Override
+                                    public void onSuccess() {
+
+                                    }
+
+                                    @Override
+                                    public void onError() {
+                                        Log.e("Picasso","Could not get image");
+                                    }
+                                });
+                    }
+                });
     }
 
 
