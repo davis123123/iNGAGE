@@ -42,7 +42,7 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
     int pastVisiblesItems, visibleItemCount, totalItemCount;
     int rowCount = 0;
     String default_path = "data:image/JPG;base64,";
-
+    boolean gWait = false;
     private static final String TAG = "FrontPageFragment";
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -57,6 +57,7 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
     public View create(final LayoutInflater inflater, final ViewGroup container,
                        final Bundle savedInstanceState){
         // Inflate the layout for this fragment
+        threadListAdapter = new ThreadListAdapter(this, getActivity());
         getThreadsJSON(rowCount);
 
         rootView = inflater.inflate(R.layout.fragment_front_page, container, false);
@@ -74,8 +75,6 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
 
         threadListRecyclerView.setLayoutManager(layoutManager);
 
-
-        threadListAdapter = new ThreadListAdapter(this, getActivity());
         threadListRecyclerView.setAdapter(threadListAdapter);
         Log.d("STATE", "serverstring" + json_string);
 
@@ -107,10 +106,35 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
             @Override
             public void onLoadMore() {
                 Log.d("haint", "Load More");
-                threadListAdapter.list.add(null);
-                threadListAdapter.notifyItemInserted(threadListAdapter.list.size() - 1);
+                //threadListAdapter.list.add(null);
+                //threadListAdapter.notifyItemInserted(threadListAdapter.list.size() - 1);
+                rowCount += 10;
+                Thread getJSON = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        getThreadsJSON(rowCount);
+                        while (true){
+                        if(!threadListAdapter.getLoadStat()){
+                            Log.d("haint", "Load More222");
+                            break;
+                        }//no longer loading
+                }
+                    }
+                });
+                getJSON.start();
+                try {
+                    getJSON.join();
+                    threadListAdapter.list.remove(threadListAdapter.list.size() - 1);
+                    threadListAdapter.notifyItemRemoved(threadListAdapter.list.size());
+                    inflateThreads();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                //getThreadsJSON(rowCount);
 
-                new Handler().postDelayed(new Runnable() {
+                //inflateThreads();
+
+                /*new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         Log.e("haint", "Load More 2");
@@ -121,7 +145,7 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
                         inflateThreads();
                         threadListAdapter.setLoaded();
                     }
-                }, 4000);
+                }, 10000);*/
             }
         });
 
@@ -138,12 +162,13 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
                     pastVisiblesItems = layoutManager.findFirstVisibleItemPosition();
                     if ( !threadListAdapter.isLoading && (visibleItemCount + pastVisiblesItems) >= totalItemCount) {
                         //if(mOnLoadMoreListener != null){
-
+                        Log.d("...", "Last Item Wow !");
+                        threadListAdapter.isLoading = true;
+                        threadListAdapter.list.add(null);
                         threadListAdapter.mOnLoadMoreListener.onLoadMore();
                         //}
-                        threadListAdapter.isLoading = true;
                         //loading = false;
-                        //Log.d("...", "Last Item Wow !");
+
                         //rowCount += 10;
                         //getThreadsJSON(rowCount);
                         //inflateThreads();
@@ -163,6 +188,7 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
         try {
             json_string = queryThreadsHandler.execute(type, String.valueOf(rowCount)).get();
             Log.d("STATE" , "query result : " + json_string);
+            threadListAdapter.setLoaded(false);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {

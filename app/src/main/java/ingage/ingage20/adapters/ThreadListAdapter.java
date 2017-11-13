@@ -61,9 +61,6 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         void onLoadMore();
     }
 
-    public void setItemClickCallback(final ItemClickCallback itemClickCallback){
-        this.itemClickCallback = itemClickCallback;
-    }
 
     public void setOnLoadMoreListener(OnLoadMoreListener mOnLoadMoreListener) {
         this.mOnLoadMoreListener = mOnLoadMoreListener;
@@ -82,6 +79,7 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         Log.d("VIEWTYPE",":"+viewType);
         boolean shouldAttachToParentImmediately = false;
         if (viewType == VIEW_TYPE_ITEM) {
+            Log.d("LOAD","LayoutNNN");
             View view = inflater.inflate(R.layout.thread_row_layout, viewGroup, shouldAttachToParentImmediately);
             ThreadViewHolder viewHolder = new ThreadViewHolder(view);
             return viewHolder;
@@ -139,11 +137,16 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         return list.get(position);
     }
 
-    public void setLoaded() {
-        isLoading = false;
+    public void setLoaded(boolean isLoading) {
+        this.isLoading = isLoading;
+    }
+
+    public boolean getLoadStat(){
+        return isLoading;
     }
 
     @Override public int getItemViewType(int position) {
+        Log.d("LOADER", "isLoading");
         return list.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
     }
 
@@ -237,7 +240,6 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                                     .into(threadImageView, new Callback() {
                                         @Override
                                         public void onSuccess() {
-
                                         }
 
                                         @Override

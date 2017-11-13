@@ -52,7 +52,6 @@ public class ChatFragment extends Fragment implements ChatArrayAdapter.ItemClick
     String chat_msg, chat_username, chat_side, chat_timestamp, chat_id, thread_id, username;
     HashMap<String, String> userVotes = new HashMap<String, String>();
 
-
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              final Bundle savedInstanceState) {
