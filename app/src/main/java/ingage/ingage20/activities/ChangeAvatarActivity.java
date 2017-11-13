@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +21,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.pkmmte.view.CircularImageView;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
@@ -35,7 +39,7 @@ import ingage.ingage20.managers.SessionManager;
 public class ChangeAvatarActivity extends AppCompatActivity {
 
     private static final int RESULT_LOAD_IMAGE = 1;
-    Button upload, change;
+    Button change;
     CircularImageView new_avatar_preview;
     boolean verified_image = false;
     String username;
@@ -46,14 +50,14 @@ public class ChangeAvatarActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_change_avatar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        upload = (Button) findViewById(R.id.upload_profile_img);
+        getSupportActionBar().setTitle("Profile Photo");
         change = (Button) findViewById(R.id.change_avatar);
         new_avatar_preview = (CircularImageView) findViewById(R.id.prof_img_preview);
-        new_avatar_preview.setVisibility(View.INVISIBLE);
 
         SessionManager session = new SessionManager(getApplicationContext());
         HashMap<String, String> info = session.getUserDetails();
         username = info.get(SessionManager.KEY_NAME);
+        downloadCurrentAvatar();
 
         setListeners();
     }
@@ -121,6 +125,7 @@ public class ChangeAvatarActivity extends AppCompatActivity {
             new_avatar_preview.setVisibility(View.VISIBLE);
             new_avatar_preview.setImageURI(selectedImage);
             verified_image = true;
+            new_avatar_preview.setAlpha((float) 1.0);
         }
     }
 
@@ -146,7 +151,7 @@ public class ChangeAvatarActivity extends AppCompatActivity {
     protected void setListeners(){
 
         //upload avatar
-        upload.setOnClickListener(new View.OnClickListener() {
+        new_avatar_preview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 goUploadImage();
@@ -158,12 +163,11 @@ public class ChangeAvatarActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //download image and update profile
-                if(new_avatar_preview.getDrawable() != null) {
+                if(verified_image) {
                     Bitmap image = ((BitmapDrawable) new_avatar_preview.getDrawable()).getBitmap();
                     UploadAvatarHandler uploadAvatarHandler = new UploadAvatarHandler(image);
                     Log.d("STATE", "upload avatar clicked" );
                     try {
-                        if(verified_image) {
                             String avatar_link = "http://107.170.232.60/avatars/" + username + ".JPG";
                             String success = uploadAvatarHandler.execute(username, avatar_link).get();
                             Log.d("STATE", "upload avatar " + success);
@@ -171,7 +175,7 @@ public class ChangeAvatarActivity extends AppCompatActivity {
                             finish();
                             startActivity(intent);
                             //downloadImage();
-                        }
+
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     } catch (ExecutionException e) {
@@ -182,5 +186,51 @@ public class ChangeAvatarActivity extends AppCompatActivity {
                     Toast.makeText(getApplication(), "No image selected/uploaded!", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void downloadCurrentAvatar(){
+        final String url = "http://107.170.232.60/avatars/" + username + ".JPG";
+
+        Context context = getBaseContext();
+
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        int screenHeight = metrics.heightPixels;
+        int screenWidth = metrics.widthPixels;
+        final int imgHeight = (int) (screenHeight * 0.3);
+        final int imgWidth = (int) (screenWidth* 0.3);
+        new_avatar_preview.setAlpha((float) 0.5);
+
+        Picasso.with(this)
+                .load(url)
+                .networkPolicy(NetworkPolicy.OFFLINE)
+                .resize(imgWidth, imgHeight)
+                .onlyScaleDown()
+                .into(new_avatar_preview, new Callback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onError() {
+                        //If cache fails, try to fetch from url
+                        Picasso.with(getBaseContext())
+                                .load(url)
+                                .resize(imgWidth, imgHeight)
+                                .onlyScaleDown()
+                                //.error(R.drawable.header)
+                                .into(new_avatar_preview, new Callback() {
+                                    @Override
+                                    public void onSuccess() {
+
+                                    }
+
+                                    @Override
+                                    public void onError() {
+                                        Log.e("Picasso","Could not get image");
+                                    }
+                                });
+                    }
+                });
     }
 }

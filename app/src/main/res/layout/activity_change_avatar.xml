@@ -16,15 +16,6 @@
         app:border_width="8dp"
         app:shadow="true"/>
 
-    <Button
-        android:id="@+id/upload_profile_img"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@layout/button"
-        android:text="Upload Avatar"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="25dp"/>
 
     <Button
         android:id="@+id/change_avatar"
