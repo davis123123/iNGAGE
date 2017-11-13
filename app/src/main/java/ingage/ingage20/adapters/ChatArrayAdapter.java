@@ -2,13 +2,20 @@ package ingage.ingage20.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.pkmmte.view.CircularImageView;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -218,6 +225,7 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
 
     class ChatViewHolder extends RecyclerView.ViewHolder{
         TextView messageContentView, messageUserView, upVoteView, downVoteView;
+        CircularImageView avatar;
         ImageButton bUpvote, bDownvote;
 
         public ChatViewHolder(View itemView) {
@@ -230,6 +238,8 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
             messageContentView = (TextView) itemView.findViewById(R.id.message_content_view);
             messageUserView = (TextView) itemView.findViewById(R.id.message_user_view);
 
+            avatar = (CircularImageView ) itemView.findViewById(R.id.avatar);
+
             upVoteView = (TextView) itemView.findViewById(R.id.up_label);
             downVoteView = (TextView) itemView.findViewById(R.id.down_label);
         }
@@ -240,9 +250,57 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
             messageUserView.setText(chatMessageHelper.getMessageUser());
             upVoteView.setText(chatMessageHelper.getMessageUpvote().toString());
             downVoteView.setText(chatMessageHelper.getMessageDownvote().toString());
+            downloadAvatar();
             String userVote = "";
             userVote = chatMessageHelper.getUserVote();
             Log.d("VOTESTATE", "text: " + userVote + chatMessageHelper.getMessageText() + " " + chatMessageHelper.getUserVote());
         }
+
+        private void downloadAvatar(){
+            final String url = "http://107.170.232.60/avatars/" + messageUserView.getText() + ".JPG";
+
+            final Context context = itemView.getContext();
+
+            DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+            int screenHeight = metrics.heightPixels;
+            int screenWidth = metrics.widthPixels;
+            final int imgHeight = (int) (screenHeight * 0.8);
+            final int imgWidth = (int) (screenWidth* 0.8);
+
+
+            Picasso.with(context)
+                    .load(url)
+                    .networkPolicy(NetworkPolicy.OFFLINE)
+                    .resize(imgWidth, imgHeight)
+                    .onlyScaleDown()
+                    .into(avatar, new Callback() {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+
+                        @Override
+                        public void onError() {
+                            //If cache fails, try to fetch from url
+                            Picasso.with(context)
+                                    .load(url)
+                                    .resize(imgWidth, imgHeight)
+                                    .onlyScaleDown()
+                                    //.error(R.drawable.header)
+                                    .into(avatar, new Callback() {
+                                        @Override
+                                        public void onSuccess() {
+
+                                        }
+
+                                        @Override
+                                        public void onError() {
+                                            Log.e("Picasso","Could not get image");
+                                        }
+                                    });
+                        }
+                    });
+        }
+
     }
 }

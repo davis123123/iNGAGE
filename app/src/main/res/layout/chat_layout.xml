@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@drawable/chat_post"
-    android:layout_margin="10dp"
-    >
+    android:layout_margin="10dp">
 
     <TextView
         android:id="@+id/message_content_view"
@@ -23,15 +23,28 @@
         android:id="@+id/message_user_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/message_content_view"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_alignBottom="@+id/avatar"
+        android:layout_centerHorizontal="true"
         android:fontFamily="sans-serif"
         android:gravity="right"
         android:text="Username"
+        android:textColor="#6277CB"
         android:textSize="22dp"
-        android:textStyle="italic"
-        android:textColor="#6277CB"/>
+        android:textStyle="italic" />
+
+
+    <com.pkmmte.view.CircularImageView
+        android:id="@+id/avatar"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignStart="@+id/message_content_view"
+        android:layout_below="@+id/message_content_view"
+        android:layout_marginTop="14dp"
+        android:scaleType="fitXY"
+        app:border="true"
+        app:border_color="#FFFFFF"
+        app:border_width="1dp"
+        app:shadow="true" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -59,31 +72,33 @@
         android:id="@+id/down_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
+        android:layout_alignBaseline="@+id/up_label"
+        android:layout_alignBottom="@+id/up_label"
+        android:layout_alignParentEnd="true"
         android:text="Down"
-        android:layout_below="@+id/downvote"
-        android:layout_alignStart="@+id/downvote"
-        android:layout_alignParentEnd="true" />
+        android:textAlignment="center"
+        android:layout_toEndOf="@+id/up_label" />
 
     <ImageButton
         android:id="@+id/upvote"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/downvote"
+        android:layout_toStartOf="@+id/downvote"
         android:background="@null"
         android:src="@drawable/up_arrow"
-        android:text="Up"
-        android:layout_alignTop="@+id/downvote"
-        android:layout_toStartOf="@+id/down_label" />
+        android:text="Up" />
 
     <ImageButton
         android:id="@+id/downvote"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/message_user_view"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="19dp"
         android:background="@null"
         android:src="@drawable/down_arrow"
-        android:text="Down"
-        android:layout_alignTop="@+id/message_user_view"
-        android:layout_alignParentEnd="true" />
+        android:text="Down" />
 
 
 </RelativeLayout>

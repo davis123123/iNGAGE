@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@drawable/chat_post"
-    android:layout_margin="10dp"
-    >
+    android:layout_margin="10dp">
 
         <TextView
             android:id="@+id/message_content_view"
@@ -19,20 +19,31 @@
             android:textSize="22sp" />
 
 
-        <TextView
-            android:id="@+id/message_user_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/message_content_view"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_alignParentRight="true"
-            android:fontFamily="sans-serif"
-            android:gravity="right"
-            android:text="Username"
-            android:textSize="22dp"
-            android:textStyle="italic"
-            android:textColor="#339900"/>
+    <TextView
+        android:id="@+id/message_user_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/down_label"
+        android:layout_marginEnd="13dp"
+        android:layout_toStartOf="@+id/avatar"
+        android:fontFamily="sans-serif"
+        android:gravity="right"
+        android:text="Username"
+        android:textColor="#339900"
+        android:textSize="22dp"
+        android:textStyle="italic" />
+
+    <com.pkmmte.view.CircularImageView
+        android:id="@+id/avatar"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/message_content_view"
+        android:scaleType="fitXY"
+        app:border="true"
+        app:border_color="#FFFFFF"
+        app:border_width="1dp"
+        app:shadow="true" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -72,6 +83,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/message_content_view"
+        android:layout_marginTop="29dp"
         android:background="@null"
         android:src="@drawable/up_arrow"
         android:text="Up" />
@@ -80,7 +92,7 @@
         android:id="@+id/downvote"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/message_content_view"
+        android:layout_alignTop="@+id/upvote"
         android:layout_toEndOf="@+id/up_label"
         android:background="@null"
         android:src="@drawable/down_arrow"
