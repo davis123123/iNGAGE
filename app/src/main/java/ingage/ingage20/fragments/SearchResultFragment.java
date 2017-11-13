@@ -188,7 +188,7 @@ public class SearchResultFragment extends FragmentBase implements ThreadListAdap
                 thread_date = JO.getString("thread_date");
                 thread_category = JO.getString("thread_category");
                 thread_img = JO.getString("thread_image_link");
-                DownloadImageHandler dlHandler = new DownloadImageHandler(getContext());
+                /*DownloadImageHandler dlHandler = new DownloadImageHandler(getContext());
                 String type = "download";
 
                 //String thread_id = threadsHelper.getThread_id();
@@ -201,9 +201,9 @@ public class SearchResultFragment extends FragmentBase implements ThreadListAdap
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 }
-                Log.d("THREAD_BITMAP","result" + thread_img_bitmap);
+                Log.d("THREAD_BITMAP","result" + thread_img_bitmap);*/
                 ThreadsHelper threadsHelper = new ThreadsHelper(thread_id, thread_title,
-                        thread_content, thread_by, thread_date, thread_category, thread_img, thread_img_bitmap);
+                        thread_content, thread_by, thread_date, thread_category, thread_img);
                 threadListAdapter.add(threadsHelper);
                 threadListAdapter.notifyDataSetChanged();
                 count++;

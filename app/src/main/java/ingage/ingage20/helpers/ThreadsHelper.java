@@ -11,6 +11,17 @@ public class ThreadsHelper {
     private String thread_img_bitmap;
 
 
+    public ThreadsHelper(String thread_id, String thread_title, String thread_content,
+                         String thread_by, String thread_date, String thread_category, String thread_img){
+        this.setThread_id(thread_id);
+        this.setThread_title(thread_title);
+        this.setThread_content(thread_content);
+        this.setThread_by(thread_by);
+        this.setThread_date(thread_date);
+        this.setThread_category(thread_category);
+        this.setThread_img(thread_img);
+
+    }
 
     public ThreadsHelper(String thread_id, String thread_title, String thread_content,
                          String thread_by, String thread_date, String thread_category, String thread_img, String thread_img_bitmap){
