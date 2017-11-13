@@ -126,8 +126,6 @@ public class ChatActivity extends AppCompatActivity{
         //thread id for root of comments tree
         root = FirebaseDatabase.getInstance().getReference().child(thread_id);
 
-        //GET ALL PAGES IN ROOM
-        pageEventListener(root);
         pageCount(root); //TAKES TIME TO TRANSACT
 
         //add messages to recycler view by clicking send
@@ -233,41 +231,6 @@ public class ChatActivity extends AppCompatActivity{
                 .commit();
     }
 
-    private void pageEventListener(DatabaseReference root) {
-        root.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                appendPage(dataSnapshot);
-            }
-            @Override
-
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private void appendPage(DataSnapshot dataSnapshot) {
-        Iterator i = dataSnapshot.getChildren().iterator();
-        Iterable<DataSnapshot> t = dataSnapshot.getChildren();
-        Log.d("NEWPAGE", "has been made");
-    }
-
     private void sendMsg(){
         //start cooldown timer
         timer(180000);
@@ -309,7 +272,7 @@ public class ChatActivity extends AppCompatActivity{
                 int keyNo = Integer.parseInt(key) + 1;
                 String newKey = String.valueOf(keyNo);
                 Log.d("NEWKEY", " "+ newKey + " " + page);
-                if(page.getChildrenCount() == 5){
+                if(page.getChildrenCount() == 2){
                     Log.d("here", " "+ newKey);
                     if(!currentData.hasChild(newKey)) {//no one else created new page
                         Log.d("here", "if " + newKey);

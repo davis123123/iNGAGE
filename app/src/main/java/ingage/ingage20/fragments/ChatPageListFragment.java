@@ -11,7 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.HashMap;
+import java.util.Iterator;
 
 import ingage.ingage20.R;
 import ingage.ingage20.activities.ChatActivity;
@@ -30,19 +37,27 @@ public class ChatPageListFragment extends Fragment implements ChatPageListAdapte
     ChatRoomManager chatRoomManager;
     ChatActivity chatActivity;
     int currentPage = 1;
-
+    DatabaseReference root;
+    String thread_id;
+    int pageCount =1;
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              final Bundle savedInstanceState) {
         View v = create(inflater, container, savedInstanceState);
-        chatRoomManager = new ChatRoomManager(getContext());
+
         return v;
     }
 
     public View create(final LayoutInflater inflater, final ViewGroup container,
                        final Bundle savedInstanceState){
         rootView = inflater.inflate(R.layout.fragment_page_list, container, false);
-
+        chatRoomManager = new ChatRoomManager(getContext());
+        chatPageListAdapter = new ChatPageListAdapter(this,getContext());
+        HashMap<String, String> chat = chatRoomManager.getUserDetails();
+        thread_id = chat.get(ChatRoomManager.THREAD_ID);
+        root = FirebaseDatabase.getInstance().getReference().child(thread_id);
+        chatPageListAdapter.setItemClickCallback(this);
+        pageEventListener(root);
         return rootView;
     }
 
@@ -54,23 +69,46 @@ public class ChatPageListFragment extends Fragment implements ChatPageListAdapte
         LinearLayoutManager layoutManager = new LinearLayoutManager
                 (getActivity(),LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        chatPageListAdapter = new ChatPageListAdapter(this,getContext());
+
         Log.d("PAGEFRAG", "STARTED");
         recyclerView.setAdapter(chatPageListAdapter);
 
-        chatPageListAdapter.setItemClickCallback(this);
-        HashMap<String, String> chat = chatRoomManager.getUserDetails();
-        totalPageNo = chat.get(ChatRoomManager.TOTAL_PAGES);
-        Log.d("STATE", "totalpageno: " + chat.get(ChatRoomManager.TOTAL_PAGES));
-        final int totalPages = Integer.parseInt(totalPageNo);
-        for(int i = 1; i <= totalPages; i++){
-            chatPageListAdapter.add(String.valueOf(i));
-            Log.d("NOPAGES", " "+  i);
-        }
+    }
 
-        //initialize page indicator to last page
-        //autoClick(totalPages - 1);
+    private void pageEventListener(DatabaseReference root) {
+        root.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                appendPage(dataSnapshot);
+            }
+            @Override
 
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+    private void appendPage(DataSnapshot dataSnapshot) {
+        Iterator i = dataSnapshot.getChildren().iterator();
+        Iterable<DataSnapshot> t = dataSnapshot.getChildren();
+        Log.d("NEWPAGE", "has been made " + i);
+        chatPageListAdapter.add(String.valueOf(pageCount++));
+        chatPageListAdapter.notifyDataSetChanged();
     }
 
     public void autoClick(final int pos){
