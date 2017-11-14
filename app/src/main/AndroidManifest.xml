@@ -53,6 +53,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".activities.LoginActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize"
             android:screenOrientation="portrait"></activity>
         <activity android:name=".activities.PostThreadActivity"
             android:screenOrientation="portrait"/>
