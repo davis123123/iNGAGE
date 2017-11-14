@@ -42,7 +42,6 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
     int pastVisiblesItems, visibleItemCount, totalItemCount;
     int rowCount = 0;
     String default_path = "data:image/JPG;base64,";
-    boolean gWait = false;
     private static final String TAG = "FrontPageFragment";
 
     @RequiresApi(api = Build.VERSION_CODES.M)

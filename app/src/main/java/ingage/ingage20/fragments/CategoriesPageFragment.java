@@ -61,6 +61,7 @@ public class CategoriesPageFragment extends FragmentBase implements ThreadListAd
                        final Bundle savedInstanceState){
         // Inflate the layout for this fragment
         Log.d("ROWCOUNT","num"+rowCount);
+        threadListAdapter = new ThreadListAdapter(this, getActivity());
         getThreadsJSON(rowCount);
         rootView = inflater.inflate(R.layout.fragment_front_page, container, false);
         rootView.setTag(TAG);
@@ -77,7 +78,6 @@ public class CategoriesPageFragment extends FragmentBase implements ThreadListAd
 
         threadListRecyclerView.setLayoutManager(layoutManager);
 
-        threadListAdapter = new ThreadListAdapter(this, getActivity());
         threadListRecyclerView.setAdapter(threadListAdapter);
         Log.d("STATE", "serverstring" + json_string);
 
@@ -106,30 +106,62 @@ public class CategoriesPageFragment extends FragmentBase implements ThreadListAd
             }
         });
 
+        threadListAdapter.setOnLoadMoreListener(new ThreadListAdapter.OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                Log.d("haint", "Load More");
+                //threadListAdapter.list.add(null);
+                //threadListAdapter.notifyItemInserted(threadListAdapter.list.size() - 1);
+                rowCount += 10;
+                Thread getJSON = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        getThreadsJSON(rowCount);
+                        while (true){
+                            if(!threadListAdapter.getLoadStat()){
+                                Log.d("haint", "Load More222");
+                                break;
+                            }//no longer loading
+                        }
+                    }
+                });
+                getJSON.start();
+                try {
+                    getJSON.join();
+                    threadListAdapter.list.remove(threadListAdapter.list.size() - 1);
+                    threadListAdapter.notifyItemRemoved(threadListAdapter.list.size());
+                    inflateThreads();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
         threadListRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
         {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy)
             {
-                //Log.d("...", "Lastnot Item Wow !");
+                Log.d("...", "Lastnot Item Wow !");
                 if(dy > 0) //check for scroll down
                 {
                     visibleItemCount = layoutManager.getChildCount();
                     totalItemCount = layoutManager.getItemCount();
                     pastVisiblesItems = layoutManager.findFirstVisibleItemPosition();
+                    if ( !threadListAdapter.isLoading && (visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                        //if(mOnLoadMoreListener != null){
+                        Log.d("...", "Last Item Wow !");
+                        threadListAdapter.isLoading = true;
+                        threadListAdapter.list.add(null);
+                        threadListAdapter.mOnLoadMoreListener.onLoadMore();
+                        //}
+                        //loading = false;
 
-                    if (loading)
-                    {
-                        if ( (visibleItemCount + pastVisiblesItems) >= totalItemCount)
-                        {
-                            //loading = false;
-                            Log.d("...", "Last Item Wow !");
-                            rowCount += 10;
-                            getThreadsJSON(rowCount);
-                            inflateThreads();
-
-                            //Do pagination.. i.e. fetch new data
-                        }
+                        //rowCount += 10;
+                        //getThreadsJSON(rowCount);
+                        //inflateThreads();
+                        //Do pagination.. i.e. fetch new data
                     }
                 }
             }

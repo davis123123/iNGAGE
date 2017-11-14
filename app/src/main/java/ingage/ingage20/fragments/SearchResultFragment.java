@@ -110,24 +110,77 @@ public class SearchResultFragment extends FragmentBase implements ThreadListAdap
             });
 
 
-        threadListRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        threadListAdapter.setOnLoadMoreListener(new ThreadListAdapter.OnLoadMoreListener() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-            //Log.d("...", "Lastnot Item Wow !");
-                if(dy > 0){ //check for scroll down{
+            public void onLoadMore() {
+                Log.d("haint", "Load More");
+                //threadListAdapter.list.add(null);
+                //threadListAdapter.notifyItemInserted(threadListAdapter.list.size() - 1);
+                rowCount += 10;
+                Thread getJSON = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        getThreadsJSON(rowCount, searchString);
+                        while (true){
+                            if(!threadListAdapter.getLoadStat()){
+                                Log.d("haint", "Load More222");
+                                break;
+                            }//no longer loading
+                        }
+                    }
+                });
+                getJSON.start();
+                try {
+                    getJSON.join();
+                    threadListAdapter.list.remove(threadListAdapter.list.size() - 1);
+                    threadListAdapter.notifyItemRemoved(threadListAdapter.list.size());
+                    inflateThreads();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                //getThreadsJSON(rowCount);
+
+                //inflateThreads();
+
+                /*new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.e("haint", "Load More 2");
+                        threadListAdapter.list.remove(threadListAdapter.list.size() - 1);
+                        threadListAdapter.notifyItemRemoved(threadListAdapter.list.size());
+                        rowCount += 10;
+                        getThreadsJSON(rowCount);
+                        inflateThreads();
+                        threadListAdapter.setLoaded();
+                    }
+                }, 10000);*/
+            }
+        });
+
+        threadListRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
+        {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy)
+            {
+                Log.d("...", "Lastnot Item Wow !");
+                if(dy > 0) //check for scroll down
+                {
                     visibleItemCount = layoutManager.getChildCount();
                     totalItemCount = layoutManager.getItemCount();
                     pastVisiblesItems = layoutManager.findFirstVisibleItemPosition();
-
-                    if (loading) {
-                        if ( (visibleItemCount + pastVisiblesItems) >= totalItemCount) {
-                        //loading = false;
+                    if ( !threadListAdapter.isLoading && (visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                        //if(mOnLoadMoreListener != null){
                         Log.d("...", "Last Item Wow !");
-                        rowCount += 10;
-                        getThreadsJSON(rowCount, searchString);
+                        threadListAdapter.isLoading = true;
+                        threadListAdapter.list.add(null);
+                        threadListAdapter.mOnLoadMoreListener.onLoadMore();
+                        //}
+                        //loading = false;
 
+                        //rowCount += 10;
+                        //getThreadsJSON(rowCount);
+                        //inflateThreads();
                         //Do pagination.. i.e. fetch new data
-                        }
                     }
                 }
             }

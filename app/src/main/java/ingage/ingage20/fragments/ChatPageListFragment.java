@@ -109,6 +109,7 @@ public class ChatPageListFragment extends Fragment implements ChatPageListAdapte
         Log.d("NEWPAGE", "has been made " + i);
         chatPageListAdapter.add(String.valueOf(pageCount++));
         chatPageListAdapter.notifyDataSetChanged();
+
     }
 
     public void autoClick(final int pos){
