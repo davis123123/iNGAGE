@@ -115,7 +115,8 @@ public class LoginActivity extends AppCompatActivity implements SharedPreference
                 passwordEt.getText().clear();
             } else if (loginStatus.equals("error getting token")) {
                 //pd.dismiss();
-                alert.showAlertDialog(LoginActivity.this, "Login failed..", "Token not Registered", false);
+                alert.showAlertDialog(LoginActivity.this, "Login failed..", "Please try again later", false);
+                Log.e("STATE", "Token not Registered");
                 usernameEt.getText().clear();
                 passwordEt.getText().clear();
             } else {
@@ -124,7 +125,8 @@ public class LoginActivity extends AppCompatActivity implements SharedPreference
                 goMain();
             }
         } else{
-            alert.showAlertDialog(LoginActivity.this, "Login failed...", "Token not Registered", false);
+            alert.showAlertDialog(LoginActivity.this, "Login failed...", "Please try again later", false);
+            Log.e("STATE", "Token not Registered");
             usernameEt.getText().clear();
             passwordEt.getText().clear();
         }
