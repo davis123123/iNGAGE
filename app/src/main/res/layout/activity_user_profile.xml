@@ -18,7 +18,6 @@
             android:layout_width="700px"
             android:layout_height="700px"
             android:layout_marginTop="5dp"
-            android:scaleType="fitXY"
             android:src="@mipmap/user"
             app:border="true"
             app:border_color="#FFFFFF"

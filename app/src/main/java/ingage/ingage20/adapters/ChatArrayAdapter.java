@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.pkmmte.view.CircularImageView;
 import com.squareup.picasso.Callback;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
@@ -264,15 +265,17 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
             DisplayMetrics metrics = context.getResources().getDisplayMetrics();
             int screenHeight = metrics.heightPixels;
             int screenWidth = metrics.widthPixels;
-            final int imgHeight = (int) (screenHeight * 0.8);
-            final int imgWidth = (int) (screenWidth* 0.8);
+            final int imgHeight = (int) (screenHeight * 0.2);
+            final int imgWidth = (int) (screenWidth* 0.2);
 
 
             Picasso.with(context)
                     .load(url)
-                    .networkPolicy(NetworkPolicy.OFFLINE)
                     .resize(imgWidth, imgHeight)
                     .onlyScaleDown()
+                    .noPlaceholder()
+                    .memoryPolicy(MemoryPolicy.NO_CACHE)
+                    .networkPolicy(NetworkPolicy.NO_CACHE)
                     .into(avatar, new Callback() {
                         @Override
                         public void onSuccess() {
@@ -286,6 +289,9 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
                                     .load(url)
                                     .resize(imgWidth, imgHeight)
                                     .onlyScaleDown()
+                                    .noPlaceholder()
+                                    .memoryPolicy(MemoryPolicy.NO_CACHE)
+                                    .networkPolicy(NetworkPolicy.NO_CACHE)
                                     //.error(R.drawable.header)
                                     .into(avatar, new Callback() {
                                         @Override

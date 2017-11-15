@@ -44,6 +44,8 @@ public class SessionManager {
     // Subscriptions (make variable public to access from outside)
     public static final String KEY_SUBSCRIPTIONS = "subscriptions";
 
+    public static final String KEY_AVATAR_LINK = "avatar_link";
+
     public static final String KEY_DATE_JOINED = "date_joined";
 
     public static final String CATEGORY_TYPE = "categories";
@@ -86,6 +88,12 @@ public class SessionManager {
         editor.putString(KEY_DATE_JOINED, date_joined);
 
         // commit changes
+        editor.commit();
+    }
+
+    public void updateAvatarLink(String avatar_link){
+
+        editor.putString(KEY_AVATAR_LINK, avatar_link);
         editor.commit();
     }
 
@@ -139,6 +147,7 @@ public class SessionManager {
         user.put(KEY_SUBSCRIPTIONS, pref.getString(KEY_SUBSCRIPTIONS, null));
         user.put(KEY_TRIBUTE_POINTS, pref.getString(KEY_TRIBUTE_POINTS, null));
         user.put(KEY_DATE_JOINED, pref.getString(KEY_DATE_JOINED, null));
+        user.put(KEY_AVATAR_LINK, pref.getString(KEY_AVATAR_LINK, null));
         user.put(PAGE_TYPE, pref.getString(PAGE_TYPE, null));
         user.put(CATEGORY_TYPE, pref.getString(CATEGORY_TYPE, null));
         user.put(SEARCH_STRING, pref.getString(SEARCH_STRING, null));

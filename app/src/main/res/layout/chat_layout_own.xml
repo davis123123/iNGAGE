@@ -40,7 +40,6 @@
         android:layout_alignStart="@+id/message_content_view"
         android:layout_below="@+id/message_content_view"
         android:layout_marginTop="14dp"
-        android:scaleType="fitXY"
         app:border="true"
         app:border_color="#FFFFFF"
         app:border_width="1dp"

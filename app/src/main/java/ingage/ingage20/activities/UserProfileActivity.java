@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.pkmmte.view.CircularImageView;
 import com.squareup.picasso.Callback;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
@@ -123,6 +124,37 @@ public class UserProfileActivity extends AppCompatActivity {
         adapter.add(result);
     }
 
+   /* private void downloadAvatar(){
+        Context context = getApplicationContext();
+        DownloadAvatarHandler avatarHandler = new DownloadAvatarHandler(context);
+        String type = "download";
+
+
+        //do conversion
+        try {
+            String username = (String) display_username.getText();
+            String result = avatarHandler.execute(type, username).get();
+            //Log.d("STATE", "room title: " + threadsHelper.getThread_title());
+            Log.d("STATE", "download avatar result: " + result);
+            if(result.length() > default_path.length()) {
+                int index = result.indexOf(",") + 1;
+                String code = result.substring(index, result.length());
+                byte[] decodedString = Base64.decode(code, Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                curr_avatar.setImageBitmap(decodedByte);
+                LinearLayout.LayoutParams img_params = new LinearLayout.LayoutParams(700, 700);
+                curr_avatar.setLayoutParams(img_params);
+
+            }
+
+            else
+                curr_avatar.setImageResource(R.mipmap.user);
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+    }*/
+
+
     private void downloadAvatar(){
         final String url = "http://107.170.232.60/avatars/" + username + ".JPG";
 
@@ -136,9 +168,12 @@ public class UserProfileActivity extends AppCompatActivity {
 
         Picasso.with(this)
                 .load(url)
-                .networkPolicy(NetworkPolicy.OFFLINE)
+     //           .networkPolicy(NetworkPolicy.OFFLINE)
                 .resize(imgWidth, imgHeight)
                 .onlyScaleDown()
+                .noPlaceholder()
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .networkPolicy(NetworkPolicy.NO_CACHE)
                 .into(curr_avatar, new Callback() {
                     @Override
                     public void onSuccess() {
@@ -152,6 +187,9 @@ public class UserProfileActivity extends AppCompatActivity {
                                 .load(url)
                                 .resize(imgWidth, imgHeight)
                                 .onlyScaleDown()
+                                .noPlaceholder()
+                                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                                .networkPolicy(NetworkPolicy.NO_CACHE)
                                 //.error(R.drawable.header)
                                 .into(curr_avatar, new Callback() {
                                     @Override

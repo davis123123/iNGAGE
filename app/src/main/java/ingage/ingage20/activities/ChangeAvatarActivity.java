@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -12,16 +13,19 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.pkmmte.view.CircularImageView;
 import com.squareup.picasso.Callback;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
@@ -29,6 +33,7 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 import ingage.ingage20.R;
+import ingage.ingage20.handlers.DownloadAvatarHandler;
 import ingage.ingage20.handlers.UploadAvatarHandler;
 import ingage.ingage20.managers.SessionManager;
 
@@ -43,6 +48,7 @@ public class ChangeAvatarActivity extends AppCompatActivity {
     CircularImageView new_avatar_preview;
     boolean verified_image = false;
     String username;
+    String default_path = "data:image/JPG;base64,";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -188,6 +194,36 @@ public class ChangeAvatarActivity extends AppCompatActivity {
         });
     }
 
+  /*  private void downloadCurrentAvatar(){
+        Context context = getApplicationContext();
+        DownloadAvatarHandler avatarHandler = new DownloadAvatarHandler(context);
+        String type = "download";
+
+
+        //do conversion
+        try {
+            //String username = (String) display_username.getText();
+            String result = avatarHandler.execute(type, username).get();
+            //Log.d("STATE", "room title: " + threadsHelper.getThread_title());
+            Log.d("STATE", "download avatar result: " + result);
+            if(result.length() > default_path.length()) {
+                int index = result.indexOf(",") + 1;
+                String code = result.substring(index, result.length());
+                byte[] decodedString = Base64.decode(code, Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                new_avatar_preview.setImageBitmap(decodedByte);
+                LinearLayout.LayoutParams img_params = new LinearLayout.LayoutParams(700, 700);
+                new_avatar_preview.setLayoutParams(img_params);
+
+            }
+
+            else
+                new_avatar_preview.setImageResource(R.mipmap.user);
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+    }*/
+
     private void downloadCurrentAvatar(){
         final String url = "http://107.170.232.60/avatars/" + username + ".JPG";
 
@@ -202,9 +238,12 @@ public class ChangeAvatarActivity extends AppCompatActivity {
 
         Picasso.with(this)
                 .load(url)
-                .networkPolicy(NetworkPolicy.OFFLINE)
+         //       .networkPolicy(NetworkPolicy.OFFLINE)
                 .resize(imgWidth, imgHeight)
                 .onlyScaleDown()
+                .noPlaceholder()
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .networkPolicy(NetworkPolicy.NO_CACHE)
                 .into(new_avatar_preview, new Callback() {
                     @Override
                     public void onSuccess() {
@@ -218,6 +257,9 @@ public class ChangeAvatarActivity extends AppCompatActivity {
                                 .load(url)
                                 .resize(imgWidth, imgHeight)
                                 .onlyScaleDown()
+                                .noPlaceholder()
+                                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                                .networkPolicy(NetworkPolicy.NO_CACHE)
                                 //.error(R.drawable.header)
                                 .into(new_avatar_preview, new Callback() {
                                     @Override

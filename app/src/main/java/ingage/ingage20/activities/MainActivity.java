@@ -38,6 +38,7 @@ import android.widget.Toast;
 
 import com.pkmmte.view.CircularImageView;
 import com.squareup.picasso.Callback;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
@@ -194,8 +195,11 @@ public class MainActivity extends AppCompatActivity
 
         Picasso.with(this)
                 .load(url)
-                .networkPolicy(NetworkPolicy.OFFLINE)
+                //.networkPolicy(NetworkPolicy.OFFLINE)
                 .resize(imgWidth, imgHeight)
+                .noPlaceholder()
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .networkPolicy(NetworkPolicy.NO_CACHE)
                 .onlyScaleDown()
                 .into(avatar, new Callback() {
                     @Override
@@ -210,6 +214,9 @@ public class MainActivity extends AppCompatActivity
                                 .load(url)
                                 .resize(imgWidth, imgHeight)
                                 .onlyScaleDown()
+                                .noPlaceholder()
+                                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                                .networkPolicy(NetworkPolicy.NO_CACHE)
                                 //.error(R.drawable.header)
                                 .into(avatar, new Callback() {
                                     @Override

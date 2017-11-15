@@ -135,21 +135,23 @@ public class LoginActivity extends AppCompatActivity implements SharedPreference
     protected void parseProfileJSON(String json_string){
         JSONObject jsonObject;
         JSONArray jsonArray;
-        //Log.i("STATE", "json string: " + json_string);
+        Log.i("STATE", "json string: " + json_string);
 
         try {
             jsonObject = new JSONObject(json_string);
             jsonArray = jsonObject.getJSONArray("user_profile");
             int count= 0;
-            String email, tribute_points, thread_subscriptions, date_joined;
+            String email, tribute_points, thread_subscriptions, date_joined, avatar_link;
             while(count < jsonArray.length()){
                 JSONObject JO = jsonArray.getJSONObject(count);
                 email = JO.getString("email");
                 tribute_points = JO.getString("tribute_points");
                 thread_subscriptions = JO.getString("thread_subscriptions");
                 date_joined = JO.getString("date_joined");
+                avatar_link = JO.getString("avatar_link");
                 //thread_subs = thread_subscriptions;
                 session.updateProfile(email, tribute_points, thread_subscriptions, date_joined);
+                session.updateAvatarLink(avatar_link);
                 count++;
             }
 

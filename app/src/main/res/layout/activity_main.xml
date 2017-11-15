@@ -99,7 +99,6 @@
                 android:gravity="left">
                 <com.pkmmte.view.CircularImageView
                     android:id="@+id/userImage"
-                    android:scaleType="fitCenter"
                     android:src="@mipmap/user"
                     android:layout_width="700px"
                     android:layout_height="700px"

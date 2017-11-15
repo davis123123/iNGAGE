@@ -39,7 +39,6 @@
         android:layout_height="100dp"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/message_content_view"
-        android:scaleType="fitXY"
         app:border="true"
         app:border_color="#FFFFFF"
         app:border_width="1dp"
