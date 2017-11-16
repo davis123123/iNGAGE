@@ -66,14 +66,15 @@
         android:id="@+id/text_right">
 
         <Button
-            android:id="@+id/sendMessageButton"
+            android:id="@+id/cooldownButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_margin="5dp"
-            android:background="@drawable/page_list_button"
-            android:text="Send"
+            android:layout_marginTop="15dp"
+            android:background="@layout/button"
+            android:text="CD"
             android:textColor="#FFFFFF" />
 
         <TextView
@@ -87,16 +88,18 @@
             android:textStyle="italic" />
 
         <Button
-            android:id="@+id/cooldownButton"
+            android:id="@+id/sendMessageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:layout_above="@+id/timertv"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/chatrecyclerView"
             android:layout_toEndOf="@+id/msgField"
-            android:background="@layout/button"
-            android:text="CD"
-            android:textColor="#FFFFFF"/>
+            android:background="@drawable/page_list_button"
+            android:text="SEND"
+            android:textColor="#FFFFFF"
+            android:layout_alignParentBottom="true"/>
 
     </LinearLayout>
 
