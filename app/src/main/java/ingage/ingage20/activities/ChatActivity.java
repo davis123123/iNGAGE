@@ -61,7 +61,6 @@ public class ChatActivity extends AppCompatActivity{
     TextView timerTv;
     Button addButton;
     EditText textField;
-    View rect;
     boolean haschar = false;
     CountDownTimer mCountDownTimer;
     Button useCoinBt;
@@ -86,7 +85,6 @@ public class ChatActivity extends AppCompatActivity{
         chatRoomManager = new ChatRoomManager(getApplicationContext());
         timerTv = (TextView) findViewById(R.id.timertv);
         useCoinBt = (Button) findViewById(R.id.cooldownButton);
-        rect = (View) findViewById(R.id.rect);
 
         textArea = (LinearLayout) findViewById(R.id.text_area);
         textButtons = (LinearLayout) findViewById(R.id.text_right);
@@ -407,7 +405,6 @@ public class ChatActivity extends AppCompatActivity{
         addButton.setVisibility(View.GONE);
         timerTv.setVisibility(View.GONE);
         useCoinBt.setVisibility(View.GONE);
-        rect.setVisibility(View.GONE);
 
         textArea.setVisibility(View.GONE);
         textButtons.setVisibility(View.GONE);
