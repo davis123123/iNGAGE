@@ -281,11 +281,15 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             else{
                 threadContentTextView.setVisibility(View.INVISIBLE);
 
-                RelativeLayout.LayoutParams params= new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 10);
+                RelativeLayout.LayoutParams params= new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 params.addRule(RelativeLayout.BELOW, R.id.thread_title_view);
                 int margin = convertToDP(itemView.getContext(), 20);
                 params.setMargins(margin, 0, margin, 0);
                 threadContentTextView.setLayoutParams(params);
+                RelativeLayout.LayoutParams spectateParams= (RelativeLayout.LayoutParams) mSpectateBtn.getLayoutParams();
+                spectateParams.addRule(RelativeLayout.BELOW, R.id.img);
+                mSpectateBtn.setLayoutParams(spectateParams);
+
             }
 
 
