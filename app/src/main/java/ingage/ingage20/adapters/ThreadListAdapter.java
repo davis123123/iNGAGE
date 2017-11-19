@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -163,7 +164,7 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         TextView threadTitleTextView, threadByTextView, threadCategoryTextView, threadContentTextView ;
         ImageView threadImageView;
         View container;
-        Button mSpectateBtn;
+        ImageButton mSpectateBtn;
 
         public ThreadViewHolder(View itemView) {
             super(itemView);
@@ -176,7 +177,7 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             container = itemView.findViewById(R.id.thread_row_root);
             container.setOnClickListener(this);
 
-            mSpectateBtn = (Button) itemView.findViewById(R.id.spectateBtn);
+            mSpectateBtn = (ImageButton) itemView.findViewById(R.id.spectateBtn);
             mSpectateBtn.setOnClickListener(this);
 
             //testing setting a drawable programatically
