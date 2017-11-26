@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity
     static String pageType = "date";
 
     private TabLayout tabLayout;
-    private ViewPager viewPager;
+   // private ViewPager viewPager;
 
     private void setupToolbar(final Bundle savedInstanceState) {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -292,7 +292,7 @@ public class MainActivity extends AppCompatActivity
         setupNavigationDrawer();
         session.updatePage(pageType);
         /* initilize FrontPage Fragment*/
-        /*final FragmentManager fragmentManager = this.getSupportFragmentManager();
+        final FragmentManager fragmentManager = this.getSupportFragmentManager();
         final Class fragmentClass = FrontPageFragment.class;
         final Fragment fragment = Fragment.instantiate(this, fragmentClass.getName());
 
@@ -306,15 +306,68 @@ public class MainActivity extends AppCompatActivity
         final ActionBar actionBar = this.getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(getString(R.string.app_name));
-        }*/
+        }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
+        //viewPager = (ViewPager) findViewById(R.id.viewpager);
+        //setupViewPager(viewPager);
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.addTab(tabLayout.newTab().setText("Home"));
+        tabLayout.addTab(tabLayout.newTab().setText("New"));
+        tabLayout.addTab(tabLayout.newTab().setText("Trending"));
+        final int[] ICONS = new int[]{
+                android.R.drawable.ic_menu_today,
+                android.R.drawable.ic_menu_week,
+                android.R.drawable.ic_menu_search};
+        tabLayout.getTabAt(0).setIcon(ICONS[0]);
+        tabLayout.getTabAt(1).setIcon(ICONS[1]);
+        tabLayout.getTabAt(2).setIcon(ICONS[2]);
+
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                //do stuff here
+                int position = tab.getPosition();
+                Log.i("STATE", "tab selected: " + position);
+                if(position == 0){
+                    Class fragmentClass = FrontPageFragment.class;
+                    pageType = "date";
+                    session.updatePage(pageType);
+
+                    final Fragment fragment = Fragment.instantiate(MainActivity.this, fragmentClass.getName());
+
+                    fragmentManager
+                            .beginTransaction()
+                            .replace(R.id.main_fragment_container, fragment, fragmentClass.getSimpleName())
+                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                            .commit();
+
+                    // Set the title for the fragment.
+                    final ActionBar actionBar = getSupportActionBar();
+                    if (actionBar != null) {
+                        actionBar.setTitle(getString(R.string.app_name));
+                    }
+                }
+                else if(position == 1)
+                    onNew();
+                else if(position == 2)
+                    onTrend();
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+        //tabLayout.setupWithViewPager(viewPager);
 
         AnnouncementHandler announcementHandler = new AnnouncementHandler();
         String msg = null;
@@ -332,7 +385,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private void setupViewPager(ViewPager viewPager) {
+ /*   private void setupViewPager(ViewPager viewPager) {
         final Class fragmentClass = FrontPageFragment.class;
         final Fragment mainFragment = Fragment.instantiate(this, fragmentClass.getName());
         final Fragment trendingFragment = Fragment.instantiate(this, fragmentClass.getName());
@@ -355,7 +408,7 @@ public class MainActivity extends AppCompatActivity
                 else if (pos == 2)
                     onNew();*/
                 //indicator.setCurrentItem(arg0);
-            }
+         /*   }
 
             @Override
             public void onPageScrolled(int arg0, float arg1, int arg2) {
@@ -372,7 +425,7 @@ public class MainActivity extends AppCompatActivity
             }
         };
         viewPager.setOnPageChangeListener(pagechangelistener);
-    }
+    }*/
 
     //get JSON object containing user info
     protected void parseJSON(){
