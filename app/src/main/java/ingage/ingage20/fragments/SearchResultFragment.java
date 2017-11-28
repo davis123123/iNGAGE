@@ -189,13 +189,14 @@ public class SearchResultFragment extends FragmentBase implements ThreadListAdap
 
     public void getThreadsJSON(int rowCount, String searchString){
         searchHandler = new SearchHandler();
-        Log.d("ROWCOUNT" , " result : " + rowCount);
+        Log.d("ROWCOUNT" , " result : " + searchString);
         session = new SessionManager(getActivity().getApplicationContext());
         HashMap<String, String> user = session.getUserDetails();
         String type = user.get(SessionManager.PAGE_TYPE);
         try {
         json_string = searchHandler.execute(String.valueOf(rowCount), searchString).get();
         Log.d("STATE" , "query result : " + json_string);
+        threadListAdapter.setLoaded(false);
         inflateThreads();
         } catch (InterruptedException e) {
         e.printStackTrace();

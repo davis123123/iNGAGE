@@ -109,6 +109,7 @@ public class CategoriesPageFragment extends FragmentBase implements ThreadListAd
         threadListAdapter.setOnLoadMoreListener(new ThreadListAdapter.OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
+
                 Log.d("haint", "Load More");
                 //threadListAdapter.list.add(null);
                 //threadListAdapter.notifyItemInserted(threadListAdapter.list.size() - 1);
@@ -179,6 +180,7 @@ public class CategoriesPageFragment extends FragmentBase implements ThreadListAd
         try {
             json_string = queryThreadsHandler.execute(type, categoryType, String.valueOf(rowCount)).get();
             Log.d("STATE" , "query result : " + json_string);
+            threadListAdapter.setLoaded(false);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
