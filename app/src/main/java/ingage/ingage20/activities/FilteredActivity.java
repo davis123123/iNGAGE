@@ -73,7 +73,7 @@ public class FilteredActivity extends AppCompatActivity {
         final Fragment fragment = Fragment.instantiate(getBaseContext(), fragmentClass.getName());
         fragmentManager
                 .beginTransaction()
-                .replace(R.id.filtered_fragment_container, fragment, fragmentClass.getSimpleName())
+                .replace(R.id.main_fragment_container, fragment, fragmentClass.getSimpleName())
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();
     }
@@ -89,7 +89,7 @@ public class FilteredActivity extends AppCompatActivity {
 
                 fragmentManager
                         .beginTransaction()
-                        .replace(R.id.filtered_fragment_container, fragment, fragmentClass.getSimpleName())
+                        .replace(R.id.main_fragment_container, fragment, fragmentClass.getSimpleName())
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .commit();
     }
