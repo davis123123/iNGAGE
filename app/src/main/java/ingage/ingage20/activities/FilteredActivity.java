@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 
 import ingage.ingage20.R;
@@ -28,6 +29,8 @@ public class FilteredActivity extends AppCompatActivity {
         setContentView(R.layout.activity_filtered);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         session = new SessionManager(getApplicationContext());
 
@@ -37,6 +40,25 @@ public class FilteredActivity extends AppCompatActivity {
             filterByCategory();
         else if(type.equals("search"))
             filterBySearch();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            //toolbar back selected_page_button listener
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void filterByCategory(){
