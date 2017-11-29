@@ -13,6 +13,8 @@ import android.view.View;
 
 import ingage.ingage20.R;
 import ingage.ingage20.fragments.CategoriesPageFragment;
+import ingage.ingage20.fragments.SearchResultFragment;
+import ingage.ingage20.handlers.SearchHandler;
 import ingage.ingage20.managers.SessionManager;
 
 public class FilteredActivity extends AppCompatActivity {
@@ -33,6 +35,8 @@ public class FilteredActivity extends AppCompatActivity {
         String type = bundle.getString("type");
         if(type.equals("category"))
             filterByCategory();
+        else if(type.equals("search"))
+            filterBySearch();
     }
 
     private void filterByCategory(){
@@ -50,6 +54,22 @@ public class FilteredActivity extends AppCompatActivity {
                 .replace(R.id.filtered_fragment_container, fragment, fragmentClass.getSimpleName())
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();
+    }
+
+    private void filterBySearch(){
+        final FragmentManager fragmentManager = this.getSupportFragmentManager();
+        final Class fragmentClass = SearchResultFragment.class;
+        String s = bundle.getString("query");
+        Log.d("SEARCH",s);
+                session.updateSearch(s);
+
+                final Fragment fragment = Fragment.instantiate(getApplicationContext(), fragmentClass.getName());
+
+                fragmentManager
+                        .beginTransaction()
+                        .replace(R.id.filtered_fragment_container, fragment, fragmentClass.getSimpleName())
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .commit();
     }
 
 }

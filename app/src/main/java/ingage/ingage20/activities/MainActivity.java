@@ -542,24 +542,16 @@ public class MainActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.main, menu);
         MenuItem myActionMenuItem = menu.findItem(R.id.action_search);
         searchView = (android.support.v7.widget.SearchView) myActionMenuItem.getActionView();
-        final FragmentManager fragmentManager = this.getSupportFragmentManager();
-        final Class fragmentClass = SearchResultFragment.class;
         searchView.setOnSearchClickListener(this);
         searchView.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                Log.d("SEARCH",s);
-                SearchHandler searchHandler = new SearchHandler();
-                String result = "";
-                session.updateSearch(s);
 
-                final Fragment fragment = Fragment.instantiate(getApplicationContext(), fragmentClass.getName());
+                Intent intent = new Intent(MainActivity.this, FilteredActivity.class);
+                intent.putExtra("type", "search");
+                intent.putExtra("query", s);
+                startActivity(intent);
 
-                fragmentManager
-                        .beginTransaction()
-                        .replace(R.id.main_fragment_container, fragment, fragmentClass.getSimpleName())
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .commit();
                 return false;
             }
 
