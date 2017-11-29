@@ -492,6 +492,7 @@ public class MainActivity extends AppCompatActivity
                 intent.putExtra("type", "category");
                 intent.putExtra("category", selectedCategory);
                 startActivity(intent);
+                overridePendingTransition(R.anim.activity_open_translate,R.anim.activity_close_scale);
 
             }
         });
@@ -551,6 +552,7 @@ public class MainActivity extends AppCompatActivity
                 intent.putExtra("type", "search");
                 intent.putExtra("query", s);
                 startActivity(intent);
+                overridePendingTransition(R.anim.activity_open_translate,R.anim.activity_close_scale);
 
                 return false;
             }

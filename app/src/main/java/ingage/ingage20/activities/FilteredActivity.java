@@ -11,6 +11,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import ingage.ingage20.R;
 import ingage.ingage20.fragments.CategoriesPageFragment;
@@ -65,6 +67,7 @@ public class FilteredActivity extends AppCompatActivity {
         final FragmentManager fragmentManager = this.getSupportFragmentManager();
 
         String category = bundle.getString("category");
+        Animation fade = AnimationUtils.loadAnimation(FilteredActivity.this, R.anim.fade_in);
 
         session.updateCategory(category);
         session.updatePage("categoryDate");
@@ -73,6 +76,7 @@ public class FilteredActivity extends AppCompatActivity {
         final Fragment fragment = Fragment.instantiate(getBaseContext(), fragmentClass.getName());
         fragmentManager
                 .beginTransaction()
+                .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
                 .replace(R.id.main_fragment_container, fragment, fragmentClass.getSimpleName())
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();
@@ -89,6 +93,7 @@ public class FilteredActivity extends AppCompatActivity {
 
                 fragmentManager
                         .beginTransaction()
+                        .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
                         .replace(R.id.main_fragment_container, fragment, fragmentClass.getSimpleName())
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .commit();
