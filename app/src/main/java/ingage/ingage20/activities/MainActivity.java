@@ -486,20 +486,13 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             final int pos = position;
-                session.updateCategory((String) lvItems.getItemAtPosition(pos));
-                session.updatePage("categoryDate");
-                Log.d("STATE", "Nav item clicked: "+ lvItems.getItemAtPosition(pos));
+            String selectedCategory = (String) lvItems.getItemAtPosition(pos);
                 navigationDrawer.closeDrawer();
-                final Class fragmentClass = CategoriesPageFragment.class;
-                final Fragment fragment = Fragment.instantiate(getApplicationContext(), fragmentClass.getName());
-                fragmentManager
-                        .beginTransaction()
-                        .replace(R.id.main_fragment_container, fragment, fragmentClass.getSimpleName())
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .commit();
+                Intent intent = new Intent(MainActivity.this, FilteredActivity.class);
+                intent.putExtra("type", "category");
+                intent.putExtra("category", selectedCategory);
+                startActivity(intent);
 
-                //close nav drawer after click
-                navigationDrawer.closeDrawer();
             }
         });
     }

@@ -74,5 +74,6 @@
     <string name="c_philosophy">Philosophy</string>
     <string name="c_technology">Technology</string>
     <string name="title_activity_chat">ChatActivity</string>
+    <string name="title_activity_filtered">FilteredActivity</string>
 
 </resources>
