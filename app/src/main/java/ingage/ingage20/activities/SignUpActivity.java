@@ -51,7 +51,7 @@ public class SignUpActivity extends AppCompatActivity {
                     if(wifiManager.checkInternet())
                         onRegister();
                     else
-                        showDialog();
+                        wifiErrorDialog();
                 }
             }
         });
@@ -183,7 +183,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     }//send data for registration
 
-    public void showDialog(){
+    public void wifiErrorDialog(){
         new AlertDialog.Builder(this)
                 .setTitle("Connection Error")
                 .setMessage( "Please check if device is connected to internet")

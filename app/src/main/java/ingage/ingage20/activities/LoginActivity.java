@@ -64,7 +64,7 @@ public class LoginActivity extends AppCompatActivity implements SharedPreference
                 if(wifiManager.checkInternet())
                     goSignUp();
                 else
-                    showDialog();
+                    wifiErrorDialog();
             }
         });
 
@@ -76,13 +76,13 @@ public class LoginActivity extends AppCompatActivity implements SharedPreference
                     if(wifiManager.checkInternet())
                         OnLogin();
                     else
-                        showDialog();
+                        wifiErrorDialog();
                 }
             }
         });
     }
 
-    public void showDialog(){
+    public void wifiErrorDialog(){
         new AlertDialog.Builder(this)
                 .setTitle("Connection Error")
                 .setMessage( "Please check if device is connected to internet")

@@ -1,6 +1,7 @@
 package ingage.ingage20.activities;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,6 +18,7 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -59,6 +61,7 @@ import ingage.ingage20.handlers.AnnouncementHandler;
 import ingage.ingage20.handlers.DownloadAvatarHandler;
 import ingage.ingage20.handlers.SearchHandler;
 import ingage.ingage20.helpers.ThreadsHelper;
+import ingage.ingage20.managers.WifiManager;
 import ingage.ingage20.util.NavigationDrawer;
 import ingage.ingage20.R;
 import ingage.ingage20.handlers.IdentityHandler;
@@ -103,6 +106,9 @@ public class MainActivity extends AppCompatActivity
     //dont use enum cuz bad  performance in Android, uses more RAM and memory
     static String pageCategory = "noneDate";
     static String pageType = "date";
+
+    WifiManager wifiManager;
+    FragmentManager fragmentManager;
 
     private TabLayout tabLayout;
    // private ViewPager viewPager;
@@ -283,24 +289,32 @@ public class MainActivity extends AppCompatActivity
 
         setupToolbar(savedInstanceState);
 
-        setupNavigationMenu(savedInstanceState);
         /**RecyclerView (TEMPORARY, MOVE TO A FRAGMENT LATER)**/
         ListView lvItems;
 
-        parseJSON();
+        wifiManager = new WifiManager(getBaseContext());
 
-        setupNavigationDrawer();
-        session.updatePage(pageType);
+        if(wifiManager.checkInternet()) {
+            parseJSON();
+
+            setupNavigationMenu(savedInstanceState);
+            setupNavigationDrawer();
+
+            session.updatePage(pageType);
         /* initilize FrontPage Fragment*/
-        final FragmentManager fragmentManager = this.getSupportFragmentManager();
-        final Class fragmentClass = FrontPageFragment.class;
-        final Fragment fragment = Fragment.instantiate(this, fragmentClass.getName());
+            fragmentManager = this.getSupportFragmentManager();
+            final Class fragmentClass = FrontPageFragment.class;
+            final Fragment fragment = Fragment.instantiate(this, fragmentClass.getName());
 
-        fragmentManager
-                .beginTransaction()
-                .replace(R.id.main_fragment_container, fragment, fragmentClass.getSimpleName())
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .commit();
+            fragmentManager
+                    .beginTransaction()
+                    .replace(R.id.main_fragment_container, fragment, fragmentClass.getSimpleName())
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .commit();
+
+            initTabs();
+            initAnnouncement();
+        }
 
         // Set the title for the fragment.
         final ActionBar actionBar = this.getSupportActionBar();
@@ -313,6 +327,11 @@ public class MainActivity extends AppCompatActivity
         //viewPager = (ViewPager) findViewById(R.id.viewpager);
         //setupViewPager(viewPager);
 
+        //tabLayout.setupWithViewPager(viewPager);
+
+    }
+
+    private void initTabs(){
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.addTab(tabLayout.newTab().setText("Home"));
         tabLayout.addTab(tabLayout.newTab().setText("New"));
@@ -325,14 +344,13 @@ public class MainActivity extends AppCompatActivity
         tabLayout.getTabAt(1).setIcon(ICONS[1]);
         tabLayout.getTabAt(2).setIcon(ICONS[2]);
 
-
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 //do stuff here
                 int position = tab.getPosition();
                 Log.i("STATE", "tab selected: " + position);
-                if(position == 0){
+                if (position == 0) {
                     Class fragmentClass = FrontPageFragment.class;
                     pageType = "date";
                     session.updatePage(pageType);
@@ -351,10 +369,9 @@ public class MainActivity extends AppCompatActivity
                         actionBar.setTitle(getString(R.string.app_name));
                     }
                     //session.updateCategory("");
-                }
-                else if(position == 1)
+                } else if (position == 1)
                     onNew();
-                else if(position == 2)
+                else if (position == 2)
                     onTrend();
             }
 
@@ -368,8 +385,9 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
-        //tabLayout.setupWithViewPager(viewPager);
+    }
 
+    private void initAnnouncement(){
         AnnouncementHandler announcementHandler = new AnnouncementHandler();
         String msg = null;
         try {
@@ -527,21 +545,27 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onStart(){
         super.onStart();
-        adapter.clear();
-        adapter.notifyDataSetChanged();
+        if(wifiManager.checkInternet()) {
+            adapter.clear();
+            adapter.notifyDataSetChanged();
 
-        parseJSON();
-        lvItems = (ListView) findViewById(R.id.nav_drawer_items);
-        adapter=new ArrayAdapter<String>(this, R.layout.lv_item, subs);
-        lvItems.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+            parseJSON();
+            lvItems = (ListView) findViewById(R.id.nav_drawer_items);
+            adapter = new ArrayAdapter<String>(this, R.layout.lv_item, subs);
+            lvItems.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+        }
+        else{
+            wifiErrorDialog();
+        }
     }
 
     @Override
     protected void onResume()
     {
         super.onResume();
-        downloadAvatar();
+        if(wifiManager.checkInternet())
+            downloadAvatar();
     }
 
     @Override
@@ -613,6 +637,22 @@ public class MainActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void wifiErrorDialog(){
+
+        new AlertDialog.Builder(MainActivity.this)
+                .setTitle("Connection Error")
+                .setMessage("Please check if device is connected to internet")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setCancelable(false)
+                .show();
     }
 
     private void onSearch(){
