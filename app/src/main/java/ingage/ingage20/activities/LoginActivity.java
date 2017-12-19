@@ -1,8 +1,11 @@
 package ingage.ingage20.activities;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +23,7 @@ import java.util.concurrent.ExecutionException;
 
 import ingage.ingage20.firebase.FirebaseSharedPrefManager;
 import ingage.ingage20.R;
+import ingage.ingage20.managers.WifiManager;
 import ingage.ingage20.util.SignInProvider;
 import ingage.ingage20.handlers.IdentityHandler;
 import ingage.ingage20.managers.AlertDiaLogManager;
@@ -37,6 +41,7 @@ public class LoginActivity extends AppCompatActivity implements SharedPreference
     SessionManager session;
     AlertDiaLogManager alert = new AlertDiaLogManager();
     ProgressDialog pd;
+    WifiManager wifiManager;
     //String thread_subs;
 
     @Override
@@ -46,6 +51,8 @@ public class LoginActivity extends AppCompatActivity implements SharedPreference
 
         session = new SessionManager(getApplicationContext());
 
+        wifiManager = new WifiManager(getBaseContext());
+
         usernameEt = (EditText) findViewById(R.id.username);
         passwordEt = (EditText) findViewById(R.id.password);
         LoginEt = (Button) findViewById(R.id.sign_in_button);
@@ -54,7 +61,10 @@ public class LoginActivity extends AppCompatActivity implements SharedPreference
         signUpTV.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                goSignUp();
+                if(wifiManager.checkInternet())
+                    goSignUp();
+                else
+                    showDialog();
             }
         });
 
@@ -63,10 +73,21 @@ public class LoginActivity extends AppCompatActivity implements SharedPreference
             @Override
             public void onClick(View view) {
                 if (view == LoginEt){
-                    OnLogin();
+                    if(wifiManager.checkInternet())
+                        OnLogin();
+                    else
+                        showDialog();
                 }
             }
         });
+    }
+
+    public void showDialog(){
+        new AlertDialog.Builder(this)
+                .setTitle("Connection Error")
+                .setMessage( "Please check if device is connected to internet")
+                .setPositiveButton(android.R.string.yes, null)
+                .show();
     }
 
     public void goSignUp(){

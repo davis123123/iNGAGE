@@ -350,6 +350,7 @@ public class MainActivity extends AppCompatActivity
                     if (actionBar != null) {
                         actionBar.setTitle(getString(R.string.app_name));
                     }
+                    //session.updateCategory("");
                 }
                 else if(position == 1)
                     onNew();
@@ -656,6 +657,7 @@ public class MainActivity extends AppCompatActivity
         Class fragmentClass = FrontPageFragment.class;
         HashMap<String, String> user = session.getUserDetails();
         final Fragment fragment;
+        //if(user.get(SessionManager.CATEGORY_TYPE) != null && !user.get(SessionManager.CATEGORY_TYPE).equals("")){
         if(user.get(SessionManager.CATEGORY_TYPE) != null){
             fragmentClass = CategoriesPageFragment.class;
             session.updatePage("categoryDate");
@@ -685,6 +687,7 @@ public class MainActivity extends AppCompatActivity
         Class fragmentClass = FrontPageFragment.class;
         HashMap<String, String> user = session.getUserDetails();
         final Fragment fragment;
+        //if(user.get(SessionManager.CATEGORY_TYPE) != null && !user.get(SessionManager.CATEGORY_TYPE).equals("")){
         if(user.get(SessionManager.CATEGORY_TYPE) != null){
             fragmentClass = CategoriesPageFragment.class;
             session.updatePage("categoryTrend");
