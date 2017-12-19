@@ -2,6 +2,7 @@ package ingage.ingage20.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -20,12 +21,14 @@ import java.util.concurrent.ExecutionException;
 import ingage.ingage20.R;
 import ingage.ingage20.handlers.IdentityHandler;
 import ingage.ingage20.managers.AlertDiaLogManager;
+import ingage.ingage20.managers.WifiManager;
 
 public class SignUpActivity extends AppCompatActivity {
     EditText mFullName, mUserName, mPassword, mEmail, mRePassword;
     Button mSignUp;
     AlertDiaLogManager alert = new AlertDiaLogManager();
     Toast mToast;
+    WifiManager wifiManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,12 +40,18 @@ public class SignUpActivity extends AppCompatActivity {
         mRePassword = (EditText) findViewById(R.id.retype_password);
         mEmail = (EditText) findViewById(R.id.sign_up_email);
         mSignUp = (Button)  findViewById(R.id.sign_up_button);
+
+        wifiManager = new WifiManager(getBaseContext());
+
         mSignUp.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View view) {
                 if (view == mSignUp){
-                    onRegister();
+                    if(wifiManager.checkInternet())
+                        onRegister();
+                    else
+                        showDialog();
                 }
             }
         });
@@ -173,4 +182,13 @@ public class SignUpActivity extends AppCompatActivity {
         checkFields(registration_result);
 
     }//send data for registration
+
+    public void showDialog(){
+        new AlertDialog.Builder(this)
+                .setTitle("Connection Error")
+                .setMessage( "Please check if device is connected to internet")
+                .setPositiveButton(android.R.string.yes, null)
+                .show();
+    }
+
 }
