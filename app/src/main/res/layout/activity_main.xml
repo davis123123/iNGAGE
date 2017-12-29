@@ -98,18 +98,14 @@
                 android:layout_alignParentTop="true"
                 android:gravity="left">
 
-                <com.pkmmte.view.CircularImageView
+                <ImageView
                     android:id="@+id/userImage"
-                    android:layout_width="700px"
-                    android:layout_height="700px"
-                    android:layout_marginBottom="30dp"
-                    android:layout_marginLeft="80dp"
-                    android:layout_marginTop="30dp"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:scaleType="centerInside"
                     android:src="@mipmap/user"
-                    app:border="true"
-                    app:border_color="#FFFFFF"
-                    app:border_width="8dp"
-                    app:shadow="true" />
+                    android:padding="2dp"
+                    android:background="#FFFFFF"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

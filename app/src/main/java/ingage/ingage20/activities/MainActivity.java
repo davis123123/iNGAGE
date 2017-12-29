@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity
     protected static ArrayList<String> subs = new ArrayList<>();
 
     private Button   signOutButton;
-    protected CircularImageView avatar;
+    protected ImageView avatar;
     protected TextView userName;
     String default_path = "data:image/JPG;base64,";
 
@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity
         userName = (TextView) findViewById(R.id.userName);
         userName.setTextColor(Color.parseColor("#FFFFFF"));
 
-        avatar = (CircularImageView) findViewById(R.id.userImage);
+        avatar = (ImageView) findViewById(R.id.userImage);
         downloadAvatar();
 
     }
@@ -193,10 +193,10 @@ public class MainActivity extends AppCompatActivity
         int screenHeight = metrics.heightPixels;
         int screenWidth = metrics.widthPixels;
         final int imgHeight = (int) (screenHeight * 0.25);
-        final int imgWidth = (int) (screenWidth* 0.25);
+        final int imgWidth = imgHeight;
 
-        LinearLayout.LayoutParams img_params = new LinearLayout.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, imgHeight);
-        img_params.setMargins(40,0,0, 20);
+        LinearLayout.LayoutParams img_params = new LinearLayout.LayoutParams(imgWidth, imgHeight);
+        img_params.setMargins(40,40,40, 40);
         avatar.setLayoutParams(img_params);
 
         Picasso.with(this)
