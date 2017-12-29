@@ -24,26 +24,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/avatar"
-        android:layout_centerHorizontal="true"
+        android:layout_toEndOf="@+id/avatar"
         android:fontFamily="sans-serif"
         android:gravity="right"
         android:text="Username"
         android:textColor="#339900"
         android:textSize="22dp"
-        android:textStyle="italic" />
+        android:textStyle="italic"
+        android:layout_marginLeft="15dp"/>
 
 
-    <com.pkmmte.view.CircularImageView
+    <ImageView
         android:id="@+id/avatar"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_alignStart="@+id/message_content_view"
         android:layout_below="@+id/message_content_view"
         android:layout_marginTop="14dp"
-        app:border="true"
-        app:border_color="#FFFFFF"
-        app:border_width="1dp"
-        app:shadow="true" />
+        android:padding="2dp"
+        android:background="#FFFFFF" />
 
     <LinearLayout
         android:orientation="horizontal"

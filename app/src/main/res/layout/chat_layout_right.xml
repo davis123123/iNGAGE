@@ -33,16 +33,14 @@
         android:textSize="22dp"
         android:textStyle="italic" />
 
-    <com.pkmmte.view.CircularImageView
+    <ImageView
         android:id="@+id/avatar"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/message_content_view"
-        app:border="true"
-        app:border_color="#FFFFFF"
-        app:border_width="1dp"
-        app:shadow="true" />
+        android:padding="2dp"
+        android:background="#FFFFFF" />
 
     <LinearLayout
         android:orientation="horizontal"

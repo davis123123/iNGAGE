@@ -12,7 +12,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.pkmmte.view.CircularImageView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
@@ -226,7 +225,7 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
 
     class ChatViewHolder extends RecyclerView.ViewHolder{
         TextView messageContentView, messageUserView, upVoteView, downVoteView;
-        CircularImageView avatar;
+        ImageView avatar;
         ImageButton bUpvote, bDownvote;
 
         public ChatViewHolder(View itemView) {
@@ -239,7 +238,7 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
             messageContentView = (TextView) itemView.findViewById(R.id.message_content_view);
             messageUserView = (TextView) itemView.findViewById(R.id.message_user_view);
 
-            avatar = (CircularImageView ) itemView.findViewById(R.id.avatar);
+            avatar = (ImageView ) itemView.findViewById(R.id.avatar);
 
             upVoteView = (TextView) itemView.findViewById(R.id.up_label);
             downVoteView = (TextView) itemView.findViewById(R.id.down_label);
@@ -266,7 +265,7 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
             int screenHeight = metrics.heightPixels;
             int screenWidth = metrics.widthPixels;
             final int imgHeight = (int) (screenHeight * 0.2);
-            final int imgWidth = (int) (screenWidth* 0.2);
+            final int imgWidth = imgHeight;
 
 
             Picasso.with(context)
