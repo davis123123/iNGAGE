@@ -102,7 +102,7 @@
                     android:id="@+id/userImage"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
-                    android:scaleType="centerInside"
+                    android:scaleType="fitXY"
                     android:src="@mipmap/user"
                     android:padding="2dp"
                     android:background="#FFFFFF"/>
