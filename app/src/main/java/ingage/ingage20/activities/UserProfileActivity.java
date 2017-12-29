@@ -14,10 +14,10 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.pkmmte.view.CircularImageView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
@@ -37,7 +37,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
     String username, email, tribute_pts, subs, date_joined;
     //Button upload, change;
-    CircularImageView curr_avatar;
+    ImageView curr_avatar;
     TextView display_username;
     protected static ArrayList<String> sub_arr = new ArrayList<>();
     String default_path = "data:image/JPG;base64,";
@@ -62,7 +62,7 @@ public class UserProfileActivity extends AppCompatActivity {
         subs = info.get(SessionManager.KEY_SUBSCRIPTIONS);
         date_joined = info.get(SessionManager.KEY_DATE_JOINED);
 
-        curr_avatar = (CircularImageView) findViewById(R.id.profile_img);
+        curr_avatar = (ImageView) findViewById(R.id.profile_img);
         curr_avatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -163,8 +163,8 @@ public class UserProfileActivity extends AppCompatActivity {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         int screenHeight = metrics.heightPixels;
         int screenWidth = metrics.widthPixels;
-        final int imgHeight = (int) (screenHeight * 0.3);
-        final int imgWidth = (int) (screenWidth* 0.3);
+        final int imgHeight = (int) (screenHeight * 0.25);
+        final int imgWidth = imgHeight;
 
         Picasso.with(this)
                 .load(url)
