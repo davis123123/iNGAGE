@@ -22,7 +22,7 @@
         android:textColor="#f96868"
         android:text="Title"
         android:gravity="left"
-        android:textSize="30sp" />
+        android:textSize="22dp" />
 
     <TextView
         android:id="@+id/thread_content"
@@ -61,7 +61,7 @@
         android:gravity="left"
         android:text="user"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textSize="20dp"
+        android:textSize="18dp"
         android:textStyle="italic|bold|normal" />
 
     <ImageButton
@@ -90,7 +90,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/img_post"
             android:scaleType="fitXY"
-            android:gravity="center_horizontal"/>
+            android:gravity="center_horizontal"
+            android:background="#E8E8E8" />
 
     </LinearLayout>
 
