@@ -56,28 +56,43 @@
             android:layout_marginTop="10dp">
         </Spinner>
 
-        <Button
-            android:id="@+id/upload_image_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Upload Image"
-            android:layout_gravity="center_horizontal"
-            android:layout_below="@+id/insert_thread_content_text_view"
-            android:layout_centerHorizontal="true"
-            android:drawableLeft="@android:drawable/ic_menu_upload"
-            android:background="@layout/button"
-            android:textColor="#FFFFFF"
-            android:textStyle="italic"
-            android:layout_marginTop="20dp"
-            android:padding="10dp"/>
-
         <ImageView
             android:id="@+id/uploadImageView"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:scaleType="fitXY"/>
+
+        <LinearLayout
+            android:id="@+id/llUploadImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#d3d3d3"
+            android:layout_marginTop="60dp"
+            android:layout_below="@id/insert_thread_content_text_view"
+            android:padding="2dp">
+
+        <ImageView
+            android:id="@+id/ivUploadIcon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:src="@android:drawable/ic_menu_upload"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvUploatText"
+                android:text="Click to upload image"
+                android:layout_marginTop="10dp"
+                android:textSize="22dp"
+                android:layout_gravity="center"/>
+        </LinearLayout>
 
     </RelativeLayout>
     <LinearLayout

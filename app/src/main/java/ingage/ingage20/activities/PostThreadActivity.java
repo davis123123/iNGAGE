@@ -13,6 +13,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,7 +23,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -52,7 +56,7 @@ public class  PostThreadActivity extends AppCompatActivity {
 
     private EditText mInsertThreadTitle;
     private EditText mInsertThreadContent;
-    private Button bUploadImage;
+    private LinearLayout llUploadImage;
     SessionManager session;
     private Spinner categorySpinner;
     ArrayAdapter<CharSequence> adapter;
@@ -94,10 +98,22 @@ public class  PostThreadActivity extends AppCompatActivity {
         mInsertThreadContent = (EditText) findViewById(R.id.insert_thread_content_text_view);
         mInsertThreadTitle = (EditText) findViewById(R.id.insert_thread_title_text_view);
         imageToUpload = (ImageView) findViewById(R.id.uploadImageView);
+        llUploadImage = (LinearLayout) findViewById(R.id.llUploadImage);
+
+        imageToUpload.setVisibility(View.INVISIBLE);
+        setUploadImageLayout();
         addListenerOnSpinnerItemSelection();
 
-        bUploadImage = (Button) findViewById(R.id.upload_image_button);
-        bUploadImage.setOnClickListener(new View.OnClickListener() {
+
+        //bUploadImage = (Button) findViewById(R.id.upload_image_button);
+        llUploadImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goUploadImage();
+            }
+        });
+
+        imageToUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 goUploadImage();
@@ -123,6 +139,23 @@ public class  PostThreadActivity extends AppCompatActivity {
             return super.onOptionsItemSelected(item);
         }
     }
+
+
+    private void setUploadImageLayout(){
+        DisplayMetrics metrics = getBaseContext().getResources().getDisplayMetrics();
+        int screenHeight = metrics.heightPixels;
+        int screenWidth = metrics.widthPixels;
+        final int imgHeight = (int) (screenHeight * 0.30);
+        final int imgWidth = (int) (screenWidth * 0.75);
+
+        RelativeLayout.LayoutParams img_params = new RelativeLayout.LayoutParams(imgWidth, imgHeight);
+        img_params.setMargins(0, (int)(screenHeight * 0.20),0, 0);
+        img_params.addRule(RelativeLayout.BELOW, R.id.insert_thread_content_text_view);
+        img_params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+        llUploadImage.setLayoutParams(img_params);
+        imageToUpload.setLayoutParams(img_params);
+    }
+
 
     public void addListenerOnSpinnerItemSelection(){
         categorySpinner = (Spinner) findViewById(R.id.category_spinner);
@@ -314,6 +347,8 @@ public class  PostThreadActivity extends AppCompatActivity {
             extension = filename.substring(filename.lastIndexOf('/') + 1);
             Log.d("STATE", "Uri: " + extension);
             imageToUpload.setImageURI(selectedImage);
+            imageToUpload.setVisibility(View.VISIBLE);
+            llUploadImage.setVisibility(View.INVISIBLE);
             mInsertThreadContent.setVisibility(View.INVISIBLE);
             usedImage = true;
         }
