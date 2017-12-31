@@ -76,6 +76,9 @@ public class  PostThreadActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_post_thread);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
         categorySpinner = (Spinner) findViewById(R.id.category_spinner);
         adapter = ArrayAdapter.createFromResource(this, R.array.thread_categories,
                 android.R.layout.simple_spinner_item);
@@ -129,15 +132,25 @@ public class  PostThreadActivity extends AppCompatActivity {
     }
 
     @Override
+     public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item){
-        int menuItemThatWasSelected = item.getItemId();
-        if (menuItemThatWasSelected == R.id.submit_post_button){
-            addData();
-            return true;
+
+        switch (item.getItemId()) {
+            case R.id.submit_post_button:
+                addData();
+                return true;
+
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        else{
-            return super.onOptionsItemSelected(item);
-        }
+
     }
 
 
