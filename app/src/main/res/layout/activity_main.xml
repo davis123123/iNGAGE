@@ -62,13 +62,13 @@
             android:id="@+id/main_fragment_container"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="@drawable/border_shadow"/>
+            android:layout_weight="1" />
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/border_shadow"
             android:elevation="40dp"
             app:tabGravity="fill"
             app:tabIndicatorColor="#FFFFFF"
