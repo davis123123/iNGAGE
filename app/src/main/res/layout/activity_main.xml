@@ -62,18 +62,20 @@
             android:id="@+id/main_fragment_container"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:background="@drawable/border_shadow"/>
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#ff8080"
+            android:elevation="40dp"
             app:tabGravity="fill"
             app:tabIndicatorColor="#FFFFFF"
             app:tabMode="fixed"
-            app:tabSelectedTextColor="#FFFFFF"
-            app:tabTextColor="#FFFFFF" />
+            app:tabSelectedTextColor="@color/tab_text_selected"
+            app:tabTextColor="@color/tab_text_unselected"
+            app:tabBackground="@drawable/tab_color_selector"/>
     </LinearLayout>
 
     <!-- navigation drawer -->

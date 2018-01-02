@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -13,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.view.ViewPager;
@@ -106,6 +108,7 @@ public class MainActivity extends AppCompatActivity
     //dont use enum cuz bad  performance in Android, uses more RAM and memory
     static String pageCategory = "noneDate";
     static String pageType = "date";
+    private int tabIconColor;
 
     WifiManager wifiManager;
     FragmentManager fragmentManager;
@@ -333,9 +336,16 @@ public class MainActivity extends AppCompatActivity
 
     private void initTabs(){
         tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.addTab(tabLayout.newTab().setText("Home"));
-        tabLayout.addTab(tabLayout.newTab().setText("New"));
-        tabLayout.addTab(tabLayout.newTab().setText("Trending"));
+
+        TabLayout.Tab homeTab = tabLayout.newTab().setText("Home");
+        TabLayout.Tab newTab = tabLayout.newTab().setText("New");
+        TabLayout.Tab trendingTab = tabLayout.newTab().setText("Trending");
+
+        tabLayout.addTab(homeTab);
+        tabLayout.addTab(newTab);
+        tabLayout.addTab(trendingTab);
+
+        tabLayout.setSelectedTabIndicatorHeight(0);
         final int[] ICONS = new int[]{
                 android.R.drawable.ic_menu_today,
                 android.R.drawable.ic_menu_week,
@@ -344,12 +354,23 @@ public class MainActivity extends AppCompatActivity
         tabLayout.getTabAt(1).setIcon(ICONS[1]);
         tabLayout.getTabAt(2).setIcon(ICONS[2]);
 
+        tabIconColor = ContextCompat.getColor(mContext, R.color.tab_text_selected);
+        homeTab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+
+        tabIconColor = ContextCompat.getColor(mContext, R.color.tab_text_unselected);
+        newTab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+        trendingTab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 //do stuff here
                 int position = tab.getPosition();
                 Log.i("STATE", "tab selected: " + position);
+
+                tabIconColor = ContextCompat.getColor(mContext, R.color.tab_text_selected);
+
+                tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
                 if (position == 0) {
                     Class fragmentClass = FrontPageFragment.class;
                     pageType = "date";
@@ -377,6 +398,8 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
+                tabIconColor = ContextCompat.getColor(mContext, R.color.tab_text_unselected);
+                tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
 
             }
 
