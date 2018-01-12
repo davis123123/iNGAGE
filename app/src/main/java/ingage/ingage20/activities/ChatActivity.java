@@ -270,7 +270,7 @@ public class ChatActivity extends AppCompatActivity{
                 int keyNo = Integer.parseInt(key) + 1;
                 String newKey = String.valueOf(keyNo);
                 Log.d("NEWKEY", " "+ newKey + " " + page);
-                if(page.getChildrenCount() == 2){
+                if(page.getChildrenCount() == 10){
                     Log.d("here", " "+ newKey);
                     if(!currentData.hasChild(newKey)) {//no one else created new page
                         Log.d("here", "if " + newKey);

@@ -248,6 +248,7 @@ public class  PostThreadActivity extends AppCompatActivity {
     private void addDataToFirebase(String threadId){
         Map<String,Object> map = new HashMap<String, Object>();
         map.put(threadId,"");
+        Log.d("SUBMITTHREAD",  " "+ map);
         root.updateChildren(map);
         checkPageExist(threadId);
     }
