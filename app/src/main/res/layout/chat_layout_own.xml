@@ -6,44 +6,54 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@drawable/chat_post"
-    android:layout_margin="10dp">
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_alignParentTop="true"
+        android:background="#BCBCBC"
+        android:id="@+id/topDivider" />
 
     <TextView
         android:id="@+id/message_content_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="0dp"
+        android:layout_below="@+id/message_user_view"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="4dp"
+        android:paddingEnd="8dp"
+        android:layout_toEndOf="@+id/avatar"
         android:fontFamily="sans-serif"
         android:text="Hello, world! This is a test. Please ignore this message"
-        android:textSize="22sp" />
+        android:textSize="16dp" />
 
 
     <TextView
         android:id="@+id/message_user_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/avatar"
-        android:layout_toEndOf="@+id/avatar"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/message_content_view"
+        android:layout_marginTop="12dp"
         android:fontFamily="sans-serif"
         android:gravity="right"
         android:text="Username"
         android:textColor="#339900"
-        android:textSize="22dp"
-        android:textStyle="italic"
-        android:layout_marginLeft="15dp"/>
+        android:textSize="20dp"
+        android:textStyle="italic" />
 
 
     <ImageView
         android:id="@+id/avatar"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_alignStart="@+id/message_content_view"
-        android:layout_below="@+id/message_content_view"
-        android:layout_marginTop="14dp"
-        android:padding="2dp"
+        android:layout_alignStart="@+id/message_time"
+        android:layout_alignTop="@+id/message_user_view"
         android:background="#FFFFFF"
-        android:scaleType="fitXY"/>
+        android:padding="2dp"
+        android:scaleType="fitXY" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -82,7 +92,8 @@
         android:id="@+id/upvote"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/downvote"
+        android:layout_below="@+id/message_content_view"
+        android:layout_marginTop="8dp"
         android:layout_toStartOf="@+id/downvote"
         android:background="@null"
         android:src="@drawable/up_arrow"
@@ -92,12 +103,31 @@
         android:id="@+id/downvote"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/message_user_view"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="19dp"
+        android:layout_alignTop="@+id/upvote"
         android:background="@null"
         android:src="@drawable/down_arrow"
         android:text="Down" />
 
+    <TextView
+        android:id="@+id/message_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/up_label"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="8dp"
+        android:text="Sep 3, 2017 12:15:41 PM"
+        android:textColor="#999999"
+        android:textStyle="italic"
+        android:textSize="16dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/up_label"
+        android:background="#BCBCBC"
+        android:id="@+id/bottomDivider"
+        android:layout_marginTop="12dp"/>
 
 </RelativeLayout>

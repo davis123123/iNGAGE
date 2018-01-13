@@ -6,42 +6,57 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@drawable/chat_post"
-    android:layout_margin="10dp">
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_alignParentTop="true"
+        android:background="#BCBCBC"
+        android:id="@+id/topDivider" />
 
     <TextView
         android:id="@+id/message_content_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="0dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/message_user_view"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="4dp"
+        android:layout_toStartOf="@+id/avatar"
         android:fontFamily="sans-serif"
+        android:paddingEnd="8dp"
         android:text="Hello, world! This is a test. Please ignore this message"
-        android:textSize="22sp" />
+        android:textSize="16dp" />
 
 
     <TextView
         android:id="@+id/message_user_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/down_label"
-        android:layout_marginEnd="13dp"
-        android:layout_toStartOf="@+id/avatar"
+        android:layout_below="@+id/topDivider"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dp"
         android:fontFamily="sans-serif"
         android:gravity="right"
         android:text="Username"
-        android:textColor="#FF3300"
-        android:textSize="22dp"
+        android:textColor="#999999"
+        android:textSize="20dp"
         android:textStyle="italic" />
+
 
     <ImageView
         android:id="@+id/avatar"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_alignParentEnd="true"
-        android:layout_below="@+id/message_content_view"
-        android:padding="2dp"
+        android:layout_alignTop="@+id/message_user_view"
         android:background="#FFFFFF"
-        android:scaleType="fitXY"/>
+        android:padding="2dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:scaleType="fitXY" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -50,6 +65,8 @@
         android:id="@+id/linearLayout"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="14dp"
         android:layout_below="@+id/message_content_view">
 
 
@@ -58,7 +75,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="  Up"
+        android:text="Up"
         android:id="@+id/up_label"
         android:textAlignment="center"
         android:layout_below="@+id/upvote"
@@ -69,32 +86,54 @@
         android:id="@+id/down_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
+        android:layout_alignBaseline="@+id/up_label"
+        android:layout_alignBottom="@+id/up_label"
+        android:layout_alignEnd="@+id/downvote"
+        android:layout_toEndOf="@+id/up_label"
         android:text="Down"
-        android:layout_below="@+id/downvote"
-        android:layout_alignStart="@+id/downvote"
-        android:layout_alignEnd="@+id/downvote" />
+        android:textAlignment="center" />
 
     <ImageButton
         android:id="@+id/upvote"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
+        android:layout_alignStart="@+id/message_content_view"
         android:layout_below="@+id/message_content_view"
-        android:layout_marginTop="29dp"
         android:background="@null"
         android:src="@drawable/up_arrow"
+        android:layout_marginTop="8dp"
         android:text="Up" />
 
     <ImageButton
         android:id="@+id/downvote"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/upvote"
+        android:layout_above="@+id/up_label"
         android:layout_toEndOf="@+id/up_label"
         android:background="@null"
         android:src="@drawable/down_arrow"
         android:text="Down" />
+
+    <TextView
+        android:id="@+id/message_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/down_label"
+        android:layout_alignEnd="@+id/avatar"
+        android:layout_marginRight="8dp"
+        android:text="Sep 3, 2017 12:15:41 PM"
+        android:textColor="#999999"
+        android:textStyle="italic"
+        android:textSize="16dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/up_label"
+        android:background="#BCBCBC"
+        android:id="@+id/bottomDivider"
+        android:layout_marginTop="12dp"/>
 
 
 </RelativeLayout>

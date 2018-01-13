@@ -7,6 +7,10 @@
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/chatrecyclerView" />
+        android:id="@+id/chatrecyclerView"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:clipToPadding="false"
+        android:scrollbarStyle="outsideOverlay"/>
 
 </FrameLayout>

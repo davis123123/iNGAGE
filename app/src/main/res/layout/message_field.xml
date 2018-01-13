@@ -6,9 +6,9 @@
     android:layout_height="80dp"
     android:layout_width="40dp">
     <stroke android:width="2dp"
-        android:color="#70dde5"/>
+        android:color="#FFFFFF"/>
     <gradient
-        android:startColor="#FFFFFF"
-        android:endColor="#FFFFFF"
+        android:startColor="#595454"
+        android:endColor="#595454"
         />
 </shape>

@@ -124,6 +124,7 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
         chatMessageHelper.setMessageDownvote(newObject.getMessageDownvote());
         chatMessageHelper.setMessageUpvote(newObject.getMessageUpvote());
         chatMessageHelper.setMessageText(newObject.getMessageText());
+        chatMessageHelper.setMessageTime(newObject.getMessageTime());
     }
 
     @Override
@@ -224,7 +225,7 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
     }
 
     class ChatViewHolder extends RecyclerView.ViewHolder{
-        TextView messageContentView, messageUserView, upVoteView, downVoteView;
+        TextView messageContentView, messageUserView, upVoteView, downVoteView, messageTime;
         ImageView avatar;
         ImageButton bUpvote, bDownvote;
 
@@ -237,6 +238,7 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
 
             messageContentView = (TextView) itemView.findViewById(R.id.message_content_view);
             messageUserView = (TextView) itemView.findViewById(R.id.message_user_view);
+            messageTime = (TextView) itemView.findViewById(R.id.message_time);
 
             avatar = (ImageView ) itemView.findViewById(R.id.avatar);
 
@@ -250,6 +252,7 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
             messageUserView.setText(chatMessageHelper.getMessageUser());
             upVoteView.setText(chatMessageHelper.getMessageUpvote().toString());
             downVoteView.setText(chatMessageHelper.getMessageDownvote().toString());
+            messageTime.setText(chatMessageHelper.getMessageTime().toString());
             downloadAvatar();
             String userVote = "";
             userVote = chatMessageHelper.getUserVote();
