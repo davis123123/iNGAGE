@@ -73,7 +73,8 @@ public class ChatPageListFragment extends Fragment implements ChatPageListAdapte
         Log.d("PAGEFRAG", "STARTED " + currentPage);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(chatPageListAdapter);
-        
+        //recyclerView.scrollToPosition(chatPageListAdapter.getItemCount()-1);
+
     }
 
     private void pageEventListener(DatabaseReference root) {

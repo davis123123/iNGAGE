@@ -525,7 +525,8 @@ public class ChatActivity extends AppCompatActivity{
 
                     public void onFinish() {
                         Toast.makeText(getApplicationContext(), "You have been kicked out due to inactivity!", Toast.LENGTH_LONG).show();
-                        onBackPressed();
+                        leaveRoom();
+                        finish();
 
                     }
                 }.start();
