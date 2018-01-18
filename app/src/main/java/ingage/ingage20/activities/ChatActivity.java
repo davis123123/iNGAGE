@@ -588,10 +588,10 @@ public class ChatActivity extends AppCompatActivity{
                 .replace(R.id.chat_fragment_container, fragment, fragmentClass.getSimpleName())
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();
-        /*fragmentManager
+        fragmentManager
                 .beginTransaction()
                 .replace(R.id.chat_pages_container, pageFragment, pageFragmentClass.getSimpleName())
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .commit();*/
+                .commit();
     }
 }

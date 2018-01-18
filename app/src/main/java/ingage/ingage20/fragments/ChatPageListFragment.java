@@ -39,6 +39,7 @@ public class ChatPageListFragment extends Fragment implements ChatPageListAdapte
     int currentPage = 1;
     DatabaseReference root;
     String thread_id;
+    HashMap<String, String> chat;
     int pageCount =1;
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
@@ -53,7 +54,7 @@ public class ChatPageListFragment extends Fragment implements ChatPageListAdapte
         rootView = inflater.inflate(R.layout.fragment_page_list, container, false);
         chatRoomManager = new ChatRoomManager(getContext());
         chatPageListAdapter = new ChatPageListAdapter(this,getContext());
-        HashMap<String, String> chat = chatRoomManager.getUserDetails();
+        chat = chatRoomManager.getUserDetails();
         thread_id = chat.get(ChatRoomManager.THREAD_ID);
         root = FirebaseDatabase.getInstance().getReference().child(thread_id);
         chatPageListAdapter.setItemClickCallback(this);
@@ -68,11 +69,11 @@ public class ChatPageListFragment extends Fragment implements ChatPageListAdapte
         recyclerView = (RecyclerView) rootView.findViewById(R.id.pagerecyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager
                 (getActivity(),LinearLayoutManager.HORIZONTAL, false);
+        currentPage = Integer.parseInt(chat.get(ChatRoomManager.CUR_PAGE));
+        Log.d("PAGEFRAG", "STARTED " + currentPage);
         recyclerView.setLayoutManager(layoutManager);
-
-        Log.d("PAGEFRAG", "STARTED");
         recyclerView.setAdapter(chatPageListAdapter);
-
+        
     }
 
     private void pageEventListener(DatabaseReference root) {
@@ -136,9 +137,10 @@ public class ChatPageListFragment extends Fragment implements ChatPageListAdapte
         chatRoomManager.updateCurrentPage(pageNo);
 
         //No need to refresh/update if there's only 1 page
-        if(chatPageListAdapter.getItemCount() > 1)
+        if(chatPageListAdapter.getItemCount() > 1) {
+            Log.d("REFRESHED", String.valueOf(pageNo));
             chatActivity.refreshPage();
-
+        }
         ChatPageListAdapter.ChatPageViewHolder prev =
                 (ChatPageListAdapter.ChatPageViewHolder) recyclerView.findViewHolderForAdapterPosition(currentPage);
         if(prev != null) {

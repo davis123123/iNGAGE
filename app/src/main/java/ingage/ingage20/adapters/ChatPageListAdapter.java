@@ -63,6 +63,7 @@ public class ChatPageListAdapter extends RecyclerView.Adapter<ChatPageListAdapte
         String pageNo = this.getItem(position);
 
         holder.pageNoBtn.setText(getItem(position));
+        Log.d("NoPAGEadapter", "pageNo: "+ pageNo);
         if(pageNo == curPage)
             holder.pageNoBtn.setBackgroundResource(R.drawable.selected_page_button);
         else if (pageNo != curPage)

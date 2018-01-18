@@ -123,8 +123,8 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
                 getJSON.start();
                 try {
                     getJSON.join();
-                    threadListAdapter.list.remove(threadListAdapter.list.size() - 1);
-                    threadListAdapter.notifyItemRemoved(threadListAdapter.list.size());
+                    //threadListAdapter.list.remove(threadListAdapter.list.size() - 1);
+                    //threadListAdapter.notifyItemRemoved(threadListAdapter.list.size());
                     inflateThreads();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
