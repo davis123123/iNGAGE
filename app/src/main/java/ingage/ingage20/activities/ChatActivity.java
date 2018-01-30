@@ -1,6 +1,7 @@
 package ingage.ingage20.activities;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
@@ -12,9 +13,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -65,6 +69,7 @@ public class ChatActivity extends AppCompatActivity{
     CountDownTimer mCountDownTimer;
     Button useCoinBt;
     boolean tagged = false, paused = false;
+    boolean collapsed = true;
     int noPages;
     public CountDownTimer mKickTimer;
     HashMap<String, String> userVotes = new HashMap<String, String>();
@@ -90,6 +95,7 @@ public class ChatActivity extends AppCompatActivity{
         textButtons = (LinearLayout) findViewById(R.id.text_right);
 
         timerTv.setVisibility(View.GONE);
+        useCoinBt.setVisibility(View.GONE);
 
         Bundle extras = getIntent().getExtras();
         if(extras != null) {
@@ -120,6 +126,7 @@ public class ChatActivity extends AppCompatActivity{
         //ENTER MESSAGES WITH @TAGS
         textField = (EditText) findViewById(R.id.msgField);
         textChangeListener();
+        setKeyBoardListener();
 
         //thread id for root of comments tree
         root = FirebaseDatabase.getInstance().getReference().child(thread_id);
@@ -175,6 +182,44 @@ public class ChatActivity extends AppCompatActivity{
 
             }
         });
+    }
+
+    //Expand message text field if keyboard is up
+    public void setKeyBoardListener(){
+        final View activityRootView = findViewById(R.id.rlChatActivity);
+        activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                int heightDiff = activityRootView.getRootView().getHeight() - activityRootView.getHeight();
+                String msg =  textField.getText().toString();
+
+                //if keyboard is down
+                if (heightDiff < convertToPx(this, 200)) {
+                    if(!collapsed  && msg.length() == 0) {
+                        useCoinBt.setVisibility(View.GONE);
+                        textField.setLines(1);
+                        textField.setSingleLine(true);
+                        collapsed = true;
+                    }
+                }
+
+                //if keyboard is up
+                else {
+                    if(collapsed) {
+                        textField.setLines(4);
+                        useCoinBt.setVisibility(View.VISIBLE);
+                        textField.setSingleLine(false);
+                        collapsed = false;
+                    }
+                }
+            }
+        });
+    }
+
+    //converts dp to px
+    public float convertToPx(ViewTreeObserver.OnGlobalLayoutListener context, float valueInDp) {
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, valueInDp, metrics);
     }
 
     private void pageCount(final DatabaseReference root) {
