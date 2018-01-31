@@ -197,8 +197,9 @@ public class ChatActivity extends AppCompatActivity{
                 if (heightDiff < convertToPx(this, 200)) {
                     if(!collapsed  && msg.length() == 0) {
                         useCoinBt.setVisibility(View.GONE);
-                        textField.setLines(1);
                         textField.setSingleLine(true);
+                        textField.setLines(1);
+                        textField.setMaxLines(1);
                         collapsed = true;
                     }
                 }
@@ -206,9 +207,10 @@ public class ChatActivity extends AppCompatActivity{
                 //if keyboard is up
                 else {
                     if(collapsed) {
-                        textField.setLines(4);
-                        useCoinBt.setVisibility(View.VISIBLE);
                         textField.setSingleLine(false);
+                        textField.setLines(4);
+                        textField.setMaxLines(4);
+                        useCoinBt.setVisibility(View.VISIBLE);
                         collapsed = false;
                     }
                 }
