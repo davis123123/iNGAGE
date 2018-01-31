@@ -304,6 +304,7 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
                                         @Override
                                         public void onError() {
                                             Log.e("Picasso","Could not get image");
+                                            avatar.setImageResource(R.mipmap.user);
                                         }
                                     });
                         }
