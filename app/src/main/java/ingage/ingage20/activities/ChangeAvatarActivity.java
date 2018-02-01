@@ -270,6 +270,7 @@ public class ChangeAvatarActivity extends AppCompatActivity {
                                     @Override
                                     public void onError() {
                                         Log.e("Picasso","Could not get image");
+                                        new_avatar_preview.setImageResource(R.mipmap.user);
                                     }
                                 });
                     }
