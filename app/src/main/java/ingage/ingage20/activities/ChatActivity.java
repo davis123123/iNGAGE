@@ -277,27 +277,34 @@ public class ChatActivity extends AppCompatActivity{
     }
 
     private void sendMsg(){
-        //start cooldown timer
-        timer(180000);
-        //on send restart kicktimer
-        mKickTimer.cancel();
-        kickTimer(900000);
         String messageText = textField.getText().toString();
-        HashMap<String, String> user = session.getUserDetails();
-        String messageBy = user.get(SessionManager.KEY_NAME);
-        //checkCommentNum();
 
-        //firebase area to send msg
-        Map<String, Object> map = new HashMap<String, Object>();
+        if(messageText.length() > 0) {
+            HashMap<String, String> user = session.getUserDetails();
+            String messageBy = user.get(SessionManager.KEY_NAME);
+            //checkCommentNum();
 
-        checkCommentNum(messageBy, messageText);
+            //firebase area to send msg
+            Map<String, Object> map = new HashMap<String, Object>();
 
-        //send token
-        if (tagged) {
-            tagged = false;
-            sendCoin();
+            checkCommentNum(messageBy, messageText);
+
+            //send token
+            if (tagged) {
+                tagged = false;
+                sendCoin();
+            }
+            textField.setText("");
+
+            //start cooldown timer
+            timer(180000);
+            //on send restart kicktimer
+            mKickTimer.cancel();
+            kickTimer(900000);
         }
-        textField.setText("");
+        else{
+            Toast.makeText(getApplicationContext(), "Please enter a message", Toast.LENGTH_LONG).show();
+        }
 /*
         RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
         int pos = chatAdapter.getItemCount()-1;
