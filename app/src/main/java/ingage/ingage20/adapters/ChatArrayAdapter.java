@@ -253,6 +253,7 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
             upVoteView.setText(chatMessageHelper.getMessageUpvote().toString());
             downVoteView.setText(chatMessageHelper.getMessageDownvote().toString());
             messageTime.setText(chatMessageHelper.getMessageTime().toString());
+            avatar.setImageDrawable (null);
             downloadAvatar();
             String userVote = "";
             userVote = chatMessageHelper.getUserVote();
