@@ -1,7 +1,6 @@
 package ingage.ingage20.activities;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
@@ -10,7 +9,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
@@ -25,7 +23,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,7 +33,6 @@ import com.google.firebase.database.Transaction;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Timer;
 import java.util.concurrent.ExecutionException;
@@ -47,6 +43,7 @@ import ingage.ingage20.fragments.ChatPageListFragment;
 import ingage.ingage20.handlers.ChatFeaturesHandler;
 import ingage.ingage20.handlers.ChatRoomHandler;
 import ingage.ingage20.handlers.SpectateRoomHandler;
+import ingage.ingage20.handlers.UserRecentCommentHandler;
 import ingage.ingage20.managers.ChatRoomManager;
 import ingage.ingage20.managers.SessionManager;
 
@@ -288,6 +285,8 @@ public class ChatActivity extends AppCompatActivity{
             Map<String, Object> map = new HashMap<String, Object>();
 
             checkCommentNum(messageBy, messageText);
+            UserRecentCommentHandler handler = new UserRecentCommentHandler();
+            handler.enqueue(username, thread_id, messageText);
 
             //send token
             if (tagged) {
