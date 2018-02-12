@@ -2,8 +2,14 @@ package ingage.ingage20.handlers;
 
 import android.util.Log;
 
-import java.io.IOException;
+import com.google.gson.Gson;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+
+import ingage.ingage20.R;
+import ingage.ingage20.util.RecentComment;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -22,16 +28,28 @@ import retrofit2.http.POST;
 
 public class UserRecentCommentHandler {
 
-    public static final String url = "http://107.170.232.60/track_user_comment.php/";
+    public static final String post_url = "http://107.170.232.60/track_user_comment.php/";
+
+    public static final String get_url = "http://107.170.232.60/query_user_recent_comments.php/";
+
+    public RecentComment[] arr;
+    public static ArrayList<RecentComment> recentComments  = new ArrayList<>();
+    String serverResponse;
 
     public interface Interface {
 
         @FormUrlEncoded
-        @POST(url)
+        @POST(post_url )
         Call<ResponseBody> post(
                 @Field("username") String username,
                 @Field("thread_id") String thread_id,
                 @Field("recent_comment") String recent_comment
+        );
+
+        @FormUrlEncoded
+        @POST(get_url )
+        Call<ResponseBody> get(
+                @Field("username") String username
         );
 
 
@@ -42,6 +60,7 @@ public class UserRecentCommentHandler {
     }
 
 
+    //save recent comment in database
     public void enqueue(String username, String thread_id, String messageText){
 
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
@@ -53,7 +72,7 @@ public class UserRecentCommentHandler {
         Retrofit retrofit = new Retrofit.Builder()
                 .client(httpClient.build())
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(url)
+                .baseUrl(post_url)
                 .build(); Interface service = retrofit.create(Interface.class);
 
         Call<ResponseBody> call = service.post(username, thread_id, messageText);
@@ -66,7 +85,8 @@ public class UserRecentCommentHandler {
                 if(response.isSuccessful()) {
                     Log.i("STATE","Retrofit POST Success");
                     try {
-                        Log.i("STATE","Retrofit reponse: " + response.body().string());
+                        serverResponse = response.body().string();
+                        Log.i("STATE","Retrofit reponse: " + serverResponse);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -85,6 +105,67 @@ public class UserRecentCommentHandler {
             }
         });
     }
+
+    //get all recent comments for each room, for the user
+    public void enqueue(String username){
+
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.addInterceptor(logging);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .client(httpClient.build())
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(get_url)
+                .build(); Interface service = retrofit.create(Interface.class);
+
+        Call<ResponseBody> call = service.get(username);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Log.i("STATE","Retrofit response code: " + response.code());
+
+                if(response.isSuccessful()) {
+                    Log.i("STATE","Retrofit POST Success");
+                    try {
+                        serverResponse = response.body().string();
+                        createCommentsList(serverResponse);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else {
+                    Log.i("Retrofit Error Code:", String.valueOf(response.code()));
+                    Log.i("Retrofit Error Body", response.errorBody().toString());
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                Log.i("STATE","Retrofit Failure");
+            }
+        });
+    }
+
+
+    public void createCommentsList(String json){
+
+        //Log.i("STATE","recent comment list json: " + json);
+        Gson gson = new Gson();
+        arr = gson.fromJson(json, RecentComment[].class);
+        recentComments.clear();
+
+        for(int i=0; i < arr.length; i++) {
+            recentComments.add(arr[i]);
+            //Log.i("VICTOR", "recent comment: " + recentComments.get(i).thread_title + ", " + recentComments.get(i).recent_comment);
+        }
+    }
+
 
 
 }

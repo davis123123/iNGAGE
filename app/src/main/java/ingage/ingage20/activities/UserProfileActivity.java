@@ -30,6 +30,7 @@ import java.util.concurrent.ExecutionException;
 import ingage.ingage20.R;
 import ingage.ingage20.adapters.UserProfileInfoAdapter;
 import ingage.ingage20.handlers.DownloadAvatarHandler;
+import ingage.ingage20.handlers.UserRecentCommentHandler;
 import ingage.ingage20.managers.SessionManager;
 
 
@@ -93,6 +94,9 @@ public class UserProfileActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
 
         downloadAvatar();
+        UserRecentCommentHandler handler = new UserRecentCommentHandler();
+        handler.enqueue(username);
+
     }
 
     //Parse the thread subscriptions JSON string
