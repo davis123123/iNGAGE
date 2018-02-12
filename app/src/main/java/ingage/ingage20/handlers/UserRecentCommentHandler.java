@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 import ingage.ingage20.R;
+import ingage.ingage20.activities.UserProfileActivity;
 import ingage.ingage20.util.RecentComment;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
@@ -33,7 +34,7 @@ public class UserRecentCommentHandler {
     public static final String get_url = "http://107.170.232.60/query_user_recent_comments.php/";
 
     public RecentComment[] arr;
-    public static ArrayList<RecentComment> recentComments  = new ArrayList<>();
+    //public ArrayList<RecentComment> recentComments  = new ArrayList<>();
     String serverResponse;
 
     public interface Interface {
@@ -158,11 +159,11 @@ public class UserRecentCommentHandler {
         //Log.i("STATE","recent comment list json: " + json);
         Gson gson = new Gson();
         arr = gson.fromJson(json, RecentComment[].class);
-        recentComments.clear();
+        UserProfileActivity.recentComments.clear();
 
         for(int i=0; i < arr.length; i++) {
-            recentComments.add(arr[i]);
-            //Log.i("VICTOR", "recent comment: " + recentComments.get(i).thread_title + ", " + recentComments.get(i).recent_comment);
+            UserProfileActivity.recentComments.add(arr[i]);
+            //Log.i("VICTOR", "recent comment: " + UserProfileActivity.recentComments.get(i).thread_title + ", " + UserProfileActivity.recentComments.get(i).recent_comment);
         }
     }
 

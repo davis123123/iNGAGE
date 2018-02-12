@@ -33,10 +33,12 @@ import java.util.concurrent.ExecutionException;
 import ingage.ingage20.R;
 import ingage.ingage20.adapters.UserProfileInfoAdapter;
 import ingage.ingage20.adapters.ViewPagerAdapter;
+import ingage.ingage20.fragments.RecentCommentsFragment;
 import ingage.ingage20.fragments.UserInfoFragment;
 import ingage.ingage20.handlers.DownloadAvatarHandler;
 import ingage.ingage20.handlers.UserRecentCommentHandler;
 import ingage.ingage20.managers.SessionManager;
+import ingage.ingage20.util.RecentComment;
 
 
 public class UserProfileActivity extends AppCompatActivity {
@@ -46,10 +48,14 @@ public class UserProfileActivity extends AppCompatActivity {
     ImageView curr_avatar;
     TextView display_username;
 
+    public static UserRecentCommentHandler handler;
+
     String default_path = "data:image/JPG;base64,";
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
+
+    public static ArrayList<RecentComment> recentComments  = new ArrayList<>();
 
 
     @Override
@@ -80,7 +86,7 @@ public class UserProfileActivity extends AppCompatActivity {
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 
         downloadAvatar();
-        UserRecentCommentHandler handler = new UserRecentCommentHandler();
+        handler = new UserRecentCommentHandler();
         handler.enqueue(username);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -91,12 +97,14 @@ public class UserProfileActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
 
+            final Class recentFragmentClass = RecentCommentsFragment.class;
+            final Fragment recentCommentFragment = Fragment.instantiate(this, recentFragmentClass.getName());
+
             final Class fragmentClass = UserInfoFragment.class;
-            final Fragment recentCommentFragment = Fragment.instantiate(this, fragmentClass.getName());
             final Fragment userInfoFragment = Fragment.instantiate(this, fragmentClass.getName());
 
             final ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-            //adapter.addFragment(recentCommentFragment, "Recent Activity");
+            adapter.addFragment(recentCommentFragment, "Recent Activity");
             adapter.addFragment(userInfoFragment, "User Info");
             viewPager.setAdapter(adapter);
 

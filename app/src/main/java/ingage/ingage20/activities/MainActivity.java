@@ -62,6 +62,7 @@ import ingage.ingage20.fragments.SearchResultFragment;
 import ingage.ingage20.handlers.AnnouncementHandler;
 import ingage.ingage20.handlers.DownloadAvatarHandler;
 import ingage.ingage20.handlers.SearchHandler;
+import ingage.ingage20.handlers.UserRecentCommentHandler;
 import ingage.ingage20.helpers.ThreadsHelper;
 import ingage.ingage20.managers.WifiManager;
 import ingage.ingage20.util.NavigationDrawer;
@@ -114,6 +115,7 @@ public class MainActivity extends AppCompatActivity
     FragmentManager fragmentManager;
 
     private TabLayout tabLayout;
+    public static UserRecentCommentHandler handler;
    // private ViewPager viewPager;
 
     private void setupToolbar(final Bundle savedInstanceState) {
@@ -326,6 +328,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        UserProfileActivity.recentComments.clear();
 
         //viewPager = (ViewPager) findViewById(R.id.viewpager);
         //setupViewPager(viewPager);
@@ -589,6 +592,13 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
         if(wifiManager.checkInternet())
             downloadAvatar();
+
+        if(UserProfileActivity.recentComments.size() == 0) {
+            HashMap<String, String> user = session.getUserDetails();
+            String username = user.get(SessionManager.KEY_NAME);
+            handler = new UserRecentCommentHandler();
+            handler.enqueue(username);
+        }
     }
 
     @Override

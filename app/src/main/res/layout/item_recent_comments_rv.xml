@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/rlRootLayout"
+    android:layout_marginTop="12dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rlRecentComments"
+        android:layout_marginBottom="12dp">
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:gravity="left"
+            android:text="Title"
+            android:textColor="#f96868"
+            android:textSize="20dp"
+            android:layout_marginLeft="12dp"/>
+
+        <TextView
+            android:id="@+id/tvRecentComment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/ivImage"
+            android:layout_toEndOf="@+id/ivImage"
+            android:text="Comment"
+            android:textSize="16dp"
+            android:layout_marginLeft="8dp"
+            android:textStyle="italic" />
+
+        <TextView
+            android:id="@+id/tvCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvRecentComment"
+            android:layout_toEndOf="@+id/ivImage"
+            android:layout_marginLeft="8dp"
+            android:text="Category"
+            android:textColor="#aeaeae"
+            android:textStyle="italic"
+            android:textSize="18dp"/>
+
+        <ImageView
+            android:id="@+id/ivImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/tvTitle"
+            android:layout_below="@+id/tvTitle"
+            android:scaleType="fitXY"
+            android:background="#aeaeae"
+            app:srcCompat="@drawable/background_splash" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/rlRecentComments"
+        android:background="#aeaeae"/>
+</LinearLayout>
