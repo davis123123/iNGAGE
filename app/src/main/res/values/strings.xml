@@ -51,6 +51,7 @@
         <item>Agree</item>
         <item>Disagree</item>
     </string-array>
+    <string name="no_activity_message">No activity yet. Start joining discussions and posting comments to get started!</string>
 
     <!--related to thread category-->
     <string name="category_prompt">Pick a category</string>

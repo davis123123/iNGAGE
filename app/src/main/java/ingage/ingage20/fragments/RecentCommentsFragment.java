@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import ingage.ingage20.R;
 import ingage.ingage20.activities.UserProfileActivity;
@@ -57,6 +59,15 @@ public class RecentCommentsFragment extends Fragment {
         }
 
         adapter.notifyDataSetChanged();
+
+        //if no recent activities/comments, then show message
+        if(adapter.getItemCount() == 0){
+            recycler.setVisibility(View.GONE);
+            RelativeLayout rlMessage = (RelativeLayout) rootView.findViewById(R.id.rlMessage);
+            rlMessage.setVisibility(View.VISIBLE);
+            //ImageView icon = (ImageView) rootView.findViewById(R.id.ivIcon);
+            //icon.setColorFilter(getContext().getResources().getColor(R.color.dark_gray));
+        }
         return rootView;
     }
 
