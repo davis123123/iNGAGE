@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,7 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import ingage.ingage20.R;
-import ingage.ingage20.activities.ChatActivity;
 import ingage.ingage20.helpers.ChatMessageHelper;
 import ingage.ingage20.managers.SessionManager;
 
@@ -35,6 +33,9 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
     HashMap<String, Integer> chatHash = new HashMap<String, Integer>();
     SessionManager session;
     String username;
+
+    //placement method
+    boolean voteBind = false;
 
     private ItemClickCallback itemClickCallback;
     String side;
@@ -115,16 +116,18 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
         chatHash.put(chat_id, getItemCount() - 1);
     }
 
-    public void update(ChatMessageHelper newObject, String chat_id){
+    public void update(ChatMessageHelper newObject, String chat_id, boolean updateBind){
         //get old chatmsg
         int position = chatHash.get(chat_id);
-
+        Log.d("UPvote state: ", " upvote called");
         //update oldmsg with newobject
         ChatMessageHelper chatMessageHelper = (ChatMessageHelper) getItem(position);
         chatMessageHelper.setMessageDownvote(newObject.getMessageDownvote());
         chatMessageHelper.setMessageUpvote(newObject.getMessageUpvote());
         chatMessageHelper.setMessageText(newObject.getMessageText());
         chatMessageHelper.setMessageTime(newObject.getMessageTime());
+        voteBind = updateBind;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -161,6 +164,15 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
             holder.bUpvote.setEnabled(true);
             holder.bDownvote.setEnabled(true);
         }
+
+        if(!voteBind) {
+            if(holder.avatar.getDrawable() == null) {
+                Log.d("Upvote state: ", " no avatar");
+                holder.downloadAvatar();
+            }
+        }
+        //else
+          //  voteBind = false;
 
         holder.bUpvote.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -253,8 +265,9 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
             upVoteView.setText(chatMessageHelper.getMessageUpvote().toString());
             downVoteView.setText(chatMessageHelper.getMessageDownvote().toString());
             messageTime.setText(chatMessageHelper.getMessageTime().toString());
-            avatar.setImageDrawable (null);
-            downloadAvatar();
+            if(!voteBind)
+                avatar.setImageDrawable (null);
+            Log.d("UPvote state: ", " "+ voteBind);
             String userVote = "";
             userVote = chatMessageHelper.getUserVote();
             Log.d("VOTESTATE", "text: " + userVote + chatMessageHelper.getMessageText() + " " + chatMessageHelper.getUserVote());

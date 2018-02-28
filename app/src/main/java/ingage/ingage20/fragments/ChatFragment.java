@@ -339,8 +339,8 @@ public class ChatFragment extends Fragment implements ChatArrayAdapter.ItemClick
             Log.d("USERVOTE" , "result : " + chat_userVote);
             ChatMessageHelper msg = new ChatMessageHelper(chat_id, chat_side, chat_msg, chat_username,
                     chat_upvote, chat_downvote, chat_timestamp, chat_userVote);
-            chatAdapter.update(msg, chat_id);
-            chatAdapter.notifyDataSetChanged();
+            chatAdapter.update(msg, chat_id, true);
+            //chatAdapter.notifyDataSetChanged();
         }
     }
 
