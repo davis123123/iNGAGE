@@ -165,12 +165,12 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
             holder.bDownvote.setEnabled(true);
         }
 
-        if(!voteBind) {
-            if(holder.avatar.getDrawable() == null) {
-                Log.d("Upvote state: ", " no avatar");
-                holder.downloadAvatar();
-            }
+
+        if(holder.avatar.getDrawable() == null) {
+            Log.d("Upvote state: ", " no avatar");
+            holder.downloadAvatar();
         }
+
         //else
           //  voteBind = false;
 
