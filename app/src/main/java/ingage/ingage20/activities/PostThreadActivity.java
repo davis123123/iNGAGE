@@ -1,6 +1,7 @@
 package ingage.ingage20.activities;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -46,7 +47,7 @@ import ingage.ingage20.handlers.SubmitThreadsHandler;
 import ingage.ingage20.handlers.UploadImageHandler;
 import ingage.ingage20.managers.SessionManager;
 
-public class  PostThreadActivity extends AppCompatActivity {
+public class  PostThreadActivity extends AppCompatActivity implements SubmitThreadsHandler.AsyncInterface{
     /** Class name for log messages. */
     private static final String LOG_TAG = PostThreadActivity.class.getSimpleName();
 
@@ -68,6 +69,7 @@ public class  PostThreadActivity extends AppCompatActivity {
     private boolean usedImage = false;
     private DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot();
     public static String extension;
+    ProgressDialog pd;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -190,7 +192,6 @@ public class  PostThreadActivity extends AppCompatActivity {
     public void addData(){
         Context context = PostThreadActivity.this;
         String image_link = "";
-        String message = "Post Submitted";
         String threadContent = mInsertThreadContent.getText().toString();
         String threadTitle = mInsertThreadTitle.getText().toString();
         String imageTitle = threadTitle.replaceAll("\\s+", "");
@@ -212,36 +213,36 @@ public class  PostThreadActivity extends AppCompatActivity {
         HashMap<String, String> user = session.getUserDetails();
         String threadBy = user.get(SessionManager.KEY_NAME);
         String type = "submit";
-        String submission_status = " ";
-        SubmitThreadsHandler submitThreadsHandler = new SubmitThreadsHandler(image);
+        SubmitThreadsHandler submitThreadsHandler = new SubmitThreadsHandler(this, image);
 
         //CREATE NEW THREAD
-        try {
-            submission_status = submitThreadsHandler.execute(type, threadTitle, threadContent, threadBy, cSpinner, image_link, String.valueOf(usedImage)).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        Log.d("INSERTTRHEAD", "THIS " + submission_status + usedImage);
-        if (submission_status.equals("Submission Failed")){
+        submitThreadsHandler.execute(type, threadTitle, threadContent, threadBy, cSpinner, image_link, String.valueOf(usedImage));
+
+    }
+
+    @Override
+    public void response(String response) {
+        Log.d("INSERTTRHEAD", "THIS " + response + usedImage);
+        String message = "Post Submitted";
+        if (response.equals("Submission Failed")){
             message = "Submission Failed";
         }
         else {
-            addDataToFirebase(submission_status);
+            addDataToFirebase(response);
         }
 
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+        Toast.makeText(getBaseContext(), message, Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
     private void loadingDialog(){
-        new AlertDialog.Builder(this)
-                .setTitle("Submitting")
-                .setMessage("Please Wait")
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
+        pd = new ProgressDialog(this);
+        pd.setTitle("Submitting");
+        pd.setMessage("Please wait...");
+        pd.setCancelable(false);
+        pd.setProgressStyle(android.R.style.Widget_ProgressBar_Large);
+        pd.show();
     }
 
 

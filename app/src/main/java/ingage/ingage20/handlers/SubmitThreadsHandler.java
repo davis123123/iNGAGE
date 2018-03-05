@@ -24,12 +24,20 @@ import java.net.URLEncoder;
  */
 
 public class SubmitThreadsHandler extends AsyncTask<String, String, String> {
+
     Context context;
+    private AsyncInterface asyncInterface;
     AlertDialog alertDialog;
     Bitmap image;
-    public SubmitThreadsHandler(Bitmap image) {
-        this.image = image;
 
+    public interface AsyncInterface {
+        void response(String response);
+    }
+
+    public SubmitThreadsHandler(Context context, Bitmap image) {
+        this.context = context;
+        this.image = image;
+        this.asyncInterface = (AsyncInterface) context;
     }
 
 
@@ -107,6 +115,6 @@ public class SubmitThreadsHandler extends AsyncTask<String, String, String> {
 
     @Override
     protected void onPostExecute(String result) {
-
+        asyncInterface.response(result);
     }
 }
