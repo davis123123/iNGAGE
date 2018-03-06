@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -80,8 +81,9 @@ public class UserProfileActivity extends AppCompatActivity {
             }
         });
 
-        display_username = (TextView) findViewById(R.id.user_name);
-        display_username.setText(username);
+        /*display_username = (TextView) findViewById(R.id.user_name);
+        display_username.setText(username);*/
+        getSupportActionBar().setTitle(username);
 
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 
