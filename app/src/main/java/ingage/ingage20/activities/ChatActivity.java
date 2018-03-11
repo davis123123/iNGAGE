@@ -71,7 +71,7 @@ public class ChatActivity extends AppCompatActivity{
     public CountDownTimer mKickTimer;
     HashMap<String, String> userVotes = new HashMap<String, String>();
     DatabaseReference page_root;
-
+    public static int curPage = -1;
     LinearLayout textArea;
     LinearLayout textButtons;
 

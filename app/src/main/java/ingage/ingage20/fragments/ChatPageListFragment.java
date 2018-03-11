@@ -73,7 +73,21 @@ public class ChatPageListFragment extends Fragment implements ChatPageListAdapte
         Log.d("PAGEFRAG", "STARTED " + currentPage);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(chatPageListAdapter);
-        //recyclerView.scrollToPosition(chatPageListAdapter.getItemCount()-1);
+        Log.d("PAGEFRAG", "pageno " + chatActivity.curPage  + " " + currentPage);
+        if(chatActivity.curPage != -1) {
+            scrollPage();
+        }
+
+    }
+
+    private void scrollPage(){
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Log.d("PAGEFRAG", "SCROLLED ");
+                recyclerView.scrollToPosition(chatActivity.curPage);
+            }
+        }, 200);
 
     }
 
@@ -139,7 +153,9 @@ public class ChatPageListFragment extends Fragment implements ChatPageListAdapte
 
         //No need to refresh/update if there's only 1 page
         if(chatPageListAdapter.getItemCount() > 1) {
-            Log.d("REFRESHED", String.valueOf(pageNo));
+            Log.d("REFRESHED", "" + p);
+            chatActivity.curPage = p;
+            //recyclerView.scrollToPosition(p);
             chatActivity.refreshPage();
         }
         ChatPageListAdapter.ChatPageViewHolder prev =
