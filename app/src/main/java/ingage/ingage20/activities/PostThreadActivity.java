@@ -205,6 +205,16 @@ public class  PostThreadActivity extends AppCompatActivity implements SubmitThre
             image_link = "http://107.170.232.60/images/"+imageTitle+".JPG";
         }
 
+        if(!usedImage && threadContent.length() == 0){
+            Toast.makeText(this, "Please provide a description or present an image.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(threadTitle.length() == 0){
+            Toast.makeText(this, "Please provide a title.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         loadingDialog();
         //categorySpinner = (Spinner) findViewById(R.id.spinner);
         String cSpinner = String.valueOf(categorySpinner.getSelectedItem());

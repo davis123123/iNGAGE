@@ -81,7 +81,6 @@ public class ChangeAvatarActivity extends AppCompatActivity {
                                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                         startActivityForResult(galleryIntent, RESULT_LOAD_IMAGE);
                     } else {
-
                         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
                     }
                 }
