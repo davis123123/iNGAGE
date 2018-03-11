@@ -74,10 +74,8 @@ public class ChatPageListFragment extends Fragment implements ChatPageListAdapte
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(chatPageListAdapter);
         Log.d("PAGEFRAG", "pageno " + chatActivity.curPage  + " " + currentPage);
-        if(chatActivity.curPage != -1) {
+        if(chatActivity.curPage != -1)
             scrollPage();
-        }
-
     }
 
     private void scrollPage(){
@@ -125,23 +123,6 @@ public class ChatPageListFragment extends Fragment implements ChatPageListAdapte
         Log.d("NEWPAGE", "has been made " + i);
         chatPageListAdapter.add(String.valueOf(pageCount++));
         chatPageListAdapter.notifyDataSetChanged();
-
-    }
-
-    public void autoClick(final int pos){
-
-        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-                ChatPageListAdapter.ChatPageViewHolder lastHolder =
-                        (ChatPageListAdapter.ChatPageViewHolder) recyclerView.findViewHolderForAdapterPosition(pos);
-                if (lastHolder != null)
-                    onPgeBtnClick(lastHolder, pos);
-                recyclerView.scrollToPosition(pos);
-
-            }
-        }, 500);
 
     }
 

@@ -135,7 +135,9 @@ public class FragmentBase extends Fragment{
     //check room status after user selects a side from the dialog
     private void verify(Context context, String type, String thread_id){
         result = viewRoomStatus(context, type, thread_id);
-        //Log.d("STATE", "view: " + result);
+        String[] splittedString = result.split("-");
+        result = splittedString[splittedString.length - 1];
+        Log.d("STATE", "viewR: " + result);
         //Log.d("STATE", "side: " + side);
 
         //Error checking for room status
@@ -161,7 +163,6 @@ public class FragmentBase extends Fragment{
 
     public String viewRoomStatus(Context context, String type, String thread_id){
         session = new SessionManager(getActivity().getApplicationContext());
-        HashMap<String, String> user = session.getUserDetails();
         String result = null;
 
         ChatRoomHandler chatRoomHandler = new ChatRoomHandler(context);
@@ -174,6 +175,7 @@ public class FragmentBase extends Fragment{
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
+
         return result;
     }
 
