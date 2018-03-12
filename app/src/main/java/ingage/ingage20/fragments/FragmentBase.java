@@ -97,9 +97,9 @@ public class FragmentBase extends Fragment{
         Log.i("clicked: " , threadTitle);
 
         //LEAVE UNTIL COMMENTS A RE FINISHED
-        String toastMessage = "Item #" + thread_id + "clicked.";
-        mToast = Toast.makeText(getActivity(), toastMessage, Toast.LENGTH_LONG);
-        mToast.show();
+        //String toastMessage = "Item #" + thread_id + "clicked.";
+        //mToast = Toast.makeText(getActivity(), toastMessage, Toast.LENGTH_LONG);
+        //mToast.show();
 
         String type = "view";
         chooseSideDialog(context, thread_id, type);
@@ -107,7 +107,11 @@ public class FragmentBase extends Fragment{
 
     private void chooseSideDialog(final Context context, final String thread_id, final String type){
 
+        String userNo = viewRoomStatus(context, type, thread_id);
 
+        //index 0 for disagree, index 1 for agree
+        String[] splittedString = userNo.split("-");
+        Toast.makeText(getActivity(), splittedString[0] + " " +splittedString[1], Toast.LENGTH_LONG).show();
         new AlertDialog.Builder(getActivity())
                 .setTitle("Choose a side")
                 .setMessage("Do you agree/disagree with this issue?")
