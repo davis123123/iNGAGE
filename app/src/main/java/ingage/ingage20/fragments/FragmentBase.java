@@ -120,9 +120,7 @@ public class FragmentBase extends Fragment{
                     public void onClick(DialogInterface dialog, int which) {
                         side= "agree";
                         //result = joinRoom(context, type, thread_id);
-
                         verify(context, type, thread_id);
-
                         //goToChat(result);
                     }
                 })
@@ -171,8 +169,6 @@ public class FragmentBase extends Fragment{
         String result = null;
 
         ChatRoomHandler chatRoomHandler = new ChatRoomHandler(context);
-
-
         try {
             result = chatRoomHandler.execute(type, thread_id, side).get();
             Log.d("STATE", "view: " + result);
@@ -256,6 +252,5 @@ public class FragmentBase extends Fragment{
             goToChat(result);
         }
     }
-
 }
 

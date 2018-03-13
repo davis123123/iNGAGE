@@ -121,6 +121,7 @@ public class ChatPageListFragment extends Fragment implements ChatPageListAdapte
         Iterable<DataSnapshot> t = dataSnapshot.getChildren();
         Log.d("NEWPAGE", "has been made " + i);
         chatPageListAdapter.add(String.valueOf(pageCount++));
+        chatRoomManager.updateLatestPage(String.valueOf(pageCount));
         chatPageListAdapter.notifyDataSetChanged();
     }
 

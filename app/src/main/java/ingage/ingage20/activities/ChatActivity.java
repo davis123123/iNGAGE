@@ -56,8 +56,8 @@ public class ChatActivity extends AppCompatActivity{
     String targetUser, username;
     private static final int RESULT_TARGET_USER = 1;
     DatabaseReference root;
-    String chat_msg, chat_username, chat_side, chat_timestamp, chat_id, thread_id;
-    Long chat_upvote, chat_downvote, currentCooldown;
+    String thread_id;
+    Long currentCooldown;
     public static String user_side;
     TextView timerTv;
     Button addButton;
@@ -65,7 +65,7 @@ public class ChatActivity extends AppCompatActivity{
     boolean haschar = false;
     CountDownTimer mCountDownTimer;
     Button useCoinBt;
-    boolean tagged = false, paused = false;
+    boolean tagged = false, paused = false, crossedPgeLmt = false;
     boolean collapsed = true;
     int noPages;
     public CountDownTimer mKickTimer;
@@ -346,6 +346,10 @@ public class ChatActivity extends AppCompatActivity{
             public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
                 Log.d("TRANSCOMPLETE", " "+ dataSnapshot);
                 insertComment(messageBy, messageText);//NEED TEST
+                    if (crossedPgeLmt) {
+                        crossedPgeLmt = false;
+                        refreshPage();
+                    }
             }
         });
 
@@ -374,10 +378,12 @@ public class ChatActivity extends AppCompatActivity{
         int keyNo = Integer.parseInt(key) + 1;
         String newKey = String.valueOf(keyNo);
         Log.d("PAGENO",key);
+        chatRoomManager.updateLatestPage(newKey);
+        chatRoomManager.updateCurrentPage(newKey);
         Map<String, Object> map_page = new HashMap<String, Object>();
         map_page.put(newKey, "");
         root.updateChildren(map_page);
-        DatabaseReference new_page_root = root.child(newKey);
+        crossedPgeLmt = true;
     }//used ing checkPageNum
 
     @Override
@@ -623,12 +629,6 @@ public class ChatActivity extends AppCompatActivity{
             tagged = true;
         }
     }
-
-    private void changePage(){
-        chatRoomManager.updateCurrentPage("3");
-        goChatFragment();
-
-    }//moves across pages
 
     public void refreshPage(){
         final FragmentManager fragmentManager = this.getSupportFragmentManager();
