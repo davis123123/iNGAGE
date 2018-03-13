@@ -40,12 +40,11 @@ public class ChatPageListFragment extends Fragment implements ChatPageListAdapte
     DatabaseReference root;
     String thread_id;
     HashMap<String, String> chat;
-    int pageCount =1;
+    int pageCount = 1;
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              final Bundle savedInstanceState) {
         View v = create(inflater, container, savedInstanceState);
-
         return v;
     }
 
@@ -123,7 +122,6 @@ public class ChatPageListFragment extends Fragment implements ChatPageListAdapte
         Log.d("NEWPAGE", "has been made " + i);
         chatPageListAdapter.add(String.valueOf(pageCount++));
         chatPageListAdapter.notifyDataSetChanged();
-
     }
 
     @Override

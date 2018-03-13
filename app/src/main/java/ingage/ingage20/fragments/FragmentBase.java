@@ -114,7 +114,8 @@ public class FragmentBase extends Fragment{
         Toast.makeText(getActivity(), splittedString[0] + " " +splittedString[1], Toast.LENGTH_LONG).show();
         new AlertDialog.Builder(getActivity())
                 .setTitle("Choose a side")
-                .setMessage("Do you agree/disagree with this issue?")
+                .setMessage("Do you agree/disagree with this issue?" + "\n"+
+                        "No. Disagree users: " + splittedString[0] + "\n" + "No. Agree users: " + splittedString[1])
                 .setPositiveButton("agree", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         side= "agree";
