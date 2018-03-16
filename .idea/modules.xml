@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://D:\iNGAGE-repo\iNGAGE\app\app.iml" filepath="D:\iNGAGE-repo\iNGAGE\app\app.iml" />
       <module fileurl="file://$PROJECT_DIR$/iNGAGE.iml" filepath="$PROJECT_DIR$/iNGAGE.iml" />
+      <module fileurl="file://D:\iNGAGE-repo\iNGAGE\iNGAGE.iml" filepath="D:\iNGAGE-repo\iNGAGE\iNGAGE.iml" />
     </modules>
   </component>
 </project>
