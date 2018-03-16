@@ -145,7 +145,7 @@ public class LoginActivity extends AppCompatActivity implements SharedPreference
                 parseProfileJSON(loginStatus);
                 goMain();
             }
-        } else if (loginStatus.equals("error getting token")){
+        } else if (loginStatus.equals("please confirm email")){
             alert.showAlertDialog(LoginActivity.this, "Login failed...", "Please confirm your e-mail, make sure to check your spam box.", false);
             Log.e("STATE", "Token not Registered");
             usernameEt.getText().clear();
