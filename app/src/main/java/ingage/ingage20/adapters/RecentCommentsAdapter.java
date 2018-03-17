@@ -99,8 +99,9 @@ public class RecentCommentsAdapter extends RecyclerView.Adapter<RecentCommentsAd
 
     @Override
     public void onBindViewHolder(RecentCommentsAdapter.RecentCommentsHolder holder, int position) {
+        String comment = "\"" + UserProfileActivity.recentComments.get(position).recent_comment + "\"";
         holder.tvTitle.setText(UserProfileActivity.recentComments.get(position).thread_title);
-        holder.tvRecentComment.setText(UserProfileActivity.recentComments.get(position).recent_comment);
+        holder.tvRecentComment.setText(comment);
         holder.tvCategory.setText(UserProfileActivity.recentComments.get(position).thread_category);
         holder.getImage(UserProfileActivity.recentComments.get(position));
 
