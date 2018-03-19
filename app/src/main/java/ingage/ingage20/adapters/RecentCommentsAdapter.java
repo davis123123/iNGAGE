@@ -13,6 +13,7 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
+import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,8 @@ public class RecentCommentsAdapter extends RecyclerView.Adapter<RecentCommentsAd
 
     List list = new ArrayList();
     Context mContext;
+
+    public static final int COMMENT_MAX_LEN = 150;
 
     public class RecentCommentsHolder extends RecyclerView.ViewHolder {
         public TextView tvTitle, tvRecentComment, tvCategory;
@@ -80,6 +83,23 @@ public class RecentCommentsAdapter extends RecyclerView.Adapter<RecentCommentsAd
         }
     }
 
+    private String truncateText(String text, int maxLen) {
+        if(text != null && text.length() > maxLen) {
+            BreakIterator bi = BreakIterator.getWordInstance();
+            bi.setText(text);
+
+            if(bi.isBoundary(maxLen-1)) {
+                text = text.substring(0, maxLen-2);
+            } else {
+                int preceding = bi.preceding(maxLen-1);
+                text = text.substring(0, preceding-1);
+            }
+            text = text.concat("...");
+            return text;
+        } else {
+            return text;
+        }
+    }
 
     public RecentCommentsAdapter(Context context) {
         mContext = context;
@@ -99,7 +119,10 @@ public class RecentCommentsAdapter extends RecyclerView.Adapter<RecentCommentsAd
 
     @Override
     public void onBindViewHolder(RecentCommentsAdapter.RecentCommentsHolder holder, int position) {
-        String comment = "\"" + UserProfileActivity.recentComments.get(position).recent_comment + "\"";
+        String comment = UserProfileActivity.recentComments.get(position).recent_comment;
+        comment = truncateText(comment, COMMENT_MAX_LEN);
+        comment = "\"" + comment + "\"";
+
         holder.tvTitle.setText(UserProfileActivity.recentComments.get(position).thread_title);
         holder.tvRecentComment.setText(comment);
         holder.tvCategory.setText(UserProfileActivity.recentComments.get(position).thread_category);
