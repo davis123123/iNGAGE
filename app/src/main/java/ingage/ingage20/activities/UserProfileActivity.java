@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -21,6 +22,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.MemoryPolicy;
@@ -44,7 +46,7 @@ import ingage.ingage20.util.RecentComment;
 
 public class UserProfileActivity extends AppCompatActivity {
 
-    String username;
+    String username, viewType;
     //Button upload, change;
     ImageView curr_avatar;
     TextView display_username;
@@ -62,25 +64,29 @@ public class UserProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Bundle extras = getIntent().getExtras();
+        if (extras != null){
+            username = extras.getString("USER");
+            Toast.makeText(getApplicationContext(), viewType, Toast.LENGTH_LONG).show();
+        }
 
         setContentView(R.layout.activity_user_profile);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         SessionManager session = new SessionManager(getApplicationContext());
         HashMap<String, String> info = session.getUserDetails();
-        username = info.get(SessionManager.KEY_NAME);
-
         curr_avatar = (ImageView) findViewById(R.id.profile_img);
-        curr_avatar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ChangeAvatarActivity.class);
-                finish();
-                startActivity(intent);
-            }
-        });
 
+        if(username.equals(info.get(SessionManager.KEY_NAME))) {
+            curr_avatar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(), ChangeAvatarActivity.class);
+                    finish();
+                    startActivity(intent);
+                }
+            });
+        }
         /*display_username = (TextView) findViewById(R.id.user_name);
         display_username.setText(username);*/
         getSupportActionBar().setTitle(username);
@@ -156,7 +162,6 @@ public class UserProfileActivity extends AppCompatActivity {
                 .into(curr_avatar, new Callback() {
                     @Override
                     public void onSuccess() {
-
                     }
 
                     @Override
@@ -173,9 +178,7 @@ public class UserProfileActivity extends AppCompatActivity {
                                 .into(curr_avatar, new Callback() {
                                     @Override
                                     public void onSuccess() {
-
                                     }
-
                                     @Override
                                     public void onError() {
                                         Log.e("Picasso","Could not get image");

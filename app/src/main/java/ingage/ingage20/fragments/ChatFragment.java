@@ -1,5 +1,6 @@
 package ingage.ingage20.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,6 +27,8 @@ import java.util.Iterator;
 import java.util.concurrent.ExecutionException;
 
 import ingage.ingage20.R;
+import ingage.ingage20.activities.ChatActivity;
+import ingage.ingage20.activities.UserProfileActivity;
 import ingage.ingage20.adapters.ChatArrayAdapter;
 import ingage.ingage20.adapters.ChatPageListAdapter;
 import ingage.ingage20.handlers.ChatFeaturesHandler;
@@ -44,6 +47,7 @@ public class ChatFragment extends Fragment implements ChatArrayAdapter.ItemClick
     ChatArrayAdapter chatAdapter;
     SessionManager session;
     ChatRoomManager chatRoomManager;
+    ChatActivity chatActivity;
     DatabaseReference root;
     View rootView;
     Long chat_upvote, chat_downvote;
@@ -94,7 +98,7 @@ public class ChatFragment extends Fragment implements ChatArrayAdapter.ItemClick
         recyclerView.setAdapter(chatAdapter);
         //get user votes
         insertUserVotesHashMap();
-
+        chatActivity = (ChatActivity) getActivity();
         //set click for upvote and downvotes in each chatmessage
         chatAdapter.setItemClickCallback(this);
         //dataSnapshot == root, need child of pages
@@ -290,6 +294,16 @@ public class ChatFragment extends Fragment implements ChatArrayAdapter.ItemClick
 
         //Log.d("insertvote", result);
     }//inserts vote in mysql database
+
+    @Override
+    public void onAvatarClick(int p) {
+        ChatFeaturesHandler chatFeaturesHandler = new ChatFeaturesHandler(getContext());
+        ChatMessageHelper chatMessageHelper = (ChatMessageHelper) chatAdapter.getItem(p);
+        String user = chatMessageHelper.getMessageUser();
+        //Log.d("AvatarClick", chatMessageHelper.getMessageUser());
+        chatActivity.startProfileActivity(user);
+    }
+
 
     private void eventListener(DatabaseReference root){
         root.addChildEventListener(new ChildEventListener() {

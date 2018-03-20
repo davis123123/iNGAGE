@@ -47,6 +47,9 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
         void removeDownvote(int p);
         //inserts vote into userprofile
         void insertVote(int p, String prev_voted, String vote);
+
+        void onAvatarClick(int p);
+
     }
 
     public void setItemClickCallback(final ItemClickCallback itemClickCallback){
@@ -171,9 +174,6 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
             holder.downloadAvatar();
         }
 
-        //else
-          //  voteBind = false;
-
         holder.bUpvote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -224,14 +224,16 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
                     holder.bUpvote.setEnabled(true);
                     holder.bDownvote.setEnabled(true);
                 }
-                /**if(!holder.bUpvote.isEnabled()) {
-                 holder.bUpvote.setEnabled(true);
-                 //itemClickCallback.removeUpvote(getAdapterPosition());
-                 prev_voted = "true";
-                 }**/
 
                 //insert into user profile
                 itemClickCallback.insertVote(position, prev_voted, vote);
+            }
+        });
+
+        holder.avatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemClickCallback.onAvatarClick(position);
             }
         });
     }

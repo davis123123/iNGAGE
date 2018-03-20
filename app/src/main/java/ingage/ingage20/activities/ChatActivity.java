@@ -44,6 +44,7 @@ import ingage.ingage20.handlers.ChatFeaturesHandler;
 import ingage.ingage20.handlers.ChatRoomHandler;
 import ingage.ingage20.handlers.SpectateRoomHandler;
 import ingage.ingage20.handlers.UserRecentCommentHandler;
+import ingage.ingage20.helpers.ChatMessageHelper;
 import ingage.ingage20.managers.ChatRoomManager;
 import ingage.ingage20.managers.SessionManager;
 
@@ -51,9 +52,7 @@ public class ChatActivity extends AppCompatActivity{
 
     SessionManager session;
     ChatRoomManager chatRoomManager;
-    String JsonString;
-    String temp_key;
-    String targetUser, username;
+    String temp_key, targetUser, username;
     private static final int RESULT_TARGET_USER = 1;
     DatabaseReference root;
     String thread_id;
@@ -62,18 +61,14 @@ public class ChatActivity extends AppCompatActivity{
     TextView timerTv;
     Button addButton;
     EditText textField;
-    boolean haschar = false;
     CountDownTimer mCountDownTimer;
     Button useCoinBt;
-    boolean tagged = false, paused = false, crossedPgeLmt = false;
-    boolean collapsed = true;
+    boolean tagged = false, paused = false, crossedPgeLmt = false, collapsed = true, haschar = false;;
     int noPages;
     public CountDownTimer mKickTimer;
-    HashMap<String, String> userVotes = new HashMap<String, String>();
     DatabaseReference page_root;
     public static int curPage = -1;
-    LinearLayout textArea;
-    LinearLayout textButtons;
+    LinearLayout textArea, textButtons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -612,6 +607,12 @@ public class ChatActivity extends AppCompatActivity{
         super.onRestoreInstanceState(savedInstanceState);
         textField.getText().insert(textField.getSelectionStart(),
                 savedInstanceState.getString("savedTitle"));
+    }
+
+    public void startProfileActivity(String user){
+        Intent i = new Intent(this, UserProfileActivity.class);
+        i.putExtra("USER", user);
+        startActivity(i);
     }
 
     private void startTagActivity(){
