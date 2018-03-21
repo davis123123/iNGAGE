@@ -244,44 +244,6 @@ public class MainActivity extends AppCompatActivity
                 });
     }
 
-
-    /*private void downloadAvatar(){
-        Context context = getApplicationContext();
-        DownloadAvatarHandler avatarHandler = new DownloadAvatarHandler(context);
-        String type = "download";
-
-
-        //do conversion
-        try {
-            String username = (String) userName.getText();
-            String result = avatarHandler.execute(type, username).get();
-            //Log.d("STATE", "room title: " + threadsHelper.getThread_title());
-            Log.d("STATE", "download avatar result: " + result);
-            if(result.length() > default_path.length()) {
-                int index = result.indexOf(",") + 1;
-                String code = result.substring(index, result.length());
-                byte[] decodedString = Base64.decode(code, Base64.DEFAULT);
-                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                avatar.setImageBitmap(decodedByte);
-                LinearLayout.LayoutParams img_params = new LinearLayout.LayoutParams(700, 700);
-                avatar.setLayoutParams(img_params);
-
-            }
-
-            else
-                avatar.setImageResource(R.mipmap.user);
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-
-        //set padding programmatically
-        if(avatar.getDrawable() != null) {
-            float density = context.getResources().getDisplayMetrics().density;
-            int padding = (int)(20 * density);
-            avatar.setPadding(padding, padding, padding, padding);
-        }
-    }*/
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -592,13 +554,13 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
         if(wifiManager.checkInternet())
             downloadAvatar();
-
+/*
         if(UserProfileActivity.recentComments.size() == 0) {
             HashMap<String, String> user = session.getUserDetails();
             String username = user.get(SessionManager.KEY_NAME);
             handler = new UserRecentCommentHandler();
             handler.enqueue(username);
-        }
+        }*/
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import ingage.ingage20.R;
 import ingage.ingage20.activities.UserProfileActivity;
@@ -29,13 +30,18 @@ import retrofit2.http.POST;
 
 public class UserRecentCommentHandler {
 
-    public static final String post_url = "http://107.170.232.60/track_user_comment.php/";
+    static final String post_url = "http://107.170.232.60/track_user_comment.php/";
 
-    public static final String get_url = "http://107.170.232.60/query_user_recent_comments.php/";
+    static final String get_url = "http://107.170.232.60/query_user_recent_comments.php/";
 
     public RecentComment[] arr;
     //public ArrayList<RecentComment> recentComments  = new ArrayList<>();
     String serverResponse;
+
+    private CallBackData callBackData;
+    public interface CallBackData{
+        void notifyChange();
+    }
 
     public interface Interface {
 
@@ -52,14 +58,14 @@ public class UserRecentCommentHandler {
         Call<ResponseBody> get(
                 @Field("username") String username
         );
-
-
     }
 
     public UserRecentCommentHandler(){
-
     }
 
+    public void setCallBackData(CallBackData callBackData){
+        this.callBackData = callBackData;
+    }
 
     //save recent comment in database
     public void enqueue(String username, String thread_id, String messageText){
@@ -74,7 +80,9 @@ public class UserRecentCommentHandler {
                 .client(httpClient.build())
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(post_url)
-                .build(); Interface service = retrofit.create(Interface.class);
+                .build();
+
+        Interface service = retrofit.create(Interface.class);
 
         Call<ResponseBody> call = service.post(username, thread_id, messageText);
 
@@ -120,10 +128,10 @@ public class UserRecentCommentHandler {
                 .client(httpClient.build())
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(get_url)
-                .build(); Interface service = retrofit.create(Interface.class);
+                .build();
+        Interface service = retrofit.create(Interface.class);
 
         Call<ResponseBody> call = service.get(username);
-
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -134,6 +142,8 @@ public class UserRecentCommentHandler {
                     try {
                         serverResponse = response.body().string();
                         createCommentsList(serverResponse);
+                        callBackData.notifyChange();
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -154,17 +164,16 @@ public class UserRecentCommentHandler {
     }
 
 
+
     public void createCommentsList(String json){
 
         //Log.i("STATE","recent comment list json: " + json);
         Gson gson = new Gson();
         arr = gson.fromJson(json, RecentComment[].class);
         UserProfileActivity.recentComments.clear();
-
-        for(int i=0; i < arr.length; i++) {
-            UserProfileActivity.recentComments.add(arr[i]);
-            //Log.i("VICTOR", "recent comment: " + UserProfileActivity.recentComments.get(i).thread_title + ", " + UserProfileActivity.recentComments.get(i).recent_comment);
-        }
+        //Log.i("VICTOR", "recent comment: " + UserProfileActivity.recentComments.get(i).thread_title + ", " + UserProfileActivity.recentComments.get(i).recent_comment);
+        UserProfileActivity.recentComments.addAll(Arrays.asList(arr));
+        //i think this is a very bad desgin pattern?
     }
 
 

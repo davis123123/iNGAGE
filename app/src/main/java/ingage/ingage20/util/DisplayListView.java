@@ -39,35 +39,8 @@ public class DisplayListView extends Activity{
         mySQLDbHelper = new MySQLDbHelper();
         listView = (ListView)findViewById(R.id.listview);
         testadapter = new Testadapter(this,R.layout.thread_row_layout);
-        //setContentView(R.layout.thread_row_layout);
-        //textView = (TextView) findViewById(R.id.thread_title_view);
-        //textView.setText(json_string);
         listView.setAdapter(testadapter);
 
-        /**try {
-            jsonObject = new JSONObject(json_string);
-            jsonArray = jsonObject.getJSONArray("server_response");
-            int count = 0;
-            String thread_title, thread_content, thread_by, thread_date, thread_category;
-            while(count < jsonArray.length()){
-                JSONObject JO= jsonArray.getJSONObject(count);
-                thread_title = JO.getString("thread_title");
-                thread_content = JO.getString("thread_content");
-                thread_by = JO.getString("thread_by");
-                thread_date = JO.getString("thread_date");
-                thread_category = JO.getString("thread_category");
-                ThreadsHelper threadsHelper = new ThreadsHelper(thread_title, thread_content, thread_by, thread_date, thread_category);
-                HashMap<String, String> threadsDetail = new HashMap<String, String>();
-                threadsDetail.put("TAG_TITLE", thread_title);
-                threadsDetail.put("TAG_CONTENT", thread_content);
-                threadsDetail.put("TAG_BY", thread_by);
-                threadsDetail.put("TAG_DATE", thread_date);
-                testadapter.add(threadsHelper);
-                count++;
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }**/
 
     }
 

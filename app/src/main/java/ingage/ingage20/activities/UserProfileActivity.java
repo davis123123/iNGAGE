@@ -51,8 +51,6 @@ public class UserProfileActivity extends AppCompatActivity {
     ImageView curr_avatar;
     TextView display_username;
 
-    public static UserRecentCommentHandler handler;
-
     String default_path = "data:image/JPG;base64,";
 
     private TabLayout tabLayout;
@@ -67,7 +65,7 @@ public class UserProfileActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null){
             username = extras.getString("USER");
-            Toast.makeText(getApplicationContext(), viewType, Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), username, Toast.LENGTH_LONG).show();
         }
 
         setContentView(R.layout.activity_user_profile);
@@ -94,8 +92,6 @@ public class UserProfileActivity extends AppCompatActivity {
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 
         downloadAvatar();
-        handler = new UserRecentCommentHandler();
-        handler.enqueue(username);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
@@ -103,10 +99,11 @@ public class UserProfileActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
     }
 
+
     private void setupViewPager(ViewPager viewPager) {
 
             final Class recentFragmentClass = RecentCommentsFragment.class;
-            final Fragment recentCommentFragment = Fragment.instantiate(this, recentFragmentClass.getName());
+            Fragment recentCommentFragment = Fragment.instantiate(this, recentFragmentClass.getName());
 
             final Class fragmentClass = UserInfoFragment.class;
             final Fragment userInfoFragment = Fragment.instantiate(this, fragmentClass.getName());
@@ -119,10 +116,8 @@ public class UserProfileActivity extends AppCompatActivity {
         ViewPager.OnPageChangeListener pagechangelistener =new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageSelected(int pos) {
-
                     adapter.notifyDataSetChanged();
                     Log.i("STATE", "Pg selected: " + pos);
-
             }
 
             @Override
@@ -188,7 +183,9 @@ public class UserProfileActivity extends AppCompatActivity {
                 });
     }
 
-
+    public String getUsername(){
+        return username;
+    }
 
 
 }

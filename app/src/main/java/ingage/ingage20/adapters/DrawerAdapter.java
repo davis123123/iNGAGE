@@ -87,8 +87,12 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerHold
                     final int pos = getAdapterPosition();
 
                     if(list.get(pos).equals("View Profile")){
+                        SessionManager session = new SessionManager(context);
+                        HashMap<String, String> info = session.getUserDetails();
+
                         Intent intent = new Intent(context, UserProfileActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("USER", info.get(SessionManager.KEY_NAME));
                         context.startActivity(intent);
                     }
                     else if (list.get(pos).equals("Create Thread")){

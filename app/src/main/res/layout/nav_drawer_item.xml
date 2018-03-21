@@ -41,34 +41,5 @@
                 android:id="@+id/userName" />
         </LinearLayout>
 
-        <!--
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/button_text_sign_out"
-            android:id="@+id/button_signout"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_below="@id/user_info"
-            android:layout_centerHorizontal="true"
-            android:background="@layout/selected_page_button"
-            android:textColor="#FFFFFF"
-            android:textStyle="italic"
-            />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="View Profile"
-            android:id="@+id/button_profile"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_below="@id/button_signout"
-            android:layout_centerHorizontal="true"
-            android:background="@layout/selected_page_button"
-            android:textColor="#FFFFFF"
-            android:textStyle="italic"
-            />
-            -->
     </RelativeLayout>
 </LinearLayout>
