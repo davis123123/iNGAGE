@@ -62,17 +62,24 @@ public class UserProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle extras = getIntent().getExtras();
-        if (extras != null){
-            username = extras.getString("USER");
-            Toast.makeText(getApplicationContext(), username, Toast.LENGTH_LONG).show();
-        }
 
         setContentView(R.layout.activity_user_profile);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         SessionManager session = new SessionManager(getApplicationContext());
         HashMap<String, String> info = session.getUserDetails();
+
+        //viewing other profiles
+        Bundle extras = getIntent().getExtras();
+        if (extras != null){
+            username = extras.getString("USER");
+            //Toast.makeText(getApplicationContext(), username, Toast.LENGTH_LONG).show();
+        }
+
+        //view own profile
+        else
+            username = info.get(SessionManager.KEY_NAME);
+
         curr_avatar = (ImageView) findViewById(R.id.profile_img);
 
         if(username.equals(info.get(SessionManager.KEY_NAME))) {
