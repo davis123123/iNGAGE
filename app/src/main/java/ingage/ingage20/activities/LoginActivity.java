@@ -7,11 +7,14 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -36,6 +39,7 @@ import ingage.ingage20.managers.SessionManager;
 public class LoginActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
     EditText usernameEt, passwordEt;
     Button LoginEt;
+    CheckBox cbRemember;
     TextView signUpTV;
     private SignInProvider signInProvider;
     SessionManager session;
@@ -55,6 +59,24 @@ public class LoginActivity extends AppCompatActivity implements SharedPreference
 
         usernameEt = (EditText) findViewById(R.id.username);
         passwordEt = (EditText) findViewById(R.id.password);
+        cbRemember = (CheckBox) findViewById(R.id.cbRememberMe);
+        cbRemember.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                String key = getResources().getString(R.string.remember_user_checked);
+                SharedPreferences.Editor prefEditor = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit();
+
+                if (cbRemember.isChecked()) {
+                    prefEditor.putBoolean(key, true);
+                } else {
+                    prefEditor.putBoolean(key, false);
+                }
+                prefEditor.commit();
+            }
+        });
+
         LoginEt = (Button) findViewById(R.id.sign_in_button);
         signUpTV =  (TextView) findViewById(R.id.signIn_textView_CreateNewAccount);
 
@@ -80,6 +102,8 @@ public class LoginActivity extends AppCompatActivity implements SharedPreference
                 }
             }
         });
+
+        loadUserName();
     }
 
     public void wifiErrorDialog(){
@@ -141,6 +165,7 @@ public class LoginActivity extends AppCompatActivity implements SharedPreference
                 usernameEt.getText().clear();
                 passwordEt.getText().clear();
             } else {
+                rememberUser();
                 session.createLoginSession(username, password);
                 parseProfileJSON(loginStatus);
                 goMain();
@@ -151,6 +176,33 @@ public class LoginActivity extends AppCompatActivity implements SharedPreference
             usernameEt.getText().clear();
             passwordEt.getText().clear();
         }
+    }
+
+    public void rememberUser(){
+        String key = getResources().getString(R.string.saved_user);
+        SharedPreferences.Editor prefEditor = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit();
+        if(cbRemember.isChecked())
+            prefEditor.putString(key, String.valueOf(usernameEt.getText()));
+
+        //clear cached username
+        else
+            prefEditor.putString(key, "");
+
+        prefEditor.commit();
+    }
+
+    public void loadUserName(){
+        String key = getResources().getString(R.string.remember_user_checked);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean load = prefs.getBoolean(key, false);
+        if(load){
+            cbRemember.setChecked(true);
+            key = getResources().getString(R.string.saved_user);
+            String user = prefs.getString(key, "");
+            usernameEt.setText(user);
+            usernameEt.setSelection(user.length());
+        }
+
     }
 
     protected void parseProfileJSON(String json_string){

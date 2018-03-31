@@ -1,39 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     tools:context=".activities.LoginActivity">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="150dp"
+        android:layout_height="130dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/title"
+        android:src="@drawable/logo" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_centerVertical="true"
-        android:gravity="center"
-        android:weightSum="1">
-
-        <ImageView
-            android:layout_width="150dp"
-            android:layout_height="130dp"
-            android:id="@+id/logo"
-            android:src="@drawable/logo" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="iNGAGE"
-            android:id="@+id/title"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1.04"
-            android:textColor="@color/splash_text"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="30dp"
-            android:gravity="center_horizontal"
-            android:textSize="40dp"
-            android:textStyle="italic"/>
+        android:layout_below="@+id/logo"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1.04"
+        android:gravity="center_horizontal"
+        android:text="iNGAGE"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/splash_text"
+        android:textSize="40dp"
+        android:textStyle="italic" />
 
         <EditText
         android:id="@+id/username"
@@ -47,7 +40,7 @@
         android:maxLines="1"
         android:background="@layout/textfield"
         android:paddingLeft="10dp"
-        />
+        android:layout_below="@+id/title"/>
         <EditText
             android:id="@+id/password"
             android:layout_width="fill_parent"
@@ -61,7 +54,20 @@
             android:maxLines="1"
             android:background="@layout/textfield"
             android:paddingLeft="10dp"
+            android:layout_below="@id/username"
             />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/cbRememberMe"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="12dp"
+            android:background="#00000000"
+            android:text="Remember me"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/password"/>
+
         <Button
             android:id="@+id/sign_in_button"
             style="?android:textAppearanceSmall"
@@ -73,13 +79,15 @@
             android:text="@string/action_sign_in_short"
             android:textStyle="bold|italic"
             android:textColor="#ffffff"
-            android:background="@layout/button"/>
+            android:background="@layout/button"
+            android:layout_below="@+id/cbRememberMe"/>
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/sign_in_button">
 
             <TextView
                 android:id="@+id/signIn_textView_CreateNewAccount"
@@ -94,5 +102,4 @@
                 android:layout_marginTop="40dp"
                 />
             </LinearLayout>
-    </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

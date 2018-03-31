@@ -28,6 +28,8 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="saved_user">saved_user</string>
+    <string name="remember_user_checked">remember_user_checked</string>
 
     <string name="add_button_text">SUBMIT</string>
     <string name="discard_button_text">DISCARD</string>
