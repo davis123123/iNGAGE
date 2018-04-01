@@ -18,7 +18,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="20dp"
-            android:paddingLeft="10dp"
+            android:padding="8dp"
             android:hint="Title"
             android:layout_below="@+id/category_spinner"
             android:background="@layout/textfield"
@@ -28,17 +28,19 @@
         <EditText
             android:id="@+id/insert_thread_content_text_view"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:hint="Text"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/insert_thread_title_text_view"
+            android:layout_alignStart="@+id/insert_thread_title_text_view"
             android:layout_below="@+id/insert_thread_title_text_view"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="10dp"
-            android:paddingLeft="10dp"
+            android:layout_marginTop="15dp"
             android:background="@layout/textfield"
-            android:drawableLeft="@android:drawable/ic_menu_edit"
-            android:inputType="textCapSentences"/>
+            android:gravity="top"
+            android:hint="@string/post_description_hint"
+            android:inputType="textMultiLine|textCapSentences"
+            android:lines="4"
+            android:maxLines="4"
+            android:scrollbars="vertical"
+            android:padding="8dp" />
 
         <TextView
             android:layout_width="wrap_content"

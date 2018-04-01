@@ -42,8 +42,11 @@
     <string name="main_nav_menu_default_user_text">\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020</string>
     <string name="button_text_sign_out">SIGN OUT</string>
 
-    <!-- related to Post display-->
+    <!-- Strings related to Post display-->
     <string name="action_refresh">Refresh</string>
+
+    <!--Strings related to posting thread-->
+    <string name="post_description_hint">Enter description here</string>
 
     <!--related to comments-->
     <string name="pick_side">Do you agree or disagree with the argument?</string>
