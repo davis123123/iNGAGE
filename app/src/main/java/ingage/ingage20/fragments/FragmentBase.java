@@ -1,5 +1,6 @@
 package ingage.ingage20.fragments;
 
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +40,7 @@ import ingage.ingage20.managers.SessionManager;
 
 public class FragmentBase extends Fragment{
 
+    Context mContext;
     FloatingActionButton postThreadButton;
     protected RecyclerView threadListRecyclerView;
     ThreadListAdapter threadListAdapter;
@@ -49,9 +52,13 @@ public class FragmentBase extends Fragment{
     JSONObject jsonObject;
     JSONArray jsonArray;
     String side = "agree";      //set to agree by default
-
     String result = null;
-    String threadTitle = "";
+
+    public static String threadTitle;
+    public static String threadDescription;
+    public static String threadId;
+    public static String threadType;
+    public static String threadCapacity;
 
     Toast mToast;
 
@@ -94,6 +101,7 @@ public class FragmentBase extends Fragment{
         ThreadsHelper threadsHelper = (ThreadsHelper) threadListAdapter.getItem(p);
         String thread_id = threadsHelper.getThread_id();
         threadTitle= threadsHelper.getThread_title();
+        threadDescription = threadsHelper.getThread_content();
         Log.i("clicked: " , threadTitle);
 
         //LEAVE UNTIL COMMENTS A RE FINISHED
@@ -112,27 +120,29 @@ public class FragmentBase extends Fragment{
         //index 0 for disagree, index 1 for agree
         String[] splittedString = userNo.split("-");
         Toast.makeText(getActivity(), splittedString[0] + " " +splittedString[1], Toast.LENGTH_LONG).show();
-        new AlertDialog.Builder(getActivity())
-                .setTitle("Choose a side")
-                .setMessage("Do you agree/disagree with this issue?" + "\n"+
-                        "No. Disagree users: " + splittedString[0] + "\n" + "No. Agree users: " + splittedString[1])
-                .setPositiveButton("agree", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        side= "agree";
-                        //result = joinRoom(context, type, thread_id);
-                        verify(context, type, thread_id);
-                        //goToChat(result);
-                    }
-                })
-                .setNegativeButton("disagree", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        side= "disagree";
-                        verify(context, type, thread_id);
-                        //goToChat(result);
-                    }
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
+        threadCapacity = "No. Disagree users: " + splittedString[0] + "/3\n" + "No. Agree users: " + splittedString[1] +"/3";
+        mContext = getActivity().getApplicationContext();
+        threadId = thread_id;
+        threadType = type;
+
+        android.support.v4.app.FragmentManager fm = getFragmentManager();
+        SideChooserDialogFragment f =SideChooserDialogFragment.newInstance(threadDescription);
+        f.setTargetFragment(this, SideChooserDialogFragment.REQUEST_CODE_SIDE_DIALOG);
+        f.show(fm, "");
+    }
+
+    //handle callbacks
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == SideChooserDialogFragment.REQUEST_CODE_SIDE_DIALOG) {
+            boolean agree = data.getBooleanExtra("side", true);
+            if(agree)
+                side= "agree";
+            else
+                side= "disagree";
+            verify(mContext, threadType, threadId);
+        }
+
     }
 
     //check room status after user selects a side from the dialog
