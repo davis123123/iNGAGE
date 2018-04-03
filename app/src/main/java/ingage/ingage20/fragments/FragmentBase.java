@@ -169,6 +169,10 @@ public class FragmentBase extends Fragment{
             // chooseSideDialog(context, thread_id, type);
 
             result = joinRoom(context, join, thread_id, result);
+            String[] splitResult = result.split("-");
+            result = splitResult[1];
+            String timeRemaining = splitResult[0];
+            Toast.makeText(getActivity(), timeRemaining, Toast.LENGTH_LONG).show();
             goToChat(result);
 
         } else if(result.equals("Number of disagreeing users is at maximum")){
@@ -189,7 +193,6 @@ public class FragmentBase extends Fragment{
         ChatRoomHandler chatRoomHandler = new ChatRoomHandler(context);
         try {
             result = chatRoomHandler.execute(type, thread_id, side).get();
-            Log.d("STATE", "view: " + result);
             //Toast.makeText(getActivity().getApplicationContext(), "view: " + store, Toast.LENGTH_LONG).show();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
@@ -209,6 +212,7 @@ public class FragmentBase extends Fragment{
 
         try {
             result = chatRoomHandler.execute(type, thread_id, username, token, side).get();
+            Log.d("STATE", "view: " + result);
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
