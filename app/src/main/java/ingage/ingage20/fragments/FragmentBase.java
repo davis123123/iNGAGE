@@ -116,7 +116,10 @@ public class FragmentBase extends Fragment{
     private void chooseSideDialog(final Context context, final String thread_id, final String type){
 
         String userNo = viewRoomStatus(context, type, thread_id);
-
+        if(userNo.equals("thread archived")){
+            Toast.makeText(getActivity(), "This discussion has just ended. Please try another post.", Toast.LENGTH_LONG).show();
+            return;
+        }
         //index 0 for disagree, index 1 for agree
         String[] splittedString = userNo.split("-");
         Toast.makeText(getActivity(), splittedString[0] + " " +splittedString[1], Toast.LENGTH_LONG).show();
@@ -148,6 +151,11 @@ public class FragmentBase extends Fragment{
     //check room status after user selects a side from the dialog
     private void verify(Context context, String type, String thread_id){
         result = viewRoomStatus(context, type, thread_id);
+
+        if(result.equals("thread archived")){
+            Toast.makeText(getActivity(), "This discussion has just ended. Please try another post.", Toast.LENGTH_LONG).show();
+            return;
+        }
         String[] splittedString = result.split("-");
         result = splittedString[splittedString.length - 1];
         Log.d("STATE", "viewR: " + result);
