@@ -1,6 +1,8 @@
 package ingage.ingage20.adapters;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
+import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -33,6 +35,8 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
     HashMap<String, Integer> chatHash = new HashMap<String, Integer>();
     SessionManager session;
     String username;
+
+    int unselectedColor, selectedColorAgree, selectedColorDisagree;
 
     //placement method
     boolean voteBind = false;
@@ -69,6 +73,10 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
         boolean shouldAttachToParentImmediately = false;
         View view = inflater.inflate(R.layout.chat_layout, viewGroup, shouldAttachToParentImmediately);
         Log.d("STATE", "viewType: " + viewType);
+
+        unselectedColor = context.getResources().getColor(R.color.tab_text_unselected);
+        selectedColorAgree = context.getResources().getColor(R.color.green);
+        selectedColorDisagree = context.getResources().getColor(R.color.colorPrimary);
 
         session = new SessionManager(viewGroup.getContext());
         HashMap<String, String> user = session.getUserDetails();
@@ -147,6 +155,11 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
         return list.get(position);
     }
 
+    public void toggleVote(ImageView iv, int color, boolean enabled){
+        iv.setEnabled(enabled);
+        iv.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+    }
+
     @Override
     public void onBindViewHolder(final ChatArrayAdapter.ChatViewHolder holder, final int position) {
         final ChatMessageHelper chatMessageHelper = (ChatMessageHelper) this.getItem(position);
@@ -156,16 +169,16 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
         //side = chatMessageHelper.getSide();
         if (userVote != null) {
             if (userVote.equals("up")) {
-                holder.bUpvote.setEnabled(false);
-                holder.bDownvote.setEnabled(true);
+                toggleVote(holder.bUpvote, selectedColorAgree, false);
+                toggleVote(holder.bDownvote, unselectedColor, true);
             } else if (userVote.equals("down")) {
-                holder.bDownvote.setEnabled(false);
-                holder.bUpvote.setEnabled(true);
+                toggleVote(holder.bUpvote, unselectedColor, true);
+                toggleVote(holder.bDownvote, selectedColorDisagree, false);
             }
         }
         else {
-            holder.bUpvote.setEnabled(true);
-            holder.bDownvote.setEnabled(true);
+            toggleVote(holder.bUpvote, unselectedColor, true);
+            toggleVote(holder.bDownvote, unselectedColor, true);
         }
 
 
@@ -191,11 +204,11 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
 
                 chatMessageHelper.setUserVote(vote); //set user vote to up
                 if(chatMessageHelper.getUserVote().equals(vote)){
-                    holder.bUpvote.setEnabled(false);
-                    holder.bDownvote.setEnabled(true);
+                    toggleVote(holder.bUpvote, selectedColorAgree, false);
+                    toggleVote(holder.bDownvote, unselectedColor, true);
                 }else {
-                    holder.bUpvote.setEnabled(true);
-                    holder.bDownvote.setEnabled(true);
+                    toggleVote(holder.bUpvote, unselectedColor, true);
+                    toggleVote(holder.bDownvote, unselectedColor, true);
                 }
                 //insert into user profile
                 itemClickCallback.insertVote(position, prev_voted, vote);
@@ -218,11 +231,11 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
 
                 chatMessageHelper.setUserVote(vote);
                 if(chatMessageHelper.getUserVote().equals(vote)){
-                    holder.bDownvote.setEnabled(false);
-                    holder.bUpvote.setEnabled(true);
+                    toggleVote(holder.bUpvote, unselectedColor, true);
+                    toggleVote(holder.bDownvote, selectedColorDisagree, false);
                 }else {
-                    holder.bUpvote.setEnabled(true);
-                    holder.bDownvote.setEnabled(true);
+                    toggleVote(holder.bUpvote, unselectedColor, true);
+                    toggleVote(holder.bDownvote, unselectedColor, true);
                 }
 
                 //insert into user profile

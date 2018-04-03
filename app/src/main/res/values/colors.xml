@@ -8,6 +8,7 @@
     <color name="gray">#D3D3D3</color>
     <color name="dark_gray">#aeaeae</color>
     <color name="top_bar_background">#F58535</color>
+    <color name="green">#00b200</color>
 
     <color name="tab_background_selected">#E0E0E0 </color>
     <color name="tab_background_unselected">#E8E8E8  </color>
