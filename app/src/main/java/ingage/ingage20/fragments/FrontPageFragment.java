@@ -79,28 +79,6 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
 
         inflateThreads();
 
-        postThreadButton = (FloatingActionButton) rootView.findViewById(R.id.fab);
-        postThreadButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v == postThreadButton){
-                    //goInsertThread();
-                    session.updatePage("date");
-        /* initilize FrontPage Fragment*/
-                    final FragmentManager fragmentManager = getFragmentManager();
-                    final Class fragmentClass = FrontPageFragment.class;
-                    final Fragment fragment = Fragment.instantiate(getContext(), fragmentClass.getName());
-
-                    fragmentManager
-                            .beginTransaction()
-                            .replace(R.id.main_fragment_container, fragment, fragmentClass.getSimpleName())
-                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                            .commit();
-                    Toast.makeText(getActivity(), "Page refreshed!", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
         threadListAdapter.setOnLoadMoreListener(new ThreadListAdapter.OnLoadMoreListener() {
             @Override
             public void onLoadMore() {

@@ -41,7 +41,6 @@ import ingage.ingage20.managers.SessionManager;
 public class FragmentBase extends Fragment{
 
     Context mContext;
-    FloatingActionButton postThreadButton;
     protected RecyclerView threadListRecyclerView;
     ThreadListAdapter threadListAdapter;
     View rootView;
