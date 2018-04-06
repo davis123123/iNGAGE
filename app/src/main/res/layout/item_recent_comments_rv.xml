@@ -56,6 +56,14 @@
             android:scaleType="fitXY"
             android:background="#aeaeae"
             app:srcCompat="@drawable/background_splash" />
+
+        <ImageView
+            android:id="@+id/ivSide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/tvCategory"
+            android:layout_alignParentEnd="true"
+            app:srcCompat="@drawable/up_arrow" />
     </RelativeLayout>
 
     <View

@@ -50,7 +50,8 @@ public class UserRecentCommentHandler {
         Call<ResponseBody> post(
                 @Field("username") String username,
                 @Field("thread_id") String thread_id,
-                @Field("recent_comment") String recent_comment
+                @Field("recent_comment") String recent_comment,
+                @Field("side") String side
         );
 
         @FormUrlEncoded
@@ -68,7 +69,7 @@ public class UserRecentCommentHandler {
     }
 
     //save recent comment in database
-    public void enqueue(String username, String thread_id, String messageText){
+    public void enqueue(String username, String thread_id, String messageText, String side){
 
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -84,7 +85,7 @@ public class UserRecentCommentHandler {
 
         Interface service = retrofit.create(Interface.class);
 
-        Call<ResponseBody> call = service.post(username, thread_id, messageText);
+        Call<ResponseBody> call = service.post(username, thread_id, messageText, side);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override

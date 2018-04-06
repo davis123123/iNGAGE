@@ -34,7 +34,7 @@ public class RecentCommentsAdapter extends RecyclerView.Adapter<RecentCommentsAd
 
     public class RecentCommentsHolder extends RecyclerView.ViewHolder {
         public TextView tvTitle, tvRecentComment, tvCategory;
-        public ImageView ivImage;
+        public ImageView ivImage, ivSide;
 
         public RecentCommentsHolder(View view) {
             super(view);
@@ -43,6 +43,7 @@ public class RecentCommentsAdapter extends RecyclerView.Adapter<RecentCommentsAd
             tvRecentComment = (TextView) view.findViewById(R.id.tvRecentComment);
             tvCategory = (TextView) view.findViewById(R.id.tvCategory);
             ivImage = (ImageView) view.findViewById(R.id.ivImage);
+            ivSide = (ImageView) view.findViewById(R.id.ivSide);
 
 
         }
@@ -128,6 +129,8 @@ public class RecentCommentsAdapter extends RecyclerView.Adapter<RecentCommentsAd
         holder.tvCategory.setText(UserProfileActivity.recentComments.get(position).thread_category);
         holder.getImage(UserProfileActivity.recentComments.get(position));
 
+        if(UserProfileActivity.recentComments.get(position).side.equals("disagree"))
+            holder.ivSide.setImageResource(R.drawable.down_arrow);
     }
 
     @Override

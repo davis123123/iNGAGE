@@ -281,7 +281,7 @@ public class ChatActivity extends AppCompatActivity{
 
             checkCommentNum(messageBy, messageText);
             UserRecentCommentHandler handler = new UserRecentCommentHandler();
-            handler.enqueue(username, thread_id, messageText);
+            handler.enqueue(username, thread_id, messageText, user_side);
 
             //send token
             if (tagged) {

@@ -38,5 +38,8 @@ public class RecentComment {
     @SerializedName("archived")
     public String archived;
 
+    @SerializedName("side")
+    public String side;
+
 
 }
