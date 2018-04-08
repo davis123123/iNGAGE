@@ -164,7 +164,12 @@ public class LoginActivity extends AppCompatActivity implements SharedPreference
                 Log.e("STATE", "Token not Registered");
                 usernameEt.getText().clear();
                 passwordEt.getText().clear();
-            } else {
+            } else if(loginStatus.equals("banned")){
+                alert.showAlertDialog(LoginActivity.this, "Notice", "This user has been permanently banned due to reports of misconduct.", false);
+                usernameEt.getText().clear();
+                passwordEt.getText().clear();
+            }
+            else {
                 rememberUser();
                 session.createLoginSession(username, password);
                 parseProfileJSON(loginStatus);
