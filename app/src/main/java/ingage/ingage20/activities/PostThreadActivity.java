@@ -234,6 +234,8 @@ public class  PostThreadActivity extends AppCompatActivity implements SubmitThre
     public void response(String response) {
         Log.d("INSERTTRHEAD", "THIS " + response + usedImage);
         String message = "Post Submitted";
+        String[] splitResult = response.split("-");
+        response = splitResult[0];
         if (response.equals("Submission Failed")){
             message = "Submission Failed";
         }
@@ -286,7 +288,7 @@ public class  PostThreadActivity extends AppCompatActivity implements SubmitThre
 
             @Override
             public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
-
+                Log.d("Fiebase", "first page added");
             }
         });
     } //used only for first comment

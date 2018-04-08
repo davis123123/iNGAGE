@@ -64,7 +64,7 @@ public class UserProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_user_profile);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         SessionManager session = new SessionManager(getApplicationContext());
         HashMap<String, String> info = session.getUserDetails();
