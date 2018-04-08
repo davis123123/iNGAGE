@@ -469,6 +469,10 @@ public class ChatActivity extends AppCompatActivity{
         String side = chat_user.get(ChatRoomManager.SIDE);
         String thread_id = chat_user.get(ChatRoomManager.THREAD_ID);
         String spectator = chat_user.get(ChatRoomManager.SPECTATOR);
+        if(mKickTimer != null){
+            mKickTimer.cancel();
+            mKickTimer = null;
+        }
         if (spectator.equals("true")){
             String type = "leave_spectate";
             String result = null;

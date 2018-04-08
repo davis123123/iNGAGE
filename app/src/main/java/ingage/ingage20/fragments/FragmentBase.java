@@ -132,9 +132,11 @@ public class FragmentBase extends Fragment{
             return;
         }
         //index 0 for disagree, index 1 for agree
+        Log.d("Viewchat",userNo);
         String[] splittedString = userNo.split("-");
-        Toast.makeText(getActivity(), splittedString[0] + " " +splittedString[1], Toast.LENGTH_LONG).show();
-        threadCapacity = "No. Disagree users: " + splittedString[0] + "/3\n" + "No. Agree users: " + splittedString[1] +"/3";
+        String remainingTime = splittedString[0];
+        Toast.makeText(getActivity(), splittedString[1] + " " +splittedString[2], Toast.LENGTH_LONG).show();
+        threadCapacity = "No. Disagree users: " + splittedString[1] + "/3\n" + "No. Agree users: " + splittedString[2] +"/3";
         mContext = getActivity().getApplicationContext();
         threadId = thread_id;
         threadType = type;
@@ -180,6 +182,7 @@ public class FragmentBase extends Fragment{
             // chooseSideDialog(context, thread_id, type);
 
             result = joinRoom(context, join, thread_id, result);
+            Log.d("Joinchat", result);
             String[] splitResult = result.split("-");
             result = splitResult[1];
             String timeRemaining = splitResult[0];
