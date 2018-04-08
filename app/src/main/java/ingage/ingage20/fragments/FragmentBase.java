@@ -1,22 +1,17 @@
 package ingage.ingage20.fragments;
 
-import android.app.FragmentManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -28,7 +23,6 @@ import ingage.ingage20.activities.ChatActivity;
 import ingage.ingage20.activities.MainActivity;
 import ingage.ingage20.adapters.ThreadListAdapter;
 import ingage.ingage20.handlers.ChatRoomHandler;
-import ingage.ingage20.handlers.MySQLDbHelper;
 import ingage.ingage20.handlers.SpectateRoomHandler;
 import ingage.ingage20.helpers.ThreadsHelper;
 import ingage.ingage20.managers.ChatRoomManager;
@@ -59,7 +53,12 @@ public class FragmentBase extends Fragment{
     public static String threadType;
     public static String threadCapacity;
 
+    private SwipeRefreshLayout swipeContainer;
+
     Toast mToast;
+
+
+    public static class RefreshEvent {}
 
     @Override
     public void onViewCreated(final View view, final Bundle savedInstanceState) {
@@ -75,6 +74,19 @@ public class FragmentBase extends Fragment{
                 final View view = getView();
             }
         }.execute();
+
+        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                EventBus.getDefault().post(new RefreshEvent());
+                swipeContainer.setRefreshing(false);
+            }
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_red_light, android.R.color.darker_gray);
+
     }
 
     @Override

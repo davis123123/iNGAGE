@@ -46,6 +46,9 @@ import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,6 +61,7 @@ import java.util.concurrent.ExecutionException;
 import ingage.ingage20.adapters.DrawerAdapter;
 import ingage.ingage20.firebase.FirebaseSharedPrefManager;
 import ingage.ingage20.fragments.CategoriesPageFragment;
+import ingage.ingage20.fragments.FragmentBase;
 import ingage.ingage20.fragments.SearchResultFragment;
 import ingage.ingage20.handlers.AnnouncementHandler;
 import ingage.ingage20.handlers.DownloadAvatarHandler;
@@ -529,6 +533,16 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onRefreshEvent(FragmentBase.RefreshEvent event) {
+        onRefresh();
+    };
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
 
     @Override
     protected void onStart(){
@@ -546,6 +560,8 @@ public class MainActivity extends AppCompatActivity
         else{
             wifiErrorDialog();
         }
+
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -618,11 +634,6 @@ public class MainActivity extends AppCompatActivity
         }
         else if (id == R.id.action_trending) {
             onTrend();
-            return true;
-        }
-
-        if(id == R.id.action_refresh){
-            onRefresh();
             return true;
         }
 
