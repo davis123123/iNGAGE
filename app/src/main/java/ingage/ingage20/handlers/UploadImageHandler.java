@@ -38,9 +38,6 @@ public class UploadImageHandler extends AsyncTask<String, String, String> {
         String encodedImage = Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
 
         try {
-            /**Map<String, String> dataToSend = new HashMap<>();
-            dataToSend.put("name", name);
-            dataToSend.put("image", encodedImage);**/
             String thread_title = params[0];
 
             URL url = new URL(post_image_url);
@@ -53,11 +50,6 @@ public class UploadImageHandler extends AsyncTask<String, String, String> {
             String post_data =
                     URLEncoder.encode("thread_title", "UTF-8") + "=" + URLEncoder.encode(thread_title, "UTF-8") + "&" +
                             URLEncoder.encode("image", "UTF-8") + "=" + URLEncoder.encode(encodedImage, "UTF-8");
-
-
-            /**String data = URLEncoder.encode("image", "UTF-8") + "=" + URLEncoder.encode(encodedImage.toString(), "UTF-8");
-            data += "&" + URLEncoder.encode("key", "UTF-8") + "=" + URLEncoder.encode(API_KEY, "UTF-8");
-**/
             bufferedWriter.write(post_data);
             bufferedWriter.flush();
             bufferedWriter.close();
@@ -84,8 +76,6 @@ public class UploadImageHandler extends AsyncTask<String, String, String> {
         }
         return null;
     }
-
-
     @Override
     protected void onPostExecute(String result) {
     }

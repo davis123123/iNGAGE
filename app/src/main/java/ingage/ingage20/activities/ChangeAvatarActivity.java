@@ -193,35 +193,6 @@ public class ChangeAvatarActivity extends AppCompatActivity {
         });
     }
 
-  /*  private void downloadCurrentAvatar(){
-        Context context = getApplicationContext();
-        DownloadAvatarHandler avatarHandler = new DownloadAvatarHandler(context);
-        String type = "download";
-
-
-        //do conversion
-        try {
-            //String username = (String) display_username.getText();
-            String result = avatarHandler.execute(type, username).get();
-            //Log.d("STATE", "room title: " + threadsHelper.getThread_title());
-            Log.d("STATE", "download avatar result: " + result);
-            if(result.length() > default_path.length()) {
-                int index = result.indexOf(",") + 1;
-                String code = result.substring(index, result.length());
-                byte[] decodedString = Base64.decode(code, Base64.DEFAULT);
-                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                new_avatar_preview.setImageBitmap(decodedByte);
-                LinearLayout.LayoutParams img_params = new LinearLayout.LayoutParams(700, 700);
-                new_avatar_preview.setLayoutParams(img_params);
-
-            }
-
-            else
-                new_avatar_preview.setImageResource(R.mipmap.user);
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-    }*/
 
     private void downloadCurrentAvatar(){
         final String url = "http://107.170.232.60/avatars/" + username + ".JPG";

@@ -31,7 +31,6 @@ public class RoomUsersActivity extends AppCompatActivity implements RoomUserAdap
     ChatRoomHandler chatRoomHandler;
     JSONObject jsonObject;
     JSONArray jsonArray;
-    ChatRoomUserHelper chatRoomUserHelper;
     RecyclerView roomUserRecyclerView;
     RoomUserAdapter roomUserAdapter;
     ChatRoomManager chatRoomManager;
@@ -71,7 +70,6 @@ public class RoomUsersActivity extends AppCompatActivity implements RoomUserAdap
             jsonArray = jsonObject.getJSONArray("users");
             int count= 0;
             String username, token;
-            username = "-";
             while(count < jsonArray.length()){
                 JSONObject JO = jsonArray.getJSONObject(count);
                 username = JO.getString("username");
@@ -90,9 +88,6 @@ public class RoomUsersActivity extends AppCompatActivity implements RoomUserAdap
 
     @Override
     public void onListItemClick(int clickedItemIndex) {
-
-        Context context = getApplicationContext();
-
         ChatRoomUserHelper chatRoomUserHelper = (ChatRoomUserHelper) roomUserAdapter.getItem(clickedItemIndex);
         String username = chatRoomUserHelper.getUsername();
 
@@ -103,6 +98,5 @@ public class RoomUsersActivity extends AppCompatActivity implements RoomUserAdap
         i.putExtra("Username", username);
         setResult(RESULT_OK, i);
         finish();
-
     }
 }

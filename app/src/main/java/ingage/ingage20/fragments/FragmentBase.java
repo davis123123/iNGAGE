@@ -39,6 +39,8 @@ public class FragmentBase extends Fragment{
     ThreadListAdapter threadListAdapter;
     View rootView;
     SessionManager session;
+    HashMap<String, String> user;
+
     ChatRoomManager chatRoomManager;
 
     String json_string;
@@ -74,6 +76,8 @@ public class FragmentBase extends Fragment{
                 final View view = getView();
             }
         }.execute();
+        session = new SessionManager(getActivity().getApplicationContext());
+        user = session.getUserDetails();
         chatRoomManager = new ChatRoomManager(getActivity().getApplicationContext());
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
         // Setup refresh listener which triggers new data loading
@@ -92,7 +96,6 @@ public class FragmentBase extends Fragment{
     @Override
     public void onPause() {
         super.onPause();
-
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(final Void... params) {
@@ -104,8 +107,6 @@ public class FragmentBase extends Fragment{
 
     public void itemClick(int p){
         Context context = getActivity().getApplicationContext();
-
-
         if(mToast != null){
             mToast.cancel();
         }
@@ -114,11 +115,6 @@ public class FragmentBase extends Fragment{
         threadTitle= threadsHelper.getThread_title();
         threadDescription = threadsHelper.getThread_content();
         Log.i("clicked: " , threadTitle);
-
-        //LEAVE UNTIL COMMENTS A RE FINISHED
-        //String toastMessage = "Item #" + thread_id + "clicked.";
-        //mToast = Toast.makeText(getActivity(), toastMessage, Toast.LENGTH_LONG);
-        //mToast.show();
 
         String type = "view";
         chooseSideDialog(context, thread_id, type);
@@ -149,7 +145,6 @@ public class FragmentBase extends Fragment{
 
     //handle callbacks
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         if (requestCode == SideChooserDialogFragment.REQUEST_CODE_SIDE_DIALOG) {
             boolean agree = data.getBooleanExtra("side", true);
             if(agree)
@@ -204,7 +199,6 @@ public class FragmentBase extends Fragment{
     }
 
     public String viewRoomStatus(Context context, String type, String thread_id){
-        session = new SessionManager(getActivity().getApplicationContext());
         String result = null;
 
         ChatRoomHandler chatRoomHandler = new ChatRoomHandler(context);
@@ -219,8 +213,6 @@ public class FragmentBase extends Fragment{
     }
 
     public String joinRoom(Context context, String type, String thread_id, String userJSON){
-        session = new SessionManager(getActivity().getApplicationContext());
-        HashMap<String, String> user = session.getUserDetails();
         String username = user.get(SessionManager.KEY_NAME);
         String token = MainActivity.appToken;
         String result = null;
@@ -239,7 +231,6 @@ public class FragmentBase extends Fragment{
     }
 
     private void goToChat(String result){
-
         HashMap<String, String> user = chatRoomManager.getUserDetails();
         String spectate = user.get(ChatRoomManager.SPECTATOR);
         if(spectate.equals("false")) {
@@ -269,8 +260,6 @@ public class FragmentBase extends Fragment{
         ThreadsHelper threadsHelper = (ThreadsHelper) threadListAdapter.getItem(p);
         String thread_id = threadsHelper.getThread_id();
         String type = "spectate";
-        session = new SessionManager(getActivity().getApplicationContext());
-        HashMap<String, String> user = session.getUserDetails();
         String username = user.get(SessionManager.KEY_NAME);
 
         SpectateRoomHandler spectateRoomHandler = new SpectateRoomHandler(getActivity().getApplicationContext());

@@ -57,6 +57,7 @@ public class ChatActivity extends AppCompatActivity{
     DatabaseReference root;
     String thread_id;
     Long currentCooldown;
+    Long currentTimeLeft;
     public static String user_side;
     TextView timerTv;
     Button addButton;
@@ -141,8 +142,6 @@ public class ChatActivity extends AppCompatActivity{
                     sendMsg();
                 }
             });//click to send message
-            //calls event listener to update message in realtime
-            //eventListener(root);
         }
         HashMap<String, String> chat_user = chatRoomManager.getUserDetails();
         String spectator = chat_user.get(ChatRoomManager.SPECTATOR);
@@ -171,7 +170,6 @@ public class ChatActivity extends AppCompatActivity{
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                 String ss =  textField.getText().toString();
-                //Toast.makeText(getBaseContext(),"itemclick" + haschar,Toast.LENGTH_SHORT).show();
                 if (ss.contains("@") && !haschar){
                     haschar = true;
                     //Start Tagging here
@@ -232,7 +230,6 @@ public class ChatActivity extends AppCompatActivity{
     }
 
     private void pageCount(final DatabaseReference root) {
-        final String key = root.getKey();
         root.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData currentData) {
@@ -270,7 +267,7 @@ public class ChatActivity extends AppCompatActivity{
     }
 
     private void goChatFragment(){
-                                /* initilize Chat Fragment*/
+        /* initilize Chat Fragment*/
         Log.d("CHATFRAG" , "initialize ChatFragment : ");
         final FragmentManager fragmentManager = this.getSupportFragmentManager();
         final Class fragmentClass = ChatFragment.class;
@@ -319,10 +316,6 @@ public class ChatActivity extends AppCompatActivity{
         else{
             Toast.makeText(getApplicationContext(), "Please enter a message", Toast.LENGTH_LONG).show();
         }
-/*
-        RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
-        int pos = chatAdapter.getItemCount()-1;
-        manager.scrollToPosition(pos);*/
     }
 
     private void checkCommentNum(final String messageBy, final String messageText) {
@@ -465,10 +458,8 @@ public class ChatActivity extends AppCompatActivity{
 
             //toolbar back selected_page_button listener
             case android.R.id.home:
-
                 onBackPressed();
                 return true;
-
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -479,7 +470,6 @@ public class ChatActivity extends AppCompatActivity{
         addButton.setVisibility(View.GONE);
         timerTv.setVisibility(View.GONE);
         useCoinBt.setVisibility(View.GONE);
-
         textArea.setVisibility(View.GONE);
         textButtons.setVisibility(View.GONE);
     }
@@ -603,10 +593,8 @@ public class ChatActivity extends AppCompatActivity{
                 new CountDownTimer(remainingTime, 1000) {
 
                     public void onTick(long millisUntilFinished) {
-                        //blockMSG();
                         //keeps track of current cooldown
-                        currentCooldown = millisUntilFinished;
-                        //timerTv.setText(millisUntilFinished / 1000 + " s");
+                        currentTimeLeft = millisUntilFinished;
                     }
 
                     public void onFinish() {
@@ -621,7 +609,6 @@ public class ChatActivity extends AppCompatActivity{
                 new CountDownTimer(inactiveTime, 1000) {
 
                     public void onTick(long millisUntilFinished) {
-                        //blockMSG();
                         //keeps track of current cooldown
                         currentCooldown = millisUntilFinished;
                         //timerTv.setText(millisUntilFinished / 1000 + " s");

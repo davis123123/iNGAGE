@@ -88,8 +88,6 @@ public class CategoriesPageFragment extends FragmentBase implements ThreadListAd
             public void onLoadMore() {
 
                 Log.d("haint", "Load More");
-                //threadListAdapter.list.add(null);
-                //threadListAdapter.notifyItemInserted(threadListAdapter.list.size() - 1);
                 rowCount += 10;
                 Thread getJSON = new Thread(new Runnable() {
                     @Override
@@ -133,13 +131,6 @@ public class CategoriesPageFragment extends FragmentBase implements ThreadListAd
                         threadListAdapter.isLoading = true;
                         threadListAdapter.list.add(null);
                         threadListAdapter.mOnLoadMoreListener.onLoadMore();
-                        //}
-                        //loading = false;
-
-                        //rowCount += 10;
-                        //getThreadsJSON(rowCount);
-                        //inflateThreads();
-                        //Do pagination.. i.e. fetch new data
                     }
                 }
             }
@@ -164,11 +155,6 @@ public class CategoriesPageFragment extends FragmentBase implements ThreadListAd
             e.printStackTrace();
         }
     }
-
-    public void goInsertThread(){
-        startActivity(new Intent(getActivity(),PostThreadActivity.class));
-    }
-
 
     @Override
     public void onContainerClick(int p) {
@@ -198,20 +184,6 @@ public class CategoriesPageFragment extends FragmentBase implements ThreadListAd
                 thread_date = JO.getString("thread_date");
                 thread_category = JO.getString("thread_category");
                 thread_img = JO.getString("thread_image_link");
-                /*DownloadImageHandler dlHandler = new DownloadImageHandler(getContext());
-                String type = "download";
-
-                //String thread_id = threadsHelper.getThread_id();
-
-                //do conversion
-                try {
-                    thread_img_bitmap = dlHandler.execute(type, thread_id).get();
-                    //Log.d("STATE", "room title: " + threadsHelper.getThread_title());
-                    Log.d("STATE", "download thread img result: " + result);
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
-                }
-                Log.d("THREAD_BITMAP","result" + thread_img_bitmap);*/
                 ThreadsHelper threadsHelper = new ThreadsHelper(thread_id, thread_title,
                         thread_content, thread_by, thread_date, thread_category, thread_img);
                 threadListAdapter.add(threadsHelper);

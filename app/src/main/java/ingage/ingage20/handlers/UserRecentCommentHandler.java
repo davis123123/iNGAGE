@@ -176,7 +176,4 @@ public class UserRecentCommentHandler {
         UserProfileActivity.recentComments.addAll(Arrays.asList(arr));
         //i think this is a very bad desgin pattern?
     }
-
-
-
 }
