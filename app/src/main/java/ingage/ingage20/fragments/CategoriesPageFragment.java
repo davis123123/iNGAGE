@@ -173,7 +173,6 @@ public class CategoriesPageFragment extends FragmentBase implements ThreadListAd
             jsonArray = jsonObject.getJSONArray("server_response");
             int count = 0;
             String thread_id, thread_title, thread_content, thread_by, thread_date, thread_category;
-            String thread_img_bitmap = null;
             String thread_img = null;
             while (count < jsonArray.length()) {
                 JSONObject JO = jsonArray.getJSONObject(count);

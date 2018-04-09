@@ -122,7 +122,6 @@ public class LoginActivity extends AppCompatActivity implements SharedPreference
     public void goMain() {
         loadingDialog();
         Intent intent = new Intent(this, MainActivity.class);
-        //intent.putExtra("thread_subs", thread_subs);
         startActivity(intent);
         finish();
     }
@@ -151,15 +150,10 @@ public class LoginActivity extends AppCompatActivity implements SharedPreference
             }
 
             Log.e("login status: ", loginStatus);
-            /**toast = Toast.makeText(this, loginStatus, Toast.LENGTH_LONG);
-             toast.show();**/
             if (loginStatus.equals("login failed")) {
-                //pd.dismiss();
                 alert.showAlertDialog(LoginActivity.this, "Login failed..", "Username/Password is incorrect", false);
                 usernameEt.getText().clear();
                 passwordEt.getText().clear();
-            } else if (loginStatus.equals("error getting token")) {
-                //pd.dismiss();
                 alert.showAlertDialog(LoginActivity.this, "Login failed..", "Please try again later", false);
                 Log.e("STATE", "Token not Registered");
                 usernameEt.getText().clear();

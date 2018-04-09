@@ -295,12 +295,6 @@ public class MainActivity extends AppCompatActivity
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         UserProfileActivity.recentComments.clear();
-
-        //viewPager = (ViewPager) findViewById(R.id.viewpager);
-        //setupViewPager(viewPager);
-
-        //tabLayout.setupWithViewPager(viewPager);
-
     }
 
     private void initTabs(){
@@ -395,48 +389,6 @@ public class MainActivity extends AppCompatActivity
         announcement.setSelected(true);
 
     }
-
- /*   private void setupViewPager(ViewPager viewPager) {
-        final Class fragmentClass = FrontPageFragment.class;
-        final Fragment mainFragment = Fragment.instantiate(this, fragmentClass.getName());
-        final Fragment trendingFragment = Fragment.instantiate(this, fragmentClass.getName());
-        final Fragment newFragment = Fragment.instantiate(this, fragmentClass.getName());
-        final ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(mainFragment, "Home");
-        adapter.addFragment(trendingFragment, "Trending");
-        adapter.addFragment(newFragment, "New");
-        viewPager.setAdapter(adapter);
-
-        ViewPager.OnPageChangeListener pagechangelistener =new ViewPager.OnPageChangeListener() {
-
-            @Override
-            public void onPageSelected(int pos) {
-
-                adapter.notifyDataSetChanged();
-                Log.i("STATE", "Pg selected: " + pos);
-               /* if(pos == 1)
-                    onTrend();
-                else if (pos == 2)
-                    onNew();*/
-                //indicator.setCurrentItem(arg0);
-         /*   }
-
-            @Override
-            public void onPageScrolled(int arg0, float arg1, int arg2) {
-
-                //Logger.logMessage("Called second");
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int arg0) {
-
-                //Logger.logMessage("Called third");
-
-            }
-        };
-        viewPager.setOnPageChangeListener(pagechangelistener);
-    }*/
 
     //get JSON object containing user info
     protected void parseJSON(){
@@ -570,13 +522,6 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
         if(wifiManager.checkInternet())
             downloadAvatar();
-/*
-        if(UserProfileActivity.recentComments.size() == 0) {
-            HashMap<String, String> user = session.getUserDetails();
-            String username = user.get(SessionManager.KEY_NAME);
-            handler = new UserRecentCommentHandler();
-            handler.enqueue(username);
-        }*/
     }
 
     @Override

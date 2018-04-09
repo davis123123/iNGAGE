@@ -180,12 +180,6 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             mSpectateBtn = (ImageButton) itemView.findViewById(R.id.spectateBtn);
             mSpectateBtn.setOnClickListener(this);
 
-            //testing setting a drawable programatically
-            /*if(threadImageView != null)
-                threadImageView.setImageResource(R.drawable.logo);
-            else
-                Log.d("STATE", "img is null");
-*/
             itemView.setOnClickListener(this);
         }
 
@@ -198,8 +192,6 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 Log.d("CLICKSTATE", "specatebtn");
                 itemClickCallback.onSpectateBtnClick(getAdapterPosition());
             }
-            //int clickedPosition = getAdapterPosition();
-            //mOnClickListener.onListItemClick(clickedPosition);
         }
 
         private void getImage(ThreadsHelper helper){
@@ -290,54 +282,8 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 RelativeLayout.LayoutParams spectateParams= (RelativeLayout.LayoutParams) mSpectateBtn.getLayoutParams();
                 spectateParams.addRule(RelativeLayout.BELOW, R.id.img);
                 mSpectateBtn.setLayoutParams(spectateParams);
-
             }
-
-
         }
-
-        //retrieve Base64 from FireBase and convert to image
-  /*      private void getImage(ThreadsHelper threadsHelper){
-            Context context = itemView.getContext();
-            DownloadImageHandler dlHandler = new DownloadImageHandler(context);
-            String type = "download";
-
-            String thread_id = threadsHelper.getThread_id();
-
-            //do conversion
-
-            threadImageView = (ImageView) itemView.findViewById(R.id.img_post);
-            String result = threadsHelper.getThread_img_bitmap();
-            //Log.d("STATE", "room title: " + threadsHelper.getThread_title());
-            Log.d("STATE", "download thread img result: " + result);
-            if(result != null && result.length() > default_path.length()) {
-                int index =result.indexOf(",") + 1;
-                String code = result.substring(index, result.length());
-                byte[] decodedString = Base64.decode(code, Base64.DEFAULT);
-                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                threadImageView.setImageBitmap(decodedByte);
-
-                DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-                int screenHeight = metrics.heightPixels;
-                int imgHeight = (int) (screenHeight * 0.4);
-                Log.v("STATE", "Screenheight: " + screenHeight + ", imgHeight: " + imgHeight);
-
-                LinearLayout.LayoutParams img_params = new LinearLayout.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, imgHeight);
-                threadImageView.setLayoutParams(img_params);
-                threadContentTextView.setText(" ");
-            }
-            else
-                threadImageView.setImageBitmap(null);
-
-
-            //set padding programmatically
-            if(threadImageView.getDrawable() != null) {
-                //float density = context.getResources().getDisplayMetrics().density;
-                //int padding = (int)(20 * density);
-                int padding = convertToDP(context, 20);
-                threadImageView.setPadding(padding, padding, padding, padding);
-            }
-        }   */
 
         public int convertToDP(Context context, int dip){
             float density = context.getResources().getDisplayMetrics().density;

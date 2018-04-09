@@ -44,8 +44,6 @@ public class RecentCommentsAdapter extends RecyclerView.Adapter<RecentCommentsAd
             tvCategory = (TextView) view.findViewById(R.id.tvCategory);
             ivImage = (ImageView) view.findViewById(R.id.ivImage);
             ivSide = (ImageView) view.findViewById(R.id.ivSide);
-
-
         }
 
         private void getImage(RecentComment helper){

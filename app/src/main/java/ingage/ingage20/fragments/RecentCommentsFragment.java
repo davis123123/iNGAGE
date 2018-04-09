@@ -92,8 +92,6 @@ public class RecentCommentsFragment extends Fragment {
 
             rlMessage.setAlpha(0f);
             rlMessage.setVisibility(View.VISIBLE);
-
-
             // Animate the content view to 100% opacity, and clear any animation
             // listener set on the view.
             rlMessage.animate()
@@ -141,9 +139,7 @@ public class RecentCommentsFragment extends Fragment {
                         mLoadingView.setVisibility(View.GONE);
                     }
                 });
-
     }
-
 
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -151,14 +147,11 @@ public class RecentCommentsFragment extends Fragment {
         }
     }
 
-
-
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
     }
-
 
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name

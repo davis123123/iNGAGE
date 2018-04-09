@@ -69,6 +69,6 @@ public class Testadapter extends ArrayAdapter {
 
 
     private static class ThreadHolder{
-        TextView thread_title, thread_content, thread_by, thread_date;
+        TextView thread_title;
     }
 }

@@ -135,7 +135,6 @@ public class ChatPageListFragment extends Fragment implements ChatPageListAdapte
         if(chatPageListAdapter.getItemCount() > 1) {
             Log.d("REFRESHED", "" + p);
             chatActivity.curPage = p;
-            //recyclerView.scrollToPosition(p);
             chatActivity.refreshPage();
         }
         ChatPageListAdapter.ChatPageViewHolder prev =

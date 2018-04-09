@@ -47,10 +47,7 @@ import ingage.ingage20.util.RecentComment;
 public class UserProfileActivity extends AppCompatActivity {
 
     String username, viewType;
-    //Button upload, change;
     ImageView curr_avatar;
-    TextView display_username;
-
     String default_path = "data:image/JPG;base64,";
 
     private TabLayout tabLayout;
@@ -92,8 +89,7 @@ public class UserProfileActivity extends AppCompatActivity {
                 }
             });
         }
-        /*display_username = (TextView) findViewById(R.id.user_name);
-        display_username.setText(username);*/
+
         getSupportActionBar().setTitle(username);
 
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);

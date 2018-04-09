@@ -76,8 +76,6 @@ public class SearchResultFragment extends FragmentBase implements ThreadListAdap
     public void onViewCreated(final View view, final Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
 
-
-
         //TODO fix threadlistadapter for dynamic threads
         threadListRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv_posts);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
