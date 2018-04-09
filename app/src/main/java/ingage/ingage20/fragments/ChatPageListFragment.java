@@ -33,7 +33,6 @@ public class ChatPageListFragment extends Fragment implements ChatPageListAdapte
     View rootView;
     RecyclerView recyclerView;
     ChatPageListAdapter chatPageListAdapter;
-    String totalPageNo;
     ChatRoomManager chatRoomManager;
     ChatActivity chatActivity;
     int currentPage = 1;
@@ -85,7 +84,6 @@ public class ChatPageListFragment extends Fragment implements ChatPageListAdapte
                 recyclerView.scrollToPosition(chatActivity.curPage);
             }
         }, 200);
-
     }
 
     private void pageEventListener(DatabaseReference root) {
@@ -94,8 +92,8 @@ public class ChatPageListFragment extends Fragment implements ChatPageListAdapte
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 appendPage(dataSnapshot);
             }
-            @Override
 
+            @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
             }

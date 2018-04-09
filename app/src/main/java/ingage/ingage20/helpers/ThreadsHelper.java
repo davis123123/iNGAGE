@@ -20,7 +20,6 @@ public class ThreadsHelper {
         this.setThread_date(thread_date);
         this.setThread_category(thread_category);
         this.setThread_img(thread_img);
-
     }
 
     public ThreadsHelper(String thread_id, String thread_title, String thread_content,
@@ -63,7 +62,6 @@ public class ThreadsHelper {
     public String getThread_img() {
         return thread_img;
     }
-
 
     public void setThread_title(String thread_title){
         this.thread_title = thread_title;

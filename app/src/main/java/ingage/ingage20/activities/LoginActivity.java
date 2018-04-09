@@ -1,11 +1,8 @@
 package ingage.ingage20.activities;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
@@ -27,7 +24,6 @@ import java.util.concurrent.ExecutionException;
 import ingage.ingage20.firebase.FirebaseSharedPrefManager;
 import ingage.ingage20.R;
 import ingage.ingage20.managers.WifiManager;
-import ingage.ingage20.util.SignInProvider;
 import ingage.ingage20.handlers.IdentityHandler;
 import ingage.ingage20.managers.AlertDiaLogManager;
 import ingage.ingage20.managers.SessionManager;
@@ -41,7 +37,6 @@ public class LoginActivity extends AppCompatActivity implements SharedPreference
     Button LoginEt;
     CheckBox cbRemember;
     TextView signUpTV;
-    private SignInProvider signInProvider;
     SessionManager session;
     AlertDiaLogManager alert = new AlertDiaLogManager();
     ProgressDialog pd;

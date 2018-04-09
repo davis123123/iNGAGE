@@ -76,7 +76,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ingage.ingage20.activities.UserProfileActivity"/>
         </activity>
-        <activity android:name=".util.test2" />
         <activity
             android:name=".activities.ChatActivity"
             android:screenOrientation="portrait"

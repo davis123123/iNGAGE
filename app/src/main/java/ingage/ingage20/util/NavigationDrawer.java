@@ -173,9 +173,6 @@ public class NavigationDrawer {
 
         if (userName != null) {
             userNameView.setText(userName);
-
-            /**userNameView.setBackgroundColor(
-                    activity.getResources().getColor(R.color.nav_drawer_top_background));**/
         }
     }
 
@@ -226,13 +223,6 @@ public class NavigationDrawer {
 
     public boolean isDrawerOpen() {
         return drawerLayout.isDrawerOpen(GravityCompat.START);}
-
-    /**private void setupSignInButtons() {
-
-        signOutButton = (Button) findViewById(R.id.button_signout);
-        signOutButton.setOnClickListener(this);
-
-    }**/
 
     public void addFeatureToMenu(Configurations.Feature feature) {
         adapter.add(feature);

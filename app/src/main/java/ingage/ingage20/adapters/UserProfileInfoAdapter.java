@@ -28,7 +28,6 @@ public class UserProfileInfoAdapter extends RecyclerView.Adapter<UserProfileInfo
             super(view);
             content = (TextView) view.findViewById(R.id.user_profile_content);
             icon = (ImageView) view.findViewById(R.id.user_profile_icon);
-
         }
     }
 

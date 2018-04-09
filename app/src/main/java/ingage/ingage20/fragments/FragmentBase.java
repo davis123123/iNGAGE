@@ -59,7 +59,6 @@ public class FragmentBase extends Fragment{
 
     Toast mToast;
 
-
     public static class RefreshEvent {}
 
     @Override
@@ -279,4 +278,3 @@ public class FragmentBase extends Fragment{
         }
     }
 }
-
