@@ -36,6 +36,7 @@ public class ChatRoomManager {
     public static final Set<String> none = null;
     public static final String TOTAL_PAGES = "total_pages";
     public static final String CUR_PAGE = "current_page";
+    public static final String TIME_REMAINING = "time_remaining";
 
     public ChatRoomManager(Context context){
         this._context = context;
@@ -52,6 +53,11 @@ public class ChatRoomManager {
         editor.putString(SPECTATOR, spectator);
 
         // commit changes
+        editor.commit();
+    }
+
+    public void updateTimeRemaining(String timeRemaining){
+        editor.putString(TIME_REMAINING, timeRemaining);
         editor.commit();
     }
 

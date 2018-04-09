@@ -63,9 +63,10 @@ public class ChatActivity extends AppCompatActivity{
     EditText textField;
     CountDownTimer mCountDownTimer;
     Button useCoinBt;
-    boolean tagged = false, paused = false, crossedPgeLmt = false, collapsed = true, haschar = false;;
+    boolean tagged = false, paused = false, crossedPgeLmt = false, collapsed = true, haschar = false, threadEnded = false;
     int noPages;
-    public CountDownTimer mKickTimer;
+    CountDownTimer mKickTimer;
+    CountDownTimer mThreadEndTimer;
     DatabaseReference page_root;
     public static int curPage = -1;
     LinearLayout textArea, textButtons;
@@ -79,7 +80,10 @@ public class ChatActivity extends AppCompatActivity{
         session = new SessionManager(getApplicationContext());
         HashMap <String, String> user = session.getUserDetails();
         username = user.get(SessionManager.KEY_NAME);
+
         chatRoomManager = new ChatRoomManager(getApplicationContext());
+        HashMap <String, String> chatRoomManagerUserDetails = chatRoomManager.getUserDetails();
+
         timerTv = (TextView) findViewById(R.id.timertv);
         useCoinBt = (Button) findViewById(R.id.cooldownButton);
 
@@ -111,7 +115,9 @@ public class ChatActivity extends AppCompatActivity{
         HashMap<String, String> chat = chatRoomManager.getUserDetails();
         thread_id = chat.get(ChatRoomManager.THREAD_ID);
         user_side = chat.get(ChatRoomManager.SIDE);
+        long secRemaining = secondsRemaining(chatRoomManagerUserDetails.get(ChatRoomManager.TIME_REMAINING));
         if(user_side != null) {
+            endThreadTimer(secRemaining);
             kickTimer(900000); //fifteen minutes of inactivity will kick user out
             Log.d("STATE", "side: " + user_side);
         }//Does not kick out spectator with timer
@@ -144,6 +150,15 @@ public class ChatActivity extends AppCompatActivity{
             setSpectateMode();
         }
 
+    }
+
+    private long secondsRemaining(String timeRemaining){
+        String[] splittedString = timeRemaining.split(":");
+        long seconds = Integer.parseInt(splittedString[0]) * 360; //get hours into seconds
+        seconds += Integer.parseInt(splittedString[1]) * 60; //get minutes into seconds
+        seconds += Integer.parseInt(splittedString[2]); //get seconds
+        Log.d("TIME REMAINING", ""+seconds);
+        return seconds;
     }
 
     private void textChangeListener(){
@@ -270,6 +285,11 @@ public class ChatActivity extends AppCompatActivity{
 
     private void sendMsg(){
         String messageText = textField.getText().toString();
+
+        if(threadEnded){
+            Toast.makeText(getApplicationContext(), "Debate has ended. You can no longer make anymore arguments.", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         if(messageText.length() > 0) {
             HashMap<String, String> user = session.getUserDetails();
@@ -469,10 +489,17 @@ public class ChatActivity extends AppCompatActivity{
         String side = chat_user.get(ChatRoomManager.SIDE);
         String thread_id = chat_user.get(ChatRoomManager.THREAD_ID);
         String spectator = chat_user.get(ChatRoomManager.SPECTATOR);
+
         if(mKickTimer != null){
             mKickTimer.cancel();
             mKickTimer = null;
         }
+
+        if(mThreadEndTimer != null){
+            mThreadEndTimer.cancel();
+            mThreadEndTimer = null;
+        }
+
         if (spectator.equals("true")){
             String type = "leave_spectate";
             String result = null;
@@ -570,7 +597,26 @@ public class ChatActivity extends AppCompatActivity{
                 }.start();
     }//timer for meesage cooldown
 
-    public void kickTimer(long inactiveTime){
+    private void endThreadTimer(long remainingTime) {
+        remainingTime *= 1000;
+        mThreadEndTimer =
+                new CountDownTimer(remainingTime, 1000) {
+
+                    public void onTick(long millisUntilFinished) {
+                        //blockMSG();
+                        //keeps track of current cooldown
+                        currentCooldown = millisUntilFinished;
+                        //timerTv.setText(millisUntilFinished / 1000 + " s");
+                    }
+
+                    public void onFinish() {
+                        Toast.makeText(getApplicationContext(), "Debate has Ended! Hope you had fun!!", Toast.LENGTH_LONG).show();
+                        threadEnded = true;
+                    }
+                }.start();
+
+    }
+    private void kickTimer(long inactiveTime){
         mKickTimer =
                 new CountDownTimer(inactiveTime, 1000) {
 

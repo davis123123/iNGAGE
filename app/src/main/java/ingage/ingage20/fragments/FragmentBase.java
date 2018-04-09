@@ -74,7 +74,7 @@ public class FragmentBase extends Fragment{
                 final View view = getView();
             }
         }.execute();
-
+        chatRoomManager = new ChatRoomManager(getActivity().getApplicationContext());
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
         // Setup refresh listener which triggers new data loading
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -185,8 +185,11 @@ public class FragmentBase extends Fragment{
             Log.d("Joinchat", result);
             String[] splitResult = result.split("-");
             result = splitResult[1];
+
             String timeRemaining = splitResult[0];
-            Toast.makeText(getActivity(), timeRemaining, Toast.LENGTH_LONG).show();
+            chatRoomManager.updateTimeRemaining(timeRemaining);
+
+            Toast.makeText(getActivity(), "Time remaining on this Debate: " + timeRemaining, Toast.LENGTH_LONG).show();
             goToChat(result);
 
         } else if(result.equals("Number of disagreeing users is at maximum")){
@@ -231,7 +234,6 @@ public class FragmentBase extends Fragment{
             e.printStackTrace();
         }
 
-        chatRoomManager = new ChatRoomManager(getActivity().getApplicationContext());
         chatRoomManager.updateUserRoomSession(thread_id, side, "false");
         return result;
     }
@@ -283,7 +285,6 @@ public class FragmentBase extends Fragment{
             Toast.makeText(getActivity(), "spectate room failed!", Toast.LENGTH_LONG).show();
         }
         else{
-            chatRoomManager = new ChatRoomManager(getActivity().getApplicationContext());
             chatRoomManager.updateUserRoomSession(thread_id, null, "true");
             goToChat(result);
         }
