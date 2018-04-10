@@ -50,19 +50,20 @@
         android:textStyle="italic" />
 
     <TextView
-        android:id="@+id/thread_by_view"
+        android:id="@+id/thread_duration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/thread_category_view"
         android:layout_alignBottom="@+id/thread_category_view"
-        android:layout_marginStart="38dp"
+        android:layout_marginStart="12dp"
         android:layout_toEndOf="@+id/thread_category_view"
         android:fontFamily="sans-serif-condensed"
         android:gravity="left"
-        android:text="user"
+        android:text="3:00:00 remaining"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textSize="18dp"
-        android:textStyle="italic|bold|normal" />
+        android:textColor="#f96868"
+        android:textStyle="italic" />
 
     <ImageButton
         android:id="@+id/spectateBtn"

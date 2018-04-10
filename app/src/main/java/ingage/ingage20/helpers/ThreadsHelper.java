@@ -7,16 +7,16 @@ import android.graphics.Bitmap;
  */
 
 public class ThreadsHelper {
-    private String thread_id, thread_title, thread_content, thread_by, thread_date, thread_category, thread_img;
+    private String thread_id, thread_title, thread_content, thread_date, thread_category, thread_img, thread_duration;
     private String thread_img_bitmap;
 
 
     public ThreadsHelper(String thread_id, String thread_title, String thread_content,
-                         String thread_by, String thread_date, String thread_category, String thread_img){
+                         String thread_duration, String thread_date, String thread_category, String thread_img){
         this.setThread_id(thread_id);
         this.setThread_title(thread_title);
         this.setThread_content(thread_content);
-        this.setThread_by(thread_by);
+        this.setThread_by(thread_duration);
         this.setThread_date(thread_date);
         this.setThread_category(thread_category);
         this.setThread_img(thread_img);
@@ -49,8 +49,8 @@ public class ThreadsHelper {
         return thread_content;
     }
 
-    public String getThread_by(){
-        return thread_by;
+    public String getThread_duration(){
+        return thread_duration;
     }
 
     public String getThread_date(){
@@ -71,8 +71,8 @@ public class ThreadsHelper {
         this.thread_content = thread_content;
     }
 
-    public void setThread_by(String thread_by){
-        this.thread_by = thread_by;
+    public void setThread_by(String thread_duration){
+        this.thread_duration = thread_duration;
     }
 
     public void setThread_date(String thread_date){

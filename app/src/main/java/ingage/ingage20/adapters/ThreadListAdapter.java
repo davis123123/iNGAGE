@@ -161,7 +161,7 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     class ThreadViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        TextView threadTitleTextView, threadByTextView, threadCategoryTextView, threadContentTextView ;
+        TextView threadTitleTextView, threadDurationTextView, threadCategoryTextView, threadContentTextView ;
         ImageView threadImageView;
         View container;
         ImageButton mSpectateBtn;
@@ -169,7 +169,7 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         public ThreadViewHolder(View itemView) {
             super(itemView);
             threadTitleTextView = (TextView) itemView.findViewById(R.id.thread_title_view);
-            threadByTextView = (TextView) itemView.findViewById(R.id.thread_by_view);
+            threadDurationTextView = (TextView) itemView.findViewById(R.id.thread_duration);
             threadCategoryTextView = (TextView) itemView.findViewById(R.id.thread_category_view);
             threadImageView = (ImageView) itemView.findViewById(R.id.img_post);
             threadContentTextView = (TextView) itemView.findViewById(R.id.thread_content);
@@ -247,7 +247,8 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         private void bind(int listIndex){
             ThreadsHelper threadsHelper = (ThreadsHelper) getItem(listIndex);
             threadTitleTextView.setText(threadsHelper.getThread_title());
-            threadByTextView.setText(threadsHelper.getThread_by());
+            //threadByTextView.setText(threadsHelper.getThread_by());
+            threadDurationTextView.setText(threadsHelper.getThread_duration());
             threadCategoryTextView.setText(threadsHelper.getThread_category());
             threadContentTextView.setVisibility(View.INVISIBLE);
 

@@ -301,7 +301,7 @@ public class MainActivity extends AppCompatActivity
         tabLayout = (TabLayout) findViewById(R.id.tabs);
 
         TabLayout.Tab homeTab = tabLayout.newTab().setText("Home");
-        TabLayout.Tab newTab = tabLayout.newTab().setText("New");
+        TabLayout.Tab newTab = tabLayout.newTab().setText("Archive");
         TabLayout.Tab trendingTab = tabLayout.newTab().setText("Trending");
 
         tabLayout.addTab(homeTab);
