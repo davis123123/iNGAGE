@@ -2,6 +2,7 @@ package ingage.ingage20.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
@@ -38,6 +41,9 @@ public class FragmentBase extends Fragment{
     protected RecyclerView threadListRecyclerView;
     ThreadListAdapter threadListAdapter;
     View rootView;
+    TextView msg;
+    ImageView icon;
+
     SessionManager session;
     HashMap<String, String> user;
 
@@ -79,6 +85,12 @@ public class FragmentBase extends Fragment{
         user = session.getUserDetails();
         chatRoomManager = new ChatRoomManager(getActivity().getApplicationContext());
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
+        msg = (TextView) view.findViewById(R.id.tvMsg);
+        icon = (ImageView) view.findViewById(R.id.ivIcon);
+
+        int color = getContext().getResources().getColor(R.color.gray);
+        icon.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+
         // Setup refresh listener which triggers new data loading
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -89,7 +101,19 @@ public class FragmentBase extends Fragment{
         });
         // Configure the refreshing colors
         swipeContainer.setColorSchemeResources(android.R.color.holo_red_light, android.R.color.darker_gray);
+        checkIfNoThreads();
+    }
 
+    //If there's no threads, then display helper message
+    private void checkIfNoThreads(){
+        if (threadListAdapter.getItemCount() == 0) {
+            msg.setVisibility(View.VISIBLE);
+            icon.setVisibility(View.VISIBLE);
+        }
+        else {
+            msg.setVisibility(View.GONE);
+            icon.setVisibility(View.GONE);
+        }
     }
 
     @Override

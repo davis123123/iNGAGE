@@ -44,6 +44,7 @@
 
     <!-- Strings related to Post display-->
     <string name="action_refresh">Refresh</string>
+    <string name="no_rooms_message">No rooms available. Try creating one now!</string>
 
     <!--Strings related to posting thread-->
     <string name="post_description_hint">Enter description here</string>
