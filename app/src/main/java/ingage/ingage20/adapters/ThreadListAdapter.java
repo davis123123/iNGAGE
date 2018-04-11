@@ -164,7 +164,7 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         TextView threadTitleTextView, threadDurationTextView, threadCategoryTextView, threadContentTextView ;
         ImageView threadImageView;
         View container;
-        ImageButton mSpectateBtn;
+        Button mSpectateBtn;
 
         public ThreadViewHolder(View itemView) {
             super(itemView);
@@ -177,7 +177,7 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             container = itemView.findViewById(R.id.thread_row_root);
             container.setOnClickListener(this);
 
-            mSpectateBtn = (ImageButton) itemView.findViewById(R.id.spectateBtn);
+            mSpectateBtn = (Button) itemView.findViewById(R.id.spectateBtn);
             mSpectateBtn.setOnClickListener(this);
 
             itemView.setOnClickListener(this);
@@ -280,8 +280,8 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 int margin = convertToDP(itemView.getContext(), 20);
                 params.setMargins(margin, 0, margin, 0);
                 threadContentTextView.setLayoutParams(params);
-                RelativeLayout.LayoutParams spectateParams= (RelativeLayout.LayoutParams) mSpectateBtn.getLayoutParams();
-                spectateParams.addRule(RelativeLayout.BELOW, R.id.img);
+                LinearLayout.LayoutParams spectateParams= (LinearLayout.LayoutParams) mSpectateBtn.getLayoutParams();
+                //spectateParams.addRule(RelativeLayout.BELOW, R.id.img);
                 mSpectateBtn.setLayoutParams(spectateParams);
             }
         }

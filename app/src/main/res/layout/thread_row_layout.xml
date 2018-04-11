@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+    android:id="@+id/thread_row_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical"
     android:background="@layout/frame_item"
-    android:id="@+id/thread_row_root"
-    android:layout_marginRight="10dp"
-    android:layout_marginLeft="10dp"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
     android:layout_marginTop="8dp"
-    android:layout_marginBottom="8dp"
-    android:padding="10dp">
+    android:layout_marginBottom="8dp">
 
     <TextView
         android:id="@+id/thread_title_view"
@@ -19,9 +16,9 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:fontFamily="sans-serif"
-        android:textColor="#f96868"
-        android:text="Title"
         android:gravity="left"
+        android:text="Title"
+        android:textColor="#f96868"
         android:textSize="22dp" />
 
     <TextView
@@ -29,73 +26,98 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/thread_title_view"
+        android:layout_marginBottom="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginBottom="20dp"
         android:text="Description goes here"
         android:textColor="#000000" />
 
-    <TextView
-        android:id="@+id/thread_category_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/spectateBtn"
-        android:layout_alignBottom="@+id/spectateBtn"
-        android:layout_alignStart="@+id/thread_title_view"
-        android:fontFamily="sans-serif"
-        android:gravity="left"
-        android:text="Category"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:textSize="18dp"
-        android:textStyle="italic" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/img"
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/thread_duration"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/thread_category_view"
-        android:layout_alignBottom="@+id/thread_category_view"
-        android:layout_marginStart="12dp"
-        android:layout_toEndOf="@+id/thread_category_view"
-        android:fontFamily="sans-serif-condensed"
-        android:gravity="left"
-        android:text="3:00:00 remaining"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textSize="18dp"
-        android:textColor="#f96868"
-        android:textStyle="italic" />
+        <TextView
+            android:id="@+id/thread_category_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/spectateBtn"
+            android:layout_alignStart="@+id/thread_title_view"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif"
+            android:gravity="left"
+            android:text="Category"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textSize="18dp"
+            android:textColor="@color/gray"
+            android:textStyle="italic" />
 
-    <ImageButton
-        android:id="@+id/spectateBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/thread_content"
-        android:layout_below="@+id/thread_content"
-        android:src="@android:drawable/ic_menu_view"
-        android:background="@drawable/page_list_button"
-        android:layout_alignParentEnd="true"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:paddingLeft="25dp"
-        android:paddingRight="25dp"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/gray" />
+
+        <TextView
+            android:id="@+id/thread_duration"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/thread_category_view"
+            android:layout_alignBottom="@+id/thread_category_view"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:layout_toEndOf="@+id/thread_category_view"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="left"
+            android:text="3:00:00 remaining"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/gray"
+            android:textSize="18dp"
+            android:textStyle="italic"
+            android:layout_weight="1"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/gray" />
+
+        <Button
+            android:id="@+id/spectateBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/thread_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/thread_content"
+            android:drawableLeft="@android:drawable/ic_dialog_dialer"
+            android:text="Spectate"
+            android:textColor="@color/gray"
+            android:layout_margin="8dp"
+            android:background="#ffffff"
+            android:layout_weight="1"/>
+    </LinearLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:id="@+id/img"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/thread_content"
-        android:id="@+id/img">
+        android:orientation="horizontal">
 
         <ImageView
+            android:id="@+id/img_post"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/img_post"
-            android:scaleType="fitXY"
+            android:background="#E8E8E8"
             android:gravity="center_horizontal"
-            android:background="#E8E8E8" />
+            android:scaleType="fitXY" />
 
     </LinearLayout>
-
 
 
     <!-- SHOULD OR SHOULDNOT DISPLAY CONTENT IN VIEW?
