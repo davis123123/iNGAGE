@@ -51,7 +51,8 @@
                 android:maxLines="1"
                 android:background="@layout/textfield"
                 android:paddingLeft="10dp"
-                />
+                android:singleLine="true"
+                android:imeOptions="actionNext"/>
 
             <EditText
                 android:id="@+id/sign_up_username"
@@ -65,7 +66,8 @@
                 android:maxLines="1"
                 android:background="@layout/textfield"
                 android:paddingLeft="10dp"
-                />
+                android:singleLine="true"
+                android:imeOptions="actionNext"/>
             <EditText
                 android:id="@+id/sign_up_password"
                 android:layout_width="fill_parent"
@@ -79,7 +81,8 @@
                 android:maxLines="1"
                 android:background="@layout/textfield"
                 android:paddingLeft="10dp"
-                />
+                android:singleLine="true"
+                android:imeOptions="actionNext"/>
 
             <EditText
                 android:id="@+id/retype_password"
@@ -94,7 +97,8 @@
                 android:maxLines="1"
                 android:background="@layout/textfield"
                 android:paddingLeft="10dp"
-                />
+                android:singleLine="true"
+                android:imeOptions="actionNext"/>
             <EditText
                 android:id="@+id/sign_up_email"
                 android:layout_width="fill_parent"
@@ -106,7 +110,9 @@
                 android:hint="@string/prompt_email"
                 android:maxLines="1"
                 android:background="@layout/textfield"
-                android:paddingLeft="10dp"/>
+                android:paddingLeft="10dp"
+                android:singleLine="true"
+                android:imeOptions="actionDone"/>
             <Button
                 android:id="@+id/sign_up_button"
                 style="?android:textAppearanceSmall"
