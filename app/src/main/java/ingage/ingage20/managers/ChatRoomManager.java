@@ -84,6 +84,7 @@ public class ChatRoomManager {
         user.put(SPECTATOR, pref.getString(SPECTATOR, null));
         user.put(TOTAL_PAGES, pref.getString(TOTAL_PAGES, null));
         user.put(CUR_PAGE, pref.getString(CUR_PAGE, null));
+        user.put(TIME_REMAINING, pref.getString(TIME_REMAINING, null));
         // return user
         return user;
     }
