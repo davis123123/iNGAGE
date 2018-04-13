@@ -39,10 +39,10 @@ public class FragmentBase extends Fragment{
 
     Context mContext;
     protected RecyclerView threadListRecyclerView;
-    ThreadListAdapter threadListAdapter;
+    static ThreadListAdapter threadListAdapter;
     View rootView;
-    TextView msg;
-    ImageView icon;
+    static TextView msg;
+    static ImageView icon;
 
     SessionManager session;
     HashMap<String, String> user;
@@ -101,12 +101,12 @@ public class FragmentBase extends Fragment{
         });
         // Configure the refreshing colors
         swipeContainer.setColorSchemeResources(android.R.color.holo_red_light, android.R.color.darker_gray);
-        checkIfNoThreads();
     }
 
     //If there's no threads, then display helper message
-    private void checkIfNoThreads(){
-        if (threadListAdapter.getItemCount() == 0) {
+    public static void checkIfNoThreads(int total){
+        Log.d("search count ", String.valueOf(total));
+        if (total < 1) {
             msg.setVisibility(View.VISIBLE);
             icon.setVisibility(View.VISIBLE);
         }

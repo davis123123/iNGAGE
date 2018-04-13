@@ -201,10 +201,10 @@ public class SearchResultFragment extends FragmentBase implements ThreadListAdap
 
 
     void inflateThreads() {
+        int count = 0;
         try {
             jsonObject = new JSONObject(json_string);
             jsonArray = jsonObject.getJSONArray("server_response");
-            int count = 0;
             String thread_id, thread_title, thread_content, thread_by, thread_date, thread_category;
             String thread_img_bitmap = null;
             String thread_img = null;
@@ -241,5 +241,6 @@ public class SearchResultFragment extends FragmentBase implements ThreadListAdap
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        checkIfNoThreads(count);
     }
 }
