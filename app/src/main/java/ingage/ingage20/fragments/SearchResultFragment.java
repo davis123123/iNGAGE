@@ -169,10 +169,14 @@ public class SearchResultFragment extends FragmentBase implements ThreadListAdap
         HashMap<String, String> user = session.getUserDetails();
         String type = user.get(SessionManager.PAGE_TYPE);
         try {
-        json_string = searchHandler.execute(String.valueOf(rowCount), searchString).get();
-        Log.d("STATE" , "query result : " + json_string);
-        threadListAdapter.setLoaded(false);
-        inflateThreads();
+            json_string = searchHandler.execute(String.valueOf(rowCount), searchString).get();
+            Log.d("STATE" , "query result : " + json_string);
+            if(json_string.equals("No results"))
+                Toast.makeText(getActivity(), "No search results", Toast.LENGTH_LONG).show();
+            else {
+                threadListAdapter.setLoaded(false);
+                inflateThreads();
+            }
         } catch (InterruptedException e) {
         e.printStackTrace();
         } catch (ExecutionException e) {

@@ -543,11 +543,15 @@ public class MainActivity extends AppCompatActivity
 
                 final Fragment fragment = Fragment.instantiate(getApplicationContext(), fragmentClass.getName());
 
-                fragmentManager
-                        .beginTransaction()
-                        .replace(R.id.main_fragment_container, fragment, fragmentClass.getSimpleName())
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .commit();
+                if(s.length() >= 3) {
+                    fragmentManager
+                            .beginTransaction()
+                            .replace(R.id.main_fragment_container, fragment, fragmentClass.getSimpleName())
+                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                            .commit();
+                }
+                else
+                    Toast.makeText(getApplicationContext(), "Search needs to be at least 3 characters long", Toast.LENGTH_LONG).show();
                 return false;
             }
 
