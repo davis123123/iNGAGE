@@ -60,6 +60,7 @@ import java.util.concurrent.ExecutionException;
 
 import ingage.ingage20.adapters.DrawerAdapter;
 import ingage.ingage20.firebase.FirebaseSharedPrefManager;
+import ingage.ingage20.fragments.CategoriesFragment;
 import ingage.ingage20.fragments.CategoriesPageFragment;
 import ingage.ingage20.fragments.FragmentBase;
 import ingage.ingage20.fragments.SearchResultFragment;
@@ -78,7 +79,7 @@ import ingage.ingage20.managers.SessionManager;
 import ingage.ingage20.adapters.ViewPagerAdapter;
 
 public class MainActivity extends AppCompatActivity
-        implements View.OnClickListener {
+        implements View.OnClickListener, CategoriesFragment.categoriesFragmentListener {
 
     /** Alert Dialogue used for failed sign-out**/
     AlertDiaLogManager alert = new AlertDiaLogManager();
@@ -96,17 +97,16 @@ public class MainActivity extends AppCompatActivity
     Context mContext;
     /** The toolbar view control. */
     private Toolbar toolbar;
-    protected static ArrayList<String> subs = new ArrayList<>();
+    public static ArrayList<String> subs = new ArrayList<>();
 
     private Button   signOutButton;
     protected ImageView avatar;
     protected TextView userName;
     String default_path = "data:image/JPG;base64,";
 
-    public static ArrayAdapter<String> adapter = null;
+    //public static ArrayAdapter<String> adapter = null;
 
     public static String appToken;
-    ListView lvItems;
     RecyclerView options;
     android.support.v7.widget.SearchView searchView;
 
@@ -144,11 +144,10 @@ public class MainActivity extends AppCompatActivity
      */
     private void setupNavigationMenu(final Bundle savedInstanceState) {
         final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        final ListView drawerItems = (ListView) findViewById(R.id.nav_drawer_items);
+        //final ListView drawerItems = (ListView) findViewById(R.id.nav_drawer_items);
 
         // Create the navigation drawer.
-        navigationDrawer = new NavigationDrawer(this, toolbar, drawerLayout, drawerItems,
-                R.id.main_fragment_container, mContext);
+        navigationDrawer = new NavigationDrawer(this, toolbar, drawerLayout, R.id.main_fragment_container, mContext);
 
         //FOR DISPLAYING CATEGORIES
         /**for (Configurations.Feature feature : Configurations.getFeatureList()) {
@@ -164,11 +163,11 @@ public class MainActivity extends AppCompatActivity
     protected void setupNavigationDrawer(){
 
         //set up array adapter for subscribed categories
-        lvItems = (ListView) findViewById(R.id.nav_drawer_items);
+        /*lvItems = (ListView) findViewById(R.id.nav_drawer_items);
         adapter=new ArrayAdapter<String>(this, R.layout.lv_item, subs);
         lvItems.setAdapter(adapter);
         setupSubscriptionsListener();
-        adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();*/
 
         //set up recycler view adapter for drawer options
         options = (RecyclerView) findViewById(R.id.options);
@@ -261,7 +260,7 @@ public class MainActivity extends AppCompatActivity
         setupToolbar(savedInstanceState);
 
         /**RecyclerView (TEMPORARY, MOVE TO A FRAGMENT LATER)**/
-        ListView lvItems;
+        //ListView lvItems;
 
         wifiManager = new WifiManager(getBaseContext());
 
@@ -302,7 +301,7 @@ public class MainActivity extends AppCompatActivity
 
         TabLayout.Tab homeTab = tabLayout.newTab().setText("Home");
         TabLayout.Tab newTab = tabLayout.newTab().setText("Archive");
-        TabLayout.Tab trendingTab = tabLayout.newTab().setText("Trending");
+        TabLayout.Tab trendingTab = tabLayout.newTab().setText("Categories");
 
         tabLayout.addTab(homeTab);
         tabLayout.addTab(newTab);
@@ -335,28 +334,12 @@ public class MainActivity extends AppCompatActivity
 
                 tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
                 if (position == 0) {
-                    Class fragmentClass = FrontPageFragment.class;
-                    pageType = "date";
-                    session.updatePage(pageType);
-
-                    final Fragment fragment = Fragment.instantiate(MainActivity.this, fragmentClass.getName());
-
-                    fragmentManager
-                            .beginTransaction()
-                            .replace(R.id.main_fragment_container, fragment, fragmentClass.getSimpleName())
-                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                            .commit();
-
-                    // Set the title for the fragment.
-                    final ActionBar actionBar = getSupportActionBar();
-                    if (actionBar != null) {
-                        actionBar.setTitle(getString(R.string.app_name));
-                    }
-                    //session.updateCategory("");
+                    onHome();
                 } else if (position == 1)
                     onNew();
                 else if (position == 2)
-                    onTrend();
+                    //onTrend();
+                    onCategories();
             }
 
             @Override
@@ -432,6 +415,7 @@ public class MainActivity extends AppCompatActivity
         thread_subscriptions = thread_subscriptions.replace("]"," ");
 
         String arr[] = thread_subscriptions.split(",");
+        subs.clear();
         for(int i = 0; i < arr.length; i++) {
             arr[i] = arr[i].substring(arr[i].lastIndexOf(":") + 1);
             arr[i] = arr[i].replace("\"","");
@@ -443,7 +427,7 @@ public class MainActivity extends AppCompatActivity
         return subs;
     }
 
-    private void setupSubscriptionsListener() {
+   /* private void setupSubscriptionsListener() {
         final FragmentManager fragmentManager = this.getSupportFragmentManager();
         lvItems.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
             @Override
@@ -465,7 +449,7 @@ public class MainActivity extends AppCompatActivity
                 navigationDrawer.closeDrawer();
             }
         });
-    }
+    }*/
 
     @Override
     public void onBackPressed() {
@@ -500,14 +484,8 @@ public class MainActivity extends AppCompatActivity
     protected void onStart(){
         super.onStart();
         if(wifiManager.checkInternet()) {
-            adapter.clear();
-            adapter.notifyDataSetChanged();
 
             parseJSON();
-            lvItems = (ListView) findViewById(R.id.nav_drawer_items);
-            adapter = new ArrayAdapter<String>(this, R.layout.lv_item, subs);
-            lvItems.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
         }
         else{
             wifiErrorDialog();
@@ -647,6 +625,55 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+    @Override
+    public void onCategorySelected(String item) {
+        session.updateCategory(item);
+        session.updatePage("categoryDate");
+        final Class fragmentClass = CategoriesPageFragment.class;
+
+        final Fragment fragment = Fragment.instantiate(getApplicationContext(), fragmentClass.getName());
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.main_fragment_container, fragment, fragmentClass.getSimpleName())
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit();
+
+        tabLayout.getTabAt(0).select();
+    }
+
+    private Fragment onHome(){
+        Class fragmentClass = FrontPageFragment.class;
+        //pageType = "date";
+        //session.updatePage(pageType);
+        final Fragment fragment;
+        HashMap<String, String> user = session.getUserDetails();
+
+        if(user.get(SessionManager.CATEGORY_TYPE) != null){
+            fragmentClass = CategoriesPageFragment.class;
+            session.updatePage("categoryDate");
+            fragment = Fragment.instantiate(this, fragmentClass.getName());
+        }//category
+        else{
+            session.updatePage("date");
+            fragment = Fragment.instantiate(this, fragmentClass.getName());
+        }//frontpage
+
+        //fragment = Fragment.instantiate(MainActivity.this, fragmentClass.getName());
+
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.main_fragment_container, fragment, fragmentClass.getSimpleName())
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit();
+
+        // Set the title for the fragment.
+        final ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(getString(R.string.app_name));
+        }
+        return fragment;
+    }
+
     private Fragment onNew() {
         final FragmentManager fragmentManager = this.getSupportFragmentManager();
         Class fragmentClass = FrontPageFragment.class;
@@ -662,6 +689,27 @@ public class MainActivity extends AppCompatActivity
             session.updatePage("date");
             fragment = Fragment.instantiate(this, fragmentClass.getName());
         }//frontpage
+
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.main_fragment_container, fragment, fragmentClass.getSimpleName())
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit();
+
+        // Set the title for the fragment.
+        final ActionBar actionBar = this.getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(getString(R.string.app_name));
+        }
+        return fragment;
+    }
+
+    private Fragment onCategories() {
+        final FragmentManager fragmentManager = this.getSupportFragmentManager();
+        Class fragmentClass = CategoriesFragment.class;
+        final Fragment fragment;
+        session.updatePage("categoryDate");
+        fragment = Fragment.instantiate(this, fragmentClass.getName());
 
         fragmentManager
                 .beginTransaction()

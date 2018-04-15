@@ -134,8 +134,6 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerHold
                 session.logoutUser();
                 Intent intent = new Intent(context, LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                MainActivity.adapter.clear();
-                MainActivity.adapter.notifyDataSetChanged();
                 context.startActivity(intent);
 
                 Toast.makeText(context, "Successfully signed out!", Toast.LENGTH_SHORT).show();

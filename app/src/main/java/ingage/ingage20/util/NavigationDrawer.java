@@ -47,7 +47,6 @@ public class NavigationDrawer {
     /**
      * The view group that will contain the navigation drawer submit_post_toolbar items.
      */
-    private ListView drawerItems;
 
 
     /**
@@ -65,17 +64,14 @@ public class NavigationDrawer {
      * @param activity             the activity that will contain this navigation drawer.
      * @param toolbar              the toolbar the activity is using.
      * @param layout               the DrawerLayout for this navigation drawer.
-     * @param drawerItemsContainer the parent view group for the navigation drawer items.
      */
     public NavigationDrawer(final android.support.v7.app.AppCompatActivity activity,
                             final Toolbar toolbar,
                             final DrawerLayout layout,
-                            final ListView drawerItemsContainer,
                             final int fragmentContainerId,
                             Context context) {
         // Keep a reference to the activity containing this navigation drawer.
         this.containingActivity = activity;
-        this.drawerItems = drawerItemsContainer;
         mContext = context;
 
         adapter = new ArrayAdapter<Configurations.Feature>(activity, R.layout.nav_drawer_item) {
@@ -91,37 +87,7 @@ public class NavigationDrawer {
             }
         };
 
-        drawerItems.setAdapter(adapter);
-        drawerItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(final AdapterView<?> parent, final View view,
-                                    final int position, final long id) {
-                final FragmentManager fragmentManager = activity.getSupportFragmentManager();
 
-                // Clear back stack when navigating from the Nav Drawer.
-                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
-                if (position == 0) {
-                    // home
-                    showHome();
-                    return;
-                }
-
-                /**
-                 *
-                 * FOR ADDING MORE FEATURES INTO NAVIGATION DRAWER
-                 *
-                 *
-                 Configurations.Features item = adapter.getItem(position);
-                 activity.getSupportFragmentManager()
-                 .beginTransaction()
-                 .replace(fragmentContainerId, item.name)
-                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                 .commit();
-                 **/
-                closeDrawer();
-            }
-        });
         this.drawerLayout = layout;
         this.fragmentContainerId = fragmentContainerId;
 
