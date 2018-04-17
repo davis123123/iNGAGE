@@ -664,21 +664,14 @@ public class MainActivity extends AppCompatActivity
     public void onCategorySelected(String item) {
         if(item.equals("All")){
             session.updateCategory(null);
-            onHome();
-            return;
+            tabLayout.getTabAt(0).select();
+            //onHome();
         }
-        session.updateCategory(item);
-        session.updatePage("categoryDate");
-        final Class fragmentClass = CategoriesPageFragment.class;
-
-        final Fragment fragment = Fragment.instantiate(getApplicationContext(), fragmentClass.getName());
-        fragmentManager
-                .beginTransaction()
-                .replace(R.id.main_fragment_container, fragment, fragmentClass.getSimpleName())
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .commit();
-
-        tabLayout.getTabAt(0).select();
+        else {
+            session.updateCategory(item);
+            session.updatePage("categoryDate");
+            tabLayout.getTabAt(0).select();
+        }
     }
 
     private Fragment onHome(){
