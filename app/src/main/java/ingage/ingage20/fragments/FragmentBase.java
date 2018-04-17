@@ -282,6 +282,7 @@ public class FragmentBase extends Fragment{
     public void spectate(int p){
         ThreadsHelper threadsHelper = (ThreadsHelper) threadListAdapter.getItem(p);
         String thread_id = threadsHelper.getThread_id();
+        threadTitle = threadsHelper.getThread_title();
         String type = "spectate";
         String username = user.get(SessionManager.KEY_NAME);
 

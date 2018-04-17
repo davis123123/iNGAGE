@@ -260,31 +260,26 @@ public class MainActivity extends AppCompatActivity
         setupToolbar(savedInstanceState);
 
         /**RecyclerView (TEMPORARY, MOVE TO A FRAGMENT LATER)**/
-        //ListView lvItems;
+        parseJSON();
 
-        wifiManager = new WifiManager(getBaseContext());
+        setupNavigationMenu(savedInstanceState);
+        setupNavigationDrawer();
 
-        if(wifiManager.checkInternet()) {
-            parseJSON();
+        session.updatePage(pageType);
+    /* initilize FrontPage Fragment*/
+        fragmentManager = this.getSupportFragmentManager();
+        final Class fragmentClass = FrontPageFragment.class;
+        final Fragment fragment = Fragment.instantiate(this, fragmentClass.getName());
 
-            setupNavigationMenu(savedInstanceState);
-            setupNavigationDrawer();
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.main_fragment_container, fragment, fragmentClass.getSimpleName())
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit();
 
-            session.updatePage(pageType);
-        /* initilize FrontPage Fragment*/
-            fragmentManager = this.getSupportFragmentManager();
-            final Class fragmentClass = FrontPageFragment.class;
-            final Fragment fragment = Fragment.instantiate(this, fragmentClass.getName());
+        initTabs();
+        initAnnouncement();
 
-            fragmentManager
-                    .beginTransaction()
-                    .replace(R.id.main_fragment_container, fragment, fragmentClass.getSimpleName())
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .commit();
-
-            initTabs();
-            initAnnouncement();
-        }
 
         // Set the title for the fragment.
         final ActionBar actionBar = this.getSupportActionBar();
@@ -486,13 +481,14 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onStart(){
         super.onStart();
-        if(wifiManager.checkInternet()) {
+        /*if(wifiManager.checkInternet()) {
 
             parseJSON();
         }
         else{
             wifiErrorDialog();
-        }
+        }*/
+        parseJSON();
 
         EventBus.getDefault().register(this);
     }
@@ -501,8 +497,8 @@ public class MainActivity extends AppCompatActivity
     protected void onResume()
     {
         super.onResume();
-        if(wifiManager.checkInternet())
-            downloadAvatar();
+        //if(wifiManager.checkInternet())
+        downloadAvatar();
     }
 
     @Override
