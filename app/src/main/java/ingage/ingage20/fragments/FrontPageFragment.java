@@ -206,21 +206,6 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
                 thread_date = JO.getString("thread_date");
                 thread_category = JO.getString("thread_category");
                 thread_img = JO.getString("thread_image_link");
-               /* DownloadImageHandler dlHandler = new DownloadImageHandler(getContext());
-                String type = "download";
-
-                //String thread_id = threadsHelper.getThread_id();
-
-                //do conversion
-                try {
-                    thread_img_bitmap = dlHandler.execute(type, thread_id).get();
-                    //Log.d("STATE", "room title: " + threadsHelper.getThread_title());
-                    Log.d("STATE", "download thread img result: " + result);
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
-                }
-                Log.d("THREAD_BITMAP","result" + thread_img_bitmap);*/
-                //thread_img_bitmap = "asdf";
                 ThreadsHelper threadsHelper = new ThreadsHelper(thread_id, thread_title,
                         thread_content, thread_by, thread_date, thread_category, thread_img);
                 threadListAdapter.add(threadsHelper);

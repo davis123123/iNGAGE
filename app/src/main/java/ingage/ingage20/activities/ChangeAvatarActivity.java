@@ -154,7 +154,6 @@ public class ChangeAvatarActivity extends AppCompatActivity {
     }
 
     protected void setListeners(){
-
         //upload avatar
         new_avatar_preview.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -234,7 +233,6 @@ public class ChangeAvatarActivity extends AppCompatActivity {
                                 .into(new_avatar_preview, new Callback() {
                                     @Override
                                     public void onSuccess() {
-
                                     }
 
                                     @Override

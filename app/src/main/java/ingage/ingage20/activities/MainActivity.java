@@ -336,7 +336,8 @@ public class MainActivity extends AppCompatActivity
                 if (position == 0) {
                     onHome();
                 } else if (position == 1)
-                    onNew();
+                    //onNew();
+                    onArchived();
                 else if (position == 2)
                     //onTrend();
                     onCategories();
@@ -416,6 +417,8 @@ public class MainActivity extends AppCompatActivity
 
         String arr[] = thread_subscriptions.split(",");
         subs.clear();
+        String default_all = "All";
+        subs.add(default_all);
         for(int i = 0; i < arr.length; i++) {
             arr[i] = arr[i].substring(arr[i].lastIndexOf(":") + 1);
             arr[i] = arr[i].replace("\"","");
@@ -557,10 +560,11 @@ public class MainActivity extends AppCompatActivity
         }
         else if (id == R.id.action_new) {
             onNew();
+
             return true;
         }
         else if (id == R.id.action_trending) {
-            onTrend();
+            onArchived();
             return true;
         }
 
@@ -571,6 +575,37 @@ public class MainActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
+
+    private Fragment onArchived() {
+        final FragmentManager fragmentManager = this.getSupportFragmentManager();
+        Class fragmentClass = FrontPageFragment.class;
+        HashMap<String, String> user = session.getUserDetails();
+        final Fragment fragment;
+        //if(user.get(SessionManager.CATEGORY_TYPE) != null && !user.get(SessionManager.CATEGORY_TYPE).equals("")){
+        if(user.get(SessionManager.CATEGORY_TYPE) != null){
+            fragmentClass = CategoriesPageFragment.class;
+            session.updatePage("categoryArchived");
+            fragment = Fragment.instantiate(this, fragmentClass.getName());
+        }//category
+        else{
+            session.updatePage("archived");
+            fragment = Fragment.instantiate(this, fragmentClass.getName());
+        }//frontpage
+
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.main_fragment_container, fragment, fragmentClass.getSimpleName())
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .commit();
+
+        // Set the title for the fragment.
+        final ActionBar actionBar = this.getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(getString(R.string.app_name));
+        }
+        return fragment;
+    }
+
 
     private void wifiErrorDialog(){
 
@@ -627,6 +662,11 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onCategorySelected(String item) {
+        if(item.equals("All")){
+            session.updateCategory(null);
+            onHome();
+            return;
+        }
         session.updateCategory(item);
         session.updatePage("categoryDate");
         final Class fragmentClass = CategoriesPageFragment.class;
@@ -788,9 +828,9 @@ public class MainActivity extends AppCompatActivity
                 pageType = "categoryDate";
                 session.updatePage(pageType);//LOOK AT THIS SHIT LMAOOOOOOOOOOOO
                 break;
-            case "categoryTrend":
+            case "categoryArchived":
                 fragmentClass = CategoriesPageFragment.class;
-                pageType = "categoryTrend";
+                pageType = "categoryArchived";
                 session.updatePage(pageType);//fuck LAAAA
                 break;
             case "noneDate":
@@ -798,9 +838,9 @@ public class MainActivity extends AppCompatActivity
                 pageType = "date";
                 session.updatePage(pageType);//DIU HAI MAN
                 break;
-            case "noneTrend":
+            case "archived":
                 fragmentClass = FrontPageFragment.class;
-                pageType = "trend";
+                pageType = "archived";
                 session.updatePage(pageType);
                 break;
         }

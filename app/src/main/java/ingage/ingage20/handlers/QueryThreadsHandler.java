@@ -37,6 +37,8 @@ public class QueryThreadsHandler extends AsyncTask<String, String, String> {
         String query_category_url = "http://107.170.232.60/query_category.php";
         String query_trends_url = "http://107.170.232.60/query_trends.php";
         String query_trends_by_category_url = "http://107.170.232.60/query_trends_by_category.php";
+        String query_archived_url = "http://107.170.232.60/query_archived_all.php";
+        String query_archived_by_category_url = "http://107.170.232.60/query_archived_by_category.php";
         if(type.equals("date")) {
             try {
                 String rowCount = params[1];
@@ -177,6 +179,77 @@ public class QueryThreadsHandler extends AsyncTask<String, String, String> {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+
+        else if(type.equals("archived")) {
+            try {
+                String rowCount = params[1];
+                URL url = new URL(query_archived_url);
+                HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                String post_data =
+                        URLEncoder.encode("rowCount","UTF-8")+"="+ URLEncoder.encode(rowCount,"UTF-8");
+                bufferedWriter.write(post_data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                outputStream.close();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader =
+                        new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                String result = "";
+                String line;
+                while((line = bufferedReader.readLine()) != null){
+                    result += line;
+                }
+                bufferedReader.close();;
+                inputStream.close();
+                httpURLConnection.disconnect();
+                return result;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        else if (type.equals("categoryArchived")){
+
+
+            try {
+                String category = params[1];
+                String rowCount = params[2];
+                URL url = new URL(query_archived_by_category_url);
+                HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                String post_data =
+                        URLEncoder.encode("category","UTF-8")+"="+ URLEncoder.encode(category,"UTF-8")+"&"+
+                                URLEncoder.encode("rowCount","UTF-8")+"="+ URLEncoder.encode(rowCount,"UTF-8");;
+                bufferedWriter.write(post_data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                outputStream.close();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader =
+                        new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+                String result = "";
+                String line;
+                while((line = bufferedReader.readLine()) != null){
+                    result += line;
+                }
+                bufferedReader.close();;
+                inputStream.close();
+                httpURLConnection.disconnect();
+                return result;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
 
         return null;
