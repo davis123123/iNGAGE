@@ -153,9 +153,10 @@ public class ChatActivity extends AppCompatActivity{
 
     private long secondsRemaining(String timeRemaining){
         String[] splittedString = timeRemaining.split(":");
-        long seconds = Integer.parseInt(splittedString[0]) * 360; //get hours into seconds
+        long seconds = Integer.parseInt(splittedString[0]) * 3600; //get hours into seconds
         seconds += Integer.parseInt(splittedString[1]) * 60; //get minutes into seconds
         seconds += Integer.parseInt(splittedString[2]); //get seconds
+
         Log.d("TIME REMAINING", ""+seconds);
         return seconds;
     }
@@ -589,6 +590,7 @@ public class ChatActivity extends AppCompatActivity{
 
     private void endThreadTimer(long remainingTime) {
         remainingTime *= 1000;
+        Log.d("TIMER", ""+remainingTime);
         mThreadEndTimer =
                 new CountDownTimer(remainingTime, 1000) {
 
