@@ -70,17 +70,6 @@ public class FragmentBase extends Fragment{
     @Override
     public void onViewCreated(final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(final Void... params) {
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(final Void aVoid) {
-                final View view = getView();
-            }
-        }.execute();
         session = new SessionManager(getActivity().getApplicationContext());
         user = session.getUserDetails();
         chatRoomManager = new ChatRoomManager(getActivity().getApplicationContext());
@@ -119,12 +108,6 @@ public class FragmentBase extends Fragment{
     @Override
     public void onPause() {
         super.onPause();
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(final Void... params) {
-                return null;
-            }
-        }.execute();
     }
 
 
@@ -154,14 +137,14 @@ public class FragmentBase extends Fragment{
         Log.d("Viewchat",userNo);
         String[] splittedString = userNo.split("-");
         String remainingTime = splittedString[0];
-        Toast.makeText(getActivity(), splittedString[1] + " " +splittedString[2], Toast.LENGTH_LONG).show();
+        //Toast.makeText(getActivity(), splittedString[1] + " " +splittedString[2], Toast.LENGTH_LONG).show();
         threadCapacity = "No. Disagree users: " + splittedString[1] + "/3\n" + "No. Agree users: " + splittedString[2] +"/3";
         mContext = getActivity().getApplicationContext();
         threadId = thread_id;
         threadType = type;
 
         android.support.v4.app.FragmentManager fm = getFragmentManager();
-        SideChooserDialogFragment f =SideChooserDialogFragment.newInstance(threadDescription);
+        SideChooserDialogFragment f = SideChooserDialogFragment.newInstance(threadDescription);
         f.setTargetFragment(this, SideChooserDialogFragment.REQUEST_CODE_SIDE_DIALOG);
         f.show(fm, "");
     }
@@ -223,11 +206,12 @@ public class FragmentBase extends Fragment{
 
     public String viewRoomStatus(Context context, String type, String thread_id){
         String result = null;
-
+        Log.d("VIEW", thread_id);
         ChatRoomHandler chatRoomHandler = new ChatRoomHandler(context);
         try {
             result = chatRoomHandler.execute(type, thread_id, side).get();
-            //Toast.makeText(getActivity().getApplicationContext(), "view: " + store, Toast.LENGTH_LONG).show();
+            Log.d("VIEW", result);
+            //Toast.makeText(getActivity().getApplicationContext(), "view: " + result, Toast.LENGTH_LONG).show();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }

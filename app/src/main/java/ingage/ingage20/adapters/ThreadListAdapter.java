@@ -247,7 +247,6 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         private void bind(int listIndex){
             ThreadsHelper threadsHelper = (ThreadsHelper) getItem(listIndex);
             threadTitleTextView.setText(threadsHelper.getThread_title());
-            //threadByTextView.setText(threadsHelper.getThread_by());
             threadDurationTextView.setText(threadsHelper.getThread_duration());
             threadCategoryTextView.setText(threadsHelper.getThread_category());
             threadContentTextView.setVisibility(View.INVISIBLE);

@@ -309,7 +309,7 @@ public class ChatActivity extends AppCompatActivity{
             textField.setText("");
 
             //start cooldown timer
-            timer(180000);
+            timer(60000);
             //on send restart kicktimer
             mKickTimer.cancel();
             kickTimer(900000);
@@ -346,7 +346,6 @@ public class ChatActivity extends AppCompatActivity{
                         Log.d("NEWROOT", " "+ page_root);
                     } //new page already created
                 }
-
                 return Transaction.success(currentData); //we can also abort by calling Transaction.abort()
             }
 
@@ -550,11 +549,16 @@ public class ChatActivity extends AppCompatActivity{
          }
 
          if(result.equals("success")) {
-         if (mCountDownTimer != null)
-         mCountDownTimer.cancel();
-         if (currentCooldown > 30000) {
-         timer(currentCooldown - 30000);
-         }
+             //cancel old timer to restart new one with smaller cooldown
+             if (mCountDownTimer != null)
+                 mCountDownTimer.cancel();
+             if (currentCooldown > 30000) {
+                 timer(currentCooldown - 30000);
+             }
+             else{
+                 mCountDownTimer.cancel();
+                 unblockMSG();
+             }
          }
          else{
          //tell user no coins left
@@ -612,7 +616,7 @@ public class ChatActivity extends AppCompatActivity{
 
                     public void onTick(long millisUntilFinished) {
                         //keeps track of current cooldown
-                        currentCooldown = millisUntilFinished;
+                        //currentCooldown = millisUntilFinished;
                         //timerTv.setText(millisUntilFinished / 1000 + " s");
                     }
 
