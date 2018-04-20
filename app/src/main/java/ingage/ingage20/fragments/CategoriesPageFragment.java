@@ -143,10 +143,11 @@ public class CategoriesPageFragment extends FragmentBase implements ThreadListAd
         HashMap<String, String> user = session.getUserDetails();
         String type = user.get(SessionManager.PAGE_TYPE);
         String categoryType = user.get(SessionManager.CATEGORY_TYPE);
-        Log.d("CategoryType" , " result : " + categoryType);
-        Log.d("PageType" , " result : " + rowCount);
         try {
-            json_string = queryThreadsHandler.execute(type, categoryType, String.valueOf(rowCount)).get();
+            if(categoryType != null)
+                json_string = queryThreadsHandler.execute("categoryDate", categoryType, String.valueOf(rowCount)).get();
+            else
+                json_string = queryThreadsHandler.execute("date", String.valueOf(rowCount)).get();
             Log.d("STATE" , "query result : " + json_string);
             threadListAdapter.setLoaded(false);
         } catch (InterruptedException e) {

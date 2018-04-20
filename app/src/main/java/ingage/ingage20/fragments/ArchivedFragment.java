@@ -35,14 +35,14 @@ import ingage.ingage20.helpers.ThreadsHelper;
  * Created by Davis on 4/4/2017.
  */
 
-public class FrontPageFragment extends FragmentBase implements ThreadListAdapter.ItemClickCallback{
+public class ArchivedFragment extends FragmentBase implements ThreadListAdapter.ItemClickCallback{
 
     QueryThreadsHandler queryThreadsHandler;
 
     int pastVisiblesItems, visibleItemCount, totalItemCount;
     int rowCount = 0;
     String default_path = "data:image/JPG;base64,";
-    private static final String TAG = "FrontPageFragment";
+    private static final String TAG = "ArchivedFragment";
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -158,12 +158,19 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
 
     public void getThreadsJSON(int rowCount){
         queryThreadsHandler = new QueryThreadsHandler();
-        Log.d("ROWCOUNT" , " result : " + rowCount);
-        session = new SessionManager(getActivity().getApplicationContext());
+        SessionManager session = new SessionManager(getActivity().getApplicationContext());
         HashMap<String, String> user = session.getUserDetails();
-        String type = user.get(SessionManager.PAGE_TYPE);
+        String test = user.get(SessionManager.CATEGORY_TYPE);
+        Log.d("ARCCATE"," "+ test);
         try {
-            json_string = queryThreadsHandler.execute(type, String.valueOf(rowCount)).get();
+            if(user.get(SessionManager.CATEGORY_TYPE)!= null) {
+
+                json_string = queryThreadsHandler.execute("categoryArchived", user.get(SessionManager.CATEGORY_TYPE),String.valueOf(rowCount)).get();
+                Log.d("ARCCATE"," "+ json_string);
+            }
+            else {
+                json_string = queryThreadsHandler.execute("archived", String.valueOf(rowCount)).get();
+            }
             Log.d("STATE" , "query result : " + json_string);
             threadListAdapter.setLoaded(false);
         } catch (InterruptedException e) {
@@ -191,6 +198,7 @@ public class FrontPageFragment extends FragmentBase implements ThreadListAdapter
 
     void inflateThreads() {
         int count = 0;
+        Log.d("archiveinflate", "clicked");
         try {
             jsonObject = new JSONObject(json_string);
             jsonArray = jsonObject.getJSONArray("server_response");

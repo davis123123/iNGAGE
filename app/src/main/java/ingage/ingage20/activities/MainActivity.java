@@ -3,20 +3,14 @@ package ingage.ingage20.activities;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -25,22 +19,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.pkmmte.view.CircularImageView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
@@ -55,37 +43,27 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import ingage.ingage20.adapters.DrawerAdapter;
+import ingage.ingage20.adapters.ViewPagerAdapter;
 import ingage.ingage20.firebase.FirebaseSharedPrefManager;
+import ingage.ingage20.fragments.ArchivedFragment;
 import ingage.ingage20.fragments.CategoriesFragment;
 import ingage.ingage20.fragments.CategoriesPageFragment;
 import ingage.ingage20.fragments.FragmentBase;
 import ingage.ingage20.fragments.SearchResultFragment;
 import ingage.ingage20.handlers.AnnouncementHandler;
-import ingage.ingage20.handlers.DownloadAvatarHandler;
 import ingage.ingage20.handlers.SearchHandler;
 import ingage.ingage20.handlers.UserRecentCommentHandler;
-import ingage.ingage20.helpers.ThreadsHelper;
 import ingage.ingage20.managers.WifiManager;
 import ingage.ingage20.util.NavigationDrawer;
 import ingage.ingage20.R;
 import ingage.ingage20.handlers.IdentityHandler;
-import ingage.ingage20.fragments.FrontPageFragment;
-import ingage.ingage20.managers.AlertDiaLogManager;
 import ingage.ingage20.managers.SessionManager;
-import ingage.ingage20.adapters.ViewPagerAdapter;
 
 public class MainActivity extends AppCompatActivity
         implements View.OnClickListener, CategoriesFragment.categoriesFragmentListener {
-
-    /** Alert Dialogue used for failed sign-out**/
-    AlertDiaLogManager alert = new AlertDiaLogManager();
-
-    /** Class name for log messages. */
-    private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     /** Bundle key for saving/restoring the toolbar title. */
     private static final String BUNDLE_KEY_TOOLBAR_TITLE = "title";
@@ -99,11 +77,10 @@ public class MainActivity extends AppCompatActivity
     private Toolbar toolbar;
     public static ArrayList<String> subs = new ArrayList<>();
 
-    private Button   signOutButton;
     protected ImageView avatar;
     protected TextView userName;
     String default_path = "data:image/JPG;base64,";
-
+    ViewPagerAdapter viewPagerAdapter;
     //public static ArrayAdapter<String> adapter = null;
 
     public static String appToken;
@@ -111,14 +88,14 @@ public class MainActivity extends AppCompatActivity
     android.support.v7.widget.SearchView searchView;
 
     //dont use enum cuz bad  performance in Android, uses more RAM and memory
-    static String pageCategory = "noneDate";
-    static String pageType = "date";
+    static String pageCategory = null, pageType = "date";
     private int tabIconColor;
 
     WifiManager wifiManager;
     FragmentManager fragmentManager;
 
     private TabLayout tabLayout;
+    private ViewPager viewPager;
     public static UserRecentCommentHandler handler;
    // private ViewPager viewPager;
 
@@ -266,18 +243,10 @@ public class MainActivity extends AppCompatActivity
         setupNavigationDrawer();
 
         session.updatePage(pageType);
-    /* initilize FrontPage Fragment*/
-        fragmentManager = this.getSupportFragmentManager();
-        final Class fragmentClass = FrontPageFragment.class;
-        final Fragment fragment = Fragment.instantiate(this, fragmentClass.getName());
-
-        fragmentManager
-                .beginTransaction()
-                .replace(R.id.main_fragment_container, fragment, fragmentClass.getSimpleName())
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .commit();
-
-        initTabs();
+        session.updateCategory(pageCategory);
+        //initTabs();
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        setupViewPager(viewPager);
         initAnnouncement();
 
 
@@ -290,6 +259,43 @@ public class MainActivity extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         UserProfileActivity.recentComments.clear();
     }
+
+    private void setupViewPager(ViewPager viewPager) {
+        final Class categoriesFragmentClass = CategoriesFragment.class;
+        Fragment categoriesFragment = Fragment.instantiate(this, categoriesFragmentClass.getName());
+
+        final Class archivedFragmentClass = ArchivedFragment.class;
+        Fragment archivedFragment = Fragment.instantiate(this, archivedFragmentClass.getName());
+
+        final Class categoriesPageFragmentClass = CategoriesPageFragment.class;
+        Fragment categoriesPageFragment = Fragment.instantiate(this, categoriesPageFragmentClass.getName());
+
+        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        viewPagerAdapter.addFragment(categoriesPageFragment, "Active");
+        viewPagerAdapter.addFragment(archivedFragment, "Archived");
+        viewPagerAdapter.addFragment(categoriesFragment, "Categories");
+
+        viewPager.setAdapter(viewPagerAdapter);
+
+        ViewPager.OnPageChangeListener pageChangeListener = new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                viewPagerAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                viewPagerAdapter.notifyDataSetChanged();
+            }
+        };
+
+    }
+
 
     private void initTabs(){
         tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -574,7 +580,7 @@ public class MainActivity extends AppCompatActivity
 
     private Fragment onArchived() {
         final FragmentManager fragmentManager = this.getSupportFragmentManager();
-        Class fragmentClass = FrontPageFragment.class;
+        Class fragmentClass = ArchivedFragment.class;
         HashMap<String, String> user = session.getUserDetails();
         final Fragment fragment;
         //if(user.get(SessionManager.CATEGORY_TYPE) != null && !user.get(SessionManager.CATEGORY_TYPE).equals("")){
@@ -660,18 +666,21 @@ public class MainActivity extends AppCompatActivity
     public void onCategorySelected(String item) {
         if(item.equals("All")){
             session.updateCategory(null);
-            tabLayout.getTabAt(0).select();
+            viewPager.setAdapter(viewPagerAdapter);
+            viewPager.setCurrentItem(0,true);
+            //tabLayout.getTabAt(0).select();
             //onHome();
         }
         else {
             session.updateCategory(item);
-            session.updatePage("categoryDate");
-            tabLayout.getTabAt(0).select();
+            viewPager.setAdapter(viewPagerAdapter);
+            viewPager.setCurrentItem(0, true);
+            //tabLayout.getTabAt(0).select();
         }
     }
 
     private Fragment onHome(){
-        Class fragmentClass = FrontPageFragment.class;
+        Class fragmentClass = ArchivedFragment.class;
         //pageType = "date";
         //session.updatePage(pageType);
         final Fragment fragment;
@@ -705,7 +714,7 @@ public class MainActivity extends AppCompatActivity
 
     private Fragment onNew() {
         final FragmentManager fragmentManager = this.getSupportFragmentManager();
-        Class fragmentClass = FrontPageFragment.class;
+        Class fragmentClass = ArchivedFragment.class;
         HashMap<String, String> user = session.getUserDetails();
         final Fragment fragment;
         //if(user.get(SessionManager.CATEGORY_TYPE) != null && !user.get(SessionManager.CATEGORY_TYPE).equals("")){
@@ -756,7 +765,7 @@ public class MainActivity extends AppCompatActivity
 
     private Fragment onTrend() {
         final FragmentManager fragmentManager = this.getSupportFragmentManager();
-        Class fragmentClass = FrontPageFragment.class;
+        Class fragmentClass = ArchivedFragment.class;
         HashMap<String, String> user = session.getUserDetails();
         final Fragment fragment;
         //if(user.get(SessionManager.CATEGORY_TYPE) != null && !user.get(SessionManager.CATEGORY_TYPE).equals("")){
@@ -808,7 +817,7 @@ public class MainActivity extends AppCompatActivity
 
     public void onRefresh(){
         final FragmentManager fragmentManager = this.getSupportFragmentManager();
-        Class fragmentClass = FrontPageFragment.class;
+        Class fragmentClass = ArchivedFragment.class;
         HashMap<String, String> user = session.getUserDetails();
         pageCategory = user.get(SessionManager.PAGE_TYPE);
         switch (pageCategory){
@@ -823,12 +832,12 @@ public class MainActivity extends AppCompatActivity
                 session.updatePage(pageType);//fuck LAAAA
                 break;
             case "noneDate":
-                fragmentClass = FrontPageFragment.class;
+                fragmentClass = ArchivedFragment.class;
                 pageType = "date";
                 session.updatePage(pageType);//DIU HAI MAN
                 break;
             case "archived":
-                fragmentClass = FrontPageFragment.class;
+                fragmentClass = ArchivedFragment.class;
                 pageType = "archived";
                 session.updatePage(pageType);
                 break;

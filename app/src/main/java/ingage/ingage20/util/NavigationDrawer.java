@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -14,17 +13,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.HashMap;
 
 import ingage.ingage20.R;
-import ingage.ingage20.fragments.FrontPageFragment;
+import ingage.ingage20.fragments.ArchivedFragment;
 import ingage.ingage20.managers.SessionManager;
 
 import static ingage.ingage20.R.string.app_name;
@@ -169,11 +166,11 @@ public class NavigationDrawer {
     }
 
     public void showHome() {
-        final Fragment fragment = new FrontPageFragment();
+        final Fragment fragment = new ArchivedFragment();
 
         containingActivity.getSupportFragmentManager()
                 .beginTransaction()
-                .replace(fragmentContainerId, fragment, FrontPageFragment.class.getSimpleName())
+                .replace(fragmentContainerId, fragment, ArchivedFragment.class.getSimpleName())
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .commit();
 

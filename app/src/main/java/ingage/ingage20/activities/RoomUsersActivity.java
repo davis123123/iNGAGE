@@ -90,7 +90,6 @@ public class RoomUsersActivity extends AppCompatActivity implements RoomUserAdap
     public void onListItemClick(int clickedItemIndex) {
         ChatRoomUserHelper chatRoomUserHelper = (ChatRoomUserHelper) roomUserAdapter.getItem(clickedItemIndex);
         String username = chatRoomUserHelper.getUsername();
-
         //LEAVE UNTIL COMMENTS A RE FINISHED
         String toastMessage = "Item #" + username + "clicked.";
         Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();

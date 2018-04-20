@@ -56,7 +56,6 @@ public class RecentCommentsAdapter extends RecyclerView.Adapter<RecentCommentsAd
                     .into(ivImage, new Callback() {
                         @Override
                         public void onSuccess() {
-
                         }
 
                         @Override
@@ -112,7 +111,6 @@ public class RecentCommentsAdapter extends RecyclerView.Adapter<RecentCommentsAd
     public RecentCommentsAdapter.RecentCommentsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_recent_comments_rv, parent, false);
-
         return new RecentCommentsAdapter.RecentCommentsHolder(itemView);
     }
 

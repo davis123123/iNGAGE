@@ -116,23 +116,23 @@ public class UserProfileActivity extends AppCompatActivity {
             adapter.addFragment(userInfoFragment, "User Info");
             viewPager.setAdapter(adapter);
 
-        ViewPager.OnPageChangeListener pagechangelistener =new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageSelected(int pos) {
-                    adapter.notifyDataSetChanged();
-                    Log.i("STATE", "Pg selected: " + pos);
-            }
+            ViewPager.OnPageChangeListener pagechangelistener =new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageSelected(int pos) {
+                        adapter.notifyDataSetChanged();
+                        Log.i("STATE", "Pg selected: " + pos);
+                }
 
-            @Override
-            public void onPageScrolled(int arg0, float arg1, int arg2) {
+                @Override
+                public void onPageScrolled(int arg0, float arg1, int arg2) {
 
-            }
+                }
 
-            @Override
-            public void onPageScrollStateChanged(int arg0) {
+                @Override
+                public void onPageScrollStateChanged(int arg0) {
 
-            }
-        };
+                }
+            };
                 viewPager.setOnPageChangeListener(pagechangelistener);
     }
 

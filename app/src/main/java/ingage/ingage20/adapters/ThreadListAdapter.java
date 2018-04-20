@@ -258,7 +258,6 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 getImage(threadsHelper);
             }
 
-
             //If there's no image
             if(str.trim().length() == 0) {
                 //Log.d("STATE", "content: " + threadsHelper.getThread_content());

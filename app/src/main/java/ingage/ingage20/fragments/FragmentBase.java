@@ -137,7 +137,6 @@ public class FragmentBase extends Fragment{
         Log.d("Viewchat",userNo);
         String[] splittedString = userNo.split("-");
         String remainingTime = splittedString[0];
-        //Toast.makeText(getActivity(), splittedString[1] + " " +splittedString[2], Toast.LENGTH_LONG).show();
         threadCapacity = "No. Disagree users: " + splittedString[1] + "/3\n" + "No. Agree users: " + splittedString[2] +"/3";
         mContext = getActivity().getApplicationContext();
         threadId = thread_id;
@@ -159,7 +158,6 @@ public class FragmentBase extends Fragment{
                 side= "disagree";
             verify(mContext, threadType, threadId);
         }
-
     }
 
     //check room status after user selects a side from the dialog
