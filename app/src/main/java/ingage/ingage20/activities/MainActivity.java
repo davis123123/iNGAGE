@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity
     protected ImageView avatar;
     protected TextView userName;
     String default_path = "data:image/JPG;base64,";
-    ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());;
+    ViewPagerAdapter viewPagerAdapter;// = new ViewPagerAdapter(getSupportFragmentManager());
     //public static ArrayAdapter<String> adapter = null;
 
     public static String appToken;
@@ -253,7 +253,8 @@ public class MainActivity extends AppCompatActivity
         UserProfileActivity.recentComments.clear();
     }
 
-    private void setupViewPager(ViewPager viewPager) {
+    private void setupViewPager(final ViewPager viewPager) {
+        //viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());;
         final Class categoriesFragmentClass = CategoriesFragment.class;
         Fragment categoriesFragment = Fragment.instantiate(this, categoriesFragmentClass.getName());
 
@@ -263,7 +264,8 @@ public class MainActivity extends AppCompatActivity
         final Class categoriesPageFragmentClass = CategoriesPageFragment.class;
         Fragment categoriesPageFragment = Fragment.instantiate(this, categoriesPageFragmentClass.getName());
 
-        //viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+
         viewPagerAdapter.addFragment(categoriesPageFragment, "Active");
         viewPagerAdapter.addFragment(archivedFragment, "Archived");
         viewPagerAdapter.addFragment(categoriesFragment, "Categories");
@@ -273,18 +275,21 @@ public class MainActivity extends AppCompatActivity
         ViewPager.OnPageChangeListener pageChangeListener = new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+              //  CategoriesPageFragment categoriesPageFragment1 = (CategoriesPageFragment) viewPagerAdapter.instantiateItem(viewPager, 0);
+               // ArchivedFragment archivedFragment1 = (ArchivedFragment) viewPagerAdapter.instantiateItem(viewPager, 1);
+                //viewPagerAdapter.notifyDataSetChanged();
+                //viewPager.setAdapter(viewPagerAdapter);
             }
 
             @Override
             public void onPageSelected(int position) {
+              //  viewPagerAdapter.notifyDataSetChanged();
 
-                viewPagerAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                viewPagerAdapter.notifyDataSetChanged();
+                //viewPagerAdapter.notifyDataSetChanged();
             }
         };
 
@@ -660,15 +665,15 @@ public class MainActivity extends AppCompatActivity
     public void onCategorySelected(String item) {
         if(item.equals("All")){
             session.updateCategory(null);
-            viewPager.setAdapter(viewPagerAdapter);
+            viewPagerAdapter.notifyDataSetChanged();
+            //viewPager.setAdapter(viewPagerAdapter);
             viewPager.setCurrentItem(0,true);
-            //tabLayout.getTabAt(0).select();
-            //onHome();
         }
         else {
             session.updateCategory(item);
-            viewPager.setAdapter(viewPagerAdapter);
-            viewPager.setCurrentItem(0, true);
+            viewPagerAdapter.notifyDataSetChanged();
+            //  viewPager.setAdapter(viewPagerAdapter);
+           viewPager.setCurrentItem(0, true);
             //tabLayout.getTabAt(0).select();
         }
     }
@@ -764,6 +769,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void onRefresh(){
-        viewPager.setAdapter(viewPagerAdapter);
+        //viewPager.setCurrentItem(2);
+        viewPagerAdapter.notifyDataSetChanged();
+        //viewPager.setAdapter(viewPagerAdapter);
     }
 }
