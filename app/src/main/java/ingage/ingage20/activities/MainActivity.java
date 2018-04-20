@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity
     protected ImageView avatar;
     protected TextView userName;
     String default_path = "data:image/JPG;base64,";
-    ViewPagerAdapter viewPagerAdapter;
+    ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());;
     //public static ArrayAdapter<String> adapter = null;
 
     public static String appToken;
@@ -138,13 +138,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     protected void setupNavigationDrawer(){
-
-        //set up array adapter for subscribed categories
-        /*lvItems = (ListView) findViewById(R.id.nav_drawer_items);
-        adapter=new ArrayAdapter<String>(this, R.layout.lv_item, subs);
-        lvItems.setAdapter(adapter);
-        setupSubscriptionsListener();
-        adapter.notifyDataSetChanged();*/
 
         //set up recycler view adapter for drawer options
         options = (RecyclerView) findViewById(R.id.options);
@@ -270,7 +263,7 @@ public class MainActivity extends AppCompatActivity
         final Class categoriesPageFragmentClass = CategoriesPageFragment.class;
         Fragment categoriesPageFragment = Fragment.instantiate(this, categoriesPageFragmentClass.getName());
 
-        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        //viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapter.addFragment(categoriesPageFragment, "Active");
         viewPagerAdapter.addFragment(archivedFragment, "Archived");
         viewPagerAdapter.addFragment(categoriesFragment, "Categories");
@@ -285,6 +278,7 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onPageSelected(int position) {
+
                 viewPagerAdapter.notifyDataSetChanged();
             }
 
@@ -763,52 +757,6 @@ public class MainActivity extends AppCompatActivity
         return fragment;
     }
 
-    private Fragment onTrend() {
-        final FragmentManager fragmentManager = this.getSupportFragmentManager();
-        Class fragmentClass = ArchivedFragment.class;
-        HashMap<String, String> user = session.getUserDetails();
-        final Fragment fragment;
-        //if(user.get(SessionManager.CATEGORY_TYPE) != null && !user.get(SessionManager.CATEGORY_TYPE).equals("")){
-        if(user.get(SessionManager.CATEGORY_TYPE) != null){
-            fragmentClass = CategoriesPageFragment.class;
-            session.updatePage("categoryTrend");
-            fragment = Fragment.instantiate(this, fragmentClass.getName());
-        }//category
-        else{
-            session.updatePage("trend");
-            fragment = Fragment.instantiate(this, fragmentClass.getName());
-        }//frontpage
-
-        fragmentManager
-                .beginTransaction()
-                .replace(R.id.main_fragment_container, fragment, fragmentClass.getSimpleName())
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .commit();
-
-        // Set the title for the fragment.
-        final ActionBar actionBar = this.getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle(getString(R.string.app_name));
-        }
-        return fragment;
-    }
-
-
-    /**
-     * Stores data to be passed between fragments.
-     * @param fragmentBundle fragment data
-     */
-    public void setFragmentBundle(final Bundle fragmentBundle) {
-        this.fragmentBundle = fragmentBundle;
-    }
-
-    /**
-     * Gets data to be passed between fragments.
-     * @return fragmentBundle fragment data
-     */
-    public Bundle getFragmentBundle() {
-        return this.fragmentBundle;
-    }
 
     @Override
     public void onClick(View view) {

@@ -46,7 +46,6 @@ public class FragmentBase extends Fragment{
 
     SessionManager session;
     HashMap<String, String> user;
-
     ChatRoomManager chatRoomManager;
 
     String json_string;
@@ -109,7 +108,6 @@ public class FragmentBase extends Fragment{
     public void onPause() {
         super.onPause();
     }
-
 
     public void itemClick(int p){
         Context context = getActivity().getApplicationContext();
@@ -213,7 +211,6 @@ public class FragmentBase extends Fragment{
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-
         return result;
     }
 

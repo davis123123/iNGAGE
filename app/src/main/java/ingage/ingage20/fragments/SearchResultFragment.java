@@ -1,18 +1,11 @@
 package ingage.ingage20.fragments;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +21,6 @@ import java.util.concurrent.ExecutionException;
 import ingage.ingage20.R;
 import ingage.ingage20.activities.PostThreadActivity;
 import ingage.ingage20.adapters.ThreadListAdapter;
-import ingage.ingage20.handlers.DownloadImageHandler;
 import ingage.ingage20.handlers.SearchHandler;
 import ingage.ingage20.helpers.ThreadsHelper;
 import ingage.ingage20.managers.SessionManager;
@@ -67,7 +59,7 @@ public class SearchResultFragment extends FragmentBase implements ThreadListAdap
         Log.d("STATE", "searchstring " + searchString);
         threadListAdapter = new ThreadListAdapter(this, getActivity());
         getThreadsJSON(rowCount, searchString);
-        rootView = inflater.inflate(R.layout.fragment_front_page, container, false);
+        rootView = inflater.inflate(R.layout.fragment_archived, container, false);
         rootView.setTag(TAG);
         return rootView;
         }
@@ -189,20 +181,16 @@ public class SearchResultFragment extends FragmentBase implements ThreadListAdap
             startActivity(new Intent(getActivity(),PostThreadActivity.class));
             }
 
-
     @Override
     public void onContainerClick(int p) {
             itemClick(p);
             }
-
-
 
     @Override
     public void onSpectateBtnClick(int p) {
         Log.d("SPECTATEBUTTON", "clicked");
         spectate(p);
     }
-
 
     void inflateThreads() {
         int count = 0;

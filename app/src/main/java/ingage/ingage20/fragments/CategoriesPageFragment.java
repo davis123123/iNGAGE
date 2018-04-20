@@ -1,35 +1,24 @@
 package ingage.ingage20.fragments;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
-import ingage.ingage20.handlers.DownloadImageHandler;
 import ingage.ingage20.handlers.QueryThreadsHandler;
 import ingage.ingage20.helpers.ThreadsHelper;
-import ingage.ingage20.activities.PostThreadActivity;
 import ingage.ingage20.R;
 import ingage.ingage20.adapters.ThreadListAdapter;
 import ingage.ingage20.managers.SessionManager;
@@ -63,7 +52,7 @@ public class CategoriesPageFragment extends FragmentBase implements ThreadListAd
         Log.d("ROWCOUNT","num"+rowCount);
         threadListAdapter = new ThreadListAdapter(this, getActivity());
         getThreadsJSON(rowCount);
-        rootView = inflater.inflate(R.layout.fragment_front_page, container, false);
+        rootView = inflater.inflate(R.layout.fragment_archived, container, false);
         rootView.setTag(TAG);
         return rootView;
     }
