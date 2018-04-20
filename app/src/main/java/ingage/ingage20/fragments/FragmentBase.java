@@ -39,7 +39,7 @@ public class FragmentBase extends Fragment{
 
     Context mContext;
     protected RecyclerView threadListRecyclerView;
-    static ThreadListAdapter threadListAdapter;
+    ThreadListAdapter threadListAdapter;
     View rootView;
     static TextView msg;
     static ImageView icon;
@@ -127,7 +127,7 @@ public class FragmentBase extends Fragment{
     }
 
     private void chooseSideDialog(final Context context, final String thread_id, final String type){
-
+        Log.d("chooseside",thread_id);
         String userNo = viewRoomStatus(context, type, thread_id);
         if(userNo.equals("thread archived")){
             Toast.makeText(getActivity(), "This discussion has just ended. Please try another post.", Toast.LENGTH_LONG).show();

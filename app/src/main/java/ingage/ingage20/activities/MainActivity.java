@@ -816,44 +816,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void onRefresh(){
-        final FragmentManager fragmentManager = this.getSupportFragmentManager();
-        Class fragmentClass = ArchivedFragment.class;
-        HashMap<String, String> user = session.getUserDetails();
-        pageCategory = user.get(SessionManager.PAGE_TYPE);
-        switch (pageCategory){
-            case "categoryDate":
-                fragmentClass = CategoriesPageFragment.class;
-                pageType = "categoryDate";
-                session.updatePage(pageType);//LOOK AT THIS SHIT LMAOOOOOOOOOOOO
-                break;
-            case "categoryArchived":
-                fragmentClass = CategoriesPageFragment.class;
-                pageType = "categoryArchived";
-                session.updatePage(pageType);//fuck LAAAA
-                break;
-            case "noneDate":
-                fragmentClass = ArchivedFragment.class;
-                pageType = "date";
-                session.updatePage(pageType);//DIU HAI MAN
-                break;
-            case "archived":
-                fragmentClass = ArchivedFragment.class;
-                pageType = "archived";
-                session.updatePage(pageType);
-                break;
-        }
-        final Fragment fragment = Fragment.instantiate(this, fragmentClass.getName());
-
-        fragmentManager
-                .beginTransaction()
-                .replace(R.id.main_fragment_container, fragment, fragmentClass.getSimpleName())
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .commit();
-
-        // Set the title for the fragment.
-        final ActionBar actionBar = this.getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle(getString(R.string.app_name));
-        }
+        viewPager.setAdapter(viewPagerAdapter);
     }
 }
