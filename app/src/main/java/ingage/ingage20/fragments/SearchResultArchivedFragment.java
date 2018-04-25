@@ -25,14 +25,8 @@ import ingage.ingage20.handlers.SearchHandler;
 import ingage.ingage20.helpers.ThreadsHelper;
 import ingage.ingage20.managers.SessionManager;
 
-/**
- * Created by Davis on 6/12/2017.
- */
-
-public class SearchResultFragment extends FragmentBase implements ThreadListAdapter.ItemClickCallback{
-
+public class SearchResultArchivedFragment extends FragmentBase implements ThreadListAdapter.ItemClickCallback{
     SearchHandler searchHandler;
-    SessionManager sessionManager;
     private boolean loading = true;
     int pastVisiblesItems, visibleItemCount, totalItemCount;
     int rowCount = 0;
@@ -48,11 +42,11 @@ public class SearchResultFragment extends FragmentBase implements ThreadListAdap
 
         View v = create(inflater, container, savedInstanceState);
         return v;
-        }
+    }
 
     public View create(final LayoutInflater inflater, final ViewGroup container,
-    final Bundle savedInstanceState){
-            // Inflate the layout for this fragment
+                       final Bundle savedInstanceState){
+        // Inflate the layout for this fragment
         session = new SessionManager(getContext());
         HashMap<String, String> user = session.getUserDetails();
         searchString = user.get(SessionManager.SEARCH_STRING);
@@ -62,7 +56,7 @@ public class SearchResultFragment extends FragmentBase implements ThreadListAdap
         rootView = inflater.inflate(R.layout.fragment_archived, container, false);
         rootView.setTag(TAG);
         return rootView;
-        }
+    }
 
     @Override
     public void onViewCreated(final View view, final Bundle savedInstanceState){
@@ -157,12 +151,10 @@ public class SearchResultFragment extends FragmentBase implements ThreadListAdap
     public void getThreadsJSON(int rowCount, String searchString){
         searchHandler = new SearchHandler();
         Log.d("ROWCOUNT" , " result : " + searchString);
-        session = new SessionManager(getActivity().getApplicationContext());
-        HashMap<String, String> user = session.getUserDetails();
         String type = "active";
         try {
             json_string = searchHandler.execute(type, String.valueOf(rowCount), searchString).get();
-            Log.d("STATE" , "query result : " + json_string);
+            Log.d("ARCHIVED" , "query result : " + json_string);
             if(json_string.equals("No results"))
                 Toast.makeText(getActivity(), "No search results", Toast.LENGTH_LONG).show();
             else {
@@ -170,21 +162,21 @@ public class SearchResultFragment extends FragmentBase implements ThreadListAdap
                 inflateThreads();
             }
         } catch (InterruptedException e) {
-        e.printStackTrace();
+            e.printStackTrace();
         } catch (ExecutionException e) {
-        e.printStackTrace();
+            e.printStackTrace();
         }
 
     }
 
     public void goInsertThread(){
-            startActivity(new Intent(getActivity(),PostThreadActivity.class));
-            }
+        startActivity(new Intent(getActivity(),PostThreadActivity.class));
+    }
 
     @Override
     public void onContainerClick(int p) {
-            itemClick(p);
-            }
+        itemClick(p);
+    }
 
     @Override
     public void onSpectateBtnClick(int p) {

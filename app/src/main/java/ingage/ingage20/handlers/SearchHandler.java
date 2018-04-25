@@ -20,18 +20,19 @@ import java.net.URLEncoder;
  */
 
 public class SearchHandler extends AsyncTask<String, String, String> {
-    //String json_url;
-    String JSON_STRING;
-    Context context;
-    MySQLDbHelper mySQLDbHelper;
     @Override
     protected String doInBackground(String... params) {
-
+        String type = params[0];
         String search_title_url = "http://107.170.232.60/search_title.php";
+        String search_archived_url = "http://107.170.232.60/search_archived.php";
         try {
-            String rowCount = params[0];
-            String search_string = params[1];
+            String rowCount = params[1];
+            String search_string = params[2];
             URL url = new URL(search_title_url);
+            if(type.equals("active"))
+                url = new URL(search_title_url);
+            else// if(type.equals("archived"))
+                url = new URL(search_archived_url);
             HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
             httpURLConnection.setRequestMethod("POST");
             httpURLConnection.setDoOutput(true);
@@ -60,8 +61,6 @@ public class SearchHandler extends AsyncTask<String, String, String> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
         return null;
     }
 
@@ -76,7 +75,7 @@ public class SearchHandler extends AsyncTask<String, String, String> {
 
     @Override
     protected void onPostExecute(String result){
-        Log.d("SEARCHR",result);
+        Log.d("SEARCHRESULT",result);
     }
 
 }

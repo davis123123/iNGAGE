@@ -48,7 +48,7 @@ public class FragmentBase extends Fragment{
     HashMap<String, String> user;
     ChatRoomManager chatRoomManager;
 
-    String json_string;
+    String json_string = "";
     JSONObject jsonObject;
     JSONArray jsonArray;
     String side = "agree";      //set to agree by default

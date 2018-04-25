@@ -71,7 +71,6 @@ public class MainActivity extends AppCompatActivity
     /** Our navigation drawer class for handling navigation drawer logic. */
     private NavigationDrawer navigationDrawer;
     SessionManager session;
-    private Bundle fragmentBundle;
     Context mContext;
     /** The toolbar view control. */
     private Toolbar toolbar;
@@ -512,25 +511,16 @@ public class MainActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.main, menu);
         MenuItem myActionMenuItem = menu.findItem(R.id.action_search);
         searchView = (android.support.v7.widget.SearchView) myActionMenuItem.getActionView();
-        final FragmentManager fragmentManager = this.getSupportFragmentManager();
-        final Class fragmentClass = SearchResultFragment.class;
         searchView.setOnSearchClickListener(this);
         searchView.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                Log.d("SEARCH",s);
-                SearchHandler searchHandler = new SearchHandler();
-                String result = "";
                 session.updateSearch(s);
-
-                final Fragment fragment = Fragment.instantiate(getApplicationContext(), fragmentClass.getName());
-
+                Log.d("SEARCHTIMES","yes");
+                searchView.clearFocus();
                 if(s.length() >= 3) {
-                    fragmentManager
-                            .beginTransaction()
-                            .replace(R.id.main_fragment_container, fragment, fragmentClass.getSimpleName())
-                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                            .commit();
+                    Intent searchIntent = new Intent(mContext, SearchResultActivity.class);
+                    startActivity(searchIntent);
                 }
                 else
                     Toast.makeText(getApplicationContext(), "Search needs to be at least 3 characters long", Toast.LENGTH_LONG).show();

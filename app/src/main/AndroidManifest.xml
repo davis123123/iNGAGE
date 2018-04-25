@@ -64,6 +64,8 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".activities.PostCommentActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".activities.SearchResultActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".activities.RoomUsersActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".activities.ChangeAvatarActivity"
