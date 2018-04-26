@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -219,4 +221,5 @@ public class ArchivedFragment extends FragmentBase implements ThreadListAdapter.
         }
         checkIfNoThreads(count);
     }
+
 }

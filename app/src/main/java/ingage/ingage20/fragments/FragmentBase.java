@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
@@ -60,7 +61,7 @@ public class FragmentBase extends Fragment{
     public static String threadType;
     public static String threadCapacity;
 
-    private SwipeRefreshLayout swipeContainer;
+    SwipeRefreshLayout swipeContainer;
 
     Toast mToast;
 
@@ -83,8 +84,13 @@ public class FragmentBase extends Fragment{
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                EventBus.getDefault().post(new RefreshEvent());
-                swipeContainer.setRefreshing(false);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        EventBus.getDefault().post(new RefreshEvent());
+                        swipeContainer.setRefreshing(false);
+                    }
+                }, 700);
             }
         });
         // Configure the refreshing colors
