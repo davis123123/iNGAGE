@@ -22,6 +22,7 @@ import ingage.ingage20.fragments.CategoriesFragment;
 import ingage.ingage20.fragments.CategoriesPageFragment;
 import ingage.ingage20.fragments.FragmentBase;
 import ingage.ingage20.fragments.SearchResultArchivedFragment;
+import ingage.ingage20.fragments.SearchResultFragment;
 import ingage.ingage20.managers.SessionManager;
 
 public class SearchResultActivity extends AppCompatActivity {
@@ -51,13 +52,13 @@ public class SearchResultActivity extends AppCompatActivity {
         final Class searchResultArchivedFragmentClass = SearchResultArchivedFragment.class;
         Fragment searchResultArchivedFragment = Fragment.instantiate(this, searchResultArchivedFragmentClass.getName());
 
-        final Class searchResultFragmentClass = CategoriesPageFragment.class;
+        final Class searchResultFragmentClass = SearchResultFragment.class;
         Fragment searchResultFragment = Fragment.instantiate(this, searchResultFragmentClass.getName());
 
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        viewPagerAdapter.addFragment(searchResultFragment, "Active");
-        viewPagerAdapter.addFragment(searchResultArchivedFragment, "Archived");
+        viewPagerAdapter.addFragment(searchResultArchivedFragment, "Active");
+        viewPagerAdapter.addFragment(searchResultFragment, "Archived");
 
         viewPager.setAdapter(viewPagerAdapter);
 

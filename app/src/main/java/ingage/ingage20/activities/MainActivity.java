@@ -241,7 +241,7 @@ public class MainActivity extends AppCompatActivity
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
         setupViewPager(viewPager);
-        initAnnouncement();
+        //initAnnouncement();
 
 
         // Set the title for the fragment.

@@ -7,10 +7,12 @@
 
     <ImageView
         android:id="@+id/ivCategory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@android:drawable/btn_star_big_on"
-        android:padding="12dp"/>
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:padding="12dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/logo"
+        android:layout_marginTop="15dp"/>
 
     <TextView
         android:id="@+id/tvCategory"
@@ -18,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toEndOf="@+id/ivCategory"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="35dp"
         android:text="item"
         android:textAppearance="?attr/textAppearanceListItem" />
 
