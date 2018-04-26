@@ -2,6 +2,7 @@ package ingage.ingage20.activities;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +29,7 @@ public class SearchResultActivity extends AppCompatActivity {
     SessionManager session;
     ViewPager viewPager;
     ViewPagerAdapter viewPagerAdapter;
+    TabLayout tabLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +42,8 @@ public class SearchResultActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
         Log.d("SEARCHRESULTACT", "here");
         viewPager = (ViewPager) findViewById(R.id.viewpager);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
         setupViewPager(viewPager);
     }
 

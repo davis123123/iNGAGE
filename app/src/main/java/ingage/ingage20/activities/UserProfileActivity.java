@@ -116,7 +116,7 @@ public class UserProfileActivity extends AppCompatActivity {
             adapter.addFragment(userInfoFragment, "User Info");
             viewPager.setAdapter(adapter);
 
-            ViewPager.OnPageChangeListener pagechangelistener =new ViewPager.OnPageChangeListener() {
+            ViewPager.OnPageChangeListener pagechangelistener = new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageSelected(int pos) {
                         adapter.notifyDataSetChanged();

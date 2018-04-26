@@ -238,6 +238,8 @@ public class MainActivity extends AppCompatActivity
         session.updateCategory(pageCategory);
         //initTabs();
         viewPager = (ViewPager) findViewById(R.id.viewpager);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
         setupViewPager(viewPager);
         initAnnouncement();
 
@@ -295,7 +297,7 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    private void initTabs(){
+   /* private void initTabs(){
         tabLayout = (TabLayout) findViewById(R.id.tabs);
 
         TabLayout.Tab homeTab = tabLayout.newTab().setText("Home");
@@ -336,10 +338,9 @@ public class MainActivity extends AppCompatActivity
                     onHome();
                 } else if (position == 1)
                     //onNew();
-                    onArchived();
+
                 else if (position == 2)
-                    //onTrend();
-                    onCategories();
+
             }
 
             @Override
@@ -354,7 +355,7 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
-    }
+    }*/
 
     private void initAnnouncement(){
         AnnouncementHandler announcementHandler = new AnnouncementHandler();
@@ -543,58 +544,12 @@ public class MainActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up selected_page_button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        //TODO finish settings when nessecary
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        else if (id == R.id.action_new) {
-            onNew();
-
-            return true;
-        }
-        else if (id == R.id.action_trending) {
-            onArchived();
-            return true;
-        }
-
         if (id == R.id.action_search) {
             onSearch();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private Fragment onArchived() {
-        final FragmentManager fragmentManager = this.getSupportFragmentManager();
-        Class fragmentClass = ArchivedFragment.class;
-        HashMap<String, String> user = session.getUserDetails();
-        final Fragment fragment;
-        //if(user.get(SessionManager.CATEGORY_TYPE) != null && !user.get(SessionManager.CATEGORY_TYPE).equals("")){
-        if(user.get(SessionManager.CATEGORY_TYPE) != null){
-            fragmentClass = CategoriesPageFragment.class;
-            session.updatePage("categoryArchived");
-            fragment = Fragment.instantiate(this, fragmentClass.getName());
-        }//category
-        else{
-            session.updatePage("archived");
-            fragment = Fragment.instantiate(this, fragmentClass.getName());
-        }//frontpage
-
-        fragmentManager
-                .beginTransaction()
-                .replace(R.id.main_fragment_container, fragment, fragmentClass.getSimpleName())
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .commit();
-
-        // Set the title for the fragment.
-        final ActionBar actionBar = this.getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle(getString(R.string.app_name));
-        }
-        return fragment;
     }
 
 
@@ -700,58 +655,6 @@ public class MainActivity extends AppCompatActivity
         }
         return fragment;
     }
-
-    private Fragment onNew() {
-        final FragmentManager fragmentManager = this.getSupportFragmentManager();
-        Class fragmentClass = ArchivedFragment.class;
-        HashMap<String, String> user = session.getUserDetails();
-        final Fragment fragment;
-        //if(user.get(SessionManager.CATEGORY_TYPE) != null && !user.get(SessionManager.CATEGORY_TYPE).equals("")){
-        if(user.get(SessionManager.CATEGORY_TYPE) != null){
-            fragmentClass = CategoriesPageFragment.class;
-            session.updatePage("categoryDate");
-            fragment = Fragment.instantiate(this, fragmentClass.getName());
-        }//category
-        else{
-            session.updatePage("date");
-            fragment = Fragment.instantiate(this, fragmentClass.getName());
-        }//frontpage
-
-        fragmentManager
-                .beginTransaction()
-                .replace(R.id.main_fragment_container, fragment, fragmentClass.getSimpleName())
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .commit();
-
-        // Set the title for the fragment.
-        final ActionBar actionBar = this.getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle(getString(R.string.app_name));
-        }
-        return fragment;
-    }
-
-    private Fragment onCategories() {
-        final FragmentManager fragmentManager = this.getSupportFragmentManager();
-        Class fragmentClass = CategoriesFragment.class;
-        final Fragment fragment;
-        session.updatePage("categoryDate");
-        fragment = Fragment.instantiate(this, fragmentClass.getName());
-
-        fragmentManager
-                .beginTransaction()
-                .replace(R.id.main_fragment_container, fragment, fragmentClass.getSimpleName())
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .commit();
-
-        // Set the title for the fragment.
-        final ActionBar actionBar = this.getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle(getString(R.string.app_name));
-        }
-        return fragment;
-    }
-
 
     @Override
     public void onClick(View view) {
