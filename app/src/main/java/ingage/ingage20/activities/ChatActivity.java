@@ -116,8 +116,10 @@ public class ChatActivity extends AppCompatActivity{
         HashMap<String, String> chat = chatRoomManager.getUserDetails();
         thread_id = chat.get(ChatRoomManager.THREAD_ID);
         user_side = chat.get(ChatRoomManager.SIDE);
-        long secRemaining = secondsRemaining(chatRoomManagerUserDetails.get(ChatRoomManager.TIME_REMAINING));
+       // Log.d("CHATROOM",chatRoomManagerUserDetails.get(ChatRoomManager.TIME_REMAINING));
+
         if(user_side != null) {
+            long secRemaining = secondsRemaining(chatRoomManagerUserDetails.get(ChatRoomManager.TIME_REMAINING));
             endThreadTimer(secRemaining);
             kickTimer(900000); //fifteen minutes of inactivity will kick user out
             Log.d("STATE", "side: " + user_side);
@@ -479,7 +481,7 @@ public class ChatActivity extends AppCompatActivity{
         String side = chat_user.get(ChatRoomManager.SIDE);
         String thread_id = chat_user.get(ChatRoomManager.THREAD_ID);
         String spectator = chat_user.get(ChatRoomManager.SPECTATOR);
-
+        chatRoomManager.updateTimeRemaining("0");
         if(mKickTimer != null){
             mKickTimer.cancel();
             mKickTimer = null;

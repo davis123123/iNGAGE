@@ -57,8 +57,8 @@ public class SearchResultActivity extends AppCompatActivity {
 
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        viewPagerAdapter.addFragment(searchResultArchivedFragment, "Active");
-        viewPagerAdapter.addFragment(searchResultFragment, "Archived");
+        viewPagerAdapter.addFragment(searchResultFragment, "Active");
+        viewPagerAdapter.addFragment(searchResultArchivedFragment, "Archived");
 
         viewPager.setAdapter(viewPagerAdapter);
 

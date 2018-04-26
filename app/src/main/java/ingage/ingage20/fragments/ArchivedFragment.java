@@ -34,7 +34,7 @@ public class ArchivedFragment extends FragmentBase implements ThreadListAdapter.
     QueryThreadsHandler queryThreadsHandler;
 
     int pastVisiblesItems, visibleItemCount, totalItemCount;
-    int rowCount = 0;
+    int rowCount;
     String default_path = "data:image/JPG;base64,";
     private static final String TAG = "ArchivedFragment";
 
@@ -51,6 +51,7 @@ public class ArchivedFragment extends FragmentBase implements ThreadListAdapter.
                        final Bundle savedInstanceState){
         // Inflate the layout for this fragment
         threadListAdapter = new ThreadListAdapter(this, getActivity());
+        rowCount = 0;
         getThreadsJSON(rowCount);
 
         rootView = inflater.inflate(R.layout.fragment_archived, container, false);
@@ -155,12 +156,12 @@ public class ArchivedFragment extends FragmentBase implements ThreadListAdapter.
         SessionManager session = new SessionManager(getActivity().getApplicationContext());
         HashMap<String, String> user = session.getUserDetails();
         String test = user.get(SessionManager.CATEGORY_TYPE);
-        Log.d("ARCCATE"," "+ test);
+        Log.d("ARCCATE"," "+ test + " " + rowCount);
         try {
             if(user.get(SessionManager.CATEGORY_TYPE)!= null) {
 
                 json_string = queryThreadsHandler.execute("categoryArchived", user.get(SessionManager.CATEGORY_TYPE),String.valueOf(rowCount)).get();
-                Log.d("ARCCATE"," "+ json_string);
+                Log.d("ARCCATE2"," "+ json_string);
             }
             else {
                 json_string = queryThreadsHandler.execute("archived", String.valueOf(rowCount)).get();

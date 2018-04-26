@@ -32,14 +32,13 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
     private Context mContext;
     private static final String TAG = ChatArrayAdapter.class.getSimpleName();
     List <ChatMessageHelper> list = new ArrayList<ChatMessageHelper>();
-    HashMap<String, Integer> chatHash = new HashMap<String, Integer>();
-    SessionManager session;
-    String username;
+    private HashMap<String, Integer> chatHash = new HashMap<String, Integer>();
+    private String username;
 
-    int unselectedColor, selectedColorAgree, selectedColorDisagree;
+    private int unselectedColor, selectedColorAgree, selectedColorDisagree;
 
     //placement method
-    boolean voteBind = false;
+    private boolean voteBind = false;
 
     private ItemClickCallback itemClickCallback;
     String side;
@@ -71,28 +70,27 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
         Context context = viewGroup.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         boolean shouldAttachToParentImmediately = false;
-        View view = inflater.inflate(R.layout.chat_layout, viewGroup, shouldAttachToParentImmediately);
+        View view = inflater.inflate(R.layout.chat_layout, viewGroup, false);
         Log.d("STATE", "viewType: " + viewType);
 
         unselectedColor = context.getResources().getColor(R.color.tab_text_unselected);
         selectedColorAgree = context.getResources().getColor(R.color.green);
         selectedColorDisagree = context.getResources().getColor(R.color.colorPrimary);
 
-        session = new SessionManager(viewGroup.getContext());
+        SessionManager session = new SessionManager(viewGroup.getContext());
         HashMap<String, String> user = session.getUserDetails();
         username = user.get(SessionManager.KEY_NAME);
 
         if(viewType == 0)
-            view = inflater.inflate(R.layout.chat_layout_own, viewGroup, shouldAttachToParentImmediately);
+            view = inflater.inflate(R.layout.chat_layout_own, viewGroup, false);
         else if(viewType == 1)
-            view = inflater.inflate(R.layout.chat_layout, viewGroup, shouldAttachToParentImmediately);
+            view = inflater.inflate(R.layout.chat_layout, viewGroup, false);
         if(viewType == 2)
-            view = inflater.inflate(R.layout.chat_layout_own_right, viewGroup, shouldAttachToParentImmediately);
+            view = inflater.inflate(R.layout.chat_layout_own_right, viewGroup, false);
         else if(viewType == 3)
-            view = inflater.inflate(R.layout.chat_layout_right, viewGroup, shouldAttachToParentImmediately);
+            view = inflater.inflate(R.layout.chat_layout_right, viewGroup, false);
 
-        ChatViewHolder viewHolder = new ChatViewHolder(view);
-        return viewHolder;
+        return new ChatViewHolder(view);
     }
 
     @Override
@@ -155,7 +153,7 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
         return list.get(position);
     }
 
-    public void toggleVote(ImageView iv, int color, boolean enabled){
+    private void toggleVote(ImageView iv, int color, boolean enabled){
         iv.setEnabled(enabled);
         iv.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
     }
@@ -256,7 +254,7 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
         ImageView avatar;
         ImageButton bUpvote, bDownvote;
 
-        public ChatViewHolder(View itemView) {
+        ChatViewHolder(View itemView) {
             super(itemView);
 
             bUpvote = (ImageButton) itemView.findViewById(R.id.upvote);
@@ -279,7 +277,7 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
             messageUserView.setText(chatMessageHelper.getMessageUser());
             upVoteView.setText(chatMessageHelper.getMessageUpvote().toString());
             downVoteView.setText(chatMessageHelper.getMessageDownvote().toString());
-            messageTime.setText(chatMessageHelper.getMessageTime().toString());
+            messageTime.setText(chatMessageHelper.getMessageTime());
             if(!voteBind)
                 avatar.setImageDrawable (null);
             Log.d("UPvote state: ", " "+ voteBind);

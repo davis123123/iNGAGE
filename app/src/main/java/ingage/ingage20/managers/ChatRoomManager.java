@@ -11,16 +11,16 @@ import java.util.Set;
  */
 
 public class ChatRoomManager {
-    SharedPreferences pref;
+    private SharedPreferences pref;
 
     // Editor for Shared preferences
-    SharedPreferences.Editor editor;
+    private SharedPreferences.Editor editor;
 
     // Context
-    Context _context;
+    private Context _context;
 
     // Shared pref mode
-    int PRIVATE_MODE = 0;
+    private int PRIVATE_MODE = 0;
 
     public static final String THREAD_ID = "thread_id";
 
