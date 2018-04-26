@@ -6,9 +6,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.HashMap;
+import java.util.Objects;
 
 import ingage.ingage20.R;
 import ingage.ingage20.adapters.ViewPagerAdapter;
@@ -29,10 +33,12 @@ public class SearchResultActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mContext = getApplicationContext();
         session = new SessionManager(mContext);
+        HashMap<String, String> user = session.getUserDetails();
+        String searchString = user.get(SessionManager.SEARCH_STRING);
+        setTitle(searchString);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_search);
         Log.d("SEARCHRESULTACT", "here");
-
-
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
     }
@@ -64,6 +70,16 @@ public class SearchResultActivity extends AppCompatActivity {
             public void onPageScrollStateChanged(int state) {
             }
         };
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

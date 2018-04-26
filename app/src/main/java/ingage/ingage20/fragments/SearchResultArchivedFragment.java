@@ -227,4 +227,17 @@ public class SearchResultArchivedFragment extends FragmentBase implements Thread
         }
         checkIfNoThreads(count);
     }
+
+    //If there's no threads, then display helper message
+    public static void checkIfNoThreads(int total){
+        Log.d("search count ", String.valueOf(total));
+        if (total < 1) {
+            msg.setVisibility(View.VISIBLE);
+            icon.setVisibility(View.VISIBLE);
+        }
+        else {
+            msg.setVisibility(View.GONE);
+            icon.setVisibility(View.GONE);
+        }
+    }
 }
