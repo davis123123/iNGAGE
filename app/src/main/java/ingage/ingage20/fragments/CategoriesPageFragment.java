@@ -33,7 +33,7 @@ public class CategoriesPageFragment extends FragmentBase implements ThreadListAd
 
     private boolean loading = true;
     int pastVisiblesItems, visibleItemCount, totalItemCount;
-    int rowCount = 0;
+    int rowCount;
     String default_path = "data:image/JPG;base64,";
     private static final String TAG = "CategoriesPageFragment";
 
@@ -51,6 +51,7 @@ public class CategoriesPageFragment extends FragmentBase implements ThreadListAd
         // Inflate the layout for this fragment
         Log.d("ROWCOUNT","num"+rowCount);
         threadListAdapter = new ThreadListAdapter(this, getActivity());
+        rowCount = 0;
         getThreadsJSON(rowCount);
         rootView = inflater.inflate(R.layout.fragment_archived, container, false);
         rootView.setTag(TAG);
