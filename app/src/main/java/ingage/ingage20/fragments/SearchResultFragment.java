@@ -35,7 +35,7 @@ public class SearchResultFragment extends FragmentBase implements ThreadListAdap
     SessionManager sessionManager;
     private boolean loading = true;
     int pastVisiblesItems, visibleItemCount, totalItemCount;
-    int rowCount = 0;
+    int rowCount;
     String searchString = "";
 
     private static final String TAG = "ArchivedFragment";
@@ -57,6 +57,7 @@ public class SearchResultFragment extends FragmentBase implements ThreadListAdap
         HashMap<String, String> user = session.getUserDetails();
         searchString = user.get(SessionManager.SEARCH_STRING);
         Log.d("STATE", "searchstring " + searchString);
+        rowCount = 0;
         threadListAdapter = new ThreadListAdapter(this, getActivity());
         getThreadsJSON(rowCount, searchString);
         rootView = inflater.inflate(R.layout.fragment_archived, container, false);

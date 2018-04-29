@@ -94,8 +94,8 @@ public class CategoriesPageFragment extends FragmentBase implements ThreadListAd
                 getJSON.start();
                 try {
                     getJSON.join();
-                    threadListAdapter.list.remove(threadListAdapter.list.size() - 1);
-                    threadListAdapter.notifyItemRemoved(threadListAdapter.list.size());
+                    //threadListAdapter.list.remove(threadListAdapter.list.size() - 1);
+                    //threadListAdapter.notifyItemRemoved(threadListAdapter.list.size());
                     inflateThreads();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -119,7 +119,7 @@ public class CategoriesPageFragment extends FragmentBase implements ThreadListAd
                         //if(mOnLoadMoreListener != null){
                         Log.d("...", "Last Item Wow !");
                         threadListAdapter.isLoading = true;
-                        threadListAdapter.list.add(null);
+                    //    threadListAdapter.list.add(null);
                         threadListAdapter.mOnLoadMoreListener.onLoadMore();
                     }
                 }
