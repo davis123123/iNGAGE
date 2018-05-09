@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:529016068097:android:88068b498c0206e9",
         "android_client_info": {
-          "package_name": "ingage.ingage20"
+          "package_name": "ingage.ingage"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "529016068097-t4badbja9fs6cm4krkj3tmqbsoung2p8.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "ingage.ingage20",
+            "package_name": "ingage.ingage",
             "certificate_hash": "9fc2026cd596007a9751faa89694128f17684ffb"
           }
         },
