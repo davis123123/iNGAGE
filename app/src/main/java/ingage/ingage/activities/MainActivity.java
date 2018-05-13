@@ -99,19 +99,20 @@ public class MainActivity extends AppCompatActivity
    // private ViewPager viewPager;
 
     private void setupToolbar(final Bundle savedInstanceState) {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         // Set up the activity to use this toolbar. As a side effect this sets the Toolbar's title
         // to the activity's title.
         setSupportActionBar(toolbar);
-
         if (savedInstanceState != null) {
             // Some IDEs such as Android Studio complain about possible NPE without this check.
             assert getSupportActionBar() != null;
-
+            Log.d("Toolbar", BUNDLE_KEY_TOOLBAR_TITLE);
             // Restore the Toolbar's title.
             getSupportActionBar().setTitle(
-                    savedInstanceState.getCharSequence(BUNDLE_KEY_TOOLBAR_TITLE));
+                    savedInstanceState.getCharSequence("HELLOW WORLD"));
         }
+
+        //getSupportActionBar().setTitle("HELLOW WORLD");
     }
 
     /**
@@ -225,9 +226,7 @@ public class MainActivity extends AppCompatActivity
         session.checkLogin();
 
         setContentView(R.layout.activity_main);
-
         setupToolbar(savedInstanceState);
-
         /**RecyclerView (TEMPORARY, MOVE TO A FRAGMENT LATER)**/
         parseJSON();
 
@@ -243,11 +242,17 @@ public class MainActivity extends AppCompatActivity
         setupViewPager(viewPager);
         //initAnnouncement();
 
-
+        HashMap<String, String> user = session.getUserDetails();
+        String categoryType = "";
+        categoryType = user.get(SessionManager.CATEGORY_TYPE);
+        //Log.d("CategoryName", categoryType);
+        if(categoryType == null){
+            categoryType = "Home";
+        }
         // Set the title for the fragment.
         final ActionBar actionBar = this.getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle(getString(R.string.app_name));
+            actionBar.setTitle(categoryType);
         }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -622,6 +627,8 @@ public class MainActivity extends AppCompatActivity
            viewPager.setCurrentItem(0, true);
             //tabLayout.getTabAt(0).select();
         }
+
+        getSupportActionBar().setTitle(item);
     }
 
     private Fragment onHome(){

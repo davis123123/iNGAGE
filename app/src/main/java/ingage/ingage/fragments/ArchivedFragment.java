@@ -183,7 +183,8 @@ public class ArchivedFragment extends FragmentBase implements ThreadListAdapter.
 
     @Override
     public void onContainerClick(int p) {
-        itemClick(p);
+        //itemClick(p);
+        spectate(p);
     }
 
     @Override
