@@ -38,7 +38,7 @@ public class SearchResultFragment extends FragmentBase implements ThreadListAdap
     int rowCount;
     String searchString = "";
 
-    private static final String TAG = "ArchivedFragment";
+    private static final String TAG = "ActiveFragment";
     String default_path = "data:image/JPG;base64,";
 
     @RequiresApi(api = Build.VERSION_CODES.M)

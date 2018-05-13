@@ -152,7 +152,7 @@ public class SearchResultArchivedFragment extends FragmentBase implements Thread
     public void getThreadsJSON(int rowCount, String searchString){
         searchHandler = new SearchHandler();
         Log.d("ROWCOUNT" , " result : " + searchString);
-        String type = "active";
+        String type = "archived";
         try {
             json_string = searchHandler.execute(type, String.valueOf(rowCount), searchString).get();
             Log.d("ARCHIVED" , "query result : " + json_string);
