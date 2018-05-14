@@ -55,8 +55,6 @@ public class UserProfileInfoAdapter extends RecyclerView.Adapter<UserProfileInfo
         if(position == 1)
             holder.icon.setImageResource(R.drawable.ic_menu_send);
         if (position == 2)
-            holder.icon.setImageResource(R.drawable.ic_menu_slideshow);
-        if (position == 3)
             holder.icon.setImageResource(R.drawable.ic_menu_share);
     }
 

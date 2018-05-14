@@ -32,9 +32,8 @@ public class UserInfoFragment extends Fragment {
     RecyclerView recycler;
     private View mLoadingView;
     UserProfileInfoAdapter adapter = new UserProfileInfoAdapter();
-    String username, email, tribute_pts, subs, date_joined;
+    String username, email, tribute_pts, date_joined;
     protected static ArrayList<String> sub_arr = new ArrayList<>();
-    String result = "Subscriptions: ";
     View rootView;
     private int mShortAnimationDuration;
     UserProfileActivity userProfileActivity;
@@ -65,14 +64,12 @@ public class UserInfoFragment extends Fragment {
             username = info.get(SessionManager.KEY_NAME);
             email = info.get(SessionManager.KEY_EMAIL);
             tribute_pts = info.get(SessionManager.KEY_TRIBUTE_POINTS);
-            subs = info.get(SessionManager.KEY_SUBSCRIPTIONS);
             date_joined = info.get(SessionManager.KEY_DATE_JOINED);
             if (email != null && email.length() > 0)
                 adapter.add("Email: " + email);
             else
                 adapter.add("Email: N/A");
             adapter.add("Tribute points: " + tribute_pts);
-            setSubscriptions();
             adapter.add("Date joined: " + date_joined);
             adapter.notifyDataSetChanged();
         }
@@ -107,7 +104,6 @@ public class UserInfoFragment extends Fragment {
         else
             adapter.add("Email: N/A" );
         adapter.add("Tribute points: " + tribute_pts);
-        setSubscriptions();
         adapter.add("Date joined: " + date_joined);
         adapter.notifyDataSetChanged();
 
@@ -132,23 +128,6 @@ public class UserInfoFragment extends Fragment {
                 });
     }
 
-    //Parse the thread subscriptions JSON string
-    protected ArrayList parseSubs(String thread_subscriptions){
-
-        thread_subscriptions = thread_subscriptions.replace("["," ");
-        thread_subscriptions = thread_subscriptions.replace("]"," ");
-        sub_arr.clear();
-
-        String arr[] = thread_subscriptions.split(",");
-        for(int i = 0; i < arr.length; i++) {
-            arr[i] = arr[i].substring(arr[i].lastIndexOf(":") + 1);
-            arr[i] = arr[i].replace("\"","");
-            arr[i] = arr[i].replace("}","");
-            sub_arr.add(arr[i]);
-        }
-
-        return sub_arr;
-    }
 
     protected void parseProfileJSON(String json_string){
         JSONObject jsonObject;
@@ -163,7 +142,7 @@ public class UserInfoFragment extends Fragment {
                 JSONObject JO = jsonArray.getJSONObject(count);
                 email = JO.getString("email");
                 tribute_pts = JO.getString("tribute_points");
-                subs = JO.getString("thread_subscriptions");
+                //subs = JO.getString("thread_subscriptions");
                 date_joined = JO.getString("date_joined");
                 count++;
             }
@@ -172,17 +151,7 @@ public class UserInfoFragment extends Fragment {
         }
     }
 
-    protected void setSubscriptions(){
-        parseSubs(subs);
 
-        for(int i=0; i < sub_arr.size(); i++){
-            if(i == 0)
-                result = result + sub_arr.get(i);
-            else
-                result = result + ", " + sub_arr.get(i);
-        }
-        adapter.add(result);
-    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

@@ -62,14 +62,20 @@
     <!--related to thread category-->
     <string name="category_prompt">Pick a category</string>
     <string-array name="thread_categories">
-        <item>Politics</item>
-        <item>Music</item>
-        <item>Movies</item>
+        <item>All</item>
+        <item>Anime</item>
         <item>Art</item>
-        <item>Sports</item>
+        <item>Education</item>
+        <item>Food</item>
         <item>Games</item>
+        <item>Health</item>
+        <item>Movies</item>
+        <item>Music</item>
         <item>Philosophy</item>
+        <item>Politics</item>
+        <item>Sports</item>
         <item>Technology</item>
+        <item>TV shows</item>
     </string-array>
 
     <string name="c_politics">Politics</string>

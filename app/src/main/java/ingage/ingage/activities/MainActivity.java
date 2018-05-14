@@ -403,61 +403,10 @@ public class MainActivity extends AppCompatActivity
         }
         try {
             JSONArray jsonArray = jsonObject.getJSONArray("user_profile");
-            int count = 0;
-            while(count < jsonArray.length()){
-                JSONObject JO = jsonArray.getJSONObject(count);
-                String thread_subscriptions = JO.getString("thread_subscriptions");
-                parseSubs(thread_subscriptions);
-                count++;
-            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
-
-    //Parse the thread subscriptions JSON string
-    protected ArrayList parseSubs(String thread_subscriptions){
-        thread_subscriptions = thread_subscriptions.replace("["," ");
-        thread_subscriptions = thread_subscriptions.replace("]"," ");
-
-        String arr[] = thread_subscriptions.split(",");
-        subs.clear();
-        String default_all = "All";
-        subs.add(default_all);
-        for(int i = 0; i < arr.length; i++) {
-            arr[i] = arr[i].substring(arr[i].lastIndexOf(":") + 1);
-            arr[i] = arr[i].replace("\"","");
-            arr[i] = arr[i].replace("}","");
-            subs.add(arr[i].trim());
-            Log.d("STATE", "Subs: " + subs.get(i));
-        }
-
-        return subs;
-    }
-
-   /* private void setupSubscriptionsListener() {
-        final FragmentManager fragmentManager = this.getSupportFragmentManager();
-        lvItems.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            final int pos = position;
-                session.updateCategory((String) lvItems.getItemAtPosition(pos));
-                session.updatePage("categoryDate");
-                Log.d("STATE", "Nav item clicked: "+ lvItems.getItemAtPosition(pos));
-                navigationDrawer.closeDrawer();
-                final Class fragmentClass = CategoriesPageFragment.class;
-                final Fragment fragment = Fragment.instantiate(getApplicationContext(), fragmentClass.getName());
-                fragmentManager
-                        .beginTransaction()
-                        .replace(R.id.main_fragment_container, fragment, fragmentClass.getSimpleName())
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .commit();
-
-                //close nav drawer after click
-                navigationDrawer.closeDrawer();
-            }
-        });
-    }*/
 
     @Override
     public void onBackPressed() {
