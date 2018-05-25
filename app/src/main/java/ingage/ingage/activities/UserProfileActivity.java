@@ -141,7 +141,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private void downloadAvatar(){
         final String url = "http://107.170.232.60/avatars/" + username + ".JPG";
 
-        Context context = getBaseContext();
+        final Context context = getBaseContext();
 
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         int screenHeight = metrics.heightPixels;
@@ -180,6 +180,7 @@ public class UserProfileActivity extends AppCompatActivity {
                                     @Override
                                     public void onError() {
                                         Log.e("Picasso","Could not get image");
+                                        curr_avatar.setImageResource(R.mipmap.user);
                                     }
                                 });
                     }
