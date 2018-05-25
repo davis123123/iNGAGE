@@ -41,6 +41,7 @@ public class LoginActivity extends AppCompatActivity implements SharedPreference
     AlertDiaLogManager alert = new AlertDiaLogManager();
     ProgressDialog pd;
     WifiManager wifiManager;
+    String loginStatus;
     //String thread_subs;
 
     @Override
@@ -136,7 +137,7 @@ public class LoginActivity extends AppCompatActivity implements SharedPreference
         String appToken = FirebaseSharedPrefManager.getInstance(this).getToken();
         String type = "login";
         IdentityHandler identityHandler = new IdentityHandler(this);
-        String loginStatus = null;
+        //loginStatus = null;
         if(appToken != null) {
             try {
                 loginStatus = identityHandler.execute(type, username, password, appToken).get();
@@ -149,27 +150,40 @@ public class LoginActivity extends AppCompatActivity implements SharedPreference
                 alert.showAlertDialog(LoginActivity.this, "Login failed..", "Username/Password is incorrect", false);
                 usernameEt.getText().clear();
                 passwordEt.getText().clear();
-                alert.showAlertDialog(LoginActivity.this, "Login failed..", "Please try again later", false);
-                Log.e("STATE", "Token not Registered");
-                usernameEt.getText().clear();
-                passwordEt.getText().clear();
             } else if(loginStatus.equals("banned")){
                 alert.showAlertDialog(LoginActivity.this, "Notice", "This user has been permanently banned due to reports of misconduct.", false);
                 usernameEt.getText().clear();
                 passwordEt.getText().clear();
             }
+
+            else if (loginStatus.equals("please confirm email")){
+                alert.showAlertDialog(LoginActivity.this, "Login failed...", "Please confirm your e-mail, make sure to check your spam box.", false);
+                Log.e("STATE", "Token not Registered");
+                usernameEt.getText().clear();
+                passwordEt.getText().clear();
+            }
+
             else {
+                Log.e("state", "go to main");
                 rememberUser();
                 session.createLoginSession(username, password);
                 parseProfileJSON(loginStatus);
                 goMain();
             }
-        } else if (loginStatus.equals("please confirm email")){
+        }
+        else if (loginStatus.equals("please confirm email")){
             alert.showAlertDialog(LoginActivity.this, "Login failed...", "Please confirm your e-mail, make sure to check your spam box.", false);
             Log.e("STATE", "Token not Registered");
             usernameEt.getText().clear();
             passwordEt.getText().clear();
         }
+        else{
+            alert.showAlertDialog(LoginActivity.this, "Login failed..", "Please try again later", false);
+            Log.e("STATE", "Token not Registered");
+            usernameEt.getText().clear();
+            passwordEt.getText().clear();
+        }
+
     }
 
     public void rememberUser(){
