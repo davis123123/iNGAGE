@@ -117,9 +117,20 @@ public class LoginActivity extends AppCompatActivity implements SharedPreference
 
     public void goMain() {
         loadingDialog();
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        Boolean firstLaunch = preferences.getBoolean(String.valueOf(R.string.is_first_launch), true);
+
+        if(!firstLaunch) {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        else{
+            Intent intent = new Intent(this, WalkthroughActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     private void loadingDialog(){
@@ -171,12 +182,12 @@ public class LoginActivity extends AppCompatActivity implements SharedPreference
                 goMain();
             }
         }
-        else if (loginStatus.equals("please confirm email")){
+        /*else if (loginStatus.equals("please confirm email")){
             alert.showAlertDialog(LoginActivity.this, "Login failed...", "Please confirm your e-mail, make sure to check your spam box.", false);
             Log.e("STATE", "Token not Registered");
             usernameEt.getText().clear();
             passwordEt.getText().clear();
-        }
+        }*/
         else{
             alert.showAlertDialog(LoginActivity.this, "Login failed..", "Please try again later", false);
             Log.e("STATE", "Token not Registered");

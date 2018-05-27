@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:background="#fcbaba">
+
+            <ImageView
+                android:id="@+id/ivImg"
+                android:layout_width="match_parent"
+                android:layout_height="280dp"
+                android:layout_gravity="center_horizontal"
+                android:fitsSystemWindows="true"
+                android:scaleType="centerCrop"
+                android:background="@color/gray"
+                android:src="@drawable/logo" />
+
+
+            <TextView
+                android:id="@+id/tvHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textSize="28dp"
+                android:paddingLeft="18dp"
+                android:paddingRight="18dp"
+                android:paddingTop="8dp"
+                android:layout_below="@id/ivImg"
+                android:textColor="#FFFFFF"
+                android:textStyle="italic"
+                android:textAlignment="center" />
+
+
+            <TextView
+                android:id="@+id/tvDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp"
+                android:paddingTop="18dp"
+                android:gravity="center_horizontal"
+                android:layout_gravity="center_horizontal"
+                android:textSize="18dp"
+                android:textStyle="italic"
+                android:textColor="#FFFFFF"
+                android:padding="8dp"
+                android:layout_below="@id/tvHeader"/>
+
+    <Button
+        android:id="@+id/btClose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
+        android:background="@layout/button"
+        android:text="@string/walkthough_skip"
+        android:textColor="#FFFFFF"
+        android:onClick="closeWalkthrough"/>
+
+
+
+</RelativeLayout>

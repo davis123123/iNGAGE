@@ -88,7 +88,45 @@
     <string name="c_technology">Technology</string>
     <string name="title_activity_chat">ChatActivity</string>
 
+    <!--related to walkthrouhgh-->
+    <string name="walkthough_skip">Skip</string>
+    <string name="walkthough_done">Got it!</string>
+    <string name="is_first_launch">isFirstLaunch</string>
+
+    <string-array name="walkthrough_headers">
+        <item>Get Started!</item>
+        <item>How it Works</item>
+        <item>Start your own discussion!</item>
+        <item>Spectate</item>
+        <item>Choose from many Topics!</item>
+    </string-array>
+
+    <string-array name="walkthrough_descriptions">
+        <item>Click on any room in the active tab to get started!
+
+               Agree or disagree with the issue and start commenting.
+        </item>
+
+        <item>Rooms are open for a limited time once created.
+
+              Once the timer is up, then it will be locked and archived. </item>
+        <item>Have an idea on an interesting topic?
+
+              Create your own room! Pick a category and even upload your own image for that room.</item>
+
+        <item>Don\'t feel like participating?
+
+              Click on the spectate icon in order to
+              view the comments! </item>
+
+        <item>Use the search bar to find the topics that you are interested in. Or tap on the categories tab to filter by type.</item>
+    </string-array>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="title_activity_walkthrough">WalkthroughActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 
 </resources>
