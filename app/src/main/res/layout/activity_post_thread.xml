@@ -4,26 +4,29 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".activities.PostThreadActivity">
 
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
 
         <EditText
             android:id="@+id/insert_thread_title_text_view"
             android:layout_width="match_parent"
             android:layout_height="40dp"
+            android:layout_below="@+id/category_spinner"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="20dp"
-            android:padding="8dp"
-            android:hint="Title"
-            android:layout_below="@+id/category_spinner"
             android:background="@layout/textfield"
             android:drawableLeft="@android:drawable/sym_action_chat"
-            android:inputType="textCapSentences"/>
+            android:hint="Title"
+            android:inputType="textCapSentences"
+            android:padding="8dp" />
 
         <EditText
             android:id="@+id/insert_thread_content_text_view"
@@ -39,63 +42,75 @@
             android:inputType="textMultiLine|textCapSentences"
             android:lines="4"
             android:maxLines="4"
-            android:scrollbars="vertical"
-            android:padding="8dp" />
+            android:padding="8dp"
+            android:scrollbars="vertical" />
 
         <TextView
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pick a category:"
+            android:layout_marginTop="10dp"
             android:layout_toLeftOf="@+id/category_spinner"
-            android:layout_marginTop="10dp"/>
+            android:text="Pick a category:" />
+
+        <TextView
+            android:id="@+id/tvHint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/insert_thread_content_text_view"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
+            android:text="@string/post_photo_hint"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimaryLight"
+            android:textSize="18dp" />
 
         <Spinner
             android:id="@+id/category_spinner"
-            android:entries="@array/thread_categories"
-            android:prompt="@string/category_prompt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="10dp">
-        </Spinner>
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="10dp"
+            android:entries="@array/thread_categories"
+            android:prompt="@string/category_prompt"></Spinner>
 
         <ImageView
             android:id="@+id/uploadImageView"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="40dp"
-            android:scaleType="fitXY"/>
+            android:scaleType="fitXY" />
 
         <LinearLayout
             android:id="@+id/llUploadImage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_below="@id/tvHint"
             android:background="#d3d3d3"
-            android:layout_marginTop="60dp"
-            android:layout_below="@id/insert_thread_content_text_view"
+            android:orientation="vertical"
             android:padding="2dp">
 
-        <ImageView
-            android:id="@+id/ivUploadIcon"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="40dp"
-            android:src="@android:drawable/ic_menu_upload"/>
+            <ImageView
+                android:id="@+id/ivUploadIcon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="40dp"
+                android:src="@android:drawable/ic_menu_upload" />
 
             <TextView
+                android:id="@+id/tvUploatText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/tvUploatText"
-                android:text="Click to upload image"
+                android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:textSize="22dp"
-                android:layout_gravity="center"/>
+                android:text="Click to upload image"
+                android:textSize="22dp" />
         </LinearLayout>
 
     </RelativeLayout>
