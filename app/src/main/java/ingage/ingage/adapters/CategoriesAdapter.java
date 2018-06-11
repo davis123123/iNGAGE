@@ -12,6 +12,7 @@ import ingage.ingage.R;
 import ingage.ingage.activities.MainActivity;
 import ingage.ingage.fragments.CategoriesFragment;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,7 +22,12 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
     private final CategoriesFragment.categoriesFragmentListener mListener;
 
     public CategoriesAdapter(CategoriesFragment.categoriesFragmentListener listener) {
-        mValues = Arrays.asList(App.getAppContext().getResources().getStringArray(R.array.thread_categories));
+        mValues = new ArrayList<String>(Arrays.asList(App.getAppContext().getResources().getStringArray(R.array.thread_categories)));
+
+        //replace "-" with "All"
+        mValues.remove(0);
+        mValues.add(0,"All");
+
         mListener = listener;
     }
 

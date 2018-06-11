@@ -12,7 +12,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -21,13 +20,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -37,10 +34,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 import ingage.ingage.R;
 import ingage.ingage.handlers.SubmitThreadsHandler;
@@ -212,6 +207,11 @@ public class  PostThreadActivity extends AppCompatActivity implements SubmitThre
 
         if(threadContent.length() == 0){
             Toast.makeText(this, "Please provide a description", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(categorySpinner.getSelectedItem().toString().equals("-") || categorySpinner.getSelectedItem() == null){
+            Toast.makeText(this, "Please select a category", Toast.LENGTH_SHORT).show();
             return;
         }
 

@@ -63,7 +63,7 @@
     <!--related to thread category-->
     <string name="category_prompt">Pick a category</string>
     <string-array name="thread_categories">
-        <item>All</item>
+        <item>-</item>
         <item>Anime</item>
         <item>Art</item>
         <item>Education</item>
