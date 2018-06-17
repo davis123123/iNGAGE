@@ -89,7 +89,7 @@ public class  PostThreadActivity extends AppCompatActivity implements SubmitThre
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
-                Toast.makeText(getBaseContext(), parent.getItemAtPosition(position)+"selected",Toast.LENGTH_LONG).show();
+                //Toast.makeText(getBaseContext(), parent.getItemAtPosition(position)+"selected",Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -176,9 +176,7 @@ public class  PostThreadActivity extends AppCompatActivity implements SubmitThre
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int i, long l) {
-                Toast.makeText(
-                        PostThreadActivity.this, parent.getSelectedItem().toString(),
-                        Toast.LENGTH_SHORT).show();
+               // Toast.makeText(PostThreadActivity.this, parent.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
