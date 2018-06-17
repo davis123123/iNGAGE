@@ -34,12 +34,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import ingage.ingage.R;
 import ingage.ingage.handlers.SubmitThreadsHandler;
 import ingage.ingage.handlers.UploadImageHandler;
+import ingage.ingage.handlers.UserRecentCommentHandler;
 import ingage.ingage.managers.SessionManager;
 
 public class  PostThreadActivity extends AppCompatActivity implements SubmitThreadsHandler.AsyncInterface{
@@ -63,6 +66,7 @@ public class  PostThreadActivity extends AppCompatActivity implements SubmitThre
     UploadImageHandler uploadImageHandler;
     private boolean usedImage = false;
     private DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot();
+    DatabaseReference post_root;
     public static String extension;
     ProgressDialog pd;
 
@@ -268,7 +272,7 @@ public class  PostThreadActivity extends AppCompatActivity implements SubmitThre
 
     public void checkPageExist(String threadTitle){
         Log.d("CHECKPAGE", "yes3");
-        final DatabaseReference post_root = FirebaseDatabase.getInstance().getReference().child(threadTitle);
+        post_root = FirebaseDatabase.getInstance().getReference().child(threadTitle);
         post_root.runTransaction(new Transaction.Handler() {
 
             @Override
@@ -280,8 +284,8 @@ public class  PostThreadActivity extends AppCompatActivity implements SubmitThre
                     Log.d("ROOTCHILDREN", "no");
                     Map<String, Object> map_page = new HashMap<String, Object>();
                     map_page.put("1","");
-                    String fPage = "1";
                     post_root.updateChildren(map_page);
+                    createOP();
                 }
                 return Transaction.success(mutableData);
             }
@@ -292,6 +296,35 @@ public class  PostThreadActivity extends AppCompatActivity implements SubmitThre
             }
         });
     } //used only for first comment
+
+    //insert description field as first comment aka orignal post
+    public void createOP(){
+        HashMap<String, String> user = session.getUserDetails();
+        String messageBy = user.get(SessionManager.KEY_NAME);
+        String msg = mInsertThreadContent.getText().toString();
+
+        insertComment(messageBy, msg);
+
+        // UserRecentCommentHandler handler = new UserRecentCommentHandler();
+        // handler.enqueue(username, thread_id, msg, "agree");
+
+    }
+
+    private void insertComment(final String messageBy, final String messageText){
+        DatabaseReference page_root = post_root.child("1");
+        String temp_key = page_root.push().getKey();
+
+        DatabaseReference message_root = page_root.child(temp_key);
+        String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+        Map<String, Object> map_message = new HashMap<String, Object>();
+        map_message.put("Username", messageBy);
+        map_message.put("Msg", messageText);
+        map_message.put("Side", "agree");
+        map_message.put("upvotes", 0);
+        map_message.put("downvotes", 0);
+        map_message.put("TimeStamp", currentDateTimeString);
+        message_root.updateChildren(map_message);
+    }
 
     private void goUploadImage(){
 
