@@ -94,7 +94,7 @@ public class ChangeAvatarActivity extends AppCompatActivity {
 
 
                     } else {
-                        Toast.makeText(this, "Permission denied to access external storage!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, R.string.user_permision_granted, Toast.LENGTH_SHORT).show();
                     }
                 }
                 return;

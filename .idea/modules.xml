@@ -3,8 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/iNGAGE.iml" filepath="$PROJECT_DIR$/iNGAGE.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/iNGAGE-app.iml" filepath="$PROJECT_DIR$/app/iNGAGE-app.iml" />
+      <module fileurl="file://C:\Users\wuv66\AndroidStudioProjects\iNGAGE-walkthrough\iNGAGE.iml" filepath="C:\Users\wuv66\AndroidStudioProjects\iNGAGE-walkthrough\iNGAGE.iml" />
+      <module fileurl="file://C:\Users\wuv66\AndroidStudioProjects\iNGAGE-walkthrough\app\iNGAGE-app.iml" filepath="C:\Users\wuv66\AndroidStudioProjects\iNGAGE-walkthrough\app\iNGAGE-app.iml" />
       <module fileurl="file://$PROJECT_DIR$/iNGAGE-walkthrough.iml" filepath="$PROJECT_DIR$/iNGAGE-walkthrough.iml" />
     </modules>
   </component>
