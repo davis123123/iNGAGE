@@ -234,20 +234,25 @@ public class  PostThreadActivity extends AppCompatActivity implements SubmitThre
 
     @Override
     public void response(String response) {
-        Log.d("INSERTTRHEAD", "THIS " + response + usedImage);
-        String message = "Post Submitted";
-        String[] splitResult = response.split("-");
-        response = splitResult[0];
-        if (response.equals("Submission Failed")){
-            message = "Submission Failed";
+        if(response != null) {
+            Log.d("INSERTTRHEAD", "THIS " + response + usedImage);
+            String message = "Post Submitted";
+            String[] splitResult = response.split("-");
+            response = splitResult[0];
+            if (response.equals("Submission Failed")) {
+                message = "Submission Failed";
+            } else {
+                addDataToFirebase(response);
+            }
+
+            Toast.makeText(getBaseContext(), message, Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
         }
         else {
-            addDataToFirebase(response);
+            Toast.makeText(this, R.string.post_thread_error, Toast.LENGTH_SHORT).show();
+            pd.dismiss();
         }
-
-        Toast.makeText(getBaseContext(), message, Toast.LENGTH_LONG).show();
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
     }
 
     private void loadingDialog(){

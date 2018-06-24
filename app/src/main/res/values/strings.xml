@@ -49,6 +49,7 @@
     <!--Strings related to posting thread-->
     <string name="post_description_hint">Enter description here</string>
     <string name="post_photo_hint">Threads with images are more likely to receive comments!</string>
+    <string name="post_thread_error">Can\'t submit post. Please remove any special characters and try again.</string>
 
     <!--related to comments-->
     <string name="pick_side">Do you agree or disagree with the argument?</string>
