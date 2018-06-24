@@ -163,7 +163,7 @@ public class CategoriesPageFragment extends FragmentBase implements ThreadListAd
         try {
             jsonObject = new JSONObject(json_string);
             jsonArray = jsonObject.getJSONArray("server_response");
-            String thread_id, thread_title, thread_content, thread_by, thread_date, thread_category;
+            String thread_id, thread_title, thread_content, thread_by, thread_date, thread_category, thread_time_remaining;
             String thread_img = null;
             while (count < jsonArray.length()) {
                 JSONObject JO = jsonArray.getJSONObject(count);
@@ -174,17 +174,32 @@ public class CategoriesPageFragment extends FragmentBase implements ThreadListAd
                 thread_date = JO.getString("thread_date");
                 thread_category = JO.getString("thread_category");
                 thread_img = JO.getString("thread_image_link");
+                thread_time_remaining = JO.getString("seconds_remaining");
+                int[] timer = time_remaining(thread_time_remaining);
+
                 ThreadsHelper threadsHelper = new ThreadsHelper(thread_id, thread_title,
-                        thread_content, thread_by, thread_date, thread_category, thread_img);
+                        thread_content, thread_by, thread_date, thread_category, thread_img, timer);
                 threadListAdapter.add(threadsHelper);
                 threadListAdapter.notifyDataSetChanged();
                 count++;
             }
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
         checkIfNoThreads(count);
     }
+
+    private int[] time_remaining(String thread_time_remaining){
+        int[] time = new int[3];
+        int total_seconds = Integer.parseInt(thread_time_remaining);
+        int hours = total_seconds / 3600;
+        int minutes = (total_seconds - (hours * 3600)) / 60;
+        int seconds = (total_seconds - (hours * 3600) - (minutes * 60));
+        time[0] = hours;
+        time[1] = minutes;
+        time[2] = seconds;
+        return time;
+    }//array with index 0=hours 1=minutes 2=seconds;
+
 }
 

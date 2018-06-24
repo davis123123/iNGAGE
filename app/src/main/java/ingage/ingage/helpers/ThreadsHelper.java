@@ -8,8 +8,7 @@ import android.graphics.Bitmap;
 
 public class ThreadsHelper {
     private String thread_id, thread_title, thread_content, thread_date, thread_category, thread_img, thread_duration;
-    private String thread_img_bitmap;
-
+    private int[] time_remaining;
 
     public ThreadsHelper(String thread_id, String thread_title, String thread_content,
                          String thread_duration, String thread_date, String thread_category, String thread_img){
@@ -23,7 +22,7 @@ public class ThreadsHelper {
     }
 
     public ThreadsHelper(String thread_id, String thread_title, String thread_content,
-                         String thread_by, String thread_date, String thread_category, String thread_img, String thread_img_bitmap){
+                         String thread_by, String thread_date, String thread_category, String thread_img, int[] time_remaining){
         this.setThread_id(thread_id);
         this.setThread_title(thread_title);
         this.setThread_content(thread_content);
@@ -31,15 +30,12 @@ public class ThreadsHelper {
         this.setThread_date(thread_date);
         this.setThread_category(thread_category);
         this.setThread_img(thread_img);
-        this.setThread_img_bitmap(thread_img_bitmap);
-
+        this.setTime_remaining(time_remaining);
     }
 
     public String getThread_id() {
         return thread_id;
     }
-
-    public String getThread_img_bitmap() {return thread_img_bitmap;}
 
     public String getThread_title(){
         return thread_title;
@@ -62,6 +58,8 @@ public class ThreadsHelper {
     public String getThread_img() {
         return thread_img;
     }
+
+    public int[] getTime_remaining() { return time_remaining; }
 
     public void setThread_title(String thread_title){
         this.thread_title = thread_title;
@@ -89,7 +87,7 @@ public class ThreadsHelper {
         this.thread_img = thread_img;
     }
 
-    public void setThread_img_bitmap(String thread_img_bitmap) {
-        this.thread_img_bitmap = thread_img_bitmap;
+    public void setTime_remaining(int[] time_remaining) {
+        this.time_remaining = time_remaining;
     }
 }

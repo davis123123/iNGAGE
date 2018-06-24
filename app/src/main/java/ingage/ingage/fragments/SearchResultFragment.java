@@ -198,7 +198,7 @@ public class SearchResultFragment extends FragmentBase implements ThreadListAdap
         try {
             jsonObject = new JSONObject(json_string);
             jsonArray = jsonObject.getJSONArray("server_response");
-            String thread_id, thread_title, thread_content, thread_by, thread_date, thread_category;
+            String thread_id, thread_title, thread_content, thread_by, thread_date, thread_category, thread_time_remaining;
             String thread_img_bitmap = null;
             String thread_img = null;
             while (count < jsonArray.length()) {
@@ -210,22 +210,10 @@ public class SearchResultFragment extends FragmentBase implements ThreadListAdap
                 thread_date = JO.getString("thread_date");
                 thread_category = JO.getString("thread_category");
                 thread_img = JO.getString("thread_image_link");
-                /*DownloadImageHandler dlHandler = new DownloadImageHandler(getContext());
-                String type = "download";
-
-                //String thread_id = threadsHelper.getThread_id();
-
-                //do conversion
-                try {
-                    thread_img_bitmap = dlHandler.execute(type, thread_id).get();
-                    //Log.d("STATE", "room title: " + threadsHelper.getThread_title());
-                    Log.d("STATE", "download thread img result: " + result);
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
-                }
-                Log.d("THREAD_BITMAP","result" + thread_img_bitmap);*/
+                thread_time_remaining = JO.getString("seconds_remaining");
+                int[] timer = time_remaining(thread_time_remaining);
                 ThreadsHelper threadsHelper = new ThreadsHelper(thread_id, thread_title,
-                        thread_content, thread_by, thread_date, thread_category, thread_img);
+                        thread_content, thread_by, thread_date, thread_category, thread_img, timer);
                 threadListAdapter.add(threadsHelper);
                 threadListAdapter.notifyDataSetChanged();
                 count++;
@@ -249,4 +237,16 @@ public class SearchResultFragment extends FragmentBase implements ThreadListAdap
             icon.setVisibility(View.GONE);
         }
     }
+
+    private int[] time_remaining(String thread_time_remaining){
+        int[] time = new int[3];
+        int total_seconds = Integer.parseInt(thread_time_remaining);
+        int hours = total_seconds / 3600;
+        int minutes = (total_seconds - (hours * 3600)) / 60;
+        int seconds = (total_seconds - (hours * 3600) - (minutes * 60));
+        time[0] = hours;
+        time[1] = minutes;
+        time[2] = seconds;
+        return time;
+    }//array with index 0=hours 1=minutes 2=seconds;
 }
