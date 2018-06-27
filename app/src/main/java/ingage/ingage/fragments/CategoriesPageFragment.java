@@ -201,5 +201,19 @@ public class CategoriesPageFragment extends FragmentBase implements ThreadListAd
         return time;
     }//array with index 0=hours 1=minutes 2=seconds;
 
+    private String time_remaining_display(int[] time){
+        String time_display;
+        if(time[0] < 1){
+            if(time[1] < 1)
+                return "Less than a minute remaining.";//if less than a minute
+            int minutes = time[1];
+            time_display = "Less than " + Integer.toString(minutes) + " remaining.";
+            return time_display;
+        }//if less than an hours remaining
+
+        int hours = time[0];
+        return "Less than " + Integer.toString(hours) + " remaining.";
+    }
+
 }
 
