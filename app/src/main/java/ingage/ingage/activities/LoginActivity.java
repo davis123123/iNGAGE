@@ -91,8 +91,9 @@ public class LoginActivity extends AppCompatActivity implements SharedPreference
             @Override
             public void onClick(View view) {
                 if (view == LoginEt){
-                    if(wifiManager.checkInternet())
+                    if(wifiManager.checkInternet()) {
                         OnLogin();
+                    }
                     else
                         wifiErrorDialog();
                 }
@@ -120,6 +121,7 @@ public class LoginActivity extends AppCompatActivity implements SharedPreference
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         Boolean firstLaunch = preferences.getBoolean(String.valueOf(R.string.is_first_launch), true);
+        pd.dismiss();
 
         if(!firstLaunch) {
             Intent intent = new Intent(this, MainActivity.class);

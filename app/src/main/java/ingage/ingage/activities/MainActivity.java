@@ -27,6 +27,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.arlib.floatingsearchview.FloatingSearchView;
+import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
@@ -82,7 +84,7 @@ public class MainActivity extends AppCompatActivity
 
     public static String appToken;
     RecyclerView options;
-    android.support.v7.widget.SearchView searchView;
+    FloatingSearchView searchBar;
 
     //dont use enum cuz bad  performance in Android, uses more RAM and memory
     static String pageCategory = null, pageType = "date";
@@ -414,6 +416,10 @@ public class MainActivity extends AppCompatActivity
             navigationDrawer.closeDrawer();
             return;
         }
+        if (searchBar.getVisibility() == View.VISIBLE) {
+            searchBar.setVisibility(View.GONE);
+            return;
+        }
         else{
             Intent intent = new Intent(Intent.ACTION_MAIN);
             intent.addCategory(Intent.CATEGORY_HOME);
@@ -462,31 +468,6 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-        MenuItem myActionMenuItem = menu.findItem(R.id.action_search);
-        searchView = (android.support.v7.widget.SearchView) myActionMenuItem.getActionView();
-        searchView.setOnSearchClickListener(this);
-        searchView.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                session.updateSearch(s);
-                Log.d("SEARCHTIMES","yes");
-                searchView.clearFocus();
-                if(s.length() >= 3) {
-                    Intent searchIntent = new Intent(mContext, SearchResultActivity.class);
-                    startActivity(searchIntent);
-                }
-                else
-                    Toast.makeText(getApplicationContext(), "Search needs to be at least 3 characters long", Toast.LENGTH_LONG).show();
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                Log.d("SEARCH","yes");
-
-                return false;
-            }
-        });
         return true;
     }
 
@@ -497,7 +478,13 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_search) {
-            onSearch();
+            setSearchBarListeners();
+            if(searchBar.getVisibility() == View.GONE) {
+                searchBar.setVisibility(View.VISIBLE);
+                searchBar.setSearchFocused(true);
+            }
+            else
+                searchBar.setVisibility(View.GONE);
             return true;
         }
 
@@ -521,41 +508,41 @@ public class MainActivity extends AppCompatActivity
                 .show();
     }
 
-    private void onSearch(){
+    private void setSearchBarListeners(){
 
         final FragmentManager fragmentManager = this.getSupportFragmentManager();
         final Class fragmentClass = SearchResultFragment.class;
 
-        searchView.setOnSearchClickListener(this);
-        searchView.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
+        searchBar = (FloatingSearchView) findViewById(R.id.floating_search_view);
+        searchBar.setOnSearchListener(new FloatingSearchView.OnSearchListener() {
             @Override
-            public boolean onQueryTextSubmit(String s) {
-                Log.d("SEARCH","submit");
-                SearchHandler searchHandler = new SearchHandler();
-                String result = "";
-                try {
-                    result = searchHandler.execute("0", s).get();
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
+            public void onSuggestionClicked(SearchSuggestion searchSuggestion) {
+
+            }
+
+            @Override
+            public void onSearchAction(String currentQuery) {
+
+                session.updateSearch(currentQuery);
+                searchBar.setCloseSearchOnKeyboardDismiss(false);
+                if(currentQuery.length() >= 3) {
+                    Intent searchIntent = new Intent(mContext, SearchResultActivity.class);
+                    startActivity(searchIntent);
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Search needs to be at least 3 characters long", Toast.LENGTH_LONG).show();
                 }
 
-                final Fragment fragment = Fragment.instantiate(getApplicationContext(), fragmentClass.getName());
-
-                fragmentManager
-                        .beginTransaction()
-                        .replace(R.id.main_fragment_container, fragment, fragmentClass.getSimpleName())
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .commit();
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                Log.d("SEARCH","yes");
-
-                return false;
             }
         });
+
+        searchBar.setOnHomeActionClickListener(
+                new FloatingSearchView.OnHomeActionClickListener() {
+                    @Override
+                    public void onHomeClicked() {
+                        searchBar.setVisibility(View.GONE);
+                    }
+                });
     }
 
     @Override

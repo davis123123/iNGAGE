@@ -7,9 +7,10 @@
         android:id="@+id/action_search"
         android:icon="@android:drawable/ic_menu_search"
         app:showAsAction="always"
-        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:actionViewClass="android.support.v7.widget.But"
         android:orderInCategory="1"
-        android:title="Search"/>
+        android:title="Search"
+        />
 
 
 
