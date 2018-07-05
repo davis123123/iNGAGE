@@ -1,6 +1,7 @@
 package ingage.ingage.activities;
 
 import android.Manifest;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -18,13 +19,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -40,12 +40,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ingage.ingage.R;
+import ingage.ingage.fragments.ListDialogFragment;
 import ingage.ingage.handlers.SubmitThreadsHandler;
 import ingage.ingage.handlers.UploadImageHandler;
-import ingage.ingage.handlers.UserRecentCommentHandler;
 import ingage.ingage.managers.SessionManager;
 
-public class  PostThreadActivity extends AppCompatActivity implements SubmitThreadsHandler.AsyncInterface{
+public class  PostThreadActivity extends AppCompatActivity implements SubmitThreadsHandler.AsyncInterface
+            , ListDialogFragment.ListItemSelectionListener{
     /** Class name for log messages. */
     private static final String LOG_TAG = PostThreadActivity.class.getSimpleName();
 
@@ -57,7 +58,6 @@ public class  PostThreadActivity extends AppCompatActivity implements SubmitThre
     private EditText mInsertThreadContent;
     private LinearLayout llUploadImage;
     SessionManager session;
-    private Spinner categorySpinner;
     ArrayAdapter<CharSequence> adapter;
     private static final int requestURL = 1;
     String returnedURL;
@@ -69,6 +69,8 @@ public class  PostThreadActivity extends AppCompatActivity implements SubmitThre
     DatabaseReference post_root;
     public static String extension;
     ProgressDialog pd;
+    ListDialogFragment f;
+    Button btnCategorySpinner;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -80,33 +82,24 @@ public class  PostThreadActivity extends AppCompatActivity implements SubmitThre
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        categorySpinner = (Spinner) findViewById(R.id.category_spinner);
-        adapter = ArrayAdapter.createFromResource(this, R.array.thread_categories,
-                android.R.layout.simple_spinner_item);
-
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        categorySpinner.setAdapter(adapter);
-        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
-                //Toast.makeText(getBaseContext(), parent.getItemAtPosition(position)+"selected",Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-
         mInsertThreadContent = (EditText) findViewById(R.id.insert_thread_content_text_view);
         mInsertThreadTitle = (EditText) findViewById(R.id.insert_thread_title_text_view);
         imageToUpload = (ImageView) findViewById(R.id.uploadImageView);
         llUploadImage = (LinearLayout) findViewById(R.id.llUploadImage);
+        btnCategorySpinner = (Button) findViewById(R.id.btnCategorySpinner);
+
+        btnCategorySpinner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fm = getFragmentManager();
+                f = ListDialogFragment.newInstance();
+                f.show(fm, "");
+            }
+        });
 
         imageToUpload.setVisibility(View.INVISIBLE);
         setUploadImageLayout();
-        addListenerOnSpinnerItemSelection();
+       // addListenerOnSpinnerItemSelection();
 
 
         //bUploadImage = (Button) findViewById(R.id.upload_image_button);
@@ -154,6 +147,12 @@ public class  PostThreadActivity extends AppCompatActivity implements SubmitThre
 
     }
 
+    @Override
+    public void onListItemSelected(String item) {
+        f.dismiss();
+        btnCategorySpinner.setText(item);
+    }
+
 
     private void setUploadImageLayout(){
         DisplayMetrics metrics = getBaseContext().getResources().getDisplayMetrics();
@@ -168,22 +167,6 @@ public class  PostThreadActivity extends AppCompatActivity implements SubmitThre
         img_params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         llUploadImage.setLayoutParams(img_params);
         imageToUpload.setLayoutParams(img_params);
-    }
-
-
-    public void addListenerOnSpinnerItemSelection(){
-        categorySpinner = (Spinner) findViewById(R.id.category_spinner);
-        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int i, long l) {
-               // Toast.makeText(PostThreadActivity.this, parent.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
     }
 
     public void addData(){
@@ -212,14 +195,9 @@ public class  PostThreadActivity extends AppCompatActivity implements SubmitThre
             return;
         }
 
-        if(categorySpinner.getSelectedItem().toString().equals("-") || categorySpinner.getSelectedItem() == null){
-            Toast.makeText(this, "Please select a category", Toast.LENGTH_SHORT).show();
-            return;
-        }
 
         loadingDialog();
-        //categorySpinner = (Spinner) findViewById(R.id.spinner);
-        String cSpinner = String.valueOf(categorySpinner.getSelectedItem());
+        String cSpinner= (String) btnCategorySpinner.getText();
 
         //USER INSERT
         HashMap<String, String> user = session.getUserDetails();
