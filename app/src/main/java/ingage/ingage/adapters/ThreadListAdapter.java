@@ -261,14 +261,14 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             }//if archived
 
             else{
-                handler.removeCallbacks(customRunnable);
-                customRunnable.holder = threadDurationTextView;
-                customRunnable.millisUntilFinished = 10000 * getAdapterPosition(); //Current time - received time
-                handler.postDelayed(customRunnable, 100);
+                //handler.removeCallbacks(customRunnable);
+                //customRunnable.holder = threadDurationTextView;
+                //customRunnable.millisUntilFinished = 10000 * getAdapterPosition(); //Current time - received time
+                //handler.postDelayed(customRunnable, 100);
 
                 int[] duration = threadsHelper.getThread_duration();
                 String timerstring = duration[0] + ":" + duration[1] + ":" + duration[2];
-                //threadDurationTextView.setText(timerstring);
+                threadDurationTextView.setText(timerstring);
             }//if active
 
             //threadDurationTextView.setText(threadsHelper.getThread_duration());
