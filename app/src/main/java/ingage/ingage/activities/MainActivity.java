@@ -235,6 +235,7 @@ public class MainActivity extends AppCompatActivity
         session.updatePage(pageType);
         session.updateCategory(pageCategory);
         //initTabs();
+        searchBar = (FloatingSearchView) findViewById(R.id.floating_search_view);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
@@ -513,7 +514,6 @@ public class MainActivity extends AppCompatActivity
         final FragmentManager fragmentManager = this.getSupportFragmentManager();
         final Class fragmentClass = SearchResultFragment.class;
 
-        searchBar = (FloatingSearchView) findViewById(R.id.floating_search_view);
         searchBar.setOnSearchListener(new FloatingSearchView.OnSearchListener() {
             @Override
             public void onSuggestionClicked(SearchSuggestion searchSuggestion) {
