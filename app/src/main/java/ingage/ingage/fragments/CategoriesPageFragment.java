@@ -189,12 +189,14 @@ public class CategoriesPageFragment extends FragmentBase implements ThreadListAd
         checkIfNoThreads(count);
     }
 
-    private int[] time_remaining(String thread_time_remaining){
+    private int[] time_remaining(String thread_time_passed){
         int[] time = new int[3];
-        int total_seconds = Integer.parseInt(thread_time_remaining);
-        int hours = total_seconds / 3600;
-        int minutes = (total_seconds - (hours * 3600)) / 60;
-        int seconds = (total_seconds - (hours * 3600) - (minutes * 60));
+        int total_seconds = Integer.parseInt(thread_time_passed);
+        int full_duration = 43200; //12 hrs
+        int seconds_remaining = full_duration - total_seconds;
+        int hours = seconds_remaining / 3600;
+        int minutes = (seconds_remaining - (hours * 3600)) / 60;
+        int seconds = (seconds_remaining - (hours * 3600) - (minutes * 60));
         time[0] = hours;
         time[1] = minutes;
         time[2] = seconds;
