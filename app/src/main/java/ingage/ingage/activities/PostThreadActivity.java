@@ -195,6 +195,11 @@ public class  PostThreadActivity extends AppCompatActivity implements SubmitThre
             return;
         }
 
+        if(btnCategorySpinner.getText().equals("-") || btnCategorySpinner.getText() == null){
+            Toast.makeText(this, "Please select a category", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
 
         loadingDialog();
         String cSpinner= (String) btnCategorySpinner.getText();
