@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.util.DisplayMetrics;
@@ -29,6 +30,7 @@ import java.util.List;
 import ingage.ingage.R;
 import ingage.ingage.handlers.DownloadImageHandler;
 import ingage.ingage.helpers.ThreadsHelper;
+import ingage.ingage.util.CustomRunnable;
 
 /**
  * Created by Davis on 4/4/2017.
@@ -43,6 +45,8 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public List list = new ArrayList();
     public static boolean isLoading = false;
     private ItemClickCallback itemClickCallback;
+    private Handler handler = new Handler();
+    private boolean thread_actve = false;
 
     //Result returned from backend if no image exists
     String default_path = "data:image/JPG;base64,";
@@ -67,7 +71,8 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         this.mOnLoadMoreListener = mOnLoadMoreListener;
     }
 
-    public ThreadListAdapter( ItemClickCallback listener, Activity activity){
+    public ThreadListAdapter( ItemClickCallback listener, Activity activity, boolean thread_active){
+        this.thread_actve = thread_active;
         itemClickCallback = listener;
         mActivity= activity;
     }//interface for thread-click
@@ -165,6 +170,7 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         ImageView threadImageView;
         View container;
         Button mSpectateBtn;
+        CustomRunnable customRunnable;
 
         public ThreadViewHolder(View itemView) {
             super(itemView);
@@ -179,6 +185,8 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
             mSpectateBtn = (Button) itemView.findViewById(R.id.spectateBtn);
             mSpectateBtn.setOnClickListener(this);
+
+            customRunnable = new CustomRunnable(handler,threadDurationTextView,10000);
 
             itemView.setOnClickListener(this);
         }
@@ -247,7 +255,23 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         private void bind(int listIndex){
             ThreadsHelper threadsHelper = (ThreadsHelper) getItem(listIndex);
             threadTitleTextView.setText(threadsHelper.getThread_title());
-            threadDurationTextView.setText(threadsHelper.getThread_duration());
+
+            if(threadsHelper.getThread_duration() == null){
+                threadDurationTextView.setText(threadsHelper.getThread_by());
+            }//if archived
+
+            else{
+                handler.removeCallbacks(customRunnable);
+                customRunnable.holder = threadDurationTextView;
+                customRunnable.millisUntilFinished = 10000 * getAdapterPosition(); //Current time - received time
+                handler.postDelayed(customRunnable, 100);
+
+                int[] duration = threadsHelper.getThread_duration();
+                String timerstring = duration[0] + ":" + duration[1] + ":" + duration[2];
+                //threadDurationTextView.setText(timerstring);
+            }//if active
+
+            //threadDurationTextView.setText(threadsHelper.getThread_duration());
             threadCategoryTextView.setText(threadsHelper.getThread_category());
             threadContentTextView.setVisibility(View.INVISIBLE);
 

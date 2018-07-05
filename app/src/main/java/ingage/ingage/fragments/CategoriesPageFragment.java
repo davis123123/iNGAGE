@@ -50,7 +50,7 @@ public class CategoriesPageFragment extends FragmentBase implements ThreadListAd
                        final Bundle savedInstanceState){
         // Inflate the layout for this fragment
         Log.d("ROWCOUNT","num"+rowCount);
-        threadListAdapter = new ThreadListAdapter(this, getActivity());
+        threadListAdapter = new ThreadListAdapter(this, getActivity(), true);
         rowCount = 0;
         getThreadsJSON(rowCount);
         rootView = inflater.inflate(R.layout.fragment_archived, container, false);

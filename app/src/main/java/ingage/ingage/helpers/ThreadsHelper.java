@@ -7,19 +7,26 @@ import android.graphics.Bitmap;
  */
 
 public class ThreadsHelper {
-    private String thread_id, thread_title, thread_content, thread_date, thread_category, thread_img, thread_duration;
-    private int[] time_remaining;
+    private String thread_id;
+    private String thread_title;
+    private String thread_content;
+    private String thread_date;
+    private String thread_category;
+    private String thread_img;
+    private String thread_by;
+
+    private int[] thread_duration = null;
 
     public ThreadsHelper(String thread_id, String thread_title, String thread_content,
-                         String thread_duration, String thread_date, String thread_category, String thread_img){
+                         String thread_by, String thread_date, String thread_category, String thread_img){
         this.setThread_id(thread_id);
         this.setThread_title(thread_title);
         this.setThread_content(thread_content);
-        this.setThread_by(thread_duration);
+        this.setThread_by(thread_by);
         this.setThread_date(thread_date);
         this.setThread_category(thread_category);
         this.setThread_img(thread_img);
-    }
+    }//archived
 
     public ThreadsHelper(String thread_id, String thread_title, String thread_content,
                          String thread_by, String thread_date, String thread_category, String thread_img, int[] time_remaining){
@@ -30,8 +37,8 @@ public class ThreadsHelper {
         this.setThread_date(thread_date);
         this.setThread_category(thread_category);
         this.setThread_img(thread_img);
-        this.setTime_remaining(time_remaining);
-    }
+        this.setThread_duration(time_remaining);
+    }//active
 
     public String getThread_id() {
         return thread_id;
@@ -45,13 +52,7 @@ public class ThreadsHelper {
         return thread_content;
     }
 
-    public String getThread_duration(){
-        return thread_duration;
-    }
-
-    public String getThread_date(){
-        return thread_date;
-    }
+    public String getThread_date(){ return thread_date; }
 
     public String getThread_category(){return thread_category; }
 
@@ -59,7 +60,13 @@ public class ThreadsHelper {
         return thread_img;
     }
 
-    public int[] getTime_remaining() { return time_remaining; }
+    public int[] getThread_duration() { return thread_duration; }
+
+    public String getThread_by() { return thread_by; }
+
+    public void setThread_by(String thread_by) { this.thread_by = thread_by; }
+
+    public void setThread_duration(int[] thread_duration) { this.thread_duration = thread_duration; }
 
     public void setThread_title(String thread_title){
         this.thread_title = thread_title;
@@ -67,10 +74,6 @@ public class ThreadsHelper {
 
     public void setThread_content(String thread_content){
         this.thread_content = thread_content;
-    }
-
-    public void setThread_by(String thread_duration){
-        this.thread_duration = thread_duration;
     }
 
     public void setThread_date(String thread_date){
@@ -87,7 +90,4 @@ public class ThreadsHelper {
         this.thread_img = thread_img;
     }
 
-    public void setTime_remaining(int[] time_remaining) {
-        this.time_remaining = time_remaining;
-    }
 }
