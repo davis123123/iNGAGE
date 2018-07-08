@@ -30,7 +30,7 @@ public class CustomRunnable implements Runnable {
 
     millisUntilFinished -= 1000;
 
-    Log.d("DEV123",time);
+    Log.d("DEV123"," " + millisUntilFinished);
     //imageView.setX(imageView.getX()+seconds);
       /* and here comes the "trick" */
     handler.postDelayed(this, 1000);

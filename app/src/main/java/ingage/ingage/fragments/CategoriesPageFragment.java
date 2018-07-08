@@ -175,7 +175,7 @@ public class CategoriesPageFragment extends FragmentBase implements ThreadListAd
                 thread_category = JO.getString("thread_category");
                 thread_img = JO.getString("thread_image_link");
                 thread_time_remaining = JO.getString("seconds_remaining");
-                int[] timer = time_remaining(thread_time_remaining);
+                long timer = time_remaining(thread_time_remaining);
 
                 ThreadsHelper threadsHelper = new ThreadsHelper(thread_id, thread_title,
                         thread_content, thread_by, thread_date, thread_category, thread_img, timer);
@@ -189,18 +189,20 @@ public class CategoriesPageFragment extends FragmentBase implements ThreadListAd
         checkIfNoThreads(count);
     }
 
-    private int[] time_remaining(String thread_time_passed){
+    private long time_remaining(String thread_time_passed){
         int[] time = new int[3];
         int total_seconds = Integer.parseInt(thread_time_passed);
         int full_duration = 43200; //12 hrs
         int seconds_remaining = full_duration - total_seconds;
+        long miliseconds = seconds_remaining * 1000;
+        /*
         int hours = seconds_remaining / 3600;
         int minutes = (seconds_remaining - (hours * 3600)) / 60;
         int seconds = (seconds_remaining - (hours * 3600) - (minutes * 60));
         time[0] = hours;
         time[1] = minutes;
-        time[2] = seconds;
-        return time;
+        time[2] = seconds;*/
+        return miliseconds;
     }//array with index 0=hours 1=minutes 2=seconds;
 
     private String time_remaining_display(int[] time){

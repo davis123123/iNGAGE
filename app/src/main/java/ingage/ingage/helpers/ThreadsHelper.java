@@ -14,8 +14,7 @@ public class ThreadsHelper {
     private String thread_category;
     private String thread_img;
     private String thread_by;
-
-    private int[] thread_duration = null;
+    private long thread_duration  = -2;
 
     public ThreadsHelper(String thread_id, String thread_title, String thread_content,
                          String thread_by, String thread_date, String thread_category, String thread_img){
@@ -29,7 +28,7 @@ public class ThreadsHelper {
     }//archived
 
     public ThreadsHelper(String thread_id, String thread_title, String thread_content,
-                         String thread_by, String thread_date, String thread_category, String thread_img, int[] time_remaining){
+                         String thread_by, String thread_date, String thread_category, String thread_img, long time_remaining){
         this.setThread_id(thread_id);
         this.setThread_title(thread_title);
         this.setThread_content(thread_content);
@@ -60,13 +59,13 @@ public class ThreadsHelper {
         return thread_img;
     }
 
-    public int[] getThread_duration() { return thread_duration; }
+    public long getThread_duration() { return thread_duration; }
 
     public String getThread_by() { return thread_by; }
 
     public void setThread_by(String thread_by) { this.thread_by = thread_by; }
 
-    public void setThread_duration(int[] thread_duration) { this.thread_duration = thread_duration; }
+    public void setThread_duration(long thread_duration) { this.thread_duration = thread_duration; }
 
     public void setThread_title(String thread_title){
         this.thread_title = thread_title;
