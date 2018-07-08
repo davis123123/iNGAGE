@@ -178,7 +178,7 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
             mSpectateBtn = (Button) itemView.findViewById(R.id.spectateBtn);
             mSpectateBtn.setOnClickListener(this);
-
+            customRunnable = new CustomRunnable(handler,threadDurationTextView,5000);
 
             itemView.setOnClickListener(this);
         }
@@ -251,18 +251,15 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             }//if archived
 
             else if (threadsHelper.getThread_duration() > 0){
-                customRunnable = new CustomRunnable(handler,threadDurationTextView,threadsHelper.getThread_duration());
+
                 handler.removeCallbacks(customRunnable);
                 customRunnable.holder = threadDurationTextView;
-                //customRunnable.millisUntilFinished = 10000 * getAdapterPosition(); //Current time - received time
-                handler.postDelayed(customRunnable, 0);
-                //int[] duration = threadsHelper.getThread_duration();
-                //String timerstring = duration[0] + ":" + duration[1] + ":" + duration[2];
-                //threadDurationTextView.setText("TIME");
+                customRunnable.millisUntilFinished = threadsHelper.getThread_duration();
+                handler.postDelayed(customRunnable, 100);
             }//if active
 
             else{
-
+                threadDurationTextView.setText("ENDED");
             }//if active and timer reached 0
 
             //threadDurationTextView.setText(threadsHelper.getThread_duration());

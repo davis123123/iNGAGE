@@ -27,13 +27,17 @@ public class CustomRunnable implements Runnable {
     long hours = minutes / 60;
     String time = hours % 24 + ":" + minutes % 60 + ":" + seconds % 60;
     holder.setText(time);
-
     millisUntilFinished -= 1000;
 
-    Log.d("DEV123"," " + millisUntilFinished);
+    Log.d("DEV123"," " + seconds);
     //imageView.setX(imageView.getX()+seconds);
       /* and here comes the "trick" */
-    handler.postDelayed(this, 1000);
+    if(seconds <= 0) {
+      Log.d("SECONDS", "HERE" + seconds);
+      handler.removeCallbacks(this);
+    }
+    else
+      handler.postDelayed(this, 1000);
   }
 
 }
