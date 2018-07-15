@@ -11,7 +11,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
@@ -19,7 +18,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -33,6 +31,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -42,32 +42,20 @@ import java.util.Map;
 import ingage.ingage.R;
 import ingage.ingage.fragments.ListDialogFragment;
 import ingage.ingage.handlers.SubmitThreadsHandler;
-import ingage.ingage.handlers.UploadImageHandler;
 import ingage.ingage.managers.SessionManager;
 
 public class  PostThreadActivity extends AppCompatActivity implements SubmitThreadsHandler.AsyncInterface
             , ListDialogFragment.ListItemSelectionListener{
-    /** Class name for log messages. */
-    private static final String LOG_TAG = PostThreadActivity.class.getSimpleName();
-
-    /** Bundle key for saving/restoring the toolbar title. */
-    private static final String BUNDLE_KEY_TOOLBAR_TITLE = "title";
-
 
     private EditText mInsertThreadTitle;
     private EditText mInsertThreadContent;
     private LinearLayout llUploadImage;
     SessionManager session;
-    ArrayAdapter<CharSequence> adapter;
-    private static final int requestURL = 1;
-    String returnedURL;
     private static final int RESULT_LOAD_IMAGE = 1;
     private ImageView imageToUpload;
-    UploadImageHandler uploadImageHandler;
     private boolean usedImage = false;
     private DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot();
     DatabaseReference post_root;
-    public static String extension;
     ProgressDialog pd;
     ListDialogFragment f;
     Button btnCategorySpinner;
@@ -99,10 +87,7 @@ public class  PostThreadActivity extends AppCompatActivity implements SubmitThre
 
         imageToUpload.setVisibility(View.INVISIBLE);
         setUploadImageLayout();
-       // addListenerOnSpinnerItemSelection();
 
-
-        //bUploadImage = (Button) findViewById(R.id.upload_image_button);
         llUploadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -180,8 +165,6 @@ public class  PostThreadActivity extends AppCompatActivity implements SubmitThre
         //submit image
         if(usedImage) {
             image = ((BitmapDrawable) imageToUpload.getDrawable()).getBitmap();
-            //uploadImageHandler = new UploadImageHandler(image);
-            //uploadImageHandler.execute(imageTitle);
             image_link = "http://107.170.232.60/images/"+imageTitle+".JPG";
         }
 
@@ -313,22 +296,9 @@ public class  PostThreadActivity extends AppCompatActivity implements SubmitThre
     }
 
     private void goUploadImage(){
-
-        Context mContext = getApplicationContext();
-        int check = mContext.getPackageManager().checkPermission(
-                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                mContext.getPackageName());
-        if (check == PackageManager.PERMISSION_GRANTED) {
-            Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(galleryIntent, RESULT_LOAD_IMAGE);
-        }
-
-        else
-            // Required to ask user for permission to access user's external storage
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
-
-
+        CropImage.activity()
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .start(this);
     }
 
 
@@ -343,9 +313,7 @@ public class  PostThreadActivity extends AppCompatActivity implements SubmitThre
         super.onRestoreInstanceState(savedInstanceState);
         mInsertThreadTitle.getText().insert(mInsertThreadTitle.getSelectionStart(),
                 savedInstanceState.getString("savedTitle"));
-
-        /**mInsertThreadContent.getText().insert(mInsertThreadContent.getSelectionStart(),
-         returnedURL);**/
+        
     }
 
 
@@ -387,16 +355,21 @@ public class  PostThreadActivity extends AppCompatActivity implements SubmitThre
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && data != null) {
-            Uri selectedImage = data.getData();
-            String filename = getContentResolver().getType(selectedImage);
-            extension = filename.substring(filename.lastIndexOf('/') + 1);
-            Log.d("STATE", "Uri: " + extension);
-            imageToUpload.setImageURI(selectedImage);
-            imageToUpload.setVisibility(View.VISIBLE);
-            llUploadImage.setVisibility(View.INVISIBLE);
-            //mInsertThreadContent.setVisibility(View.INVISIBLE);
-            usedImage = true;
+
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+
+                imageToUpload.setImageURI(resultUri);
+
+                imageToUpload.setVisibility(View.VISIBLE);
+                llUploadImage.setVisibility(View.INVISIBLE);
+                usedImage = true;
+
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+            }
         }
     }
 }
