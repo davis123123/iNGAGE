@@ -23,8 +23,8 @@ public class SearchHandler extends AsyncTask<String, String, String> {
     @Override
     protected String doInBackground(String... params) {
         String type = params[0];
-        String search_title_url = "http://107.170.232.60/search_title.php";
-        String search_archived_url = "http://107.170.232.60/search_archived.php";
+        String search_title_url = "http://138.197.200.53/search_title.php";
+        String search_archived_url = "http://138.197.200.53/search_archived.php";
         try {
             String rowCount = params[1];
             String search_string = params[2];

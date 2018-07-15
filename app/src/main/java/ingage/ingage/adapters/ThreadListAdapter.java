@@ -221,7 +221,7 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         }
 
                         @Override
-                        public void onError() {
+                        public void onError(){
                             //If cache fails, try to fetch from url
                             Picasso.with(mActivity)
                                     .load(url)

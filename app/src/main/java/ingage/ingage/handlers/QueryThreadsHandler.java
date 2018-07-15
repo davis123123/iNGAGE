@@ -33,12 +33,12 @@ public class QueryThreadsHandler extends AsyncTask<String, String, String> {
 
         String type = params[0];
 
-        String query_post_url = "http://107.170.232.60/query_post.php";
-        String query_category_url = "http://107.170.232.60/query_category.php";
-        String query_trends_url = "http://107.170.232.60/query_trends.php";
-        String query_trends_by_category_url = "http://107.170.232.60/query_trends_by_category.php";
-        String query_archived_url = "http://107.170.232.60/query_archived_all.php";
-        String query_archived_by_category_url = "http://107.170.232.60/query_archived_by_category.php";
+        String query_post_url = "http://138.197.200.53/query_post.php";
+        String query_category_url = "http://138.197.200.53/query_category.php";
+        String query_trends_url = "http://138.197.200.53/query_trends.php";
+        String query_trends_by_category_url = "http://138.197.200.53/query_trends_by_category.php";
+        String query_archived_url = "http://138.197.200.53/query_archived_all.php";
+        String query_archived_by_category_url = "http://138.197.200.53/query_archived_by_category.php";
         if(type.equals("date")) {
             try {
                 String rowCount = params[1];

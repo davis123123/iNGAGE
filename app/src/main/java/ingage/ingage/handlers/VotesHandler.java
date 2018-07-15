@@ -31,7 +31,7 @@ public class VotesHandler extends AsyncTask<String, String, String> {
     @Override
     protected String doInBackground(String... params) {
         String type = params[0];
-        String get_user_votes_url = "http://107.170.232.60/get_user_votes.php";
+        String get_user_votes_url = "http://138.197.200.53/get_user_votes.php";
 
         if (type.equals("getUserVotes")) {
             try {
