@@ -30,9 +30,9 @@ import retrofit2.http.POST;
 
 public class UserRecentCommentHandler {
 
-    static final String post_url = "http://107.170.232.60/track_user_comment.php/";
+    static final String post_url = "http://138.197.200.53/track_user_comment.php/";
 
-    static final String get_url = "http://107.170.232.60/query_user_recent_comments.php/";
+    static final String get_url = "http://138.197.200.53/query_user_recent_comments.php/";
 
     public RecentComment[] arr;
     //public ArrayList<RecentComment> recentComments  = new ArrayList<>();

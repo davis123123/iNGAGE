@@ -27,7 +27,7 @@ public class AnnouncementHandler extends AsyncTask<String, String, String> {
     @Override
     protected String doInBackground(String... params) {
 
-        String search_title_url = "http://107.170.232.60/announcements.php";
+        String search_title_url = "http://138.197.200.53/announcements.php";
         try {
             //String rowCount = params[0];
             //String search_string = params[1];

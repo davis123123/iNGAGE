@@ -32,9 +32,9 @@ public class ChatFeaturesHandler  extends AsyncTask<String, String, String> {
     protected String doInBackground(String... params) {
         String type = params[0];
         //TODO need change for server change
-        String send_token_url ="http://107.170.232.60/send_coin.php";
-        String insert_vote_url = "http://107.170.232.60/insert_vote.php";
-        String use_coin_url = "http://107.170.232.60/use_coin.php";
+        String send_token_url ="http://138.197.200.53/send_coin.php";
+        String insert_vote_url = "http://138.197.200.53/insert_vote.php";
+        String use_coin_url = "http://138.197.200.53/use_coin.php";
         if (type.equals("send_coin")) {
             try {
                 String target_user = params[1];

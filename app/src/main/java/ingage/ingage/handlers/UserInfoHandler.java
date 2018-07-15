@@ -25,7 +25,7 @@ public class UserInfoHandler {
     public RecentComment[] arr;
     //public ArrayList<RecentComment> recentComments  = new ArrayList<>();
     String serverResponse;
-    static final String get_url = "http://107.170.232.60/user_profile.php/";
+    static final String get_url = "http://138.197.200.53/user_profile.php/";
     private UserInfoHandler.CallBackData callBackData;
 
     public interface CallBackData{

@@ -52,7 +52,7 @@ public class ArchivedFragment extends FragmentBase implements ThreadListAdapter.
     public View create(final LayoutInflater inflater, final ViewGroup container,
                        final Bundle savedInstanceState){
         // Inflate the layout for this fragment
-        threadListAdapter = new ThreadListAdapter(this, getActivity());
+        threadListAdapter = new ThreadListAdapter(this, getActivity(), false);
         rowCount = 0;
         getThreadsJSON(rowCount);
 
