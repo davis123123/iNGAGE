@@ -16,6 +16,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import ingage.ingage.App;
+import ingage.ingage.R;
+
 
 public class DownloadAvatarHandler extends AsyncTask<String, String, String>{
 
@@ -30,8 +33,8 @@ public class DownloadAvatarHandler extends AsyncTask<String, String, String>{
     @Override
     protected String doInBackground(String... params) {
         String type = params[0];
-        //TODO need change for server change
-        String post_thread_url ="http://138.197.200.53/download_avatar.php";  //10.0.2.2 CHANGE FOR OTHER SERVER
+        String ip = App.getAppContext().getResources().getString(R.string.ip);
+        String post_thread_url = "http://" + ip + "/download_avatar.php";
 
         if (type.equals("download")) {
             try {

@@ -18,6 +18,9 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import ingage.ingage.App;
+import ingage.ingage.R;
+
 /**
  * Created by wuv66 on 6/14/2017.
  */
@@ -33,7 +36,9 @@ public class UploadAvatarHandler extends AsyncTask<String, String, String>{
 
     @Override
     protected String doInBackground(String... params) {
-        String post_image_url = "http://138.197.200.53/upload_avatar.php";
+
+        String ip = App.getAppContext().getResources().getString(R.string.ip);
+        String post_image_url = "http://" + ip + "/upload_avatar.php";
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
         String encodedImage = Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);

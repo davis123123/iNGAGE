@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import ingage.ingage.App;
 import ingage.ingage.R;
 import ingage.ingage.activities.UserProfileActivity;
 import ingage.ingage.util.RecentComment;
@@ -22,17 +23,15 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 /**
  * Created by wuv66 on 2/10/2018.
  */
 
 public class UserRecentCommentHandler {
-
-    static final String post_url = "http://138.197.200.53/track_user_comment.php/";
-
-    static final String get_url = "http://138.197.200.53/query_user_recent_comments.php/";
 
     public RecentComment[] arr;
     //public ArrayList<RecentComment> recentComments  = new ArrayList<>();
@@ -46,18 +45,20 @@ public class UserRecentCommentHandler {
     public interface Interface {
 
         @FormUrlEncoded
-        @POST(post_url )
+        @POST("http://{ip}/track_user_comment.php/")
         Call<ResponseBody> post(
                 @Field("username") String username,
                 @Field("thread_id") String thread_id,
                 @Field("recent_comment") String recent_comment,
-                @Field("side") String side
+                @Field("side") String side,
+                @Path("ip") String ip
         );
 
         @FormUrlEncoded
-        @POST(get_url )
+        @POST("http://{ip}/query_user_recent_comments.php/")
         Call<ResponseBody> get(
-                @Field("username") String username
+                @Field("username") String username,
+                @Path("ip") String ip
         );
     }
 
@@ -69,7 +70,7 @@ public class UserRecentCommentHandler {
     }
 
     //save recent comment in database
-    public void enqueue(String username, String thread_id, String messageText, String side){
+    public void enqueue(String username, String thread_id, String messageText, String side, String ip){
 
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -77,15 +78,17 @@ public class UserRecentCommentHandler {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         httpClient.addInterceptor(logging);
 
+        String url = "http://" + ip +"/track_user_comment.php/";
+
         Retrofit retrofit = new Retrofit.Builder()
                 .client(httpClient.build())
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(post_url)
+                .baseUrl(url)
                 .build();
 
         Interface service = retrofit.create(Interface.class);
 
-        Call<ResponseBody> call = service.post(username, thread_id, messageText, side);
+        Call<ResponseBody> call = service.post(username, thread_id, messageText, side, ip);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -117,7 +120,7 @@ public class UserRecentCommentHandler {
     }
 
     //get all recent comments for each room, for the user
-    public void enqueue(String username){
+    public void enqueue(String username, String ip){
 
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -125,14 +128,16 @@ public class UserRecentCommentHandler {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         httpClient.addInterceptor(logging);
 
+        String url = "http://" + ip +"/query_user_recent_comments.php/";
+
         Retrofit retrofit = new Retrofit.Builder()
                 .client(httpClient.build())
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(get_url)
+                .baseUrl(url)
                 .build();
         Interface service = retrofit.create(Interface.class);
 
-        Call<ResponseBody> call = service.get(username);
+        Call<ResponseBody> call = service.get(username, ip);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

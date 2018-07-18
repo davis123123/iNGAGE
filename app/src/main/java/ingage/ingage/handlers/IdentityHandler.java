@@ -16,6 +16,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import ingage.ingage.App;
+import ingage.ingage.R;
+
 /**
  * Created by Davis on 4/6/2017.
  */
@@ -30,10 +33,11 @@ public class IdentityHandler extends AsyncTask<String, String, String> {
     @Override
     protected String doInBackground(String... params) {
         String type = params[0];
-        //TODO need change for server change
-        String login_url = "http://138.197.200.53/login.php";  //10.0.2.2 CHANGE FOR OTHER SERVER
-        String registration_url = "http://138.197.200.53/registration.php";
-        String sign_out_url = "http://138.197.200.53/sign_out.php";
+
+        String ip = App.getAppContext().getResources().getString(R.string.ip);
+        String login_url = "http://" + ip + "/login.php";
+        String registration_url = "http://" + ip + "/registration.php";
+        String sign_out_url = "http://" + ip + "/sign_out.php";
         if (type.equals("sign_out")) {
 
             try {

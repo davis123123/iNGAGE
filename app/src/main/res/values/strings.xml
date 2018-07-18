@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">iNGAGE</string>
 
+    <!-- 107.170.232.60 - public
+         138.197.200.53 - private    -->
+
+    <string name="ip">107.170.232.60</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 

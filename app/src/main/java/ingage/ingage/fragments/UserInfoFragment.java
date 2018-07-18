@@ -19,6 +19,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import ingage.ingage.App;
 import ingage.ingage.R;
 import ingage.ingage.activities.UserProfileActivity;
 import ingage.ingage.adapters.UserProfileInfoAdapter;
@@ -82,9 +83,12 @@ public class UserInfoFragment extends Fragment {
                     crossFadeRecyler();
                 }
             };
+
+            String ip = App.getAppContext().getResources().getString(R.string.ip);
+
             handler = new UserInfoHandler();
             handler.setCallBackData(callBackData);
-            handler.enqueue(userProfileActivity.getUsername());
+            handler.enqueue(userProfileActivity.getUsername(), ip);
             recycler.setVisibility(View.GONE);
             mShortAnimationDuration = getResources().getInteger(
                     android.R.integer.config_shortAnimTime);

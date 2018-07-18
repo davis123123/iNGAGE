@@ -15,6 +15,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import ingage.ingage.App;
+import ingage.ingage.R;
+
 /**
  * Created by Davis on 5/30/2017.
  */
@@ -31,10 +34,12 @@ public class ChatFeaturesHandler  extends AsyncTask<String, String, String> {
     @Override
     protected String doInBackground(String... params) {
         String type = params[0];
-        //TODO need change for server change
-        String send_token_url ="http://138.197.200.53/send_coin.php";
-        String insert_vote_url = "http://138.197.200.53/insert_vote.php";
-        String use_coin_url = "http://138.197.200.53/use_coin.php";
+        String ip = App.getAppContext().getResources().getString(R.string.ip);
+
+        String send_token_url = "http://" + ip + "/send_coin.php";
+        String insert_vote_url = "http://" + ip + "/insert_vote.php";
+        String use_coin_url = "http://" + ip + "/use_coin.php";
+
         if (type.equals("send_coin")) {
             try {
                 String target_user = params[1];

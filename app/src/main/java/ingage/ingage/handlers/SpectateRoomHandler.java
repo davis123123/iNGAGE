@@ -17,6 +17,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import ingage.ingage.App;
+import ingage.ingage.R;
+
 /**
  * Created by Davis on 6/6/2017.
  */
@@ -34,8 +37,10 @@ public class SpectateRoomHandler extends AsyncTask<String, String, String> {
     @Override
     protected String doInBackground(String... params) {
         String type = params[0];
-        String spectate_url = "http://138.197.200.53/spectate_room.php";
-        String leave_spectate_url =  "http://138.197.200.53/leave_spectate.php";
+
+        String ip = App.getAppContext().getResources().getString(R.string.ip);
+        String spectate_url = "http://" + ip + "/spectate_room.php";
+        String leave_spectate_url =  "http://" + ip + "/leave_spectate.php";
         Log.d("JOINSPECTATE", "yes");
          if (type.equals("spectate")) {
             try {

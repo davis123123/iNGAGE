@@ -15,6 +15,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import ingage.ingage.App;
+import ingage.ingage.R;
+
 /**
  * Created by Davis on 6/6/2017.
  */
@@ -31,7 +34,9 @@ public class VotesHandler extends AsyncTask<String, String, String> {
     @Override
     protected String doInBackground(String... params) {
         String type = params[0];
-        String get_user_votes_url = "http://138.197.200.53/get_user_votes.php";
+
+        String ip = App.getAppContext().getResources().getString(R.string.ip);
+        String get_user_votes_url = "http://" + ip + "/get_user_votes.php";
 
         if (type.equals("getUserVotes")) {
             try {

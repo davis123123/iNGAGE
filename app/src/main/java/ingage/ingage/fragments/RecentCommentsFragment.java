@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import ingage.ingage.App;
 import ingage.ingage.R;
 import ingage.ingage.activities.UserProfileActivity;
 import ingage.ingage.adapters.RecentCommentsAdapter;
@@ -50,10 +51,13 @@ public class RecentCommentsFragment extends Fragment {
                 crossFadeRecyler();
             }
         };
+
+        String ip = App.getAppContext().getResources().getString(R.string.ip);
+
         userProfileActivity = (UserProfileActivity) getActivity();
         handler = new UserRecentCommentHandler();
         handler.setCallBackData(callBackData);
-        handler.enqueue(userProfileActivity.getUsername());
+        handler.enqueue(userProfileActivity.getUsername(), ip);
 
     }
 

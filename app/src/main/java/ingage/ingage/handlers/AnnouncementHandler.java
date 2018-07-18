@@ -15,6 +15,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import ingage.ingage.App;
+import ingage.ingage.R;
+
 /**
  * Created by wuv66 on 11/11/2017.
  */
@@ -27,7 +30,10 @@ public class AnnouncementHandler extends AsyncTask<String, String, String> {
     @Override
     protected String doInBackground(String... params) {
 
-        String search_title_url = "http://138.197.200.53/announcements.php";
+        String ip = App.getAppContext().getResources().getString(R.string.ip);
+        String search_title_url = "http://" + ip + "/announcements.php";
+
+
         try {
             //String rowCount = params[0];
             //String search_string = params[1];

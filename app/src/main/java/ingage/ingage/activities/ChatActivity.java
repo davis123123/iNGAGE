@@ -37,6 +37,7 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.concurrent.ExecutionException;
 
+import ingage.ingage.App;
 import ingage.ingage.R;
 import ingage.ingage.fragments.ChatFragment;
 import ingage.ingage.fragments.ChatPageListFragment;
@@ -299,9 +300,11 @@ public class ChatActivity extends AppCompatActivity{
             //firebase area to send msg
             Map<String, Object> map = new HashMap<String, Object>();
 
+            String ip = App.getAppContext().getResources().getString(R.string.ip);
+
             checkCommentNum(messageBy, messageText);
             UserRecentCommentHandler handler = new UserRecentCommentHandler();
-            handler.enqueue(username, thread_id, messageText, user_side);
+            handler.enqueue(username, thread_id, messageText, user_side, ip);
 
             //send token
             if (tagged) {

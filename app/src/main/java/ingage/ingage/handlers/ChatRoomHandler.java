@@ -16,6 +16,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import ingage.ingage.App;
+import ingage.ingage.R;
+
 /**
  * Created by wuv66 on 5/11/2017.
  */
@@ -32,11 +35,13 @@ public class ChatRoomHandler  extends AsyncTask<String, String, String> {
     @Override
     protected String doInBackground(String... params) {
         String type = params[0];
-        //TODO need change for server change
-        String view_url ="http://138.197.200.53/view_chatroom_status.php";
-        String join_url ="http://138.197.200.53/join_chatroom.php";
-        String leave_url = "http://138.197.200.53/leave_room.php";
-        String check_url = "http://138.197.200.53/view_current_room_users.php";
+
+        String ip = App.getAppContext().getResources().getString(R.string.ip);
+
+        String view_url = "http://" + ip + "/view_chatroom_status.php";
+        String join_url = "http://" + ip + "/join_chatroom.php";
+        String leave_url = "http://" + ip + "/leave_room.php";
+        String check_url = "http://" + ip + "/view_current_room_users.php";
 
         if (type.equals("view")) {
             try {

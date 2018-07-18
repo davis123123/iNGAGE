@@ -4,6 +4,8 @@ import android.util.Log;
 
 import java.io.IOException;
 
+import ingage.ingage.App;
+import ingage.ingage.R;
 import ingage.ingage.util.RecentComment;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
@@ -16,6 +18,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 /**
  * Created by Davis on 3/20/2018.
@@ -23,9 +26,7 @@ import retrofit2.http.POST;
 
 public class UserInfoHandler {
     public RecentComment[] arr;
-    //public ArrayList<RecentComment> recentComments  = new ArrayList<>();
     String serverResponse;
-    static final String get_url = "http://138.197.200.53/user_profile.php/";
     private UserInfoHandler.CallBackData callBackData;
 
     public interface CallBackData{
@@ -35,9 +36,10 @@ public class UserInfoHandler {
     public interface Interface {
 
         @FormUrlEncoded
-        @POST(get_url )
+        @POST("http://{ip}/user_profile.php/" )
         Call<ResponseBody> get(
-                @Field("user_name") String username
+                @Field("user_name") String username,
+                @Path("ip") String ip
         );
     }
 
@@ -46,22 +48,24 @@ public class UserInfoHandler {
     }
 
 
-    public void enqueue(String username){
+    public void enqueue(String username, String ip){
 
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         httpClient.addInterceptor(logging);
-        Log.i("STATE","Retrofit url"+get_url);
+
+        String url = "http://" + ip + "/user_profile.php/";
+
         Retrofit retrofit = new Retrofit.Builder()
                 .client(httpClient.build())
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(get_url)
+                .baseUrl(url)
                 .build();
         Interface service = retrofit.create(Interface.class);
 
-        Call<ResponseBody> call = service.get(username);
+        Call<ResponseBody> call = service.get(username, url);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

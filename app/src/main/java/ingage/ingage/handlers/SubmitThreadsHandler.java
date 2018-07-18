@@ -19,6 +19,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import ingage.ingage.App;
+import ingage.ingage.R;
+
 /**
  * Created by Davis on 4/9/2017.
  */
@@ -45,8 +48,9 @@ public class SubmitThreadsHandler extends AsyncTask<String, String, String> {
     @Override
     protected String doInBackground(String... params) {
         String type = params[0];
-        //TODO need change for server change
-        String post_thread_url ="http://138.197.200.53/insert_thread.php";  //10.0.2.2 CHANGE FOR OTHER SERVER
+
+        String ip = App.getAppContext().getResources().getString(R.string.ip);
+        String post_thread_url = "http://" + ip + "/insert_thread.php";
 
         if (type.equals("submit")) {
             try {
