@@ -51,6 +51,7 @@ public class ChangeAvatarActivity extends AppCompatActivity implements UploadAva
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loadingDialog("Loading");
 
         setContentView(R.layout.activity_change_avatar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -113,9 +114,9 @@ public class ChangeAvatarActivity extends AppCompatActivity implements UploadAva
         finish();
     }
 
-    private void loadingDialog(){
+    private void loadingDialog(String title){
         pd = new ProgressDialog(this);
-        pd.setTitle("Updating");
+        pd.setTitle(title);
         pd.setMessage("Please wait...");
         pd.setCancelable(false);
         pd.setProgressStyle(android.R.style.Widget_ProgressBar_Large);
@@ -179,7 +180,7 @@ public class ChangeAvatarActivity extends AppCompatActivity implements UploadAva
             public void onClick(View view) {
                 //download image and update profile
                 if(verified_image) {
-                    loadingDialog();
+                    loadingDialog("Updating profile");
                     Bitmap image = ((BitmapDrawable) new_avatar_preview.getDrawable()).getBitmap();
                     UploadAvatarHandler uploadAvatarHandler = new UploadAvatarHandler(ChangeAvatarActivity.this, image);
                     String avatar_link = "http://107.170.232.60/avatars/" + username + ".JPG";
@@ -215,7 +216,7 @@ public class ChangeAvatarActivity extends AppCompatActivity implements UploadAva
                 .into(new_avatar_preview, new Callback() {
                     @Override
                     public void onSuccess() {
-
+                        pd.dismiss();
                     }
 
                     @Override
