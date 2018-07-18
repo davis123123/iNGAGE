@@ -1,6 +1,7 @@
 package ingage.ingage.activities;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -38,13 +39,14 @@ import ingage.ingage.managers.SessionManager;
  * Created by wuv66 on 6/30/2017.
  */
 
-public class ChangeAvatarActivity extends AppCompatActivity {
+public class ChangeAvatarActivity extends AppCompatActivity implements UploadAvatarHandler.AsyncInterface {
 
     private static final int RESULT_LOAD_IMAGE = 1;
     Button change;
     CircularImageView new_avatar_preview;
     boolean verified_image = false;
     String username;
+    ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +98,28 @@ public class ChangeAvatarActivity extends AppCompatActivity {
                 return;
             }
         }
+    }
+
+    @Override
+    public void response(String response) {
+        String message = "Updated profile photo!";
+        if (response.equals("Submission Failed")){
+            message = "Profile photo failed to upload!";
+        }
+
+        Toast.makeText(getBaseContext(), message, Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(this, UserProfileActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void loadingDialog(){
+        pd = new ProgressDialog(this);
+        pd.setTitle("Updating");
+        pd.setMessage("Please wait...");
+        pd.setCancelable(false);
+        pd.setProgressStyle(android.R.style.Widget_ProgressBar_Large);
+        pd.show();
     }
 
     private void goUploadImage(){
@@ -155,23 +179,11 @@ public class ChangeAvatarActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //download image and update profile
                 if(verified_image) {
+                    loadingDialog();
                     Bitmap image = ((BitmapDrawable) new_avatar_preview.getDrawable()).getBitmap();
-                    UploadAvatarHandler uploadAvatarHandler = new UploadAvatarHandler(image);
-                    Log.d("STATE", "upload avatar clicked" );
-                    try {
-                            String avatar_link = "http://107.170.232.60/avatars/" + username + ".JPG";
-                            String success = uploadAvatarHandler.execute(username, avatar_link).get();
-                            Log.d("STATE", "upload avatar " + success);
-                            Intent intent = new Intent(getApplicationContext(), UserProfileActivity.class);
-                            finish();
-                            startActivity(intent);
-                            //downloadImage();
-
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    }
+                    UploadAvatarHandler uploadAvatarHandler = new UploadAvatarHandler(ChangeAvatarActivity.this, image);
+                    String avatar_link = "http://107.170.232.60/avatars/" + username + ".JPG";
+                    uploadAvatarHandler.execute(username, avatar_link);
                 }
                 else
                     Toast.makeText(getApplication(), "No image selected/uploaded!", Toast.LENGTH_LONG).show();

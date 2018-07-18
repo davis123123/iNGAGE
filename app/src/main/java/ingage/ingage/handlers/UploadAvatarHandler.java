@@ -1,5 +1,6 @@
 package ingage.ingage.handlers;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.Base64;
@@ -27,12 +28,19 @@ import ingage.ingage.R;
 
 public class UploadAvatarHandler extends AsyncTask<String, String, String>{
 
+    Context context;
+    private AsyncInterface asyncInterface;
     Bitmap image;
-    public UploadAvatarHandler(Bitmap image) {
-        this.image = image;
 
+    public interface AsyncInterface {
+        void response(String response);
     }
 
+    public UploadAvatarHandler(Context context, Bitmap image) {
+        this.context = context;
+        this.image = image;
+        this.asyncInterface = (AsyncInterface) context;
+    }
 
     @Override
     protected String doInBackground(String... params) {
@@ -96,5 +104,6 @@ public class UploadAvatarHandler extends AsyncTask<String, String, String>{
 
     @Override
     protected void onPostExecute(String result) {
+        asyncInterface.response(result);
     }
 }
