@@ -5,22 +5,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.pkmmte.view.CircularImageView;
@@ -28,6 +23,8 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
@@ -48,7 +45,6 @@ public class ChangeAvatarActivity extends AppCompatActivity {
     CircularImageView new_avatar_preview;
     boolean verified_image = false;
     String username;
-    String default_path = "data:image/JPG;base64,";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,34 +99,25 @@ public class ChangeAvatarActivity extends AppCompatActivity {
     }
 
     private void goUploadImage(){
-
-        Context mContext = getApplicationContext();
-        int check = mContext.getPackageManager().checkPermission(
-                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                mContext.getPackageName());
-        if (check == PackageManager.PERMISSION_GRANTED) {
-            Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(galleryIntent, RESULT_LOAD_IMAGE);
-        }
-
-        else
-            // Required to ask user for permission to access user's external storage
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
-
-
+        CropImage.activity()
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .start(this);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && data != null) {
-            Uri selectedImage = data.getData();
-            //String filename = getContentResolver().getType(selectedImage);
-            new_avatar_preview.setVisibility(View.VISIBLE);
-            new_avatar_preview.setImageURI(selectedImage);
-            verified_image = true;
-            new_avatar_preview.setAlpha((float) 1.0);
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+                new_avatar_preview.setImageURI(resultUri);
+                new_avatar_preview.setVisibility(View.VISIBLE);
+                verified_image = true;
+
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+            }
         }
     }
 
