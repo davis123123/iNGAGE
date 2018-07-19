@@ -330,8 +330,8 @@ public class  PostThreadActivity extends AppCompatActivity implements SubmitThre
                                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                         startActivityForResult(galleryIntent, RESULT_LOAD_IMAGE);
                     } else {
-
-                        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                        //ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                        Toast.makeText(this, R.string.user_permision_request, Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -344,7 +344,7 @@ public class  PostThreadActivity extends AppCompatActivity implements SubmitThre
 
 
                     } else {
-                        Toast.makeText(this, R.string.user_permision_granted, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, R.string.user_permision_request, Toast.LENGTH_SHORT).show();
                     }
                 }
                 return;

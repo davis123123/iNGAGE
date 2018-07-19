@@ -42,7 +42,7 @@
     <!--Strings related to user preferences-->
     <string name="user_id_cache">userID</string>
     <string name="user_pass_cache">userPass</string>
-    <string name="user_permision_granted">Please allow access to use this feature</string>
+    <string name="user_permision_request">Please allow access to use this feature</string>
 
     <!--Strings related to navigation bar-->
     <string name="main_nav_menu_default_user_text">\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020</string>
