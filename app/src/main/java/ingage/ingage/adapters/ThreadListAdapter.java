@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.util.DisplayMetrics;
@@ -27,6 +28,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import ingage.ingage.App;
 import ingage.ingage.R;
 import ingage.ingage.handlers.DownloadImageHandler;
 import ingage.ingage.helpers.ThreadsHelper;
@@ -247,7 +249,11 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             threadTitleTextView.setText(threadsHelper.getThread_title());
 
             if(threadsHelper.getThread_duration() < 0){
-                threadDurationTextView.setText(threadsHelper.getThread_by());
+                threadCategoryTextView.setTextColor(ContextCompat.getColor(App.getAppContext(), R.color.white));
+                threadCategoryTextView.setBackgroundColor(ContextCompat.getColor(App.getAppContext(), R.color.colorPrimaryLight));
+                threadCategoryTextView.setTextSize(20);
+                threadDurationTextView.setVisibility(View.GONE);
+                mSpectateBtn.setVisibility(View.GONE);
             }//if archived
 
             else if (threadsHelper.getThread_duration() > 0){
