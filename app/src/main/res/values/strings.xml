@@ -69,6 +69,8 @@
 
     <!--related to thread category-->
     <string name="category_prompt">Pick a category</string>
+    <string name="category_all">All</string>
+    <string name="category_header">Popular</string>
     <string-array name="thread_categories">
         <item>-</item>
         <item>Anime</item>

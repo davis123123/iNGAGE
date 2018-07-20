@@ -5,22 +5,17 @@
     android:orientation="horizontal"
     android:background="?attr/selectableItemBackgroundBorderless">
 
-    <ImageView
-        android:id="@+id/ivCategory"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:padding="8dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/logo" />
-
     <TextView
         android:id="@+id/tvCategory"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toEndOf="@+id/ivCategory"
-        android:layout_marginTop="12dp"
-        android:text="item"
+        android:paddingLeft="16dp"
+        android:text="Popular"
+        android:textColor="@color/white"
+        android:textStyle="italic"
+        android:background="@color/colorPrimaryLight"
         android:textAppearance="?attr/textAppearanceListItem" />
 
 

@@ -552,16 +552,15 @@ public class MainActivity extends AppCompatActivity
             viewPagerAdapter.notifyDataSetChanged();
             //viewPager.setAdapter(viewPagerAdapter);
             viewPager.setCurrentItem(0,true);
+            getSupportActionBar().setTitle("Home");
         }
         else {
             session.updateCategory(item);
             viewPagerAdapter.notifyDataSetChanged();
-            //  viewPager.setAdapter(viewPagerAdapter);
            viewPager.setCurrentItem(0, true);
-            //tabLayout.getTabAt(0).select();
+            getSupportActionBar().setTitle(item);
         }
 
-        getSupportActionBar().setTitle(item);
     }
 
     private Fragment onHome(){

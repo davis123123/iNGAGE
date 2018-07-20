@@ -26,7 +26,8 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
 
         //replace "-" with "All"
         mValues.remove(0);
-        mValues.add(0,"All");
+        mValues.add(0,App.getAppContext().getResources().getString(R.string.category_all));
+        mValues.add(1,App.getAppContext().getResources().getString(R.string.category_header));
 
         mListener = listener;
     }
@@ -35,6 +36,12 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_category_item, parent, false);
+
+        //if header
+        if(viewType == 1) {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_category_header, parent, false);
+        }
+
         return new ViewHolder(view);
     }
 
@@ -45,7 +52,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null != mListener) {
+                if (null != mListener && holder.getItemViewType() == 0) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
                     mListener.onCategorySelected(mValues.get(position));
@@ -53,6 +60,18 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
             }
         });
     }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (mValues.get(position).equals(App.getAppContext().getResources().getString(R.string.category_header))) {
+            //headers
+            return 1;
+        } else {
+            //items
+            return 0;
+        }
+    }
+
 
     @Override
     public int getItemCount() {
