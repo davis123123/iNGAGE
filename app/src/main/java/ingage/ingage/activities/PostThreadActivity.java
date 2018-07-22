@@ -4,20 +4,25 @@ import android.Manifest;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -42,6 +47,7 @@ import java.util.Map;
 import ingage.ingage.R;
 import ingage.ingage.fragments.ListDialogFragment;
 import ingage.ingage.handlers.SubmitThreadsHandler;
+import ingage.ingage.helpers.ThreadsHelper;
 import ingage.ingage.managers.SessionManager;
 
 public class  PostThreadActivity extends AppCompatActivity implements SubmitThreadsHandler.AsyncInterface
@@ -50,6 +56,8 @@ public class  PostThreadActivity extends AppCompatActivity implements SubmitThre
     private EditText mInsertThreadTitle;
     private EditText mInsertThreadContent;
     private LinearLayout llUploadImage;
+    private RelativeLayout rlPage1;
+    private RelativeLayout rlPage2;
     SessionManager session;
     private static final int RESULT_LOAD_IMAGE = 1;
     private ImageView imageToUpload;
@@ -59,6 +67,16 @@ public class  PostThreadActivity extends AppCompatActivity implements SubmitThre
     ProgressDialog pd;
     ListDialogFragment f;
     Button btnCategorySpinner;
+    Button btnNext;
+    Button btnSubmit;
+    ImageView ivIcon1;
+    ImageView ivIcon2;
+
+    ThreadsHelper thread;
+    Bitmap image = null;
+    String image_link = "";
+
+    int activeColor, inactiveColor;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -69,12 +87,29 @@ public class  PostThreadActivity extends AppCompatActivity implements SubmitThre
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
+        thread = new ThreadsHelper();
+
+        rlPage1 = (RelativeLayout) findViewById(R.id.rlPage1);
+        rlPage2 = (RelativeLayout) findViewById(R.id.rlPage2);
 
         mInsertThreadContent = (EditText) findViewById(R.id.insert_thread_content_text_view);
         mInsertThreadTitle = (EditText) findViewById(R.id.insert_thread_title_text_view);
         imageToUpload = (ImageView) findViewById(R.id.uploadImageView);
         llUploadImage = (LinearLayout) findViewById(R.id.llUploadImage);
         btnCategorySpinner = (Button) findViewById(R.id.btnCategorySpinner);
+        btnNext = (Button) findViewById(R.id.btnNext);
+        btnSubmit = (Button) findViewById(R.id.btnSubmit);
+        ivIcon1 = (ImageView) findViewById(R.id.ivIcon1);
+        ivIcon2 = (ImageView) findViewById(R.id.ivIcon2);
+
+        Resources res = getResources();
+        activeColor = res.getColor(R.color.colorPrimary);
+        inactiveColor = res.getColor(R.color.gray);
+
+        ivIcon1.setColorFilter(activeColor, PorterDuff.Mode.SRC_ATOP);
+        ivIcon2.setColorFilter(inactiveColor, PorterDuff.Mode.SRC_ATOP);
 
         btnCategorySpinner.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +117,63 @@ public class  PostThreadActivity extends AppCompatActivity implements SubmitThre
                 FragmentManager fm = getFragmentManager();
                 f = ListDialogFragment.newInstance();
                 f.show(fm, "");
+            }
+        });
+
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String threadContent = mInsertThreadContent.getText().toString();
+                String threadTitle = mInsertThreadTitle.getText().toString();
+
+                String cSpinner= (String) btnCategorySpinner.getText();
+
+                //USER INSERT
+                HashMap<String, String> user = session.getUserDetails();
+                String threadBy = user.get(SessionManager.KEY_NAME);
+
+                thread.setThread_title(threadTitle);
+                thread.setThread_content(threadContent);
+                thread.setThread_category(cSpinner);
+                thread.setThread_by(threadBy);
+
+                if(threadTitle.length() == 0){
+                    Toast.makeText(PostThreadActivity.this, "Please provide a title.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if(threadContent.length() == 0){
+                    Toast.makeText(PostThreadActivity.this, "Please provide a description", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if(btnCategorySpinner.getText().equals(getResources().getString(R.string.category_default)) || btnCategorySpinner.getText() == null){
+                    Toast.makeText(PostThreadActivity.this, "Please select a category", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                ivIcon2.setColorFilter(activeColor, PorterDuff.Mode.SRC_ATOP);
+
+                rlPage1.setVisibility(View.GONE);
+                rlPage2.setVisibility(View.VISIBLE);
+            }
+        });
+
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String imageTitle = thread.getThread_title().replaceAll("\\s+", "");
+
+                //submit image
+                if(usedImage) {
+                    image = ((BitmapDrawable) imageToUpload.getDrawable()).getBitmap();
+                    image_link = "http://107.170.232.60/images/"+imageTitle+".JPG";
+                }
+
+                showConfirmationDialog();
+
             }
         });
 
@@ -112,17 +204,19 @@ public class  PostThreadActivity extends AppCompatActivity implements SubmitThre
 
     @Override
      public void onBackPressed() {
-        super.onBackPressed();
+        if(rlPage1.getVisibility()==View.VISIBLE){
+            super.onBackPressed();
+        }else{
+            ivIcon2.setColorFilter(inactiveColor, PorterDuff.Mode.SRC_ATOP);
+            rlPage2.setVisibility(View.GONE);
+            rlPage1.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
 
         switch (item.getItemId()) {
-            case R.id.submit_post_button:
-                addData();
-                return true;
-
             case android.R.id.home:
                 onBackPressed();
                 return true;
@@ -138,6 +232,48 @@ public class  PostThreadActivity extends AppCompatActivity implements SubmitThre
         btnCategorySpinner.setText(item);
     }
 
+    public void showConfirmationDialog(){
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+
+        String imageIncluded = "No";
+        if(usedImage) {
+            imageIncluded = "Yes";
+        }
+
+        dialog.setTitle("Confirmation");
+        dialog.setMessage("Are you sure you want to submit? \n\n\n" +
+                "Title: " + thread.getThread_title() + "\n\n" +
+                "Description: " + thread.getThread_content() + "\n\n" +
+                "Image: " + imageIncluded);
+        dialog.setCancelable(true);
+
+        dialog.setPositiveButton(
+                "Confirm",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        loadingDialog();
+
+                        String type = "submit";
+                        SubmitThreadsHandler submitThreadsHandler = new SubmitThreadsHandler(PostThreadActivity.this, image);
+
+                        //CREATE NEW THREAD
+                        submitThreadsHandler.execute(type, thread.getThread_title(), thread.getThread_content(),
+                                thread.getThread_by(), thread.getThread_category(), image_link, String.valueOf(usedImage));
+                        dialog.cancel();
+                    }
+                });
+
+        dialog.setNegativeButton(
+                "Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = dialog.create();
+        alert11.show();
+    }
 
     private void setUploadImageLayout(){
         DisplayMetrics metrics = getBaseContext().getResources().getDisplayMetrics();
@@ -152,50 +288,6 @@ public class  PostThreadActivity extends AppCompatActivity implements SubmitThre
         img_params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         llUploadImage.setLayoutParams(img_params);
         imageToUpload.setLayoutParams(img_params);
-    }
-
-    public void addData(){
-        Context context = PostThreadActivity.this;
-        String image_link = "";
-        String threadContent = mInsertThreadContent.getText().toString();
-        String threadTitle = mInsertThreadTitle.getText().toString();
-        String imageTitle = threadTitle.replaceAll("\\s+", "");
-        Bitmap image = null;
-
-        //submit image
-        if(usedImage) {
-            image = ((BitmapDrawable) imageToUpload.getDrawable()).getBitmap();
-            image_link = "http://107.170.232.60/images/"+imageTitle+".JPG";
-        }
-
-        if(threadTitle.length() == 0){
-            Toast.makeText(this, "Please provide a title.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if(threadContent.length() == 0){
-            Toast.makeText(this, "Please provide a description", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if(btnCategorySpinner.getText().equals("-") || btnCategorySpinner.getText() == null){
-            Toast.makeText(this, "Please select a category", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-
-        loadingDialog();
-        String cSpinner= (String) btnCategorySpinner.getText();
-
-        //USER INSERT
-        HashMap<String, String> user = session.getUserDetails();
-        String threadBy = user.get(SessionManager.KEY_NAME);
-        String type = "submit";
-        SubmitThreadsHandler submitThreadsHandler = new SubmitThreadsHandler(this, image);
-
-        //CREATE NEW THREAD
-        submitThreadsHandler.execute(type, threadTitle, threadContent, threadBy, cSpinner, image_link, String.valueOf(usedImage));
-
     }
 
     @Override

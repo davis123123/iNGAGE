@@ -10,6 +10,7 @@
     <color name="dark_gray">#aeaeae</color>
     <color name="top_bar_background">#F58535</color>
     <color name="green">#00b200</color>
+    <color name="light_green">#aad452</color>
     <color name="white">#FFFFFF</color>
 
     <color name="tab_background_selected">#E0E0E0</color>

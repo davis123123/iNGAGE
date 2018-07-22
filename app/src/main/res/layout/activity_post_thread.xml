@@ -7,24 +7,69 @@
     android:orientation="vertical"
     tools:context=".activities.PostThreadActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="@color/white"
+        android:id="@+id/llHeader"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:text="Create a New Thread"
+            android:layout_marginTop="24dp"
+            android:gravity="center_horizontal" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/ivIcon1"
+                android:src="@android:drawable/ic_menu_myplaces" />
+
+            <View
+                android:layout_width="160dp"
+                android:layout_height="1dp"
+                android:background="@color/gray"
+                android:layout_marginTop="24dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/ivIcon2"
+                android:src="@android:drawable/ic_menu_camera" />
+
+        </LinearLayout>
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true">
+        android:layout_below="@id/llHeader"
+        android:id="@+id/rlPage1"
+        android:background="#F2F2F2">
 
         <EditText
             android:id="@+id/insert_thread_title_text_view"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="80dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="20dp"
             android:background="@layout/textfield"
-            android:drawableLeft="@android:drawable/sym_action_chat"
             android:hint="Title"
             android:inputType="textCapSentences"
+            android:gravity="top"
             android:padding="8dp" />
 
         <EditText
@@ -34,7 +79,7 @@
             android:layout_alignEnd="@+id/insert_thread_title_text_view"
             android:layout_alignStart="@+id/insert_thread_title_text_view"
             android:layout_below="@+id/insert_thread_title_text_view"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="24dp"
             android:background="@layout/textfield"
             android:gravity="top"
             android:hint="@string/post_description_hint"
@@ -44,7 +89,6 @@
             android:padding="8dp"
             android:scrollbars="vertical" />
 
-
         <Button
             android:id="@+id/btnCategorySpinner"
             android:layout_width="match_parent"
@@ -53,34 +97,48 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="8dp"
-            android:text="-"
+            android:text="@string/category_default"
+            android:textColor="@color/colorPrimaryLight"
             android:background="@layout/textfield"/>
+
+        <Button
+            android:id="@+id/btnNext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="18dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@layout/button"
+            android:text="Next"
+            android:textColor="@color/white"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/llHeader"
+        android:id="@+id/rlPage2"
+        android:background="#F2F2F2"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/tvHint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/btnCategorySpinner"
             android:layout_centerHorizontal="true"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="48dp"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="8dp"
             android:gravity="center_horizontal"
             android:text="@string/post_photo_hint"
             android:textAlignment="center"
             android:textColor="@color/colorPrimaryLight"
-            android:textSize="18dp" />
-
-       <!-- <Spinner
-            android:id="@+id/category_spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="10dp"
-            android:entries="@array/thread_categories"
-            android:prompt="@string/category_prompt"></Spinner> -->
+            android:textSize="14dp" />
 
         <ImageView
             android:id="@+id/uploadImageView"
@@ -94,17 +152,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvHint"
-            android:background="#d3d3d3"
+            android:background="@layout/textfield"
             android:orientation="vertical"
-            android:padding="2dp">
+            android:layout_margin="32dp">
 
             <ImageView
                 android:id="@+id/ivUploadIcon"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleType="fitXY"
+                android:tint="@color/light_green"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="8dp"
                 android:src="@android:drawable/ic_menu_upload" />
 
             <TextView
@@ -112,15 +172,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:text="Click to upload image"
+                android:layout_marginTop="8dp"
+                android:text="Upload Image"
+                android:textColor="@color/gray"
                 android:textSize="22dp" />
         </LinearLayout>
 
-    </RelativeLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btnSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="18dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@layout/button"
+            android:text="Submit"
+            android:textColor="@color/white"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 </RelativeLayout>

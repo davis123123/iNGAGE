@@ -54,7 +54,7 @@
 
     <!--Strings related to posting thread-->
     <string name="post_description_hint">Enter description here</string>
-    <string name="post_photo_hint">Threads with images are more likely to receive comments!</string>
+    <string name="post_photo_hint">Note: Threads with images are more likely to receive comments!</string>
     <string name="post_thread_error">Can\'t submit post. Please remove any special characters and try again.</string>
 
     <!--related to comments-->
@@ -71,8 +71,9 @@
     <string name="category_prompt">Pick a category</string>
     <string name="category_all">All</string>
     <string name="category_header">Popular</string>
+    <string name="category_default">Select a Category</string>
     <string-array name="thread_categories">
-        <item>-</item>
+        <item>Select a Category</item>
         <item>Anime</item>
         <item>Art</item>
         <item>Education</item>

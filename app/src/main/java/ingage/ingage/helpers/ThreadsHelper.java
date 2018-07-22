@@ -16,6 +16,10 @@ public class ThreadsHelper {
     private String thread_by;
     private long thread_duration  = -2;
 
+    public ThreadsHelper(){
+
+    }
+
     public ThreadsHelper(String thread_id, String thread_title, String thread_content,
                          String thread_by, String thread_date, String thread_category, String thread_img){
         this.setThread_id(thread_id);

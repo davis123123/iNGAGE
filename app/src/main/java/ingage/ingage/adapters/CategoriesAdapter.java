@@ -24,9 +24,11 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
     public CategoriesAdapter(CategoriesFragment.categoriesFragmentListener listener) {
         mValues = new ArrayList<String>(Arrays.asList(App.getAppContext().getResources().getStringArray(R.array.thread_categories)));
 
-        //replace "-" with "All"
+        //replace "Select a Category" with "All"
         mValues.remove(0);
         mValues.add(0,App.getAppContext().getResources().getString(R.string.category_all));
+
+        //Add header
         mValues.add(1,App.getAppContext().getResources().getString(R.string.category_header));
 
         mListener = listener;
