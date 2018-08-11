@@ -7,7 +7,7 @@ android {
         applicationId "ingage.ingage"
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 4
+        versionCode 6
         versionName "1.12"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
@@ -41,7 +41,7 @@ dependencies {
     implementation 'me.relex:circleindicator:1.2.2@aar'
     implementation 'com.android.support:multidex:1.0.1'
     implementation 'com.github.arimorty:floatingsearchview:2.1.1'
-    implementation  'com.theartofdev.edmodo:android-image-cropper:2.4.+'
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.4.+'
 
     implementation 'com.squareup.okhttp3:logging-interceptor:3.4.0'
     implementation 'com.squareup.retrofit2:retrofit:2.1.0'

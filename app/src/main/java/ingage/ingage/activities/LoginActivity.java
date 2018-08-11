@@ -199,6 +199,10 @@ public class LoginActivity extends AppCompatActivity implements SharedPreference
 
     }
 
+    public void forgotPassword(){
+
+    }
+
     public void rememberUser(){
         String key = getResources().getString(R.string.saved_user);
         SharedPreferences.Editor prefEditor = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit();
