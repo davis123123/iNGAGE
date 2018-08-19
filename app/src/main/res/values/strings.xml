@@ -135,11 +135,20 @@
         <item>Use the search bar to find the topics that you are interested in. Or tap on the categories tab to filter by type.</item>
     </string-array>
 
+    <!-- Contact us -->
+    <string name="support_email">ingageprototype@gmail.com</string>
+    <string name="email_btn_text">Email Us</string>
+    <string name="contact_us_title">Contact Us</string>
+    <string name="contact_us_text">Got any questions, comments, or suggestions? Send us an email!
+        We appreciate any feedback since it helps us improve our product for better user experience!</string>
+    <string name="contact_us_sent">"Message has been sent! Thank you for contacting us!"</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="title_activity_walkthrough">WalkthroughActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_contact_us">ContactUsActivity</string>
 
 </resources>

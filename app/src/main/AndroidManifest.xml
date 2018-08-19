@@ -36,7 +36,6 @@
             android:value="@integer/google_play_services_version" />
 
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity" />
-
         <activity
             android:name=".activities.SplashActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
@@ -95,6 +94,10 @@
             android:name=".activities.WalkthroughActivity"
             android:label="@string/title_activity_walkthrough"
             android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.ContactUsActivity"
+            android:label="@string/title_activity_contact_us"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
