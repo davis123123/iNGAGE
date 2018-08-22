@@ -160,7 +160,7 @@ public class LoginActivity extends AppCompatActivity implements SharedPreference
 
             Log.e("login status: ", loginStatus);
             if (loginStatus.equals("login failed")) {
-                alert.showAlertDialog(LoginActivity.this, "Login failed..", "Username/Password is incorrect", false);
+                alert.showAlertDialog(LoginActivity.this, "Login failed..", "Username or password is incorrect", false);
                 passwordEt.getText().clear();
             } else if(loginStatus.equals("banned")){
                 alert.showAlertDialog(LoginActivity.this, "Notice", "This user has been permanently banned due to reports of misconduct.", false);
