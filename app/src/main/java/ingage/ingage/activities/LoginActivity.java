@@ -161,18 +161,15 @@ public class LoginActivity extends AppCompatActivity implements SharedPreference
             Log.e("login status: ", loginStatus);
             if (loginStatus.equals("login failed")) {
                 alert.showAlertDialog(LoginActivity.this, "Login failed..", "Username/Password is incorrect", false);
-                usernameEt.getText().clear();
                 passwordEt.getText().clear();
             } else if(loginStatus.equals("banned")){
                 alert.showAlertDialog(LoginActivity.this, "Notice", "This user has been permanently banned due to reports of misconduct.", false);
-                usernameEt.getText().clear();
                 passwordEt.getText().clear();
             }
 
             else if (loginStatus.equals("please confirm email")){
                 alert.showAlertDialog(LoginActivity.this, "Login failed...", "Please confirm your e-mail, make sure to check your spam box.", false);
                 Log.e("STATE", "Token not Registered");
-                usernameEt.getText().clear();
                 passwordEt.getText().clear();
             }
 
@@ -187,13 +184,11 @@ public class LoginActivity extends AppCompatActivity implements SharedPreference
         /*else if (loginStatus.equals("please confirm email")){
             alert.showAlertDialog(LoginActivity.this, "Login failed...", "Please confirm your e-mail, make sure to check your spam box.", false);
             Log.e("STATE", "Token not Registered");
-            usernameEt.getText().clear();
             passwordEt.getText().clear();
         }*/
         else{
             alert.showAlertDialog(LoginActivity.this, "Login failed..", "Please try again later", false);
             Log.e("STATE", "Token not Registered");
-            usernameEt.getText().clear();
             passwordEt.getText().clear();
         }
 
