@@ -6,6 +6,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 import ingage.ingage.R;
 import ingage.ingage.handlers.IdentityHandler;
@@ -14,6 +16,8 @@ import ingage.ingage.managers.AlertDiaLogManager;
 public class ForgotPasswordActivity extends AppCompatActivity {
     AlertDiaLogManager alert = new AlertDiaLogManager();
     IdentityHandler identityHandler;
+    Button ForgotPasswordButton;
+    EditText usernameEt, emailEt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,16 +26,20 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         identityHandler = new IdentityHandler(getApplicationContext());
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        usernameEt = (EditText) findViewById(R.id.username);
+        emailEt = (EditText) findViewById(R.id.email);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                onForgotPassword();
             }
         });
     }
 
-    public void onForgotPassword(String username, String email){
+    public void onForgotPassword(){
+        String username = usernameEt.getText().toString();
+        String email = emailEt.getText().toString();
         if(username.length() < 1){
             showDialog("Uh Oh","Please enter Username");
         }
