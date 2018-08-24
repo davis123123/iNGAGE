@@ -16,7 +16,7 @@ import ingage.ingage.managers.AlertDiaLogManager;
 public class ForgotPasswordActivity extends AppCompatActivity {
     AlertDiaLogManager alert = new AlertDiaLogManager();
     IdentityHandler identityHandler;
-    Button ForgotPasswordButton;
+    Button forgotPasswordButton;
     EditText usernameEt, emailEt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,11 +25,11 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         identityHandler = new IdentityHandler(getApplicationContext());
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        Button forgotPasswordButton = (Button) findViewById(R.id.submitForgotPasswordButton);
         usernameEt = (EditText) findViewById(R.id.username);
         emailEt = (EditText) findViewById(R.id.email);
 
-        fab.setOnClickListener(new View.OnClickListener() {
+        forgotPasswordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onForgotPassword();
