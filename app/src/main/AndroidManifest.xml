@@ -97,7 +97,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.ContactUsActivity"
-            android:label="@string/title_activity_contact_us"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.FaqsActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

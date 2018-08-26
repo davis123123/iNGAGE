@@ -18,6 +18,7 @@ import java.util.concurrent.ExecutionException;
 
 import ingage.ingage.R;
 import ingage.ingage.activities.ContactUsActivity;
+import ingage.ingage.activities.FaqsActivity;
 import ingage.ingage.activities.LoginActivity;
 import ingage.ingage.activities.MainActivity;
 import ingage.ingage.activities.PostThreadActivity;
@@ -62,7 +63,9 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerHold
             holder.icon.setImageResource(android.R.drawable.ic_menu_manage);
         if(position == 2)
             holder.icon.setImageResource(android.R.drawable.ic_menu_help);
-        if (position == 3)
+        if(position == 3)
+            holder.icon.setImageResource(android.R.drawable.ic_menu_edit);
+        if (position == 4)
             holder.icon.setImageResource(android.R.drawable.ic_menu_send);
     }
 
@@ -99,7 +102,12 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerHold
                         Intent intent = new Intent(context, PostThreadActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
-                    } else if (list.get(pos).equals("Contact Us")){
+                    }
+                    else if (list.get(pos).equals("FAQs")){
+                        Intent intent = new Intent(context, FaqsActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+                    }else if (list.get(pos).equals("Contact Us")){
                         Intent intent = new Intent(context, ContactUsActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
