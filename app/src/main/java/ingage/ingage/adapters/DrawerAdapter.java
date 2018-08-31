@@ -20,7 +20,6 @@ import ingage.ingage.R;
 import ingage.ingage.activities.ContactUsActivity;
 import ingage.ingage.activities.FaqsActivity;
 import ingage.ingage.activities.LoginActivity;
-import ingage.ingage.activities.MainActivity;
 import ingage.ingage.activities.PostThreadActivity;
 import ingage.ingage.activities.UserProfileActivity;
 import ingage.ingage.handlers.IdentityHandler;
@@ -48,7 +47,7 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerHold
     @Override
     public DrawerHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.drawer_item, parent, false);
+                .inflate(R.layout.item_drawer, parent, false);
 
         return new DrawerHolder(itemView);
     }

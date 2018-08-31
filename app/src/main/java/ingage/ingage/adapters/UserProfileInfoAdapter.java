@@ -43,7 +43,7 @@ public class UserProfileInfoAdapter extends RecyclerView.Adapter<UserProfileInfo
     @Override
     public UserProfileInfoHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.user_profile_lv, parent, false);
+                .inflate(R.layout.item_user_profile_info, parent, false);
 
         return new UserProfileInfoHolder(itemView);
     }

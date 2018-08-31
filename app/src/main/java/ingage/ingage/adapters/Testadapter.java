@@ -50,7 +50,7 @@ public class Testadapter extends ArrayAdapter {
         ThreadHolder threadHolder;
         if(row == null){
             LayoutInflater layoutInflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            row = layoutInflater.inflate(R.layout.thread_row_layout,parent,false);
+            row = layoutInflater.inflate(R.layout.item_thread_row_layout,parent,false);
             threadHolder = new ThreadHolder();
             threadHolder.thread_title = (TextView) row.findViewById(R.id.thread_title_view);
             row.setTag(threadHolder);

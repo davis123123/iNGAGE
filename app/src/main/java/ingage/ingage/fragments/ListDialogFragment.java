@@ -61,7 +61,7 @@ public class ListDialogFragment extends DialogFragment {
         tvTitle = (TextView) view.findViewById(R.id.tvTitle);
 
         items = new ArrayList<String>(Arrays.asList(App.getAppContext().getResources().getStringArray(R.array.thread_categories)));
-        adapter = new ArrayAdapter(getActivity(), R.layout.list_dialog_fragment_item, items);
+        adapter = new ArrayAdapter(getActivity(), R.layout.item_list_dialog_fragment, items);
         lvItems.setAdapter(adapter);
 
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener()

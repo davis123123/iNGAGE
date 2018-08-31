@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
-    android:background="@layout/frame_item"
+    android:background="@layout/item_frame"
     android:id="@+id/thread_row_root"
     android:layout_margin="8dp"
     android:padding="10dp">

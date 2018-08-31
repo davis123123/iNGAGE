@@ -2,7 +2,6 @@ package ingage.ingage.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import ingage.ingage.R;
 import ingage.ingage.helpers.FaqsHelper;
@@ -31,7 +29,7 @@ public class FaqsAdapter extends RecyclerView.Adapter<FaqsAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.faqs_item, parent, false);
+                .inflate(R.layout.item_faqs, parent, false);
         return new FaqsAdapter.ViewHolder(view);
     }
 

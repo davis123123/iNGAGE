@@ -2,7 +2,6 @@ package ingage.ingage.adapters;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
-import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -70,7 +69,7 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
         Context context = viewGroup.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         boolean shouldAttachToParentImmediately = false;
-        View view = inflater.inflate(R.layout.chat_layout, viewGroup, false);
+        View view = inflater.inflate(R.layout.item_chat_post_agree, viewGroup, false);
         Log.d("STATE", "viewType: " + viewType);
 
         unselectedColor = context.getResources().getColor(R.color.tab_text_unselected);
@@ -82,13 +81,13 @@ public class ChatArrayAdapter extends RecyclerView.Adapter<ChatArrayAdapter.Chat
         username = user.get(SessionManager.KEY_NAME);
 
         if(viewType == 0)
-            view = inflater.inflate(R.layout.chat_layout_own, viewGroup, false);
+            view = inflater.inflate(R.layout.item_chat_post_agree_you, viewGroup, false);
         else if(viewType == 1)
-            view = inflater.inflate(R.layout.chat_layout, viewGroup, false);
+            view = inflater.inflate(R.layout.item_chat_post_agree, viewGroup, false);
         if(viewType == 2)
-            view = inflater.inflate(R.layout.chat_layout_own_right, viewGroup, false);
+            view = inflater.inflate(R.layout.item_chat_post_disagree_you, viewGroup, false);
         else if(viewType == 3)
-            view = inflater.inflate(R.layout.chat_layout_right, viewGroup, false);
+            view = inflater.inflate(R.layout.item_chat_post_disagree, viewGroup, false);
 
         return new ChatViewHolder(view);
     }

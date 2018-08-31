@@ -2,19 +2,15 @@ package ingage.ingage.adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -30,7 +26,6 @@ import java.util.List;
 
 import ingage.ingage.App;
 import ingage.ingage.R;
-import ingage.ingage.handlers.DownloadImageHandler;
 import ingage.ingage.helpers.ThreadsHelper;
 import ingage.ingage.util.CustomRunnable;
 
@@ -82,12 +77,12 @@ public class ThreadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         boolean shouldAttachToParentImmediately = false;
         if (viewType == VIEW_TYPE_ITEM) {
             Log.d("LOAD","LayoutNNN");
-            View view = inflater.inflate(R.layout.thread_row_layout, viewGroup, shouldAttachToParentImmediately);
+            View view = inflater.inflate(R.layout.item_thread_row_layout, viewGroup, shouldAttachToParentImmediately);
             ThreadViewHolder viewHolder = new ThreadViewHolder(view);
             return viewHolder;
         } else if (viewType == VIEW_TYPE_LOADING) {
             Log.d("LOAD","Layout");
-            View view = inflater.inflate(R.layout.layout_loading_item, viewGroup, shouldAttachToParentImmediately);
+            View view = inflater.inflate(R.layout.loader, viewGroup, shouldAttachToParentImmediately);
             //ThreadViewHolder viewHolder = new ThreadViewHolder(view);
             return new LoadingViewHolder(view);
         }

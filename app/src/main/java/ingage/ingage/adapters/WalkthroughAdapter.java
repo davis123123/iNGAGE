@@ -2,7 +2,6 @@ package ingage.ingage.adapters;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,7 +89,7 @@ public class WalkthroughAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        View itemView = layoutInflater.inflate(R.layout.fragment_walkthrough_item, container, false);
+        View itemView = layoutInflater.inflate(R.layout.item_fragment_walkthrough, container, false);
 
 
         header = walkthroughPages.get(position).getHeader();

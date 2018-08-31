@@ -71,13 +71,13 @@ public class NavigationDrawer {
         this.containingActivity = activity;
         mContext = context;
 
-        adapter = new ArrayAdapter<Configurations.Feature>(activity, R.layout.nav_drawer_item) {
+        adapter = new ArrayAdapter<Configurations.Feature>(activity, R.layout.item_nav_drawer) {
             @Override
             public View getView(final int position, final View convertView,
                                 final ViewGroup parent) {
                 View view = convertView;
                 if (view == null) {
-                    view = activity.getLayoutInflater().inflate(R.layout.nav_drawer_item, parent, false);
+                    view = activity.getLayoutInflater().inflate(R.layout.item_nav_drawer, parent, false);
                 }
                 final Configurations.Feature item = getItem(position);
                 return view;

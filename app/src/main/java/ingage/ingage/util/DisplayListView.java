@@ -38,7 +38,7 @@ public class DisplayListView extends Activity{
         setContentView(R.layout.display_listview_layout);
         mySQLDbHelper = new MySQLDbHelper();
         listView = (ListView)findViewById(R.id.listview);
-        testadapter = new Testadapter(this,R.layout.thread_row_layout);
+        testadapter = new Testadapter(this,R.layout.item_thread_row_layout);
         listView.setAdapter(testadapter);
 
 

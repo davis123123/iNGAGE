@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import ingage.ingage.App;
 import ingage.ingage.R;
-import ingage.ingage.activities.MainActivity;
 import ingage.ingage.fragments.CategoriesFragment;
 
 import java.util.ArrayList;
@@ -37,7 +36,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_category_item, parent, false);
+                .inflate(R.layout.item_fragment_category, parent, false);
 
         //if header
         if(viewType == 1) {
