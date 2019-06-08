@@ -97,6 +97,92 @@ public class MainActivity extends AppCompatActivity
     private ViewPager viewPager;
     public static UserRecentCommentHandler handler;
 
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mContext = getApplicationContext();
+
+        session = new SessionManager(mContext);
+        session.checkLogin();
+
+        setContentView(R.layout.activity_main);
+        setupToolbar(savedInstanceState);
+        /**RecyclerView (TEMPORARY, MOVE TO A FRAGMENT LATER)**/
+        parseJSON();
+
+        setupNavigationMenu(savedInstanceState);
+        setupNavigationDrawer();
+
+        session.updatePage(pageType);
+        session.updateCategory(pageCategory);
+        //initTabs();
+        searchBar = (FloatingSearchView) findViewById(R.id.floating_search_view);
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
+        setupViewPager(viewPager);
+        //initAnnouncement();
+
+        HashMap<String, String> user = session.getUserDetails();
+        String categoryType = "";
+        categoryType = user.get(SessionManager.CATEGORY_TYPE);
+        //Log.d("CategoryName", categoryType);
+        if(categoryType == null){
+            categoryType = "Home";
+        }
+        // Set the title for the fragment.
+        final ActionBar actionBar = this.getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(categoryType);
+        }
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        UserProfileActivity.recentComments.clear();
+    }
+
+    private void setupViewPager(final ViewPager viewPager) {
+        //viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());;
+        final Class categoriesFragmentClass = CategoriesFragment.class;
+        Fragment categoriesFragment = Fragment.instantiate(this, categoriesFragmentClass.getName());
+
+        final Class archivedFragmentClass = ArchivedFragment.class;
+        Fragment archivedFragment = Fragment.instantiate(this, archivedFragmentClass.getName());
+
+        final Class categoriesPageFragmentClass = CategoriesPageFragment.class;
+        Fragment categoriesPageFragment = Fragment.instantiate(this, categoriesPageFragmentClass.getName());
+
+        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+
+        viewPagerAdapter.addFragment(categoriesPageFragment, "Active");
+        viewPagerAdapter.addFragment(archivedFragment, "Archived");
+        viewPagerAdapter.addFragment(categoriesFragment, "Categories");
+
+        viewPager.setAdapter(viewPagerAdapter);
+
+        ViewPager.OnPageChangeListener pageChangeListener = new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                //  CategoriesPageFragment categoriesPageFragment1 = (CategoriesPageFragment) viewPagerAdapter.instantiateItem(viewPager, 0);
+                // ArchivedFragment archivedFragment1 = (ArchivedFragment) viewPagerAdapter.instantiateItem(viewPager, 1);
+                //viewPagerAdapter.notifyDataSetChanged();
+                //viewPager.setAdapter(viewPagerAdapter);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                //  viewPagerAdapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                //viewPagerAdapter.notifyDataSetChanged();
+            }
+        };
+
+    }
+
     private void setupToolbar(final Bundle savedInstanceState) {
         toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         // Set up the activity to use this toolbar. As a side effect this sets the Toolbar's title
@@ -217,92 +303,6 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
     }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mContext = getApplicationContext();
-
-        session = new SessionManager(mContext);
-        session.checkLogin();
-
-        setContentView(R.layout.activity_main);
-        setupToolbar(savedInstanceState);
-        /**RecyclerView (TEMPORARY, MOVE TO A FRAGMENT LATER)**/
-        parseJSON();
-
-        setupNavigationMenu(savedInstanceState);
-        setupNavigationDrawer();
-
-        session.updatePage(pageType);
-        session.updateCategory(pageCategory);
-        //initTabs();
-        searchBar = (FloatingSearchView) findViewById(R.id.floating_search_view);
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
-        setupViewPager(viewPager);
-        //initAnnouncement();
-
-        HashMap<String, String> user = session.getUserDetails();
-        String categoryType = "";
-        categoryType = user.get(SessionManager.CATEGORY_TYPE);
-        //Log.d("CategoryName", categoryType);
-        if(categoryType == null){
-            categoryType = "Home";
-        }
-        // Set the title for the fragment.
-        final ActionBar actionBar = this.getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle(categoryType);
-        }
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        UserProfileActivity.recentComments.clear();
-    }
-
-    private void setupViewPager(final ViewPager viewPager) {
-        //viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());;
-        final Class categoriesFragmentClass = CategoriesFragment.class;
-        Fragment categoriesFragment = Fragment.instantiate(this, categoriesFragmentClass.getName());
-
-        final Class archivedFragmentClass = ArchivedFragment.class;
-        Fragment archivedFragment = Fragment.instantiate(this, archivedFragmentClass.getName());
-
-        final Class categoriesPageFragmentClass = CategoriesPageFragment.class;
-        Fragment categoriesPageFragment = Fragment.instantiate(this, categoriesPageFragmentClass.getName());
-
-        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-
-        viewPagerAdapter.addFragment(categoriesPageFragment, "Active");
-        viewPagerAdapter.addFragment(archivedFragment, "Archived");
-        viewPagerAdapter.addFragment(categoriesFragment, "Categories");
-
-        viewPager.setAdapter(viewPagerAdapter);
-
-        ViewPager.OnPageChangeListener pageChangeListener = new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-              //  CategoriesPageFragment categoriesPageFragment1 = (CategoriesPageFragment) viewPagerAdapter.instantiateItem(viewPager, 0);
-               // ArchivedFragment archivedFragment1 = (ArchivedFragment) viewPagerAdapter.instantiateItem(viewPager, 1);
-                //viewPagerAdapter.notifyDataSetChanged();
-                //viewPager.setAdapter(viewPagerAdapter);
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-              //  viewPagerAdapter.notifyDataSetChanged();
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-                //viewPagerAdapter.notifyDataSetChanged();
-            }
-        };
-
-    }
-
 
    /* private void initTabs(){
         tabLayout = (TabLayout) findViewById(R.id.tabs);

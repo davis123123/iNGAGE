@@ -1,5 +1,6 @@
 package ingage.ingage.activities;
 
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,6 +24,7 @@ import java.util.concurrent.ExecutionException;
 
 import ingage.ingage.firebase.FirebaseSharedPrefManager;
 import ingage.ingage.R;
+import ingage.ingage.fragments.EULADialogFragment;
 import ingage.ingage.managers.WifiManager;
 import ingage.ingage.handlers.IdentityHandler;
 import ingage.ingage.managers.AlertDiaLogManager;
@@ -101,6 +103,17 @@ public class LoginActivity extends AppCompatActivity implements SharedPreference
         });
 
         loadUserName();
+        showEULA();
+    }
+
+    public void showEULA(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        Boolean shouldShowEULA = preferences.getBoolean(String.valueOf(R.string.show_eula), true);
+        if(shouldShowEULA){
+            FragmentManager fm = getFragmentManager();
+            EULADialogFragment f = EULADialogFragment.newInstance();
+            f.show(fm, "");
+        }
     }
 
     public void wifiErrorDialog(){

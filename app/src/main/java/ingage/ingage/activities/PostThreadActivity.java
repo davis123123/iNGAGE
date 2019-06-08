@@ -405,7 +405,6 @@ public class  PostThreadActivity extends AppCompatActivity implements SubmitThre
         super.onRestoreInstanceState(savedInstanceState);
         mInsertThreadTitle.getText().insert(mInsertThreadTitle.getSelectionStart(),
                 savedInstanceState.getString("savedTitle"));
-        
     }
 
 
